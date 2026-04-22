@@ -72,6 +72,27 @@
     white-space: nowrap;
   }
   .nav-links a:hover { color: var(--white); background: var(--bg3); }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 36px; text-decoration: none; display: block;
+    transition: border-color .25s, transform .25s;
+    position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,204,.04), rgba(255,107,53,.04));
+    opacity: 0; transition: opacity .25s;
+  }
+  .project-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
+  .project-card:hover::before { opacity: 1; }
+  .proj-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+  .proj-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px; color: var(--white); margin-bottom: 12px; line-height: 1.2; }
+  .proj-desc { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.65; }
+  .proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .proj-arrow { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--cyan); font-weight: 600; }
+  .proj-stack { display: flex; gap: 20px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 4px; }
+  .proj-stack-item { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .proj-stack-item span { font-size: 15px; }
 
   /* ── SECTIONS ── */
   .wrap { position: relative; z-index: 1; }
@@ -397,6 +418,7 @@
     <a href="#supervised">Supervised</a>
     <a href="#unsupervised">Unsupervised</a>
     <a href="#computer-vision">Vision</a>
+    <a href="#projects" style="color:var(--orange)">Projects</a>
   </div>
 </nav>
 
@@ -1099,6 +1121,43 @@ plt.<span class="fn">show</span>()</div>
           that can identify, grasp, and sort objects — a project you can build by the end of the semester.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+  <!-- PROJECTS -->
+  <div class="divider"></div>
+  <section id="projects">
+    <div class="container">
+      <div class="section-num fade-up">06 / Real World</div>
+      <h2 class="fade-up">Student <span class="accent">Projects</span></h2>
+      <p class="lead fade-up">See what these concepts look like when they're built into real hardware.</p>
+
+      <a href="project.html" class="project-card fade-up">
+        <div class="proj-label">Project 01 — Autonomous Robotics</div>
+        <div class="proj-title">Ball-Following Robot<br/>with YOLO + PID Control</div>
+        <div class="proj-desc">
+          A ground-up object-tracking robot — from labeling training data on Roboflow, 
+          to real-time YOLO detection on a laptop, dual PID controllers for steering and distance, 
+          and live ESP32 firmware receiving UDP motor commands over WiFi at 30+ FPS.
+        </div>
+        <div class="proj-tags">
+          <span class="tag tag-purple">YOLOv8</span>
+          <span class="tag tag-orange">Roboflow</span>
+          <span class="tag tag-cyan">PID Control</span>
+          <span class="tag tag-blue">ESP32</span>
+          <span class="tag tag-yellow">TB6612FNG</span>
+          <span class="tag tag-green">UDP / WiFi</span>
+        </div>
+        <div class="proj-arrow">View full project breakdown →</div>
+        <div class="proj-stack">
+          <div class="proj-stack-item"><span>🧠</span> YOLO inference on CPU/CUDA</div>
+          <div class="proj-stack-item"><span>📡</span> UDP over WiFi @ 30ms</div>
+          <div class="proj-stack-item"><span>⚙️</span> PWM motor control</div>
+          <div class="proj-stack-item"><span>🎯</span> 4-state behavior machine</div>
+        </div>
+      </a>
     </div>
   </section>
 
