@@ -1457,6 +1457,35 @@ MOTOR_STBY   -> GPIO 14</pre>
             <p>These values are normalized instead of raw pixels, which makes the controller easier to understand and less tied to one camera resolution.</p>
           </div>
         </div>
+
+        <div class="code-block fade-up" style="margin-top:18px">
+          <div class="code-header">
+            <div class="code-meta">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <div class="code-filename">How the script computes the two main errors</div>
+            </div>
+          </div>
+<pre>cx = (x1 + x2) / 2
+area = (x2 - x1) * (y2 - y1)
+
+angle_error = (cx - width / 2) / width
+dist_error  = (area - target_area) / target_area</pre>
+        </div>
+
+        <div class="card-grid fade-up" style="margin-top:18px">
+          <div class="card">
+            <div class="mini-kicker">Center position math</div>
+            <p>The box coordinates are <code>x1, y1, x2, y2</code>. Averaging <code>x1</code> and <code>x2</code> gives the horizontal center of the detected object, which tells the robot whether the target is left or right.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Steering error math</div>
+            <p>The term <code>cx - width / 2</code> measures how far the object is from the center line of the image. Dividing by <code>width</code> turns that into a normalized fraction instead of a raw pixel value.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Distance proxy math</div>
+            <p>The robot does not know real distance directly from one image, so it uses bounding-box area as a proxy. Bigger box means the object is closer; smaller box means it is farther away.</p>
+          </div>
+        </div>
       </div>
 
       <div class="tab-panel" id="tab-control">
@@ -1472,6 +1501,37 @@ MOTOR_STBY   -> GPIO 14</pre>
           <div class="card">
             <div class="mini-kicker">State scaling</div>
             <p><code>ACQUIRING</code> limits speed while detections stabilize, <code>SEARCHING</code> rotates using the last known direction, and <code>STOPPED</code> resets controller memory so old errors do not leak into the next run.</p>
+          </div>
+        </div>
+
+        <div class="code-block fade-up" style="margin-top:18px">
+          <div class="code-header">
+            <div class="code-meta">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <div class="code-filename">How errors become wheel commands</div>
+            </div>
+          </div>
+<pre>smoothed_angle += alpha * (raw_angle_error - smoothed_angle)
+turn_cmd = turn_pid.update(smoothed_angle)
+dist_cmd = dist_pid.update(dist_error)
+
+base_speed = -dist_cmd
+tgt_left   = base_speed + turn_cmd
+tgt_right  = base_speed - turn_cmd</pre>
+        </div>
+
+        <div class="card-grid fade-up" style="margin-top:18px">
+          <div class="card">
+            <div class="mini-kicker">Smoothing</div>
+            <p><code>smoothed_angle += alpha * (raw - smoothed)</code> is a low-pass filter. It means the new angle estimate only moves partway toward the latest measurement, which reduces jitter from noisy detections.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Distance sign</div>
+            <p><code>base_speed = -dist_cmd</code> matters because a positive distance error means the target looks too large, so the robot is too close. The minus sign turns that into a backward motion command.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Differential steering</div>
+            <p>Adding <code>turn_cmd</code> to the left wheel and subtracting it from the right wheel makes the robot rotate. If <code>turn_cmd</code> is positive, the left side runs faster and the robot turns right.</p>
           </div>
         </div>
       </div>
@@ -1533,6 +1593,27 @@ tgt_right *= speed_limit</pre>
         </div>
       </div>
 
+      <div class="accordion fade-up" style="margin-top:24px">
+        <div class="accordion-item open">
+          <button class="accordion-button">
+            <span>What does a PID output mean here?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            In this project, a PID output is just a correction value. The turn PID output says how strongly the robot should rotate left or right. The distance PID output says how strongly the robot should move forward or backward.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button">
+            <span>Why use two errors instead of one?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            Horizontal position and apparent object size describe different physical problems. One controls steering, the other controls spacing. Keeping them separate makes the math easier to tune and understand.
+          </div>
+        </div>
+      </div>
+
       <h3 class="fade-up" style="margin-top:30px">Robot behavior as a state machine</h3>
       <div class="state-grid fade-up" style="margin-top:16px">
         <div class="state-card stopped">
@@ -1582,6 +1663,32 @@ tgt_right *= speed_limit</pre>
         <div class="card">
           <div class="mini-kicker">Telemetry packet</div>
           <p><code>ENC,leftTicks,rightTicks,cmdLeft,cmdRight</code> gives Python enough signal to visualize and later close the speed loop.</p>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">How the Python script sends a command</div>
+          </div>
+        </div>
+<pre>message = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
+sock.sendto(message.encode(), (esp_ip, udp_cmd_port))</pre>
+      </div>
+
+      <div class="card-grid fade-up" style="margin-top:18px">
+        <div class="card">
+          <div class="mini-kicker">Packet format</div>
+          <p>The command is plain text, which makes it easy to inspect while debugging. The ESP32 only has to split the string and interpret left speed, right speed, and the light state.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Why convert to integers</div>
+          <p>The math produces floating-point values, but motor drivers use discrete speed levels. Converting to <code>int</code> makes the command explicit before sending it over the network.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Why keep sending commands</div>
+          <p>The script sends commands repeatedly at a short interval. That means the robot stays responsive and a single dropped UDP packet usually does not change behavior much.</p>
         </div>
       </div>
 

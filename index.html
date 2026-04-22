@@ -389,11 +389,15 @@
 
   /* ── SCROLL ANIMATIONS ── */
   .fade-up {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .js-ready .fade-up {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity .6s ease, transform .6s ease;
   }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .js-ready .fade-up.visible { opacity: 1; transform: translateY(0); }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
@@ -602,13 +606,13 @@
         <div class="card">
           <p style="font-size:13px;color:var(--cyan);font-family:'JetBrains Mono',monospace;margin-bottom:8px">CLASSIFICATION</p>
           <p style="font-size:15px;color:var(--text)">Predict a <strong style="color:var(--white)">category</strong>. 
-          <br/>Example: Is this weld <em>defective</em> or <em>acceptable</em>?<br/>
+          <br/>Example: Is this movie a <em>Hollywood Thriller</em> or <em>Sci-Fi</em>?<br/>
           Output: one of several discrete labels.</p>
         </div>
         <div class="card">
           <p style="font-size:13px;color:var(--orange);font-family:'JetBrains Mono',monospace;margin-bottom:8px">REGRESSION</p>
           <p style="font-size:15px;color:var(--text)">Predict a <strong style="color:var(--white)">number</strong>. 
-          <br/>Example: Given the load on a robot arm, what torque is needed?<br/>
+          <br/>Example: Given house features, what price is expected?<br/>
           Output: a continuous value.</p>
         </div>
       </div>
@@ -618,13 +622,19 @@
         to reduce the difference. This process is called <strong style="color:var(--white)">training</strong>, 
         and the measure of "how wrong" the model is is called the <strong style="color:var(--white)">loss</strong>.
       </p>
+      <p class="fade-up">
+        For beginners, 2D datasets are especially helpful because you can literally <strong style="color:var(--white)">see the learning problem</strong>.
+        One feature becomes the X-axis, one feature becomes the Y-axis, and you can watch the model separate the classes with a visible boundary.
+      </p>
 
       <div class="exercise fade-up">
         <div class="exercise-label">Exercise 01 — Google Colab</div>
-        <h3>🦾 Predicting Robot Arm Fault from Vibration Data</h3>
+        <h3>🎬 Building a Movie Genre Classifier</h3>
         <p style="color:var(--muted)">
-          In this exercise, you'll train a classifier that predicts whether a robot arm joint is 
-          experiencing a fault based on simulated vibration sensor readings. 
+          In this exercise, you'll train a classifier that predicts whether a movie is more like a
+          Hollywood thriller or a sci-fi movie based on just two features:
+          <code>CGI Budget</code> and <code>Number of Jump Scares</code>.
+          Because the data is 2D, you can plot the raw points directly and visualize the learned decision boundary.
           Copy the code below into a new Google Colab notebook and run each cell.
         </p>
 
@@ -637,8 +647,8 @@
 <span class="kw">import</span> numpy <span class="kw">as</span> np
 <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 <span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
-<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> <span class="cl">RandomForestClassifier</span>
-<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report, ConfusionMatrixDisplay
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> <span class="cl">LogisticRegression</span>
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
 <span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> <span class="cl">StandardScaler</span>
 
 <span class="fn">print</span>(<span class="st">"Libraries loaded! 🚀"</span>)</div>
@@ -649,36 +659,40 @@
             <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
             <div class="code-filename">supervised_exercise.ipynb — Cell 2: Generate Data</div>
           </div>
-          <div class="code-body"><span class="cm"># Cell 2 — Generate simulated robot joint sensor data
-# Features: vibration_x, vibration_y, vibration_z, temperature, rpm
-# Label: 0 = normal, 1 = fault</span>
+          <div class="code-body"><span class="cm"># Cell 2 — Generate a 2D movie dataset
+# Feature 1 (X-axis): CGI budget
+# Feature 2 (Y-axis): number of jump scares
+# Label: 0 = Hollywood Thriller, 1 = Sci-Fi</span>
 
 np.<span class="fn">random</span>.seed(<span class="num">42</span>)
-n_samples = <span class="num">1000</span>
+n_samples = <span class="num">400</span>
 
-<span class="cm"># Normal joints: low vibration, moderate temp</span>
-normal = np.column_stack([
-    np.random.<span class="fn">normal</span>(<span class="num">0.5</span>, <span class="num">0.2</span>, n_samples // <span class="num">2</span>),  <span class="cm"># vib_x</span>
-    np.random.<span class="fn">normal</span>(<span class="num">0.5</span>, <span class="num">0.2</span>, n_samples // <span class="num">2</span>),  <span class="cm"># vib_y</span>
-    np.random.<span class="fn">normal</span>(<span class="num">0.4</span>, <span class="num">0.15</span>, n_samples // <span class="num">2</span>), <span class="cm"># vib_z</span>
-    np.random.<span class="fn">normal</span>(<span class="num">45</span>, <span class="num">5</span>, n_samples // <span class="num">2</span>),    <span class="cm"># temp (°C)</span>
-    np.random.<span class="fn">normal</span>(<span class="num">1500</span>, <span class="num">100</span>, n_samples // <span class="num">2</span>)  <span class="cm"># rpm</span>
+<span class="cm"># Hollywood thrillers: moderate CGI, lots of jump scares</span>
+thriller = np.column_stack([
+    np.random.<span class="fn">normal</span>(<span class="num">45</span>, <span class="num">10</span>, n_samples // <span class="num">2</span>),  <span class="cm"># CGI budget</span>
+    np.random.<span class="fn">normal</span>(<span class="num">18</span>, <span class="num">4</span>, n_samples // <span class="num">2</span>)   <span class="cm"># jump scares</span>
 ])
 
-<span class="cm"># Faulty joints: high vibration, high temp, unstable rpm</span>
-faulty = np.column_stack([
-    np.random.<span class="fn">normal</span>(<span class="num">2.0</span>, <span class="num">0.5</span>, n_samples // <span class="num">2</span>),
-    np.random.<span class="fn">normal</span>(<span class="num">2.2</span>, <span class="num">0.6</span>, n_samples // <span class="num">2</span>),
-    np.random.<span class="fn">normal</span>(<span class="num">1.8</span>, <span class="num">0.4</span>, n_samples // <span class="num">2</span>),
-    np.random.<span class="fn">normal</span>(<span class="num">72</span>, <span class="num">8</span>, n_samples // <span class="num">2</span>),
-    np.random.<span class="fn">normal</span>(<span class="num">1200</span>, <span class="num">250</span>, n_samples // <span class="num">2</span>)
+<span class="cm"># Sci-fi: high CGI, fewer jump scares</span>
+sci_fi = np.column_stack([
+    np.random.<span class="fn">normal</span>(<span class="num">90</span>, <span class="num">12</span>, n_samples // <span class="num">2</span>),
+    np.random.<span class="fn">normal</span>(<span class="num">6</span>, <span class="num">3</span>, n_samples // <span class="num">2</span>)
 ])
 
-X = np.<span class="fn">vstack</span>([normal, faulty])
+X = np.<span class="fn">vstack</span>([thriller, sci_fi])
 y = np.<span class="fn">array</span>([<span class="num">0</span>] * (n_samples // <span class="num">2</span>) + [<span class="num">1</span>] * (n_samples // <span class="num">2</span>))
 
 <span class="fn">print</span>(<span class="st">f"Dataset: {X.shape[0]} samples, {X.shape[1]} features"</span>)
-<span class="fn">print</span>(<span class="st">f"Normal: {(y==0).sum()}  |  Faulty: {(y==1).sum()}"</span>)</div>
+<span class="fn">print</span>(<span class="st">f"Hollywood Thriller: {(y==0).sum()}  |  Sci-Fi: {(y==1).sum()}"</span>)
+
+plt.<span class="fn">figure</span>(figsize=(<span class="num">7</span>, <span class="num">5</span>))
+plt.<span class="fn">scatter</span>(thriller[:, <span class="num">0</span>], thriller[:, <span class="num">1</span>], c=<span class="st">"#4da8ff"</span>, alpha=<span class="num">0.7</span>, label=<span class="st">"Hollywood Thriller"</span>)
+plt.<span class="fn">scatter</span>(sci_fi[:, <span class="num">0</span>], sci_fi[:, <span class="num">1</span>], c=<span class="st">"#ff6b35"</span>, alpha=<span class="num">0.7</span>, label=<span class="st">"Sci-Fi"</span>)
+plt.<span class="fn">xlabel</span>(<span class="st">"CGI Budget"</span>)
+plt.<span class="fn">ylabel</span>(<span class="st">"Number of Jump Scares"</span>)
+plt.<span class="fn">title</span>(<span class="st">"2D Movie Genre Dataset"</span>)
+plt.<span class="fn">legend</span>()
+plt.<span class="fn">show</span>()</div>
         </div>
 
         <div class="code-block">
@@ -686,11 +700,11 @@ y = np.<span class="fn">array</span>([<span class="num">0</span>] * (n_samples /
             <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
             <div class="code-filename">supervised_exercise.ipynb — Cell 3: Train & Evaluate</div>
           </div>
-          <div class="code-body"><span class="cm"># Cell 3 — Scale, train, and evaluate the model</span>
+          <div class="code-body"><span class="cm"># Cell 3 — Scale, train, and visualize the decision boundary</span>
 
 <span class="cm"># Split data: 80% training, 20% testing</span>
 X_train, X_test, y_train, y_test = <span class="fn">train_test_split</span>(
-    X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>
+    X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>, stratify=y
 )
 
 <span class="cm"># Normalize features (important! keeps all features on the same scale)</span>
@@ -699,19 +713,33 @@ X_train = scaler.<span class="fn">fit_transform</span>(X_train)
 X_test  = scaler.<span class="fn">transform</span>(X_test)
 
 <span class="cm"># Train the model</span>
-model = <span class="cl">RandomForestClassifier</span>(n_estimators=<span class="num">100</span>, random_state=<span class="num">42</span>)
+model = <span class="cl">LogisticRegression</span>()
 model.<span class="fn">fit</span>(X_train, y_train)
 
 <span class="cm"># Evaluate</span>
 y_pred = model.<span class="fn">predict</span>(X_test)
-<span class="fn">print</span>(<span class="fn">classification_report</span>(y_test, y_pred, target_names=[<span class="st">"Normal"</span>, <span class="st">"Fault"</span>]))
+<span class="fn">print</span>(<span class="fn">classification_report</span>(y_test, y_pred, target_names=[<span class="st">"Hollywood Thriller"</span>, <span class="st">"Sci-Fi"</span>]))
 
-<span class="cm"># Confusion matrix</span>
-<span class="cl">ConfusionMatrixDisplay</span>.<span class="fn">from_predictions</span>(
-    y_test, y_pred, display_labels=[<span class="st">"Normal"</span>, <span class="st">"Fault"</span>],
-    colorbar=<span class="kw">False</span>, cmap=<span class="st">"Blues"</span>
+<span class="cm"># Create a mesh grid to draw the decision boundary</span>
+x_min, x_max = X[:, <span class="num">0</span>].<span class="fn">min</span>() - <span class="num">10</span>, X[:, <span class="num">0</span>].<span class="fn">max</span>() + <span class="num">10</span>
+y_min, y_max = X[:, <span class="num">1</span>].<span class="fn">min</span>() - <span class="num">3</span>, X[:, <span class="num">1</span>].<span class="fn">max</span>() + <span class="num">3</span>
+xx, yy = np.<span class="fn">meshgrid</span>(
+    np.<span class="fn">linspace</span>(x_min, x_max, <span class="num">300</span>),
+    np.<span class="fn">linspace</span>(y_min, y_max, <span class="num">300</span>)
 )
-plt.<span class="fn">title</span>(<span class="st">"Robot Fault Detection — Confusion Matrix"</span>)
+
+grid = np.<span class="fn">c_</span>[xx.<span class="fn">ravel</span>(), yy.<span class="fn">ravel</span>()]
+grid_scaled = scaler.<span class="fn">transform</span>(grid)
+Z = model.<span class="fn">predict</span>(grid_scaled).<span class="fn">reshape</span>(xx.shape)
+
+plt.<span class="fn">figure</span>(figsize=(<span class="num">8</span>, <span class="num">6</span>))
+plt.<span class="fn">contourf</span>(xx, yy, Z, alpha=<span class="num">0.22</span>, levels=[-<span class="num">0.5</span>, <span class="num">0.5</span>, <span class="num">1.5</span>], colors=[<span class="st">"#4da8ff"</span>, <span class="st">"#ff6b35"</span>])
+plt.<span class="fn">scatter</span>(X[y == <span class="num">0</span>, <span class="num">0</span>], X[y == <span class="num">0</span>, <span class="num">1</span>], c=<span class="st">"#4da8ff"</span>, edgecolors=<span class="st">"white"</span>, label=<span class="st">"Hollywood Thriller"</span>)
+plt.<span class="fn">scatter</span>(X[y == <span class="num">1</span>, <span class="num">0</span>], X[y == <span class="num">1</span>, <span class="num">1</span>], c=<span class="st">"#ff6b35"</span>, edgecolors=<span class="st">"white"</span>, label=<span class="st">"Sci-Fi"</span>)
+plt.<span class="fn">xlabel</span>(<span class="st">"CGI Budget"</span>)
+plt.<span class="fn">ylabel</span>(<span class="st">"Number of Jump Scares"</span>)
+plt.<span class="fn">title</span>(<span class="st">"Movie Genre Classification with Decision Boundary"</span>)
+plt.<span class="fn">legend</span>()
 plt.<span class="fn">show</span>()</div>
         </div>
 
@@ -719,9 +747,9 @@ plt.<span class="fn">show</span>()</div>
           <div class="callout-icon">💡</div>
           <div class="callout-body">
             <div class="callout-title">What to look for</div>
-            <p>You should see >95% accuracy. Try changing <code>n_estimators</code> to 10 — does accuracy drop? 
-            That's your first experiment with a hyperparameter! Also look at the confusion matrix: 
-            is the model better at catching faults or normal joints?</p>
+            <p>The big win here is that you can <strong style="color:var(--white)">see the classifier thinking</strong>.
+            The background colors show the model's predicted region for each genre.
+            Try moving the two clusters closer together in Cell 2 — the decision boundary becomes less clean and the classification report gets worse.</p>
           </div>
         </div>
       </div>
@@ -736,34 +764,38 @@ plt.<span class="fn">show</span>()</div>
       <div class="section-num fade-up">04 / Hands-On</div>
       <h2 class="fade-up"><span class="accent">Unsupervised</span> Learning</h2>
       <p class="lead fade-up">
-        What if you have sensor data but no one has labeled it yet? Unsupervised learning finds 
+        What if you have data but no one has labeled it yet? Unsupervised learning finds 
         hidden patterns and structure in raw, unlabeled data — no answers required.
+      </p>
+      <p class="fade-up">
+        A 2D clustering example is great for beginners because the clusters are directly visible.
+        You do not need PCA or any other dimensionality reduction trick just to understand what the algorithm found.
       </p>
 
       <h3 class="fade-up">Clustering: Finding Natural Groups</h3>
       <p class="fade-up">
         The most common unsupervised technique is <strong style="color:var(--white)">clustering</strong> — 
-        grouping data points that are similar to each other. Think of it like this: you have 3 months 
-        of robot operating data and no idea what's "normal." K-Means will tell you 
-        "there are 3 natural operating modes in your data" even without labels.
+        grouping data points that are similar to each other. Think of it like this: you have a dataset
+        of foods and no idea how they naturally group together. K-Means can tell you
+        "there are 3 natural dietary groups in your data" even without labels.
       </p>
 
       <div class="callout callout-blue fade-up">
         <div class="callout-icon">🔧</div>
         <div class="callout-body">
-          <div class="callout-title">Where robotics engineers use this</div>
-          <p>Anomaly detection in manufacturing lines, discovering behavior modes in autonomous vehicles, 
-          compressing sensor data for transmission, and understanding how a robot's gait changes 
-          under different loads — all unsupervised problems.</p>
+          <div class="callout-title">Where people use this</div>
+          <p>Grouping foods by nutritional profile, segmenting customers, clustering songs by listening behavior,
+          finding similar articles, and spotting strange usage patterns are all unsupervised problems.</p>
         </div>
       </div>
 
       <div class="exercise fade-up">
         <div class="exercise-label">Exercise 02 — Google Colab</div>
-        <h3>🔬 Clustering Robot Operating Modes with K-Means</h3>
+        <h3>🥗 Dietary Grouping with K-Means</h3>
         <p style="color:var(--muted)">
-          You'll take unlabeled robot telemetry data and use K-Means to automatically discover 
-          three distinct operating modes: idle, normal operation, and high-load.
+          You'll take unlabeled 2D nutrition data and use K-Means to automatically discover
+          three distinct dietary groups using only <code>Caloric Density</code> and <code>Protein Content</code>.
+          Because the dataset is already 2D, the raw scatter plot and the learned centroids are easy to interpret.
         </p>
 
         <div class="code-block">
@@ -775,28 +807,34 @@ plt.<span class="fn">show</span>()</div>
 <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 <span class="kw">from</span> sklearn.cluster <span class="kw">import</span> <span class="cl">KMeans</span>
 <span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> <span class="cl">StandardScaler</span>
-<span class="kw">from</span> sklearn.decomposition <span class="kw">import</span> <span class="cl">PCA</span>
 
 np.<span class="fn">random</span>.seed(<span class="num">7</span>)
 
-<span class="cm"># Simulate 3 unlabeled operating modes (we pretend we don't know the labels)</span>
-<span class="cm"># Mode 0: Idle     — low power, low speed, cool</span>
-<span class="cm"># Mode 1: Normal   — moderate everything</span>
-<span class="cm"># Mode 2: High load — high power, hot, slow</span>
+<span class="cm"># Simulate 3 unlabeled dietary groups (we pretend we don't know the labels)</span>
+<span class="cm"># Group 0: High-protein foods</span>
+<span class="cm"># Group 1: High-calorie / high-carb foods</span>
+<span class="cm"># Group 2: Low-calorie foods</span>
 
 modes = []
 <span class="kw">for</span> mean, std, n <span class="kw">in</span> [
-    ([<span class="num">10</span>,  <span class="num">200</span>, <span class="num">30</span>, <span class="num">0.1</span>], [<span class="num">2</span>, <span class="num">20</span>, <span class="num">3</span>, <span class="num">0.02</span>], <span class="num">300</span>),   <span class="cm"># idle</span>
-    ([<span class="num">50</span>,  <span class="num">800</span>, <span class="num">55</span>, <span class="num">1.0</span>], [<span class="num">5</span>, <span class="num">50</span>, <span class="num">4</span>, <span class="num">0.15</span>], <span class="num">400</span>),   <span class="cm"># normal</span>
-    ([<span class="num">95</span>, <span class="num">1400</span>, <span class="num">80</span>, <span class="num">3.5</span>], [<span class="num">6</span>, <span class="num">80</span>, <span class="num">6</span>, <span class="num">0.3</span>],  <span class="num">300</span>),   <span class="cm"># high load</span>
+    ([<span class="num">4.0</span>,  <span class="num">28</span>], [<span class="num">0.5</span>, <span class="num">4</span>], <span class="num">250</span>),   <span class="cm"># high-protein</span>
+    ([<span class="num">7.5</span>,  <span class="num">9</span>],  [<span class="num">0.8</span>, <span class="num">3</span>], <span class="num">250</span>),   <span class="cm"># high-calorie/high-carb</span>
+    ([<span class="num">2.0</span>,  <span class="num">6</span>],  [<span class="num">0.4</span>, <span class="num">2</span>], <span class="num">250</span>)    <span class="cm"># low-calorie</span>
 ]:
-    modes.<span class="fn">append</span>(np.random.<span class="fn">normal</span>(mean, std, (n, <span class="num">4</span>)))
+    modes.<span class="fn">append</span>(np.random.<span class="fn">normal</span>(mean, std, (n, <span class="num">2</span>)))
 
 <span class="cm"># Stack and shuffle — no labels!</span>
 X_raw = np.<span class="fn">vstack</span>(modes)
 np.random.<span class="fn">shuffle</span>(X_raw)
 <span class="fn">print</span>(<span class="st">f"Raw data shape: {X_raw.shape}"</span>)
-<span class="fn">print</span>(<span class="st">"Columns: [power_W, rpm, temp_C, vibration_g]"</span>)</div>
+<span class="fn">print</span>(<span class="st">"Columns: [caloric_density, protein_content]"</span>)
+
+plt.<span class="fn">figure</span>(figsize=(<span class="num">7</span>, <span class="num">5</span>))
+plt.<span class="fn">scatter</span>(X_raw[:, <span class="num">0</span>], X_raw[:, <span class="num">1</span>], alpha=<span class="num">0.55</span>, c=<span class="st">"#73b2ff"</span>, s=<span class="num">22</span>)
+plt.<span class="fn">xlabel</span>(<span class="st">"Caloric Density"</span>)
+plt.<span class="fn">ylabel</span>(<span class="st">"Protein Content"</span>)
+plt.<span class="fn">title</span>(<span class="st">"Raw 2D Dietary Dataset"</span>)
+plt.<span class="fn">show</span>()</div>
         </div>
 
         <div class="code-block">
@@ -804,7 +842,7 @@ np.random.<span class="fn">shuffle</span>(X_raw)
             <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
             <div class="code-filename">unsupervised_exercise.ipynb — Cell 2: Cluster & Visualize</div>
           </div>
-          <div class="code-body"><span class="cm"># Cell 2 — Scale, cluster, and visualize</span>
+          <div class="code-body"><span class="cm"># Cell 2 — Scale, cluster, and visualize in 2D</span>
 
 scaler = <span class="cl">StandardScaler</span>()
 X = scaler.<span class="fn">fit_transform</span>(X_raw)
@@ -813,33 +851,34 @@ X = scaler.<span class="fn">fit_transform</span>(X_raw)
 kmeans = <span class="cl">KMeans</span>(n_clusters=<span class="num">3</span>, random_state=<span class="num">42</span>, n_init=<span class="num">10</span>)
 labels = kmeans.<span class="fn">fit_predict</span>(X)
 
-<span class="cm"># Use PCA to reduce to 2D for visualization</span>
-pca = <span class="cl">PCA</span>(n_components=<span class="num">2</span>)
-X_2d = pca.<span class="fn">fit_transform</span>(X)
+<span class="cm"># Bring centroids back to the original feature scale</span>
+centroids = scaler.<span class="fn">inverse_transform</span>(kmeans.cluster_centers_)
 
-<span class="cm"># Plot the clusters</span>
+<span class="cm"># Plot the raw 2D data and the learned centroids</span>
 colors = [<span class="st">'#4da8ff'</span>, <span class="st">'#00e5cc'</span>, <span class="st">'#ff6b35'</span>]
 cluster_names = [<span class="st">'Cluster A'</span>, <span class="st">'Cluster B'</span>, <span class="st">'Cluster C'</span>]
 
 plt.<span class="fn">figure</span>(figsize=(<span class="num">9</span>, <span class="num">5</span>))
 <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
     mask = labels == i
-    plt.<span class="fn">scatter</span>(X_2d[mask, <span class="num">0</span>], X_2d[mask, <span class="num">1</span>],
+    plt.<span class="fn">scatter</span>(X_raw[mask, <span class="num">0</span>], X_raw[mask, <span class="num">1</span>],
                c=colors[i], label=cluster_names[i], alpha=<span class="num">0.6</span>, s=<span class="num">18</span>)
 
-plt.<span class="fn">title</span>(<span class="st">"Robot Operating Modes (K-Means Clustering)"</span>)
-plt.<span class="fn">xlabel</span>(<span class="st">"PCA Component 1"</span>)
-plt.<span class="fn">ylabel</span>(<span class="st">"PCA Component 2"</span>)
+plt.<span class="fn">scatter</span>(centroids[:, <span class="num">0</span>], centroids[:, <span class="num">1</span>],
+           c=<span class="st">"black"</span>, marker=<span class="st">"X"</span>, s=<span class="num">180</span>, label=<span class="st">"Centroids"</span>)
+
+plt.<span class="fn">title</span>(<span class="st">"Dietary Groups (K-Means Clustering)"</span>)
+plt.<span class="fn">xlabel</span>(<span class="st">"Caloric Density"</span>)
+plt.<span class="fn">ylabel</span>(<span class="st">"Protein Content"</span>)
 plt.<span class="fn">legend</span>()
 plt.<span class="fn">tight_layout</span>()
 plt.<span class="fn">show</span>()
 
 <span class="cm"># Inspect cluster centroids to understand what each group represents</span>
-centroid_df = scaler.<span class="fn">inverse_transform</span>(kmeans.cluster_centers_)
 <span class="fn">print</span>(<span class="st">"\nCluster Centroids (original scale):"</span>)
-<span class="fn">print</span>(<span class="st">"         Power(W)  RPM    Temp(°C)  Vib(g)"</span>)
-<span class="kw">for</span> i, c <span class="kw">in</span> <span class="fn">enumerate</span>(centroid_df):
-    <span class="fn">print</span>(<span class="st">f"Cluster {i}: {c[0]:6.1f}   {c[1]:6.0f}  {c[2]:6.1f}    {c[3]:5.2f}"</span>)</div>
+<span class="fn">print</span>(<span class="st">"         CaloricDensity  ProteinContent"</span>)
+<span class="kw">for</span> i, c <span class="kw">in</span> <span class="fn">enumerate</span>(centroids):
+    <span class="fn">print</span>(<span class="st">f"Cluster {i}: {c[0]:7.2f}         {c[1]:7.2f}"</span>)</div>
         </div>
 
         <div class="callout callout-green">
@@ -1171,6 +1210,8 @@ plt.<span class="fn">show</span>()</div>
 </footer>
 
 <script>
+  document.documentElement.classList.add('js-ready');
+
   // ── ANIMATED GRID BACKGROUND ──
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
