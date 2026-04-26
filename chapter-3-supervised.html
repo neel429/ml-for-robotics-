@@ -204,7 +204,7 @@
                 </div>
       
                 <h4>Cell-by-cell notebook</h4>
-                <figure class="code-card"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
+                <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Cell 1: Install Kaggle API &amp; set up credentials"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
       from google.colab import files
       files.upload()  # choose kaggle.json
       
@@ -212,10 +212,10 @@
       !cp kaggle.json ~/.kaggle/
       !chmod 600 ~/.kaggle/kaggle.json</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download private-account dataset files.</p></div></div><div class="expected"><strong>Expected output</strong>Upload widget appears, then no error after <code>chmod</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
+                <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Cell 2: Download the dataset from Kaggle"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
       !unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The command pulls the zipped CSV into Colab and extracts it into a local <code>data</code> folder.</p></div></div><div class="expected"><strong>Expected output</strong>One CSV file appears under <code>data/</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 3: Import libraries"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
       import pandas as pd
       import matplotlib.pyplot as plt
       from sklearn.model_selection import train_test_split
@@ -224,19 +224,19 @@
       from sklearn.ensemble import RandomForestClassifier
       from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Pandas handles tables, Matplotlib draws charts, and scikit-learn provides splitting, scaling, models, and metrics.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output if imports succeed.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 4: Load and explore the data"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
       display(df.head())
       df.info()
       display(df.describe())</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>head()</code> shows example rows, <code>info()</code> shows column types, and <code>describe()</code> gives quick numeric ranges.</p></div></div><div class="expected"><strong>Expected output</strong>Rows with temperature, speed, torque, tool wear, and failure columns.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 5: Visualize class distribution"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
       counts.plot(kind="bar", color=["#34d399", "#fb7185"])
       plt.xticks([0, 1], ["Normal", "Failure"], rotation=0)
       plt.title("Failure vs normal examples")
       plt.ylabel("Rows")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Failures are usually rare. A model can look accurate by guessing normal too often, so class balance matters.</p></div></div><div class="expected"><strong>Expected output</strong>A bar chart with many more normal rows than failure rows.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 6: Visualize feature correlations"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
       plt.figure(figsize=(9, 7))
       plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
       plt.colorbar(label="Correlation")
@@ -246,11 +246,11 @@
       plt.tight_layout()
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Correlation helps you spot repeated information and features that move with failure.</p></div></div><div class="expected"><strong>Expected output</strong>A heatmap where red means positive correlation and blue means negative correlation.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 7: Handle missing data"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
       print(missing[missing > 0])
       print(f"Total missing values: {missing.sum()}")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Most scikit-learn models cannot train with missing values, so always check before modeling.</p></div></div><div class="expected"><strong>Expected output</strong>Usually <code>Total missing values: 0</code> for this dataset.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 8: Feature selection"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
           "Air temperature [K]",
           "Process temperature [K]",
           "Rotational speed [rpm]",
@@ -261,25 +261,25 @@
       y = df["Machine failure"]
       print(X.shape, y.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>X</code> is the input table and <code>y</code> is the label. Keeping those separate is the core supervised learning pattern.</p></div></div><div class="expected"><strong>Expected output</strong><code>(10000, 5) (10000,)</code> or similar.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 9: Train/test split"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
           X, y, test_size=0.2, random_state=42, stratify=y
       )
       print(X_train.shape, X_test.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The test set is held back so evaluation measures generalization. <code>stratify=y</code> keeps the same failure ratio in both sets.</p></div></div><div class="expected"><strong>Expected output</strong>About 8,000 training rows and 2,000 test rows.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 10: Scale features"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
       X_train_scaled = scaler.fit_transform(X_train)
       X_test_scaled = scaler.transform(X_test)</code></pre></figure>
                 <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Fit the scaler on training data only. Fitting on test data leaks information from the exam into the study guide.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
-                <figure class="code-card"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 11: Train Logistic Regression"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
       log_reg.fit(X_train_scaled, y_train)
       log_pred = log_reg.predict(X_test_scaled)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Logistic regression is the baseline. <code>class_weight="balanced"</code> helps when failures are rare.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>log_pred</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 12: Evaluate Logistic Regression"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
       ConfusionMatrixDisplay.from_predictions(y_test, log_pred, display_labels=["Normal", "Failure"])
       plt.title("Logistic Regression Confusion Matrix")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The classification report gives precision, recall, and F1. The confusion matrix shows which mistakes the model makes.</p></div></div><div class="expected"><strong>Expected output</strong>Text metrics plus a 2x2 confusion matrix.</div></div>
-                <figure class="code-card"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 13: Train Random Forest"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
           n_estimators=100,
           random_state=42,
           class_weight="balanced"
@@ -287,13 +287,13 @@
       forest.fit(X_train, y_train)
       forest_pred = forest.predict(X_test)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Random forests do not require scaling and often perform well on tabular engineering data.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>forest_pred</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 14: Compare both models"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
       forest_f1 = f1_score(y_test, forest_pred)
       
       print(f"Logistic Regression F1: {log_f1:.3f}")
       print(f"Random Forest F1:       {forest_f1:.3f}")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>F1 is useful for rare failures because it punishes both false alarms and missed failures.</p></div></div><div class="expected"><strong>Expected output</strong>Two F1 scores; discuss which one is better and why.</div></div>
-                <figure class="code-card"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 15: Challenge - tune n_estimators"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
       scores = []
       
       for n in tree_counts:
@@ -323,6 +323,8 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>

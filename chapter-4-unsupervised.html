@@ -125,14 +125,14 @@
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 1: Kaggle download"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
       from google.colab import files
       files.upload()
       !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
       !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
       !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 2: Load and inspect"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
       import pandas as pd
       import matplotlib.pyplot as plt
       from pathlib import Path
@@ -148,7 +148,7 @@
       display(df.head())
       print(df.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The code is robust: it uses Kaggle data when present and synthetic vibration data when unavailable.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 3: EDA - raw time-series vibration signal"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
       plt.figure(figsize=(12, 3))
       plt.plot(df[signal_col].values[:2000])
       plt.title("Raw vibration signal")
@@ -156,7 +156,7 @@
       plt.ylabel("Amplitude")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Always look at raw sensor data before feature engineering. Bad units or flat lines show up immediately.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 4: Feature engineering per window"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
       window = 256
       features = []
       
@@ -173,12 +173,12 @@
       feature_df = pd.DataFrame(features)
       display(feature_df.head())</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>ML models do not understand raw waves automatically. Window statistics and FFT peaks summarize behavior.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 5: Scale features"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
       
       scaler = StandardScaler()
       X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>K-Means uses distance. Scaling keeps a large numeric column from dominating the distance calculation.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 6: Elbow Method"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
       
       ks = range(1, 11)
       inertias = []
@@ -193,12 +193,12 @@
       plt.title("Elbow Method")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The elbow suggests a reasonable number of clusters before improvements flatten out.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 7: Fit K-Means"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
       cluster_labels = kmeans.fit_predict(X_scaled)
       feature_df["cluster"] = cluster_labels
       display(feature_df.groupby("cluster").mean())</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Cluster averages help you give engineering names to groups, such as normal or high-vibration.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 8: PCA 2D scatter plot"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
       
       pca = PCA(n_components=2, random_state=42)
       points_2d = pca.fit_transform(X_scaled)
@@ -210,13 +210,13 @@
       plt.colorbar(label="Cluster")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>PCA compresses the feature table into two axes so you can inspect whether clusters separate visually.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 9: Interpret clusters"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
       display(summary)
       
       for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
           print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>The ML output is only useful after you translate it into engineering language.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 10: Challenge - DBSCAN comparison"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
       
       dbscan = DBSCAN(eps=0.8, min_samples=5)
       db_labels = dbscan.fit_predict(X_scaled)
@@ -240,6 +240,8 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>

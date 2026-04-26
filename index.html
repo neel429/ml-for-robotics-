@@ -361,7 +361,7 @@
                 <div class="grid-2">
                   <div class="card">
                     <h4>C++</h4>
-                    <figure class="code-card">
+                    <figure class="code-card" data-runnable="false" data-chapter="1" data-filename="same_idea_in_c.py">
                       <figcaption>Same idea in C++</figcaption>
       <pre><code class="language-cpp">#include &lt;iostream&gt;
       int main() {
@@ -372,7 +372,7 @@
                   </div>
                   <div class="card">
                     <h4>Python</h4>
-                    <figure class="code-card">
+                    <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="Your first Python cell">
                       <figcaption>Your first Python cell</figcaption>
       <pre><code class="language-python">print("Hello, Robot!")</code></pre>
                     </figure>
@@ -402,7 +402,7 @@
 <div class="lesson-body">
 <h3>1.2 Variables & Data Types</h3>
                 <p><strong>Concept.</strong> A variable is a named box that holds a value. Python has four beginner-friendly basic types: <code>int</code> for whole numbers, <code>float</code> for decimals, <code>str</code> for text, and <code>bool</code> for true/false values.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="robot_sensor_variables.py">
                   <figcaption>Robot sensor variables</figcaption>
       <pre><code class="language-python"># Robot sensor variables
       distance = 2.45          # float - distance in meters
@@ -446,7 +446,7 @@
                 <h4>Lists</h4>
                 <p>A list is ordered and mutable. Use it for values that arrive over time, like ultrasonic sensor readings.</p>
                 <p class="mini muted">Key operations: indexing with <code>my_list[0]</code>, negative indexing with <code>my_list[-1]</code>, slicing with <code>my_list[1:3]</code>, and methods like <code>.append()</code>, <code>.remove()</code>, <code>.pop()</code>, and <code>.sort()</code>. Use <code>len(my_list)</code> for length.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="lists_sensor_readings_over_time.py">
                   <figcaption>Lists: sensor readings over time</figcaption>
       <pre><code class="language-python">sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]
       sensor_readings.append(1.8)          # add new reading
@@ -462,7 +462,7 @@
                 </div>
                 <h4>Tuples</h4>
                 <p>A tuple is ordered and immutable. Use it when data should not change, like a fixed home coordinate.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="tuples_fixed_robot_configuration.py">
                   <figcaption>Tuples: fixed robot configuration</figcaption>
       <pre><code class="language-python">home_position = (0.0, 0.0)
       wheel_diameter = (0.12,)       # single-element tuple needs a comma
@@ -477,7 +477,7 @@
                 <h4>Sets</h4>
                 <p>A set is unordered and keeps unique elements only. It is useful when a camera reports objects and you only care which object types appeared.</p>
                 <p class="mini muted">Key operations: <code>.add()</code>, <code>.remove()</code>, membership with <code>in</code>, union with <code>|</code>, intersection with <code>&amp;</code>, and difference with <code>-</code>.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="sets_unique_objects_seen_by_a_robot.py">
                   <figcaption>Sets: unique objects seen by a robot</figcaption>
       <pre><code class="language-python">objects_seen = {"chair", "table", "door", "chair", "wall"}
       print(objects_seen)               # duplicates removed automatically
@@ -492,7 +492,7 @@
                 <h4>Dictionaries</h4>
                 <p>A dictionary stores key-value pairs. Use it for named robot state, sensor packets, and configuration settings.</p>
                 <p class="mini muted">Key operations: access with <code>dict[key]</code>, safer access with <code>.get(key, default)</code>, and inspection with <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="dictionaries_robot_state_packet.py">
                   <figcaption>Dictionaries: robot state packet</figcaption>
       <pre><code class="language-python">robot_state = {
           "name": "ARIA",
@@ -536,7 +536,7 @@
 <div class="lesson-body">
 <h3>1.4 Control Flow: if / elif / else</h3>
                 <p><strong>Concept.</strong> Control flow lets your program make decisions. Comparisons include <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>. Logical operators include <code>and</code>, <code>or</code>, and <code>not</code>.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="battery_and_obstacle_decisions.py">
                   <figcaption>Battery and obstacle decisions</figcaption>
       <pre><code class="language-python">battery = 23
       distance_to_obstacle = 0.4
@@ -580,7 +580,7 @@
 <h3>1.5 Loops: for and while</h3>
                 <p><strong>Concept.</strong> Loops repeat work. Use <code>for</code> when you know what collection you are walking through. Use <code>while</code> when you repeat until a condition changes.</p>
                 <p class="mini muted">You will also see <code>continue</code> to skip the rest of the current loop iteration and <code>zip()</code> to walk through two lists together, such as timestamps and readings.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="for_loops_range_while_loops_and_list_comprehensions.py">
                   <figcaption>For loops, range, while loops, and list comprehensions</figcaption>
       <pre><code class="language-python">sensor_log = [1.5, 0.8, 2.3, 0.2, 1.9]
       
@@ -636,7 +636,7 @@
 <div class="lesson-body">
 <h3>1.6 Functions</h3>
                 <p><strong>Concept.</strong> Functions package reusable behavior. They make code easier to test, read, and repair. A function can take parameters, use default values, and return a result.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="function_analyze_robot_sensor_readings.py">
                   <figcaption>Function: analyze robot sensor readings</figcaption>
       <pre><code class="language-python">def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
           """
@@ -701,7 +701,7 @@
                     <div class="card"><h4>TensorFlow/Keras</h4><p class="mini muted">Neural networks</p></div>
                   </div>
                 </div>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="standard_ml_import_block.py">
                   <figcaption>Standard ML import block</figcaption>
       <pre><code class="language-python">import numpy as np
       import pandas as pd
@@ -745,7 +745,7 @@
 <h3>1.8 ★ Checkpoint Exercise: Sensor Data Parser</h3>
                 <p><strong>The task.</strong> A robot has been collecting data for 30 minutes. You are given a raw log as a list of dictionaries. Parse it, clean it, and produce a summary report.</p>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_starter_code_simulated_robot_log.py">
                   <figcaption>Checkpoint starter code: simulated robot log</figcaption>
       <pre><code class="language-python">robot_log = [
           {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
@@ -772,7 +772,7 @@
                 <details class="solution">
                   <summary>Show Solution</summary>
                   <div>
-                    <figure class="code-card">
+                    <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_solution.py">
                       <figcaption>Checkpoint solution</figcaption>
       <pre><code class="language-python">def summarize_robot_log(log):
           total_entries = len(log)
@@ -1065,7 +1065,7 @@
                 </div>
       
                 <h4>Cell-by-cell notebook</h4>
-                <figure class="code-card"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
+                <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Cell 1: Install Kaggle API &amp; set up credentials"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
       from google.colab import files
       files.upload()  # choose kaggle.json
       
@@ -1073,10 +1073,10 @@
       !cp kaggle.json ~/.kaggle/
       !chmod 600 ~/.kaggle/kaggle.json</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download private-account dataset files.</p></div></div><div class="expected"><strong>Expected output</strong>Upload widget appears, then no error after <code>chmod</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
+                <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Cell 2: Download the dataset from Kaggle"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
       !unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The command pulls the zipped CSV into Colab and extracts it into a local <code>data</code> folder.</p></div></div><div class="expected"><strong>Expected output</strong>One CSV file appears under <code>data/</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 3: Import libraries"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
       import pandas as pd
       import matplotlib.pyplot as plt
       from sklearn.model_selection import train_test_split
@@ -1085,19 +1085,19 @@
       from sklearn.ensemble import RandomForestClassifier
       from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Pandas handles tables, Matplotlib draws charts, and scikit-learn provides splitting, scaling, models, and metrics.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output if imports succeed.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 4: Load and explore the data"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
       display(df.head())
       df.info()
       display(df.describe())</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>head()</code> shows example rows, <code>info()</code> shows column types, and <code>describe()</code> gives quick numeric ranges.</p></div></div><div class="expected"><strong>Expected output</strong>Rows with temperature, speed, torque, tool wear, and failure columns.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 5: Visualize class distribution"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
       counts.plot(kind="bar", color=["#34d399", "#fb7185"])
       plt.xticks([0, 1], ["Normal", "Failure"], rotation=0)
       plt.title("Failure vs normal examples")
       plt.ylabel("Rows")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Failures are usually rare. A model can look accurate by guessing normal too often, so class balance matters.</p></div></div><div class="expected"><strong>Expected output</strong>A bar chart with many more normal rows than failure rows.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 6: Visualize feature correlations"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
       plt.figure(figsize=(9, 7))
       plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
       plt.colorbar(label="Correlation")
@@ -1107,11 +1107,11 @@
       plt.tight_layout()
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Correlation helps you spot repeated information and features that move with failure.</p></div></div><div class="expected"><strong>Expected output</strong>A heatmap where red means positive correlation and blue means negative correlation.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 7: Handle missing data"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
       print(missing[missing > 0])
       print(f"Total missing values: {missing.sum()}")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Most scikit-learn models cannot train with missing values, so always check before modeling.</p></div></div><div class="expected"><strong>Expected output</strong>Usually <code>Total missing values: 0</code> for this dataset.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 8: Feature selection"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
           "Air temperature [K]",
           "Process temperature [K]",
           "Rotational speed [rpm]",
@@ -1122,25 +1122,25 @@
       y = df["Machine failure"]
       print(X.shape, y.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>X</code> is the input table and <code>y</code> is the label. Keeping those separate is the core supervised learning pattern.</p></div></div><div class="expected"><strong>Expected output</strong><code>(10000, 5) (10000,)</code> or similar.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 9: Train/test split"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
           X, y, test_size=0.2, random_state=42, stratify=y
       )
       print(X_train.shape, X_test.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The test set is held back so evaluation measures generalization. <code>stratify=y</code> keeps the same failure ratio in both sets.</p></div></div><div class="expected"><strong>Expected output</strong>About 8,000 training rows and 2,000 test rows.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 10: Scale features"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
       X_train_scaled = scaler.fit_transform(X_train)
       X_test_scaled = scaler.transform(X_test)</code></pre></figure>
                 <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Fit the scaler on training data only. Fitting on test data leaks information from the exam into the study guide.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
-                <figure class="code-card"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 11: Train Logistic Regression"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
       log_reg.fit(X_train_scaled, y_train)
       log_pred = log_reg.predict(X_test_scaled)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Logistic regression is the baseline. <code>class_weight="balanced"</code> helps when failures are rare.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>log_pred</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 12: Evaluate Logistic Regression"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
       ConfusionMatrixDisplay.from_predictions(y_test, log_pred, display_labels=["Normal", "Failure"])
       plt.title("Logistic Regression Confusion Matrix")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The classification report gives precision, recall, and F1. The confusion matrix shows which mistakes the model makes.</p></div></div><div class="expected"><strong>Expected output</strong>Text metrics plus a 2x2 confusion matrix.</div></div>
-                <figure class="code-card"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 13: Train Random Forest"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
           n_estimators=100,
           random_state=42,
           class_weight="balanced"
@@ -1148,13 +1148,13 @@
       forest.fit(X_train, y_train)
       forest_pred = forest.predict(X_test)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Random forests do not require scaling and often perform well on tabular engineering data.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>forest_pred</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 14: Compare both models"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
       forest_f1 = f1_score(y_test, forest_pred)
       
       print(f"Logistic Regression F1: {log_f1:.3f}")
       print(f"Random Forest F1:       {forest_f1:.3f}")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>F1 is useful for rare failures because it punishes both false alarms and missed failures.</p></div></div><div class="expected"><strong>Expected output</strong>Two F1 scores; discuss which one is better and why.</div></div>
-                <figure class="code-card"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+                <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 15: Challenge - tune n_estimators"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
       scores = []
       
       for n in tree_counts:
@@ -1247,14 +1247,14 @@
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 1: Kaggle download"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
       from google.colab import files
       files.upload()
       !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
       !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
       !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 2: Load and inspect"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
       import pandas as pd
       import matplotlib.pyplot as plt
       from pathlib import Path
@@ -1270,7 +1270,7 @@
       display(df.head())
       print(df.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The code is robust: it uses Kaggle data when present and synthetic vibration data when unavailable.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 3: EDA - raw time-series vibration signal"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
       plt.figure(figsize=(12, 3))
       plt.plot(df[signal_col].values[:2000])
       plt.title("Raw vibration signal")
@@ -1278,7 +1278,7 @@
       plt.ylabel("Amplitude")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Always look at raw sensor data before feature engineering. Bad units or flat lines show up immediately.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 4: Feature engineering per window"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
       window = 256
       features = []
       
@@ -1295,12 +1295,12 @@
       feature_df = pd.DataFrame(features)
       display(feature_df.head())</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>ML models do not understand raw waves automatically. Window statistics and FFT peaks summarize behavior.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 5: Scale features"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
       
       scaler = StandardScaler()
       X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>K-Means uses distance. Scaling keeps a large numeric column from dominating the distance calculation.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 6: Elbow Method"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
       
       ks = range(1, 11)
       inertias = []
@@ -1315,12 +1315,12 @@
       plt.title("Elbow Method")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The elbow suggests a reasonable number of clusters before improvements flatten out.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 7: Fit K-Means"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
       cluster_labels = kmeans.fit_predict(X_scaled)
       feature_df["cluster"] = cluster_labels
       display(feature_df.groupby("cluster").mean())</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Cluster averages help you give engineering names to groups, such as normal or high-vibration.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 8: PCA 2D scatter plot"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
       
       pca = PCA(n_components=2, random_state=42)
       points_2d = pca.fit_transform(X_scaled)
@@ -1332,13 +1332,13 @@
       plt.colorbar(label="Cluster")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>PCA compresses the feature table into two axes so you can inspect whether clusters separate visually.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 9: Interpret clusters"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
       display(summary)
       
       for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
           print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>The ML output is only useful after you translate it into engineering language.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 10: Challenge - DBSCAN comparison"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
       
       dbscan = DBSCAN(eps=0.8, min_samples=5)
       db_labels = dbscan.fit_predict(X_scaled)
@@ -1408,7 +1408,7 @@
 <div class="lesson-body">
 <h3>5.2 Q-Learning Explained with a Grid</h3>
                 <p>A Q-table stores the expected value of taking each action in each state. In FrozenLake, there are 16 grid states and 4 actions, so the table is 16 x 4.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="q-learning_update_equation.py">
                   <figcaption>Q-learning update equation</figcaption>
       <pre><code>Q(s, a) <- Q(s, a) + alpha [ r + gamma * max Q(s', a') - Q(s, a) ]
                  old value    rate   reward discount best future value</code></pre>
@@ -1439,24 +1439,24 @@
                 <p><strong>Environment:</strong> OpenAI Gym / Gymnasium <code>FrozenLake-v1</code>. The notebook logs rewards to CSV, uploads them as a Kaggle dataset, and loads them back for analysis.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>This project generates <code>frozenlake_training_log.csv</code>. Upload or retrieve logs through <a href="https://www.kaggle.com/datasets" target="_blank" rel="noreferrer">kaggle.com/datasets</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 1: Install gym, import libraries"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
       import gymnasium as gym
       import numpy as np
       import pandas as pd
       import matplotlib.pyplot as plt</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Installs the grid-world environment and imports the tools for tables, arrays, and charts.</p></div></div><div class="expected"><strong>Expected output</strong>Installation completes with no import errors.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 2: Create FrozenLake environment"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
       state, info = env.reset(seed=42)
       print(env.render())</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates a 4x4 map. Slippery ice adds randomness, which makes learning harder and more realistic.</p></div></div><div class="expected"><strong>Expected output</strong>An ASCII grid with S, F, H, and G.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 3: Action and observation space"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
       print("Actions:", env.action_space.n)
       print("0=Left, 1=Down, 2=Right, 3=Up")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Confirms that the state is a grid square and the action is a movement direction.</p></div></div><div class="expected"><strong>Expected output</strong><code>States: 16</code>, <code>Actions: 4</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 4: Initialize Q-table"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
       print(q_table.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The agent starts knowing nothing, so every action value starts at zero.</p></div></div><div class="expected"><strong>Expected output</strong><code>(16, 4)</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 5: Train with Q-learning"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
       alpha = 0.8
       gamma = 0.95
       epsilon = 1.0
@@ -1487,7 +1487,7 @@
           epsilon = max(min_epsilon, epsilon * epsilon_decay)
           logs.append({"episode": episode, "reward": total_reward, "epsilon": epsilon})</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This is the learning loop: choose action, observe reward, update Q-table, repeat.</p></div></div><div class="expected"><strong>Expected output</strong>No output until the next plotting cell.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 6: Plot reward curve"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
       log_df["rolling_reward"] = log_df["reward"].rolling(50).mean()
       
       plt.plot(log_df["episode"], log_df["rolling_reward"])
@@ -1496,11 +1496,11 @@
       plt.title("Q-learning progress")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Rolling averages smooth noisy rewards so learning trends are easier to see.</p></div></div><div class="expected"><strong>Expected output</strong>A curve that should rise as the policy improves.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 7: Visualize learned policy"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
       policy = arrows[np.argmax(q_table, axis=1)].reshape(4, 4)
       print(policy)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Converts best actions into arrows so you can inspect the learned navigation plan.</p></div></div><div class="expected"><strong>Expected output</strong>A 4x4 grid of arrows.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 8: Test trained agent"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
       done = False
       while not done:
           action = np.argmax(q_table[state])
@@ -1509,13 +1509,13 @@
           print(env.render())
       print("Final reward:", reward)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Runs one greedy episode using the learned policy instead of random exploration.</p></div></div><div class="expected"><strong>Expected output</strong>Several grid frames and a final reward of 0 or 1.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 9: Kaggle tie-in - save and upload log"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
       print("Saved frozenlake_training_log.csv")
       
       # Optional: create a Kaggle dataset manually from this CSV,
       # then use the Kaggle API to download it in a future notebook.</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The CSV turns your RL experiment into a dataset you can share and re-analyze.</p></div></div><div class="expected"><strong>Expected output</strong>A saved CSV file in Colab's file browser.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 10: Challenge - larger map or non-slippery ice"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
       env = gym.make("FrozenLake-v1", map_name="8x8", is_slippery=True, render_mode="ansi")
       # or
       env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="ansi")</code></pre></figure>
@@ -1573,7 +1573,7 @@
 <div class="lesson-body">
 <h3>6.2 Tools: OpenCV</h3>
                 <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
-                <figure class="code-card"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="opencv_quick_demo.py"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
       import matplotlib.pyplot as plt
       
       img_bgr = cv2.imread("traffic_sign.jpg")
@@ -1634,7 +1634,7 @@
                     <div class="flow-node">Dense → 43 signs</div>
                   </div>
                 </div>
-                <figure class="code-card"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
+                <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="example_sobel_edge_filter.py"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
           [-1, 0, 1],
           [-2, 0, 2],
           [-1, 0, 1]
@@ -1657,14 +1657,14 @@
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Kaggle download of GTSRB"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
       from google.colab import files
       files.upload()
       !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
       !kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
       !unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Explore dataset"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
       import pandas as pd
       import matplotlib.pyplot as plt
       
@@ -1675,7 +1675,7 @@
       plt.title("Images per traffic sign class")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows metadata and checks whether classes are balanced.</p></div></div><div class="expected"><strong>Expected output</strong>A table and a 43-bar class count chart.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3: OpenCV preprocessing pipeline"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
       import numpy as np
       from tensorflow.keras.preprocessing.image import ImageDataGenerator
       
@@ -1692,7 +1692,7 @@
       X = np.array(images)
       y = np.array(labels)
       print(X.shape, y.shape)</code></pre></figure>
-                <figure class="code-card"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3b: Data augmentation setup"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
           rotation_range=10,
           zoom_range=0.10,
           horizontal_flip=True
@@ -1700,7 +1700,7 @@
       
       # Use with care: horizontal flips can change the meaning of some traffic signs.</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples.</p></div></div><div class="expected"><strong>Expected output</strong><code>(num_images, 32, 32, 3)</code> and labels.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 4: Split into train/validation/test"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
       
       X_train, X_temp, y_train, y_temp = train_test_split(
           X, y, test_size=0.3, random_state=42, stratify=y
@@ -1709,7 +1709,7 @@
           X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
       )</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates separate data for training, tuning during training, and final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No output; three splits are ready.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5: Build CNN architecture"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
       from tensorflow import keras
       from tensorflow.keras import layers
       
@@ -1725,20 +1725,20 @@
       ])
       model.summary()</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision.</p></div></div><div class="expected"><strong>Expected output</strong>A model summary with trainable parameters.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 6: Compile model"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
           optimizer="adam",
           loss="sparse_categorical_crossentropy",
           metrics=["accuracy"]
       )</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p><code>adam</code> updates weights, loss measures wrongness, and accuracy reports percent correct.</p></div></div><div class="expected"><strong>Expected output</strong>No output; model is ready to train.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 7: Train for 15 epochs"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
           X_train, y_train,
           validation_data=(X_val, y_val),
           epochs=15,
           batch_size=64
       )</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Each epoch passes through the training set once and reports train/validation accuracy.</p></div></div><div class="expected"><strong>Expected output</strong>A live progress bar for each epoch.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 8: Plot accuracy and loss curves"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
       axes[0].plot(history.history["accuracy"], label="train")
       axes[0].plot(history.history["val_accuracy"], label="val")
       axes[0].set_title("Accuracy")
@@ -1750,10 +1750,10 @@
       axes[1].legend()
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">What this does</div><p>If training accuracy rises but validation accuracy stalls, the model may be overfitting.</p></div></div><div class="expected"><strong>Expected output</strong>Two learning curves.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 9: Evaluate on test set"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
       print(f"Test accuracy: {test_acc:.3f}")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The test set is used once at the end to estimate real-world performance.</p></div></div><div class="expected"><strong>Expected output</strong>A single test accuracy value.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 10: Confusion matrix and top mistakes"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
       
       pred = np.argmax(model.predict(X_test), axis=1)
       cm = confusion_matrix(y_test, pred)
@@ -1773,7 +1773,7 @@
                   mistakes.append((cm[true_id, pred_id], true_id, pred_id))
       print(sorted(mistakes, reverse=True)[:10])</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions.</p></div></div><div class="expected"><strong>Expected output</strong>A 43x43 plot and top 10 confusion tuples.</div></div>
-                <figure class="code-card"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 11: Test one image"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
       probs = model.predict(X_test[idx:idx+1])[0]
       pred_label = np.argmax(probs)
       confidence = probs[pred_label]
@@ -1783,7 +1783,7 @@
       plt.axis("off")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows a concrete example instead of only aggregate metrics.</p></div></div><div class="expected"><strong>Expected output</strong>A sign image with predicted label, true label, and confidence.</div></div>
-                <figure class="code-card"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 12: OpenCV raw-image prediction overlay"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
       raw_bgr = cv2.imread(str(sample_path))
       raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
       
@@ -1807,7 +1807,7 @@
       plt.axis("off")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top.</p></div></div><div class="expected"><strong>Expected output</strong>A traffic sign image with prediction text overlaid.</div></div>
-                <figure class="code-card"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
+                <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="Cell 13: Challenge - add a third Conv2D block"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
       # layers.Conv2D(128, (3, 3), activation="relu"),
       # layers.MaxPooling2D((2, 2)),
       #

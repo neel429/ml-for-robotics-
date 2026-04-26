@@ -111,7 +111,7 @@
                 <div class="grid-2">
                   <div class="card">
                     <h4>C++</h4>
-                    <figure class="code-card">
+                    <figure class="code-card" data-runnable="false" data-chapter="1" data-filename="same_idea_in_c.py">
                       <figcaption>Same idea in C++</figcaption>
       <pre><code class="language-cpp">#include &lt;iostream&gt;
       int main() {
@@ -122,7 +122,7 @@
                   </div>
                   <div class="card">
                     <h4>Python</h4>
-                    <figure class="code-card">
+                    <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="Your first Python cell">
                       <figcaption>Your first Python cell</figcaption>
       <pre><code class="language-python">print("Hello, Robot!")</code></pre>
                     </figure>
@@ -141,7 +141,7 @@
               <section id="variables" class="section-card observe" data-title="1.2 Variables & Data Types">
                 <h3>1.2 Variables & Data Types</h3>
                 <p><strong>Concept.</strong> A variable is a named box that holds a value. Python has four beginner-friendly basic types: <code>int</code> for whole numbers, <code>float</code> for decimals, <code>str</code> for text, and <code>bool</code> for true/false values.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="robot_sensor_variables.py">
                   <figcaption>Robot sensor variables</figcaption>
       <pre><code class="language-python"># Robot sensor variables
       distance = 2.45          # float - distance in meters
@@ -174,7 +174,7 @@
                 <h4>Lists</h4>
                 <p>A list is ordered and mutable. Use it for values that arrive over time, like ultrasonic sensor readings.</p>
                 <p class="mini muted">Key operations: indexing with <code>my_list[0]</code>, negative indexing with <code>my_list[-1]</code>, slicing with <code>my_list[1:3]</code>, and methods like <code>.append()</code>, <code>.remove()</code>, <code>.pop()</code>, and <code>.sort()</code>. Use <code>len(my_list)</code> for length.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="lists_sensor_readings_over_time.py">
                   <figcaption>Lists: sensor readings over time</figcaption>
       <pre><code class="language-python">sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]
       sensor_readings.append(1.8)          # add new reading
@@ -190,7 +190,7 @@
                 </div>
                 <h4>Tuples</h4>
                 <p>A tuple is ordered and immutable. Use it when data should not change, like a fixed home coordinate.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="tuples_fixed_robot_configuration.py">
                   <figcaption>Tuples: fixed robot configuration</figcaption>
       <pre><code class="language-python">home_position = (0.0, 0.0)
       wheel_diameter = (0.12,)       # single-element tuple needs a comma
@@ -205,7 +205,7 @@
                 <h4>Sets</h4>
                 <p>A set is unordered and keeps unique elements only. It is useful when a camera reports objects and you only care which object types appeared.</p>
                 <p class="mini muted">Key operations: <code>.add()</code>, <code>.remove()</code>, membership with <code>in</code>, union with <code>|</code>, intersection with <code>&amp;</code>, and difference with <code>-</code>.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="sets_unique_objects_seen_by_a_robot.py">
                   <figcaption>Sets: unique objects seen by a robot</figcaption>
       <pre><code class="language-python">objects_seen = {"chair", "table", "door", "chair", "wall"}
       print(objects_seen)               # duplicates removed automatically
@@ -220,7 +220,7 @@
                 <h4>Dictionaries</h4>
                 <p>A dictionary stores key-value pairs. Use it for named robot state, sensor packets, and configuration settings.</p>
                 <p class="mini muted">Key operations: access with <code>dict[key]</code>, safer access with <code>.get(key, default)</code>, and inspection with <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="dictionaries_robot_state_packet.py">
                   <figcaption>Dictionaries: robot state packet</figcaption>
       <pre><code class="language-python">robot_state = {
           "name": "ARIA",
@@ -253,7 +253,7 @@
               <section id="control-flow" class="section-card observe" data-title="1.4 Control Flow">
                 <h3>1.4 Control Flow: if / elif / else</h3>
                 <p><strong>Concept.</strong> Control flow lets your program make decisions. Comparisons include <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>. Logical operators include <code>and</code>, <code>or</code>, and <code>not</code>.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="battery_and_obstacle_decisions.py">
                   <figcaption>Battery and obstacle decisions</figcaption>
       <pre><code class="language-python">battery = 23
       distance_to_obstacle = 0.4
@@ -286,7 +286,7 @@
                 <h3>1.5 Loops: for and while</h3>
                 <p><strong>Concept.</strong> Loops repeat work. Use <code>for</code> when you know what collection you are walking through. Use <code>while</code> when you repeat until a condition changes.</p>
                 <p class="mini muted">You will also see <code>continue</code> to skip the rest of the current loop iteration and <code>zip()</code> to walk through two lists together, such as timestamps and readings.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="for_loops_range_while_loops_and_list_comprehensions.py">
                   <figcaption>For loops, range, while loops, and list comprehensions</figcaption>
       <pre><code class="language-python">sensor_log = [1.5, 0.8, 2.3, 0.2, 1.9]
       
@@ -331,7 +331,7 @@
               <section id="functions" class="section-card observe" data-title="1.6 Functions">
                 <h3>1.6 Functions</h3>
                 <p><strong>Concept.</strong> Functions package reusable behavior. They make code easier to test, read, and repair. A function can take parameters, use default values, and return a result.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="function_analyze_robot_sensor_readings.py">
                   <figcaption>Function: analyze robot sensor readings</figcaption>
       <pre><code class="language-python">def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
           """
@@ -385,7 +385,7 @@
                     <div class="card"><h4>TensorFlow/Keras</h4><p class="mini muted">Neural networks</p></div>
                   </div>
                 </div>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="standard_ml_import_block.py">
                   <figcaption>Standard ML import block</figcaption>
       <pre><code class="language-python">import numpy as np
       import pandas as pd
@@ -418,7 +418,7 @@
                 <h3>1.8 ★ Checkpoint Exercise: Sensor Data Parser</h3>
                 <p><strong>The task.</strong> A robot has been collecting data for 30 minutes. You are given a raw log as a list of dictionaries. Parse it, clean it, and produce a summary report.</p>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_starter_code_simulated_robot_log.py">
                   <figcaption>Checkpoint starter code: simulated robot log</figcaption>
       <pre><code class="language-python">robot_log = [
           {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
@@ -445,7 +445,7 @@
                 <details class="solution">
                   <summary>Show Solution</summary>
                   <div>
-                    <figure class="code-card">
+                    <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_solution.py">
                       <figcaption>Checkpoint solution</figcaption>
       <pre><code class="language-python">def summarize_robot_log(log):
           total_entries = len(log)
@@ -497,6 +497,8 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>

@@ -111,7 +111,7 @@
               <section id="opencv" class="section-card observe" data-title="6.3 OpenCV">
                 <h3>6.2 Tools: OpenCV</h3>
                 <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
-                <figure class="code-card"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="opencv_quick_demo.py"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
       import matplotlib.pyplot as plt
       
       img_bgr = cv2.imread("traffic_sign.jpg")
@@ -148,7 +148,7 @@
                     <div class="flow-node">Dense → 43 signs</div>
                   </div>
                 </div>
-                <figure class="code-card"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
+                <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="example_sobel_edge_filter.py"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
           [-1, 0, 1],
           [-2, 0, 2],
           [-1, 0, 1]
@@ -159,14 +159,14 @@
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Kaggle download of GTSRB"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
       from google.colab import files
       files.upload()
       !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
       !kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
       !unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Explore dataset"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
       import pandas as pd
       import matplotlib.pyplot as plt
       
@@ -177,7 +177,7 @@
       plt.title("Images per traffic sign class")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows metadata and checks whether classes are balanced.</p></div></div><div class="expected"><strong>Expected output</strong>A table and a 43-bar class count chart.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3: OpenCV preprocessing pipeline"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
       import numpy as np
       from tensorflow.keras.preprocessing.image import ImageDataGenerator
       
@@ -194,7 +194,7 @@
       X = np.array(images)
       y = np.array(labels)
       print(X.shape, y.shape)</code></pre></figure>
-                <figure class="code-card"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3b: Data augmentation setup"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
           rotation_range=10,
           zoom_range=0.10,
           horizontal_flip=True
@@ -202,7 +202,7 @@
       
       # Use with care: horizontal flips can change the meaning of some traffic signs.</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples.</p></div></div><div class="expected"><strong>Expected output</strong><code>(num_images, 32, 32, 3)</code> and labels.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 4: Split into train/validation/test"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
       
       X_train, X_temp, y_train, y_temp = train_test_split(
           X, y, test_size=0.3, random_state=42, stratify=y
@@ -211,7 +211,7 @@
           X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
       )</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates separate data for training, tuning during training, and final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No output; three splits are ready.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5: Build CNN architecture"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
       from tensorflow import keras
       from tensorflow.keras import layers
       
@@ -227,20 +227,20 @@
       ])
       model.summary()</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision.</p></div></div><div class="expected"><strong>Expected output</strong>A model summary with trainable parameters.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 6: Compile model"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
           optimizer="adam",
           loss="sparse_categorical_crossentropy",
           metrics=["accuracy"]
       )</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p><code>adam</code> updates weights, loss measures wrongness, and accuracy reports percent correct.</p></div></div><div class="expected"><strong>Expected output</strong>No output; model is ready to train.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 7: Train for 15 epochs"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
           X_train, y_train,
           validation_data=(X_val, y_val),
           epochs=15,
           batch_size=64
       )</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Each epoch passes through the training set once and reports train/validation accuracy.</p></div></div><div class="expected"><strong>Expected output</strong>A live progress bar for each epoch.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 8: Plot accuracy and loss curves"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
       axes[0].plot(history.history["accuracy"], label="train")
       axes[0].plot(history.history["val_accuracy"], label="val")
       axes[0].set_title("Accuracy")
@@ -252,10 +252,10 @@
       axes[1].legend()
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">What this does</div><p>If training accuracy rises but validation accuracy stalls, the model may be overfitting.</p></div></div><div class="expected"><strong>Expected output</strong>Two learning curves.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 9: Evaluate on test set"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
       print(f"Test accuracy: {test_acc:.3f}")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The test set is used once at the end to estimate real-world performance.</p></div></div><div class="expected"><strong>Expected output</strong>A single test accuracy value.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 10: Confusion matrix and top mistakes"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
       
       pred = np.argmax(model.predict(X_test), axis=1)
       cm = confusion_matrix(y_test, pred)
@@ -275,7 +275,7 @@
                   mistakes.append((cm[true_id, pred_id], true_id, pred_id))
       print(sorted(mistakes, reverse=True)[:10])</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions.</p></div></div><div class="expected"><strong>Expected output</strong>A 43x43 plot and top 10 confusion tuples.</div></div>
-                <figure class="code-card"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 11: Test one image"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
       probs = model.predict(X_test[idx:idx+1])[0]
       pred_label = np.argmax(probs)
       confidence = probs[pred_label]
@@ -285,7 +285,7 @@
       plt.axis("off")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows a concrete example instead of only aggregate metrics.</p></div></div><div class="expected"><strong>Expected output</strong>A sign image with predicted label, true label, and confidence.</div></div>
-                <figure class="code-card"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
+                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 12: OpenCV raw-image prediction overlay"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
       raw_bgr = cv2.imread(str(sample_path))
       raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
       
@@ -309,7 +309,7 @@
       plt.axis("off")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top.</p></div></div><div class="expected"><strong>Expected output</strong>A traffic sign image with prediction text overlaid.</div></div>
-                <figure class="code-card"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
+                <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="Cell 13: Challenge - add a third Conv2D block"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
       # layers.Conv2D(128, (3, 3), activation="relu"),
       # layers.MaxPooling2D((2, 2)),
       #
@@ -330,6 +330,8 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>

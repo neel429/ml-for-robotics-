@@ -190,6 +190,9 @@
       lesson.classList.toggle("is-active", lesson === target);
       lesson.hidden = lesson !== target;
     });
+    if (typeof window.initRunnableCells === "function") {
+      window.initRunnableCells(target);
+    }
 
     document.querySelectorAll("[data-lesson-link]").forEach((link) => {
       link.classList.toggle("active", link.dataset.lessonLink === targetId);

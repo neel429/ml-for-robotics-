@@ -119,7 +119,7 @@
               <section id="q-learning" class="section-card observe" data-title="5.2 Q-Learning Explained">
                 <h3>5.2 Q-Learning Explained with a Grid</h3>
                 <p>A Q-table stores the expected value of taking each action in each state. In FrozenLake, there are 16 grid states and 4 actions, so the table is 16 x 4.</p>
-                <figure class="code-card">
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="q-learning_update_equation.py">
                   <figcaption>Q-learning update equation</figcaption>
       <pre><code>Q(s, a) <- Q(s, a) + alpha [ r + gamma * max Q(s', a') - Q(s, a) ]
                  old value    rate   reward discount best future value</code></pre>
@@ -138,24 +138,24 @@
                 <p><strong>Environment:</strong> OpenAI Gym / Gymnasium <code>FrozenLake-v1</code>. The notebook logs rewards to CSV, uploads them as a Kaggle dataset, and loads them back for analysis.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>This project generates <code>frozenlake_training_log.csv</code>. Upload or retrieve logs through <a href="https://www.kaggle.com/datasets" target="_blank" rel="noreferrer">kaggle.com/datasets</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 1: Install gym, import libraries"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
       import gymnasium as gym
       import numpy as np
       import pandas as pd
       import matplotlib.pyplot as plt</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Installs the grid-world environment and imports the tools for tables, arrays, and charts.</p></div></div><div class="expected"><strong>Expected output</strong>Installation completes with no import errors.</div></div>
-                <figure class="code-card"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 2: Create FrozenLake environment"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
       state, info = env.reset(seed=42)
       print(env.render())</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates a 4x4 map. Slippery ice adds randomness, which makes learning harder and more realistic.</p></div></div><div class="expected"><strong>Expected output</strong>An ASCII grid with S, F, H, and G.</div></div>
-                <figure class="code-card"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 3: Action and observation space"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
       print("Actions:", env.action_space.n)
       print("0=Left, 1=Down, 2=Right, 3=Up")</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Confirms that the state is a grid square and the action is a movement direction.</p></div></div><div class="expected"><strong>Expected output</strong><code>States: 16</code>, <code>Actions: 4</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 4: Initialize Q-table"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
       print(q_table.shape)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The agent starts knowing nothing, so every action value starts at zero.</p></div></div><div class="expected"><strong>Expected output</strong><code>(16, 4)</code>.</div></div>
-                <figure class="code-card"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 5: Train with Q-learning"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
       alpha = 0.8
       gamma = 0.95
       epsilon = 1.0
@@ -186,7 +186,7 @@
           epsilon = max(min_epsilon, epsilon * epsilon_decay)
           logs.append({"episode": episode, "reward": total_reward, "epsilon": epsilon})</code></pre></figure>
                 <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This is the learning loop: choose action, observe reward, update Q-table, repeat.</p></div></div><div class="expected"><strong>Expected output</strong>No output until the next plotting cell.</div></div>
-                <figure class="code-card"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 6: Plot reward curve"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
       log_df["rolling_reward"] = log_df["reward"].rolling(50).mean()
       
       plt.plot(log_df["episode"], log_df["rolling_reward"])
@@ -195,11 +195,11 @@
       plt.title("Q-learning progress")
       plt.show()</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Rolling averages smooth noisy rewards so learning trends are easier to see.</p></div></div><div class="expected"><strong>Expected output</strong>A curve that should rise as the policy improves.</div></div>
-                <figure class="code-card"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 7: Visualize learned policy"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
       policy = arrows[np.argmax(q_table, axis=1)].reshape(4, 4)
       print(policy)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Converts best actions into arrows so you can inspect the learned navigation plan.</p></div></div><div class="expected"><strong>Expected output</strong>A 4x4 grid of arrows.</div></div>
-                <figure class="code-card"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 8: Test trained agent"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
       done = False
       while not done:
           action = np.argmax(q_table[state])
@@ -208,13 +208,13 @@
           print(env.render())
       print("Final reward:", reward)</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Runs one greedy episode using the learned policy instead of random exploration.</p></div></div><div class="expected"><strong>Expected output</strong>Several grid frames and a final reward of 0 or 1.</div></div>
-                <figure class="code-card"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 9: Kaggle tie-in - save and upload log"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
       print("Saved frozenlake_training_log.csv")
       
       # Optional: create a Kaggle dataset manually from this CSV,
       # then use the Kaggle API to download it in a future notebook.</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The CSV turns your RL experiment into a dataset you can share and re-analyze.</p></div></div><div class="expected"><strong>Expected output</strong>A saved CSV file in Colab's file browser.</div></div>
-                <figure class="code-card"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
+                <figure class="code-card" data-runnable="false" data-chapter="5" data-filename="Cell 10: Challenge - larger map or non-slippery ice"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
       env = gym.make("FrozenLake-v1", map_name="8x8", is_slippery=True, render_mode="ansi")
       # or
       env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="ansi")</code></pre></figure>
@@ -234,6 +234,8 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>
