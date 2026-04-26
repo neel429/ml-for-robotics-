@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 4 - Unsupervised Learning | ML for Robotics</title>
+  <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" aria-label="Sticky site header">
+    <a class="top-title" href="index.html#top">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Table of Contents</div>
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
+    <div class="sidebar-title">Course Navigation</div>
+    <nav class="nav-tree">
+      <details open style="--chapter-color: var(--ch0)">
+        <summary><span class="dot"></span>Chapter 0</summary>
+        <a href="chapter-0.html#chapter-0">Welcome</a>
+        <a href="chapter-0.html#build">What You Will Build</a>
+        <a href="chapter-0.html#tools">Tools You Need</a>
+        <a href="chapter-0.html#reading-tips">Reading Tips</a>
+      </details>
+      <details open style="--chapter-color: var(--ch1)">
+        <summary><span class="dot"></span>Chapter 1</summary>
+        <a href="chapter-1-python.html#python">Python Fundamentals</a>
+        <a href="chapter-1-python.html#python-colab">1.1 Colab</a>
+        <a href="chapter-1-python.html#variables">1.2 Variables</a>
+        <a href="chapter-1-python.html#data-structures">1.3 Data Structures</a>
+        <a href="chapter-1-python.html#control-flow">1.4 Control Flow</a>
+        <a href="chapter-1-python.html#loops">1.5 Loops</a>
+        <a href="chapter-1-python.html#functions">1.6 Functions</a>
+        <a href="chapter-1-python.html#libraries">1.7 Libraries</a>
+        <a href="chapter-1-python.html#checkpoint">1.8 Checkpoint</a>
+      </details>
+      <details open style="--chapter-color: var(--ch2)">
+        <summary><span class="dot"></span>Chapter 2</summary>
+        <a href="chapter-2-ml.html#what-is-ml">What is ML?</a>
+        <a href="chapter-2-ml.html#types">Three Flavors</a>
+        <a href="chapter-2-ml.html#when-to-use">When to Use Which</a>
+      </details>
+      <details open style="--chapter-color: var(--ch3)">
+        <summary><span class="dot"></span>Chapter 3</summary>
+        <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
+        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
+        <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
+        <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
+        <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch4)">
+        <summary><span class="dot"></span>Chapter 4</summary>
+        <a href="chapter-4-unsupervised.html#unsupervised">Unsupervised Learning</a>
+        <a href="chapter-4-unsupervised.html#clustering">Clustering</a>
+        <a href="chapter-4-unsupervised.html#kmeans">K-Means</a>
+        <a href="chapter-4-unsupervised.html#sensor-cluster-project">Vibration Clustering Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch5)">
+        <summary><span class="dot"></span>Chapter 5</summary>
+        <a href="chapter-5-rl.html#reinforcement-learning">Reinforcement Learning</a>
+        <a href="chapter-5-rl.html#q-learning">Q-Learning</a>
+        <a href="chapter-5-rl.html#maze-project">FrozenLake Maze Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch6)">
+        <summary><span class="dot"></span>Chapter 6</summary>
+        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
+        <a href="chapter-6-vision.html#opencv">OpenCV</a>
+        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
+        <a href="chapter-6-vision.html#cnn">CNNs</a>
+        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch7)">
+        <summary><span class="dot"></span>Chapter 7</summary>
+        <a href="chapter-7-next.html#whats-next">What's Next?</a>
+        <a href="chapter-7-next.html#decision-guide">Decision Guide</a>
+        <a href="chapter-7-next.html#roadmap">Learning Roadmap</a>
+        <a href="chapter-7-next.html#papers">Papers to Read</a>
+      </details>
+      <details style="--chapter-color: var(--cyan)">
+        <summary><span class="dot"></span>Project Archive</summary>
+        <a href="student-projects.html#projects">Student Projects</a>
+      </details>
+    </nav>
+    <a class="back-top" href="#top">Back to top</a>
+  </aside>
+
+  <main class="page" id="top">
+    <div class="container">
+      <article class="chapter ch4 observe" id="unsupervised" data-title="Chapter 4 — Unsupervised Learning">
+              <header class="chapter-header">
+                <span class="chapter-badge">Chapter 4 / 7</span>
+                <a class="breadcrumb" href="chapter-3-supervised.html#supervised">← Previous Chapter: Supervised Learning</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Unsupervised Learning: <span>Industrial Vibration Clustering</span></h2>
+                <p class="lead">Unsupervised learning finds structure when nobody has labeled the rows. That makes it valuable for sensor streams, vibration logs, and exploratory robotics data.</p>
+              </header>
+              <section id="clustering" class="section-card observe" data-title="4.1 Clustering & Dimensionality Reduction">
+                <h3>4.1 Concept: Clustering & Dimensionality Reduction</h3>
+                <p><strong>Clustering</strong> groups similar rows. If a motor has normal, imbalanced, and loose modes, vibration windows may naturally form three groups even without labels.</p>
+                <p><strong>PCA</strong> reduces many features into two or three axes so humans can visualize high-dimensional data. It does not magically explain the system, but it helps you inspect patterns.</p>
+                <div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Robotics Connection</div><p>When a robot enters a new environment, unlabeled sensor patterns are often the first clue that something changed.</p></div></div>
+              </section>
+              <section id="kmeans" class="section-card observe" data-title="4.2 K-Means Deep Dive">
+                <h3>4.2 K-Means Deep Dive</h3>
+                <div class="grid-4">
+                  <div class="card"><h4>1. Random init</h4><p class="mini muted">Place K centroids randomly.</p></div>
+                  <div class="card"><h4>2. Assign</h4><p class="mini muted">Assign each point to the nearest centroid.</p></div>
+                  <div class="card"><h4>3. Recompute</h4><p class="mini muted">Move each centroid to the average of its assigned points.</p></div>
+                  <div class="card"><h4>4. Converge</h4><p class="mini muted">Repeat until assignments stop changing.</p></div>
+                </div>
+                <p>Use the <strong>Elbow Method</strong> to choose K: plot inertia for K=1 to 10. The elbow is where extra clusters stop helping much. Use <strong>DBSCAN</strong> when clusters are odd shapes or when you do not know K.</p>
+              </section>
+              <section id="sensor-cluster-project" class="section-card observe" data-title="4.3 Project: Clustering Vibration Readings">
+                <h3>4.3 ★ Project: Clustering Robot Sensor Readings</h3>
+                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
+                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
+      from google.colab import files
+      files.upload()
+      !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+      !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
+      !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      from pathlib import Path
+      
+      files = list(Path("vibration_data").glob("*.csv"))
+      if files:
+          df = pd.read_csv(files[0])
+      else:
+          t = np.linspace(0, 60, 6000)
+          signal = np.r_[np.sin(12*t[:2000]), 1.5*np.sin(18*t[:2000]), np.sin(12*t[:2000]) + .4*np.sin(45*t[:2000])]
+          df = pd.DataFrame({"time": t, "vibration": signal})
+      
+      display(df.head())
+      print(df.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The code is robust: it uses Kaggle data when present and synthetic vibration data when unavailable.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
+      plt.figure(figsize=(12, 3))
+      plt.plot(df[signal_col].values[:2000])
+      plt.title("Raw vibration signal")
+      plt.xlabel("Sample")
+      plt.ylabel("Amplitude")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Always look at raw sensor data before feature engineering. Bad units or flat lines show up immediately.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+      window = 256
+      features = []
+      
+      for start in range(0, len(values) - window, window):
+          chunk = values[start:start + window]
+          fft = np.abs(np.fft.rfft(chunk))
+          features.append({
+              "mean": chunk.mean(),
+              "std": chunk.std(),
+              "max": chunk.max(),
+              "fft_peak": fft[1:].argmax() + 1
+          })
+      
+      feature_df = pd.DataFrame(features)
+      display(feature_df.head())</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>ML models do not understand raw waves automatically. Window statistics and FFT peaks summarize behavior.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+      
+      scaler = StandardScaler()
+      X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>K-Means uses distance. Scaling keeps a large numeric column from dominating the distance calculation.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
+      
+      ks = range(1, 11)
+      inertias = []
+      for k in ks:
+          kmeans = KMeans(n_clusters=k, random_state=42, n_init="auto")
+          kmeans.fit(X_scaled)
+          inertias.append(kmeans.inertia_)
+      
+      plt.plot(list(ks), inertias, marker="o")
+      plt.xlabel("K")
+      plt.ylabel("Inertia")
+      plt.title("Elbow Method")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The elbow suggests a reasonable number of clusters before improvements flatten out.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
+      cluster_labels = kmeans.fit_predict(X_scaled)
+      feature_df["cluster"] = cluster_labels
+      display(feature_df.groupby("cluster").mean())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Cluster averages help you give engineering names to groups, such as normal or high-vibration.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
+      
+      pca = PCA(n_components=2, random_state=42)
+      points_2d = pca.fit_transform(X_scaled)
+      
+      plt.scatter(points_2d[:, 0], points_2d[:, 1], c=cluster_labels, cmap="viridis")
+      plt.xlabel("PC1")
+      plt.ylabel("PC2")
+      plt.title("K-Means clusters in PCA space")
+      plt.colorbar(label="Cluster")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>PCA compresses the feature table into two axes so you can inspect whether clusters separate visually.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
+      display(summary)
+      
+      for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
+          print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>The ML output is only useful after you translate it into engineering language.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
+      
+      dbscan = DBSCAN(eps=0.8, min_samples=5)
+      db_labels = dbscan.fit_predict(X_scaled)
+      
+      plt.scatter(points_2d[:, 0], points_2d[:, 1], c=db_labels, cmap="tab10")
+      plt.title("DBSCAN clusters in PCA space")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>DBSCAN can mark outliers as <code>-1</code> and find non-round clusters, but it is sensitive to <code>eps</code>.</p></div></div><div class="expected"><strong>Expected output</strong>A second cluster plot, sometimes with outliers.</div></div>
+              </section>
+              <div class="chapter-nav">
+                <a class="breadcrumb" href="chapter-3-supervised.html#supervised">← Previous Chapter</a>
+                <a class="next-btn" href="chapter-5-rl.html#reinforcement-learning">Next Chapter → Reinforcement Learning</a>
+              </div>
+            </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built for <strong>Mechanical Engineering Freshmen</strong> - Robotics Track</p>
+    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

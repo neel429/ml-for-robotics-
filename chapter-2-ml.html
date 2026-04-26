@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ML for Robotics | Course Home</title>
+  <title>Chapter 2 - What is Machine Learning? | ML for Robotics</title>
   <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -95,59 +95,53 @@
 
   <main class="page" id="top">
     <div class="container">
-      <section class="chapter ch0 observe" id="home" data-title="ML for Robotics - Course Home">
-  <header class="chapter-header">
-    <span class="chapter-badge">Course Home</span>
-    <div class="chapter-kicker">Mechanical Engineering x AI</div>
-    <h1>Machine Learning for <span style="color:var(--ch1)">Robotics</span> Engineers</h1>
-    <p class="hero-sub">A free, browser-only curriculum for mechanical engineering freshmen. Start with Colab setup, learn Python, then build robotics-adjacent ML projects using real datasets.</p>
-  </header>
-  <div class="grid-3">
-    <a class="card" href="chapter-0.html#chapter-0" style="text-decoration:none"><h3>Start Here</h3><p class="muted">Set up Colab and Kaggle, then learn how to use the guide.</p></a>
-    <a class="card" href="chapter-1-python.html#python" style="text-decoration:none"><h3>Learn Python</h3><p class="muted">Variables, data structures, control flow, loops, functions, and libraries.</p></a>
-    <a class="card" href="chapter-3-supervised.html#robot-failure-project" style="text-decoration:none"><h3>Build Projects</h3><p class="muted">Failure prediction, vibration clustering, Q-learning, and traffic sign classification.</p></a>
-  </div>
-</section>
-    </div>
-    <div class="wide-container">
-            <section class="toc-card" aria-labelledby="toc-title">
-              <div class="toc-kicker">Self-contained course</div>
-              <div class="toc-title">
-                <h2 id="toc-title">Table of Contents</h2>
-                <div class="toc-time">~6-8 hours total</div>
+      <article class="chapter ch2 observe" id="what-is-ml" data-title="Chapter 2 — What is Machine Learning?">
+              <header class="chapter-header">
+                <span class="chapter-badge">Chapter 2 / 7</span>
+                <a class="breadcrumb" href="chapter-1-python.html#python">← Previous Chapter: Python Fundamentals</a>
+                <div class="chapter-kicker">ML introduction</div>
+                <h2>What is <span>Machine Learning?</span></h2>
+                <p class="lead">Imagine teaching a robot to catch a ball. The old way: you write thousands of rules like "if ball is at x=50 and moving left at 3 m/s, move arm to position y=120." That is impossible to get right. Machine learning is a completely different idea.</p>
+              </header>
+              <p><strong>Instead of programming rules, you feed the robot examples and let it figure out the rules itself.</strong> Show it 10,000 throws. It watches, finds patterns, and builds its own internal model of how to catch. That's machine learning: computers learning from data, not from explicit instructions.</p>
+              <div class="callout robotics" role="note">
+                <div class="callout-icon">🤖</div>
+                <div><div class="callout-title">The Robotics Angle</div><p>Almost every modern robot uses ML in some form: walking over rough terrain, recognizing tissue types, detecting pedestrians, sorting packages, or spotting defects on a factory line.</p></div>
               </div>
-              <div class="toc-groups">
-                <div class="toc-group" style="--chapter-color: var(--ch1)">
-                  <h3>Foundations</h3>
-                  <a href="chapter-0.html#chapter-0"><span>Chapter 0: Welcome & Setup</span><span class="read-time">~20 min</span></a>
-                  <a href="chapter-1-python.html#python"><span>Chapter 1: Python Programming Fundamentals</span><span class="read-time">~70 min</span></a>
+              <section class="section-card observe" data-title="2.1 Traditional Programming vs ML">
+                <h3>2.1 Traditional Programming vs ML</h3>
+                <div class="grid-2">
+                  <div class="card"><h4>Traditional Programming</h4><p><strong>Input:</strong> data + rules<br /><strong>Output:</strong> answers</p><p class="muted">You write the logic. The computer follows it exactly.</p></div>
+                  <div class="card" style="border-color:var(--ch2)"><h4>Machine Learning</h4><p><strong>Input:</strong> data + answers<br /><strong>Output:</strong> rules, also called a model</p><p class="muted">The computer learns the logic from examples.</p></div>
                 </div>
-                <div class="toc-group" style="--chapter-color: var(--ch4)">
-                  <h3>Machine Learning</h3>
-                  <a href="chapter-2-ml.html#what-is-ml"><span>Chapter 2: What is Machine Learning?</span><span class="read-time">~25 min</span></a>
-                  <a href="chapter-3-supervised.html#supervised"><span>Chapter 3: Supervised Learning Project</span><span class="read-time">~70 min</span></a>
-                  <a href="chapter-4-unsupervised.html#unsupervised"><span>Chapter 4: Unsupervised Learning Project</span><span class="read-time">~55 min</span></a>
-                  <a href="chapter-5-rl.html#reinforcement-learning"><span>Chapter 5: Reinforcement Learning Project</span><span class="read-time">~55 min</span></a>
+              </section>
+              <section id="types" class="section-card observe" data-title="2.2 Three Flavors of ML">
+                <h3>2.2 Three Flavors of ML</h3>
+                <div class="grid-3">
+                  <div class="card"><div class="icon">🏷️</div><h4>Supervised Learning</h4><p>Learn from labeled examples. Example: sensor readings labeled as failed or healthy.</p></div>
+                  <div class="card"><div class="icon">🔍</div><h4>Unsupervised Learning</h4><p>Find hidden structure without labels. Example: group vibration patterns into operating modes.</p></div>
+                  <div class="card"><div class="icon">🎮</div><h4>Reinforcement Learning</h4><p>Learn through actions and rewards. Example: a robot learns a navigation policy by trial and error.</p></div>
                 </div>
-                <div class="toc-group" style="--chapter-color: var(--ch6)">
-                  <h3>Computer Vision</h3>
-                  <a href="chapter-6-vision.html#computer-vision"><span>Chapter 6: Traffic Sign Classifier</span><span class="read-time">~75 min</span></a>
-                  <a href="chapter-7-next.html#whats-next"><span>Chapter 7: What's Next?</span><span class="read-time">~20 min</span></a>
-                  <a href="student-projects.html#projects"><span>Student Project Archive</span><span class="read-time">optional</span></a>
+              </section>
+              <section id="when-to-use" class="section-card observe" data-title="2.3 When to Use Which">
+                <h3>2.3 When to Use Which</h3>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead><tr><th>Question</th><th>Use</th><th>Robotics Example</th></tr></thead>
+                    <tbody>
+                      <tr><td>Do you have labeled answers?</td><td>Supervised learning</td><td>Predict failure from known historical failures.</td></tr>
+                      <tr><td>Do you have raw data but no labels?</td><td>Unsupervised learning</td><td>Cluster sensor behavior into normal and unusual modes.</td></tr>
+                      <tr><td>Does the system learn by acting?</td><td>Reinforcement learning</td><td>Teach a robot to navigate a maze.</td></tr>
+                      <tr><td>Is the input an image or video?</td><td>Computer vision</td><td>Classify signs, detect parts, follow lanes.</td></tr>
+                    </tbody>
+                  </table>
                 </div>
+              </section>
+              <div class="chapter-nav">
+                <a class="breadcrumb" href="chapter-1-python.html#python">← Previous Chapter</a>
+                <a class="next-btn" href="chapter-3-supervised.html#supervised">Next Chapter → Supervised Learning</a>
               </div>
-            </section>
-    </div>
-    <div class="container">
-      <section class="chapter observe" id="projects-preview" data-title="Student Project Archive" style="--chapter-color: var(--cyan)">
-        <header class="chapter-header">
-          <span class="chapter-badge">Archive</span>
-          <div class="chapter-kicker">Applied robotics build</div>
-          <h2>Student <span>Projects</span></h2>
-          <p class="lead">Keep the curriculum pages separate, then use the project archive for larger real-world builds.</p>
-        </header>
-        <a class="next-btn" href="student-projects.html#projects">Open Student Project Archive ?</a>
-      </section>
+            </article>
     </div>
   </main>
 

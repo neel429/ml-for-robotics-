@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 3 - Supervised Learning | ML for Robotics</title>
+  <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" aria-label="Sticky site header">
+    <a class="top-title" href="index.html#top">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Table of Contents</div>
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
+    <div class="sidebar-title">Course Navigation</div>
+    <nav class="nav-tree">
+      <details open style="--chapter-color: var(--ch0)">
+        <summary><span class="dot"></span>Chapter 0</summary>
+        <a href="chapter-0.html#chapter-0">Welcome</a>
+        <a href="chapter-0.html#build">What You Will Build</a>
+        <a href="chapter-0.html#tools">Tools You Need</a>
+        <a href="chapter-0.html#reading-tips">Reading Tips</a>
+      </details>
+      <details open style="--chapter-color: var(--ch1)">
+        <summary><span class="dot"></span>Chapter 1</summary>
+        <a href="chapter-1-python.html#python">Python Fundamentals</a>
+        <a href="chapter-1-python.html#python-colab">1.1 Colab</a>
+        <a href="chapter-1-python.html#variables">1.2 Variables</a>
+        <a href="chapter-1-python.html#data-structures">1.3 Data Structures</a>
+        <a href="chapter-1-python.html#control-flow">1.4 Control Flow</a>
+        <a href="chapter-1-python.html#loops">1.5 Loops</a>
+        <a href="chapter-1-python.html#functions">1.6 Functions</a>
+        <a href="chapter-1-python.html#libraries">1.7 Libraries</a>
+        <a href="chapter-1-python.html#checkpoint">1.8 Checkpoint</a>
+      </details>
+      <details open style="--chapter-color: var(--ch2)">
+        <summary><span class="dot"></span>Chapter 2</summary>
+        <a href="chapter-2-ml.html#what-is-ml">What is ML?</a>
+        <a href="chapter-2-ml.html#types">Three Flavors</a>
+        <a href="chapter-2-ml.html#when-to-use">When to Use Which</a>
+      </details>
+      <details open style="--chapter-color: var(--ch3)">
+        <summary><span class="dot"></span>Chapter 3</summary>
+        <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
+        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
+        <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
+        <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
+        <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch4)">
+        <summary><span class="dot"></span>Chapter 4</summary>
+        <a href="chapter-4-unsupervised.html#unsupervised">Unsupervised Learning</a>
+        <a href="chapter-4-unsupervised.html#clustering">Clustering</a>
+        <a href="chapter-4-unsupervised.html#kmeans">K-Means</a>
+        <a href="chapter-4-unsupervised.html#sensor-cluster-project">Vibration Clustering Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch5)">
+        <summary><span class="dot"></span>Chapter 5</summary>
+        <a href="chapter-5-rl.html#reinforcement-learning">Reinforcement Learning</a>
+        <a href="chapter-5-rl.html#q-learning">Q-Learning</a>
+        <a href="chapter-5-rl.html#maze-project">FrozenLake Maze Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch6)">
+        <summary><span class="dot"></span>Chapter 6</summary>
+        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
+        <a href="chapter-6-vision.html#opencv">OpenCV</a>
+        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
+        <a href="chapter-6-vision.html#cnn">CNNs</a>
+        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch7)">
+        <summary><span class="dot"></span>Chapter 7</summary>
+        <a href="chapter-7-next.html#whats-next">What's Next?</a>
+        <a href="chapter-7-next.html#decision-guide">Decision Guide</a>
+        <a href="chapter-7-next.html#roadmap">Learning Roadmap</a>
+        <a href="chapter-7-next.html#papers">Papers to Read</a>
+      </details>
+      <details style="--chapter-color: var(--cyan)">
+        <summary><span class="dot"></span>Project Archive</summary>
+        <a href="student-projects.html#projects">Student Projects</a>
+      </details>
+    </nav>
+    <a class="back-top" href="#top">Back to top</a>
+  </aside>
+
+  <main class="page" id="top">
+    <div class="container">
+      <article class="chapter ch3 observe" id="supervised" data-title="Chapter 3 — Supervised Learning">
+              <header class="chapter-header">
+                <span class="chapter-badge">Chapter 3 / 7</span>
+                <a class="breadcrumb" href="chapter-2-ml.html#what-is-ml">← Previous Chapter: What is ML?</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Supervised Learning: <span>Robot Arm Failure Prediction</span></h2>
+                <p class="lead">Supervised learning learns from examples where each row has inputs and a known answer. Here the answer is whether a machine failed.</p>
+              </header>
+      
+              <section id="classification-regression" class="section-card observe" data-title="3.1 Classification & Regression">
+                <h3>3.1 Concept: Classification & Regression</h3>
+                <p>In <strong>classification</strong>, the model predicts a category, such as <code>failure</code> or <code>normal</code>. In <strong>regression</strong>, the model predicts a number, such as remaining useful life in hours.</p>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="Supervised learning loop">
+                    <div class="flow-node">Input features</div><div class="arrow">→</div>
+                    <div class="flow-node">Model prediction</div><div class="arrow">→</div>
+                    <div class="flow-node">Compare to label, adjust, repeat</div>
+                  </div>
+                </div>
+                <div class="grid-2">
+                  <div class="card"><h4>Features</h4><p class="muted">The inputs: air temperature, process temperature, rotational speed, torque, and tool wear.</p></div>
+                  <div class="card"><h4>Labels</h4><p class="muted">The answer we want to predict: failure or no failure.</p></div>
+                </div>
+                <p>We split training and test data because the model must prove it can handle examples it did not memorize. Overfitting is like memorizing exam answers instead of understanding the material.</p>
+                <div class="grid-4">
+                  <div class="card"><h4>Accuracy</h4><p class="mini muted">Overall percent correct.</p></div>
+                  <div class="card"><h4>Precision</h4><p class="mini muted">When the model says failure, how often is it right?</p></div>
+                  <div class="card"><h4>Recall</h4><p class="mini muted">Of all true failures, how many did it catch?</p></div>
+                  <div class="card"><h4>F1-score</h4><p class="mini muted">A balance between precision and recall.</p></div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table" aria-label="Confusion matrix diagram">
+                    <thead><tr><th></th><th>Predicted Normal</th><th>Predicted Failure</th></tr></thead>
+                    <tbody>
+                      <tr><th>Actual Normal</th><td>True Negative<br /><span class="muted">Correctly ignored healthy machine</span></td><td>False Positive<br /><span class="muted">False alarm</span></td></tr>
+                      <tr><th>Actual Failure</th><td>False Negative<br /><span class="muted">Missed failure</span></td><td>True Positive<br /><span class="muted">Caught failure</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+      
+              <section id="algorithms" class="section-card observe" data-title="3.2 Key Algorithms">
+                <h3>3.2 Key Algorithms Explained</h3>
+                <div class="grid-2">
+                  <div class="card"><h4>Logistic Regression</h4><p>Despite the name, it is for classification. Think of it as drawing the best straight-line boundary between two groups.</p><p class="muted">Use when you want a fast, interpretable baseline.</p></div>
+                  <div class="card"><h4>Decision Tree</h4><p>A flowchart the model builds itself. At each node, it asks the best yes/no question about your data.</p><p class="muted">Use when explanation matters.</p></div>
+                  <div class="card"><h4>Random Forest</h4><p>Many decision trees vote on the answer. The group is usually more robust than one tree.</p><p class="muted">Use when tabular performance matters.</p></div>
+                  <div class="card"><h4>Support Vector Machine</h4><p>Finds the widest possible highway between classes, then classifies by which side a point lands on.</p><p class="muted">Use for smaller datasets with clear margins.</p></div>
+                </div>
+                <div class="diagram">
+                  <div class="matrix">
+                    <div class="card"><h4>Simple + Interpretable</h4><p>Logistic Regression</p></div>
+                    <div class="card"><h4>Complex + Interpretable</h4><p>Decision Tree</p></div>
+                    <div class="card"><h4>Simple + Performance</h4><p>Support Vector Machine</p></div>
+                    <div class="card"><h4>Complex + Performance</h4><p>Random Forest</p></div>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table sortable" aria-label="Algorithm comparison table">
+                    <thead>
+                      <tr>
+                        <th><button class="table-sort" type="button" data-sort="0">Algorithm</button></th>
+                        <th><button class="table-sort" type="button" data-sort="1">Type</button></th>
+                        <th><button class="table-sort" type="button" data-sort="2">Interpretable</button></th>
+                        <th><button class="table-sort" type="button" data-sort="3">Speed</button></th>
+                        <th>Best For</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Logistic Regression</td><td>Linear classifier</td><td>High</td><td>Fast</td><td>Baselines and explanations</td></tr>
+                      <tr><td>Decision Tree</td><td>Tree classifier</td><td>High</td><td>Fast</td><td>Readable rules</td></tr>
+                      <tr><td>Random Forest</td><td>Ensemble</td><td>Medium</td><td>Medium</td><td>Strong tabular accuracy</td></tr>
+                      <tr><td>Support Vector Machine</td><td>Margin classifier</td><td>Medium</td><td>Medium</td><td>Smaller clean datasets</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+      
+              <section id="ml-pipeline" class="section-card observe" data-title="3.3 The ML Pipeline">
+                <h3>3.3 The ML Pipeline</h3>
+                <div class="steps">
+                  <div class="step"><div><strong>Get Data</strong> from Kaggle.</div></div>
+                  <div class="step"><div><strong>Explore Data</strong> with <code>head()</code>, <code>info()</code>, and charts.</div></div>
+                  <div class="step"><div><strong>Clean Data</strong> by checking missing values and outliers.</div></div>
+                  <div class="step"><div><strong>Feature Engineering</strong> turns raw columns into useful inputs.</div></div>
+                  <div class="step"><div><strong>Split</strong> into train and test sets, commonly 80/20.</div></div>
+                  <div class="step"><div><strong>Scale</strong> numeric features with <code>StandardScaler</code>.</div></div>
+                  <div class="step"><div><strong>Train Model</strong> on the training set.</div></div>
+                  <div class="step"><div><strong>Evaluate</strong> with accuracy, F1, and a confusion matrix.</div></div>
+                  <div class="step"><div><strong>Tune</strong> algorithms and hyperparameters.</div></div>
+                  <div class="step"><div><strong>Deploy / Use</strong> the model in a decision workflow.</div></div>
+                </div>
+              </section>
+      
+              <section id="robot-failure-project" class="section-card observe" data-title="3.4 Project: Robot Arm Failure Prediction">
+                <h3>3.4 ★ Project: Robot Arm Failure Prediction</h3>
+                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">AI4I 2020 Predictive Maintenance Dataset</a>. It has 10,000 engineering-relevant rows and supports binary failure prediction.</p>
+                <div class="callout download" role="note">
+                  <div class="callout-icon">⬇</div>
+                  <div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">predictive-maintenance-dataset-ai4i-2020</a>.</p></div>
+                </div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Kaggle API Setup</div><p>Create a free Kaggle account, go to Account → Create New Token, upload <code>kaggle.json</code> in Cell 1, and the dataset downloads automatically.</p></div>
+                </div>
+      
+                <h4>Cell-by-cell notebook</h4>
+                <figure class="code-card"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
+      from google.colab import files
+      files.upload()  # choose kaggle.json
+      
+      !mkdir -p ~/.kaggle
+      !cp kaggle.json ~/.kaggle/
+      !chmod 600 ~/.kaggle/kaggle.json</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download private-account dataset files.</p></div></div><div class="expected"><strong>Expected output</strong>Upload widget appears, then no error after <code>chmod</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
+      !unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The command pulls the zipped CSV into Colab and extracts it into a local <code>data</code> folder.</p></div></div><div class="expected"><strong>Expected output</strong>One CSV file appears under <code>data/</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      from sklearn.model_selection import train_test_split
+      from sklearn.preprocessing import StandardScaler
+      from sklearn.linear_model import LogisticRegression
+      from sklearn.ensemble import RandomForestClassifier
+      from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Pandas handles tables, Matplotlib draws charts, and scikit-learn provides splitting, scaling, models, and metrics.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output if imports succeed.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
+      display(df.head())
+      df.info()
+      display(df.describe())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>head()</code> shows example rows, <code>info()</code> shows column types, and <code>describe()</code> gives quick numeric ranges.</p></div></div><div class="expected"><strong>Expected output</strong>Rows with temperature, speed, torque, tool wear, and failure columns.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
+      counts.plot(kind="bar", color=["#34d399", "#fb7185"])
+      plt.xticks([0, 1], ["Normal", "Failure"], rotation=0)
+      plt.title("Failure vs normal examples")
+      plt.ylabel("Rows")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Failures are usually rare. A model can look accurate by guessing normal too often, so class balance matters.</p></div></div><div class="expected"><strong>Expected output</strong>A bar chart with many more normal rows than failure rows.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
+      plt.figure(figsize=(9, 7))
+      plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
+      plt.colorbar(label="Correlation")
+      plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)
+      plt.yticks(range(len(corr.columns)), corr.columns)
+      plt.title("Numeric feature correlations")
+      plt.tight_layout()
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Correlation helps you spot repeated information and features that move with failure.</p></div></div><div class="expected"><strong>Expected output</strong>A heatmap where red means positive correlation and blue means negative correlation.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
+      print(missing[missing > 0])
+      print(f"Total missing values: {missing.sum()}")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Most scikit-learn models cannot train with missing values, so always check before modeling.</p></div></div><div class="expected"><strong>Expected output</strong>Usually <code>Total missing values: 0</code> for this dataset.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
+          "Air temperature [K]",
+          "Process temperature [K]",
+          "Rotational speed [rpm]",
+          "Torque [Nm]",
+          "Tool wear [min]"
+      ]
+      X = df[feature_cols]
+      y = df["Machine failure"]
+      print(X.shape, y.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>X</code> is the input table and <code>y</code> is the label. Keeping those separate is the core supervised learning pattern.</p></div></div><div class="expected"><strong>Expected output</strong><code>(10000, 5) (10000,)</code> or similar.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+          X, y, test_size=0.2, random_state=42, stratify=y
+      )
+      print(X_train.shape, X_test.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The test set is held back so evaluation measures generalization. <code>stratify=y</code> keeps the same failure ratio in both sets.</p></div></div><div class="expected"><strong>Expected output</strong>About 8,000 training rows and 2,000 test rows.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
+      X_train_scaled = scaler.fit_transform(X_train)
+      X_test_scaled = scaler.transform(X_test)</code></pre></figure>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Fit the scaler on training data only. Fitting on test data leaks information from the exam into the study guide.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
+                <figure class="code-card"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
+      log_reg.fit(X_train_scaled, y_train)
+      log_pred = log_reg.predict(X_test_scaled)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Logistic regression is the baseline. <code>class_weight="balanced"</code> helps when failures are rare.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>log_pred</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
+      ConfusionMatrixDisplay.from_predictions(y_test, log_pred, display_labels=["Normal", "Failure"])
+      plt.title("Logistic Regression Confusion Matrix")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The classification report gives precision, recall, and F1. The confusion matrix shows which mistakes the model makes.</p></div></div><div class="expected"><strong>Expected output</strong>Text metrics plus a 2x2 confusion matrix.</div></div>
+                <figure class="code-card"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
+          n_estimators=100,
+          random_state=42,
+          class_weight="balanced"
+      )
+      forest.fit(X_train, y_train)
+      forest_pred = forest.predict(X_test)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Random forests do not require scaling and often perform well on tabular engineering data.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>forest_pred</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
+      forest_f1 = f1_score(y_test, forest_pred)
+      
+      print(f"Logistic Regression F1: {log_f1:.3f}")
+      print(f"Random Forest F1:       {forest_f1:.3f}")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>F1 is useful for rare failures because it punishes both false alarms and missed failures.</p></div></div><div class="expected"><strong>Expected output</strong>Two F1 scores; discuss which one is better and why.</div></div>
+                <figure class="code-card"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+      scores = []
+      
+      for n in tree_counts:
+          model = RandomForestClassifier(n_estimators=n, random_state=42, class_weight="balanced")
+          model.fit(X_train, y_train)
+          scores.append(f1_score(y_test, model.predict(X_test)))
+      
+      plt.plot(tree_counts, scores, marker="o")
+      plt.xlabel("Number of trees")
+      plt.ylabel("F1 score")
+      plt.title("Random Forest tuning")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>Hyperparameter tuning asks whether more model capacity improves performance enough to justify extra computation.</p></div></div><div class="expected"><strong>Expected output</strong>A line plot of F1 score versus number of trees.</div></div>
+              </section>
+      
+              <div class="chapter-nav">
+                <a class="breadcrumb" href="chapter-2-ml.html#what-is-ml">← Previous Chapter</a>
+                <a class="next-btn" href="chapter-4-unsupervised.html#unsupervised">Next Chapter → Unsupervised Learning</a>
+              </div>
+            </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built for <strong>Mechanical Engineering Freshmen</strong> - Robotics Track</p>
+    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

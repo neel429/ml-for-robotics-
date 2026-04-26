@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 6 - Computer Vision | ML for Robotics</title>
+  <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" aria-label="Sticky site header">
+    <a class="top-title" href="index.html#top">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Table of Contents</div>
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
+    <div class="sidebar-title">Course Navigation</div>
+    <nav class="nav-tree">
+      <details open style="--chapter-color: var(--ch0)">
+        <summary><span class="dot"></span>Chapter 0</summary>
+        <a href="chapter-0.html#chapter-0">Welcome</a>
+        <a href="chapter-0.html#build">What You Will Build</a>
+        <a href="chapter-0.html#tools">Tools You Need</a>
+        <a href="chapter-0.html#reading-tips">Reading Tips</a>
+      </details>
+      <details open style="--chapter-color: var(--ch1)">
+        <summary><span class="dot"></span>Chapter 1</summary>
+        <a href="chapter-1-python.html#python">Python Fundamentals</a>
+        <a href="chapter-1-python.html#python-colab">1.1 Colab</a>
+        <a href="chapter-1-python.html#variables">1.2 Variables</a>
+        <a href="chapter-1-python.html#data-structures">1.3 Data Structures</a>
+        <a href="chapter-1-python.html#control-flow">1.4 Control Flow</a>
+        <a href="chapter-1-python.html#loops">1.5 Loops</a>
+        <a href="chapter-1-python.html#functions">1.6 Functions</a>
+        <a href="chapter-1-python.html#libraries">1.7 Libraries</a>
+        <a href="chapter-1-python.html#checkpoint">1.8 Checkpoint</a>
+      </details>
+      <details open style="--chapter-color: var(--ch2)">
+        <summary><span class="dot"></span>Chapter 2</summary>
+        <a href="chapter-2-ml.html#what-is-ml">What is ML?</a>
+        <a href="chapter-2-ml.html#types">Three Flavors</a>
+        <a href="chapter-2-ml.html#when-to-use">When to Use Which</a>
+      </details>
+      <details open style="--chapter-color: var(--ch3)">
+        <summary><span class="dot"></span>Chapter 3</summary>
+        <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
+        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
+        <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
+        <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
+        <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch4)">
+        <summary><span class="dot"></span>Chapter 4</summary>
+        <a href="chapter-4-unsupervised.html#unsupervised">Unsupervised Learning</a>
+        <a href="chapter-4-unsupervised.html#clustering">Clustering</a>
+        <a href="chapter-4-unsupervised.html#kmeans">K-Means</a>
+        <a href="chapter-4-unsupervised.html#sensor-cluster-project">Vibration Clustering Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch5)">
+        <summary><span class="dot"></span>Chapter 5</summary>
+        <a href="chapter-5-rl.html#reinforcement-learning">Reinforcement Learning</a>
+        <a href="chapter-5-rl.html#q-learning">Q-Learning</a>
+        <a href="chapter-5-rl.html#maze-project">FrozenLake Maze Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch6)">
+        <summary><span class="dot"></span>Chapter 6</summary>
+        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
+        <a href="chapter-6-vision.html#opencv">OpenCV</a>
+        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
+        <a href="chapter-6-vision.html#cnn">CNNs</a>
+        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch7)">
+        <summary><span class="dot"></span>Chapter 7</summary>
+        <a href="chapter-7-next.html#whats-next">What's Next?</a>
+        <a href="chapter-7-next.html#decision-guide">Decision Guide</a>
+        <a href="chapter-7-next.html#roadmap">Learning Roadmap</a>
+        <a href="chapter-7-next.html#papers">Papers to Read</a>
+      </details>
+      <details style="--chapter-color: var(--cyan)">
+        <summary><span class="dot"></span>Project Archive</summary>
+        <a href="student-projects.html#projects">Student Projects</a>
+      </details>
+    </nav>
+    <a class="back-top" href="#top">Back to top</a>
+  </aside>
+
+  <main class="page" id="top">
+    <div class="container">
+      <article class="chapter ch6 observe" id="computer-vision" data-title="Chapter 6 — Computer Vision for Robotics">
+              <header class="chapter-header">
+                <span class="chapter-badge">Chapter 6 / 7</span>
+                <a class="breadcrumb" href="chapter-5-rl.html#reinforcement-learning">← Previous Chapter: Reinforcement Learning</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Computer Vision for Robotics: <span>Traffic Sign Classifier</span></h2>
+                <p class="lead">Computer vision lets robots use cameras as sensors. This chapter replaces the old MNIST demo with a real traffic sign classification project.</p>
+              </header>
+              <section class="section-card observe" data-title="6.1 Why Vision Matters">
+                <h3>6.1 Why Vision Matters in Robotics</h3>
+                <p>Cameras are cheap, rich sensors. Robots use vision to read signs, detect obstacles, estimate pose, inspect parts, track lanes, and understand human workspaces.</p>
+              </section>
+              <section id="opencv" class="section-card observe" data-title="6.3 OpenCV">
+                <h3>6.2 Tools: OpenCV</h3>
+                <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
+                <figure class="code-card"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
+      import matplotlib.pyplot as plt
+      
+      img_bgr = cv2.imread("traffic_sign.jpg")
+      print(img_bgr.shape)             # height, width, channels
+      
+      img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+      small = cv2.resize(img_rgb, (32, 32))
+      edges = cv2.Canny(small, threshold1=50, threshold2=150)
+      
+      cv2.rectangle(img_rgb, (20, 20), (120, 120), (0, 255, 0), 2)
+      plt.imshow(img_rgb)
+      plt.axis("off")
+      plt.show()</code></pre></figure>
+                <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">BGR vs RGB</div><p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p></div></div>
+              </section>
+              <section id="tensorflow" class="section-card observe" data-title="6.3 TensorFlow/Keras">
+                <h3>6.3 Tools: TensorFlow/Keras</h3>
+                <p>TensorFlow is Google's library for building and training neural networks. Keras is the friendly wrapper on top, like power steering on a car. You will use tensors, layers, models, epochs, batches, loss functions, and optimizers.</p>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="Keras sequential stack">
+                    <div class="flow-node">Input image</div><div class="arrow">→</div>
+                    <div class="flow-node">Layers stacked in order</div><div class="arrow">→</div>
+                    <div class="flow-node">Class probabilities</div>
+                  </div>
+                </div>
+              </section>
+              <section id="cnn" class="section-card observe" data-title="6.2 CNNs">
+                <h3>6.4 How Convolutional Neural Networks See</h3>
+                <p>A normal neural network sees a flat list of pixels. A CNN scans small filters across the image, so it can learn edges, corners, textures, shapes, and eventually objects.</p>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="CNN architecture diagram">
+                    <div class="flow-node">Input 32x32 image</div><div class="arrow">→</div>
+                    <div class="flow-node">Conv2D + MaxPool</div><div class="arrow">→</div>
+                    <div class="flow-node">Dense → 43 signs</div>
+                  </div>
+                </div>
+                <figure class="code-card"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
+          [-1, 0, 1],
+          [-2, 0, 2],
+          [-1, 0, 1]
+      ])</code></pre></figure>
+              </section>
+              <section id="traffic-sign-project" class="section-card observe" data-title="6.4 Project: Traffic Sign Classifier">
+                <h3>6.5 ★ Project: Traffic Sign Classifier with TensorFlow + OpenCV</h3>
+                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
+                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
+      from google.colab import files
+      files.upload()
+      !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+      !kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
+      !unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      
+      train_csv = Path("gtsrb/Train.csv")
+      df = pd.read_csv(train_csv)
+      display(df.head())
+      df["ClassId"].value_counts().sort_index().plot(kind="bar", figsize=(14, 4))
+      plt.title("Images per traffic sign class")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows metadata and checks whether classes are balanced.</p></div></div><div class="expected"><strong>Expected output</strong>A table and a 43-bar class count chart.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
+      import numpy as np
+      from tensorflow.keras.preprocessing.image import ImageDataGenerator
+      
+      images, labels = [], []
+      for _, row in df.iterrows():
+          path = Path("gtsrb") / row["Path"]
+          img = cv2.imread(str(path))
+          img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+          img = cv2.resize(img, (32, 32))
+          img = img.astype("float32") / 255.0
+          images.append(img)
+          labels.append(row["ClassId"])
+      
+      X = np.array(images)
+      y = np.array(labels)
+      print(X.shape, y.shape)</code></pre></figure>
+                <figure class="code-card"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
+          rotation_range=10,
+          zoom_range=0.10,
+          horizontal_flip=True
+      )
+      
+      # Use with care: horizontal flips can change the meaning of some traffic signs.</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples.</p></div></div><div class="expected"><strong>Expected output</strong><code>(num_images, 32, 32, 3)</code> and labels.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
+      
+      X_train, X_temp, y_train, y_temp = train_test_split(
+          X, y, test_size=0.3, random_state=42, stratify=y
+      )
+      X_val, X_test, y_val, y_test = train_test_split(
+          X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
+      )</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates separate data for training, tuning during training, and final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No output; three splits are ready.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
+      from tensorflow import keras
+      from tensorflow.keras import layers
+      
+      model = keras.Sequential([
+          layers.Conv2D(32, (3, 3), activation="relu", input_shape=(32, 32, 3)),
+          layers.MaxPooling2D((2, 2)),
+          layers.Conv2D(64, (3, 3), activation="relu"),
+          layers.MaxPooling2D((2, 2)),
+          layers.Flatten(),
+          layers.Dense(256, activation="relu"),
+          layers.Dropout(0.5),
+          layers.Dense(43, activation="softmax")
+      ])
+      model.summary()</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision.</p></div></div><div class="expected"><strong>Expected output</strong>A model summary with trainable parameters.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
+          optimizer="adam",
+          loss="sparse_categorical_crossentropy",
+          metrics=["accuracy"]
+      )</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p><code>adam</code> updates weights, loss measures wrongness, and accuracy reports percent correct.</p></div></div><div class="expected"><strong>Expected output</strong>No output; model is ready to train.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
+          X_train, y_train,
+          validation_data=(X_val, y_val),
+          epochs=15,
+          batch_size=64
+      )</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Each epoch passes through the training set once and reports train/validation accuracy.</p></div></div><div class="expected"><strong>Expected output</strong>A live progress bar for each epoch.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+      axes[0].plot(history.history["accuracy"], label="train")
+      axes[0].plot(history.history["val_accuracy"], label="val")
+      axes[0].set_title("Accuracy")
+      axes[0].legend()
+      
+      axes[1].plot(history.history["loss"], label="train")
+      axes[1].plot(history.history["val_loss"], label="val")
+      axes[1].set_title("Loss")
+      axes[1].legend()
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">What this does</div><p>If training accuracy rises but validation accuracy stalls, the model may be overfitting.</p></div></div><div class="expected"><strong>Expected output</strong>Two learning curves.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+      print(f"Test accuracy: {test_acc:.3f}")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The test set is used once at the end to estimate real-world performance.</p></div></div><div class="expected"><strong>Expected output</strong>A single test accuracy value.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
+      
+      pred = np.argmax(model.predict(X_test), axis=1)
+      cm = confusion_matrix(y_test, pred)
+      
+      plt.figure(figsize=(9, 9))
+      plt.imshow(cm, cmap="Blues")
+      plt.title("43-class confusion matrix")
+      plt.xlabel("Predicted class")
+      plt.ylabel("True class")
+      plt.colorbar()
+      plt.show()
+      
+      mistakes = []
+      for true_id in range(43):
+          for pred_id in range(43):
+              if true_id != pred_id and cm[true_id, pred_id] > 0:
+                  mistakes.append((cm[true_id, pred_id], true_id, pred_id))
+      print(sorted(mistakes, reverse=True)[:10])</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions.</p></div></div><div class="expected"><strong>Expected output</strong>A 43x43 plot and top 10 confusion tuples.</div></div>
+                <figure class="code-card"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
+      probs = model.predict(X_test[idx:idx+1])[0]
+      pred_label = np.argmax(probs)
+      confidence = probs[pred_label]
+      
+      plt.imshow(X_test[idx])
+      plt.title(f"Predicted {pred_label}, true {y_test[idx]}, confidence {confidence:.1%}")
+      plt.axis("off")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows a concrete example instead of only aggregate metrics.</p></div></div><div class="expected"><strong>Expected output</strong>A sign image with predicted label, true label, and confidence.</div></div>
+                <figure class="code-card"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
+      raw_bgr = cv2.imread(str(sample_path))
+      raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
+      
+      model_input = cv2.resize(raw_rgb, (32, 32)).astype("float32") / 255.0
+      probs = model.predict(model_input[None, ...])[0]
+      pred_label = np.argmax(probs)
+      confidence = probs[pred_label]
+      
+      overlay = raw_rgb.copy()
+      cv2.putText(
+          overlay,
+          f"Class {pred_label}: {confidence:.1%}",
+          (5, 25),
+          cv2.FONT_HERSHEY_SIMPLEX,
+          0.7,
+          (255, 255, 255),
+          2
+      )
+      
+      plt.imshow(overlay)
+      plt.axis("off")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top.</p></div></div><div class="expected"><strong>Expected output</strong>A traffic sign image with prediction text overlaid.</div></div>
+                <figure class="code-card"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
+      # layers.Conv2D(128, (3, 3), activation="relu"),
+      # layers.MaxPooling2D((2, 2)),
+      #
+      # Retrain and compare validation accuracy and training time.</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>A deeper network may learn richer features, but it can also overfit or train slower.</p></div></div><div class="expected"><strong>Expected output</strong>Your comparison notes.</div></div>
+              </section>
+              <div class="chapter-nav">
+                <a class="breadcrumb" href="chapter-5-rl.html#reinforcement-learning">← Previous Chapter</a>
+                <a class="next-btn" href="chapter-7-next.html#whats-next">Next Chapter → What's Next?</a>
+              </div>
+            </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built for <strong>Mechanical Engineering Freshmen</strong> - Robotics Track</p>
+    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

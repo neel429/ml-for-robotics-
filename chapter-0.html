@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 0 - Welcome | ML for Robotics</title>
+  <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" aria-label="Sticky site header">
+    <a class="top-title" href="index.html#top">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Table of Contents</div>
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
+    <div class="sidebar-title">Course Navigation</div>
+    <nav class="nav-tree">
+      <details open style="--chapter-color: var(--ch0)">
+        <summary><span class="dot"></span>Chapter 0</summary>
+        <a href="chapter-0.html#chapter-0">Welcome</a>
+        <a href="chapter-0.html#build">What You Will Build</a>
+        <a href="chapter-0.html#tools">Tools You Need</a>
+        <a href="chapter-0.html#reading-tips">Reading Tips</a>
+      </details>
+      <details open style="--chapter-color: var(--ch1)">
+        <summary><span class="dot"></span>Chapter 1</summary>
+        <a href="chapter-1-python.html#python">Python Fundamentals</a>
+        <a href="chapter-1-python.html#python-colab">1.1 Colab</a>
+        <a href="chapter-1-python.html#variables">1.2 Variables</a>
+        <a href="chapter-1-python.html#data-structures">1.3 Data Structures</a>
+        <a href="chapter-1-python.html#control-flow">1.4 Control Flow</a>
+        <a href="chapter-1-python.html#loops">1.5 Loops</a>
+        <a href="chapter-1-python.html#functions">1.6 Functions</a>
+        <a href="chapter-1-python.html#libraries">1.7 Libraries</a>
+        <a href="chapter-1-python.html#checkpoint">1.8 Checkpoint</a>
+      </details>
+      <details open style="--chapter-color: var(--ch2)">
+        <summary><span class="dot"></span>Chapter 2</summary>
+        <a href="chapter-2-ml.html#what-is-ml">What is ML?</a>
+        <a href="chapter-2-ml.html#types">Three Flavors</a>
+        <a href="chapter-2-ml.html#when-to-use">When to Use Which</a>
+      </details>
+      <details open style="--chapter-color: var(--ch3)">
+        <summary><span class="dot"></span>Chapter 3</summary>
+        <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
+        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
+        <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
+        <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
+        <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch4)">
+        <summary><span class="dot"></span>Chapter 4</summary>
+        <a href="chapter-4-unsupervised.html#unsupervised">Unsupervised Learning</a>
+        <a href="chapter-4-unsupervised.html#clustering">Clustering</a>
+        <a href="chapter-4-unsupervised.html#kmeans">K-Means</a>
+        <a href="chapter-4-unsupervised.html#sensor-cluster-project">Vibration Clustering Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch5)">
+        <summary><span class="dot"></span>Chapter 5</summary>
+        <a href="chapter-5-rl.html#reinforcement-learning">Reinforcement Learning</a>
+        <a href="chapter-5-rl.html#q-learning">Q-Learning</a>
+        <a href="chapter-5-rl.html#maze-project">FrozenLake Maze Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch6)">
+        <summary><span class="dot"></span>Chapter 6</summary>
+        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
+        <a href="chapter-6-vision.html#opencv">OpenCV</a>
+        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
+        <a href="chapter-6-vision.html#cnn">CNNs</a>
+        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch7)">
+        <summary><span class="dot"></span>Chapter 7</summary>
+        <a href="chapter-7-next.html#whats-next">What's Next?</a>
+        <a href="chapter-7-next.html#decision-guide">Decision Guide</a>
+        <a href="chapter-7-next.html#roadmap">Learning Roadmap</a>
+        <a href="chapter-7-next.html#papers">Papers to Read</a>
+      </details>
+      <details style="--chapter-color: var(--cyan)">
+        <summary><span class="dot"></span>Project Archive</summary>
+        <a href="student-projects.html#projects">Student Projects</a>
+      </details>
+    </nav>
+    <a class="back-top" href="#top">Back to top</a>
+  </aside>
+
+  <main class="page" id="top">
+    <div class="container">
+      <article class="chapter ch0 observe" id="chapter-0" data-title="Chapter 0 — Welcome & How to Use This Guide">
+              <header class="chapter-header">
+                <span class="chapter-badge">Chapter 0 / 7</span>
+                <a class="breadcrumb" href="#top">← Previous: Table of Contents</a>
+                <div class="chapter-kicker">Welcome & orientation</div>
+                <h1>Machine Learning for <span style="color:var(--ch1)">Robotics</span> Engineers</h1>
+                <p class="hero-sub">You're a freshmen ME student. You may have never written a line of code. That's exactly who this guide is for.</p>
+              </header>
+      
+              <section class="hero-panel" aria-labelledby="journey-title">
+                <div class="hero-grid">
+                  <div>
+                    <div class="eyebrow">Mechanical Engineering x AI</div>
+                    <h2 id="journey-title">From zero Python to robotics ML projects</h2>
+                    <p class="lead">This page is a long-scroll textbook, lab manual, and project checklist. You will learn the programming basics, the core ML families, and how to run full notebooks in Google Colab without installing anything locally.</p>
+                    <div class="hero-tags" style="--chapter-color: var(--ch1)">
+                      <span class="tag">Python</span>
+                      <span class="tag">Google Colab</span>
+                      <span class="tag">Kaggle datasets</span>
+                      <span class="tag">Robotics sensors</span>
+                    </div>
+                  </div>
+                  <div class="journey" aria-label="Learning journey timeline">
+                    <div class="journey-step"><div class="journey-num">0</div><div><strong>Setup</strong><span>Colab, Kaggle, how to read this guide</span></div></div>
+                    <div class="journey-step"><div class="journey-num">1</div><div><strong>Python</strong><span>Variables, loops, functions, libraries</span></div></div>
+                    <div class="journey-step"><div class="journey-num">2</div><div><strong>ML concepts</strong><span>Supervised, unsupervised, reinforcement</span></div></div>
+                    <div class="journey-step"><div class="journey-num">3</div><div><strong>Projects</strong><span>Failure prediction, vibration clusters, maze navigation</span></div></div>
+                    <div class="journey-step"><div class="journey-num">4</div><div><strong>Vision</strong><span>OpenCV, CNNs, traffic sign classifier</span></div></div>
+                  </div>
+                </div>
+              </section>
+      
+              <section id="build" class="section-card">
+                <h3>What You Will Build</h3>
+                <div class="grid-3">
+                  <div class="card">
+                    <div class="icon">⚙️</div>
+                    <h4>Robot Failure Predictor</h4>
+                    <p>Predict whether a machine is likely to fail from temperature, torque, speed, and wear readings.</p>
+                    <p class="mini muted"><strong>Stack:</strong> Pandas, scikit-learn, Logistic Regression, Random Forest</p>
+                  </div>
+                  <div class="card">
+                    <div class="icon">📈</div>
+                    <h4>Sensor Cluster Analyzer</h4>
+                    <p>Group vibration windows into operating modes without labels, then interpret what each group means.</p>
+                    <p class="mini muted"><strong>Stack:</strong> NumPy, FFT features, K-Means, PCA, DBSCAN</p>
+                  </div>
+                  <div class="card">
+                    <div class="icon">🚦</div>
+                    <h4>Traffic Sign Classifier</h4>
+                    <p>Train a convolutional neural network that recognizes real traffic signs for mobile robots.</p>
+                    <p class="mini muted"><strong>Stack:</strong> OpenCV, TensorFlow/Keras, CNNs, GTSRB</p>
+                  </div>
+                </div>
+              </section>
+      
+              <section id="tools" class="section-card">
+                <h3>Tools You Need: Zero Installation</h3>
+                <p>Everything runs in the browser with Google Colab. Colab gives you a free notebook where text, code, charts, and results live together. Kaggle gives you free access to real datasets.</p>
+                <div class="steps">
+                  <div class="step"><div><strong>Open Colab.</strong><br />Go to <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">colab.research.google.com</a>, sign in, and choose <strong>New Notebook</strong>.</div></div>
+                  <div class="step"><div><strong>Create your first cell.</strong><br />Click the gray code cell and type <code>print("Hello, Robot!")</code>.</div></div>
+                  <div class="step"><div><strong>Run a cell.</strong><br />Press <code>Shift+Enter</code>. The output appears directly underneath the cell.</div></div>
+                  <div class="step"><div><strong>Create a free Kaggle account.</strong><br />Go to <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a>. We use Kaggle because it hosts clean public datasets.</div></div>
+                  <div class="step"><div><strong>Get your Kaggle API key.</strong><br />Kaggle account menu → Settings → API → Create New Token. It downloads <code>kaggle.json</code>.</div></div>
+                  <div class="step"><div><strong>Upload the key in Colab.</strong><br />Each Kaggle project starts with an upload cell. Run it, choose <code>kaggle.json</code>, and the notebook downloads the dataset.</div></div>
+                </div>
+                <div class="diagram" aria-label="Colab cell workflow diagram">
+                  <div class="flow-row">
+                    <div class="flow-node">Open Colab</div><div class="arrow">→</div>
+                    <div class="flow-node">Write code cell</div><div class="arrow">→</div>
+                    <div class="flow-node">Shift+Enter runs it</div>
+                  </div>
+                </div>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Kaggle key safety</div><p>Your <code>kaggle.json</code> key belongs to your account. Upload it only inside your own Colab notebook and do not paste it into public code.</p></div>
+                </div>
+              </section>
+      
+              <section id="reading-tips" class="section-card">
+                <h3>Reading Tips</h3>
+                <ul>
+                  <li>Read top to bottom the first time. The early Python ideas are used later without re-explaining them.</li>
+                  <li>Use the sidebar to jump back to specific topics when a notebook cell feels unfamiliar.</li>
+                  <li>Every 💡 tip box is something that trips beginners up. Read those carefully.</li>
+                  <li>Every ★ Project section has a full Colab-style notebook on the page. Do not skip the projects.</li>
+                </ul>
+              </section>
+      
+              <div class="chapter-nav">
+                <a class="breadcrumb" href="#top">← Table of Contents</a>
+                <a class="next-btn" href="chapter-1-python.html#python">Next Chapter → Python Fundamentals</a>
+              </div>
+            </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built for <strong>Mechanical Engineering Freshmen</strong> - Robotics Track</p>
+    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

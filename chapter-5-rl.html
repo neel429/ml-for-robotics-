@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 5 - Reinforcement Learning | ML for Robotics</title>
+  <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" aria-label="Sticky site header">
+    <a class="top-title" href="index.html#top">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Table of Contents</div>
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
+    <div class="sidebar-title">Course Navigation</div>
+    <nav class="nav-tree">
+      <details open style="--chapter-color: var(--ch0)">
+        <summary><span class="dot"></span>Chapter 0</summary>
+        <a href="chapter-0.html#chapter-0">Welcome</a>
+        <a href="chapter-0.html#build">What You Will Build</a>
+        <a href="chapter-0.html#tools">Tools You Need</a>
+        <a href="chapter-0.html#reading-tips">Reading Tips</a>
+      </details>
+      <details open style="--chapter-color: var(--ch1)">
+        <summary><span class="dot"></span>Chapter 1</summary>
+        <a href="chapter-1-python.html#python">Python Fundamentals</a>
+        <a href="chapter-1-python.html#python-colab">1.1 Colab</a>
+        <a href="chapter-1-python.html#variables">1.2 Variables</a>
+        <a href="chapter-1-python.html#data-structures">1.3 Data Structures</a>
+        <a href="chapter-1-python.html#control-flow">1.4 Control Flow</a>
+        <a href="chapter-1-python.html#loops">1.5 Loops</a>
+        <a href="chapter-1-python.html#functions">1.6 Functions</a>
+        <a href="chapter-1-python.html#libraries">1.7 Libraries</a>
+        <a href="chapter-1-python.html#checkpoint">1.8 Checkpoint</a>
+      </details>
+      <details open style="--chapter-color: var(--ch2)">
+        <summary><span class="dot"></span>Chapter 2</summary>
+        <a href="chapter-2-ml.html#what-is-ml">What is ML?</a>
+        <a href="chapter-2-ml.html#types">Three Flavors</a>
+        <a href="chapter-2-ml.html#when-to-use">When to Use Which</a>
+      </details>
+      <details open style="--chapter-color: var(--ch3)">
+        <summary><span class="dot"></span>Chapter 3</summary>
+        <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
+        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
+        <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
+        <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
+        <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch4)">
+        <summary><span class="dot"></span>Chapter 4</summary>
+        <a href="chapter-4-unsupervised.html#unsupervised">Unsupervised Learning</a>
+        <a href="chapter-4-unsupervised.html#clustering">Clustering</a>
+        <a href="chapter-4-unsupervised.html#kmeans">K-Means</a>
+        <a href="chapter-4-unsupervised.html#sensor-cluster-project">Vibration Clustering Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch5)">
+        <summary><span class="dot"></span>Chapter 5</summary>
+        <a href="chapter-5-rl.html#reinforcement-learning">Reinforcement Learning</a>
+        <a href="chapter-5-rl.html#q-learning">Q-Learning</a>
+        <a href="chapter-5-rl.html#maze-project">FrozenLake Maze Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch6)">
+        <summary><span class="dot"></span>Chapter 6</summary>
+        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
+        <a href="chapter-6-vision.html#opencv">OpenCV</a>
+        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
+        <a href="chapter-6-vision.html#cnn">CNNs</a>
+        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch7)">
+        <summary><span class="dot"></span>Chapter 7</summary>
+        <a href="chapter-7-next.html#whats-next">What's Next?</a>
+        <a href="chapter-7-next.html#decision-guide">Decision Guide</a>
+        <a href="chapter-7-next.html#roadmap">Learning Roadmap</a>
+        <a href="chapter-7-next.html#papers">Papers to Read</a>
+      </details>
+      <details style="--chapter-color: var(--cyan)">
+        <summary><span class="dot"></span>Project Archive</summary>
+        <a href="student-projects.html#projects">Student Projects</a>
+      </details>
+    </nav>
+    <a class="back-top" href="#top">Back to top</a>
+  </aside>
+
+  <main class="page" id="top">
+    <div class="container">
+      <article class="chapter ch5 observe" id="reinforcement-learning" data-title="Chapter 5 — Reinforcement Learning">
+              <header class="chapter-header">
+                <span class="chapter-badge">Chapter 5 / 7</span>
+                <a class="breadcrumb" href="chapter-4-unsupervised.html#unsupervised">← Previous Chapter: Unsupervised Learning</a>
+                <div class="chapter-kicker">Gym project</div>
+                <h2>Reinforcement Learning: <span>Teach a Robot to Navigate a Maze</span></h2>
+                <p class="lead">Reinforcement learning is about actions, rewards, and practice. The model is not given labels; it learns which actions lead to better outcomes.</p>
+              </header>
+              <section class="section-card observe" data-title="5.1 Agent, Environment, Reward">
+                <h3>5.1 Concept: Agent, Environment, Reward</h3>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="Reinforcement learning loop">
+                    <div class="flow-node">Agent</div><div class="arrow">action →</div>
+                    <div class="flow-node">Environment</div><div class="arrow">reward + state →</div>
+                    <div class="flow-node">Agent updates policy</div>
+                  </div>
+                </div>
+                <p>RL is different from supervised learning because there is no answer key for every state. The agent must explore, make mistakes, and learn from reward signals.</p>
+                <p>Real robotics uses RL in legged locomotion, drone control, robotic surgery research, dexterous manipulation, and simulation-to-real training.</p>
+              </section>
+              <section id="q-learning" class="section-card observe" data-title="5.2 Q-Learning Explained">
+                <h3>5.2 Q-Learning Explained with a Grid</h3>
+                <p>A Q-table stores the expected value of taking each action in each state. In FrozenLake, there are 16 grid states and 4 actions, so the table is 16 x 4.</p>
+                <figure class="code-card">
+                  <figcaption>Q-learning update equation</figcaption>
+      <pre><code>Q(s, a) <- Q(s, a) + alpha [ r + gamma * max Q(s', a') - Q(s, a) ]
+                 old value    rate   reward discount best future value</code></pre>
+                </figure>
+                <ul>
+                  <li><strong>s</strong>: current state.</li>
+                  <li><strong>a</strong>: action chosen.</li>
+                  <li><strong>alpha</strong>: learning rate, or how aggressively we update.</li>
+                  <li><strong>r</strong>: immediate reward.</li>
+                  <li><strong>gamma</strong>: discount factor for future rewards.</li>
+                </ul>
+                <p><strong>Exploration vs exploitation</strong> is the central tradeoff. Early on, the agent flips a biased coin and explores random moves often. Later, it mostly exploits the best actions it has learned.</p>
+              </section>
+              <section id="maze-project" class="section-card observe" data-title="5.3 Project: FrozenLake Maze">
+                <h3>5.3 ★ Project: Teaching a Robot to Navigate a Maze</h3>
+                <p><strong>Environment:</strong> OpenAI Gym / Gymnasium <code>FrozenLake-v1</code>. The notebook logs rewards to CSV, uploads them as a Kaggle dataset, and loads them back for analysis.</p>
+                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>This project generates <code>frozenlake_training_log.csv</code>. Upload or retrieve logs through <a href="https://www.kaggle.com/datasets" target="_blank" rel="noreferrer">kaggle.com/datasets</a>.</p></div></div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
+      import gymnasium as gym
+      import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Installs the grid-world environment and imports the tools for tables, arrays, and charts.</p></div></div><div class="expected"><strong>Expected output</strong>Installation completes with no import errors.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
+      state, info = env.reset(seed=42)
+      print(env.render())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates a 4x4 map. Slippery ice adds randomness, which makes learning harder and more realistic.</p></div></div><div class="expected"><strong>Expected output</strong>An ASCII grid with S, F, H, and G.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
+      print("Actions:", env.action_space.n)
+      print("0=Left, 1=Down, 2=Right, 3=Up")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Confirms that the state is a grid square and the action is a movement direction.</p></div></div><div class="expected"><strong>Expected output</strong><code>States: 16</code>, <code>Actions: 4</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
+      print(q_table.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The agent starts knowing nothing, so every action value starts at zero.</p></div></div><div class="expected"><strong>Expected output</strong><code>(16, 4)</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
+      alpha = 0.8
+      gamma = 0.95
+      epsilon = 1.0
+      epsilon_decay = 0.995
+      min_epsilon = 0.05
+      logs = []
+      
+      for episode in range(episodes):
+          state, info = env.reset()
+          done = False
+          total_reward = 0
+      
+          while not done:
+              if np.random.random() < epsilon:
+                  action = env.action_space.sample()
+              else:
+                  action = np.argmax(q_table[state])
+      
+              next_state, reward, terminated, truncated, info = env.step(action)
+              done = terminated or truncated
+      
+              best_next = np.max(q_table[next_state])
+              q_table[state, action] += alpha * (reward + gamma * best_next - q_table[state, action])
+      
+              state = next_state
+              total_reward += reward
+      
+          epsilon = max(min_epsilon, epsilon * epsilon_decay)
+          logs.append({"episode": episode, "reward": total_reward, "epsilon": epsilon})</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This is the learning loop: choose action, observe reward, update Q-table, repeat.</p></div></div><div class="expected"><strong>Expected output</strong>No output until the next plotting cell.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
+      log_df["rolling_reward"] = log_df["reward"].rolling(50).mean()
+      
+      plt.plot(log_df["episode"], log_df["rolling_reward"])
+      plt.xlabel("Episode")
+      plt.ylabel("Rolling average reward")
+      plt.title("Q-learning progress")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Rolling averages smooth noisy rewards so learning trends are easier to see.</p></div></div><div class="expected"><strong>Expected output</strong>A curve that should rise as the policy improves.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
+      policy = arrows[np.argmax(q_table, axis=1)].reshape(4, 4)
+      print(policy)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Converts best actions into arrows so you can inspect the learned navigation plan.</p></div></div><div class="expected"><strong>Expected output</strong>A 4x4 grid of arrows.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
+      done = False
+      while not done:
+          action = np.argmax(q_table[state])
+          state, reward, terminated, truncated, info = env.step(action)
+          done = terminated or truncated
+          print(env.render())
+      print("Final reward:", reward)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Runs one greedy episode using the learned policy instead of random exploration.</p></div></div><div class="expected"><strong>Expected output</strong>Several grid frames and a final reward of 0 or 1.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
+      print("Saved frozenlake_training_log.csv")
+      
+      # Optional: create a Kaggle dataset manually from this CSV,
+      # then use the Kaggle API to download it in a future notebook.</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The CSV turns your RL experiment into a dataset you can share and re-analyze.</p></div></div><div class="expected"><strong>Expected output</strong>A saved CSV file in Colab's file browser.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
+      env = gym.make("FrozenLake-v1", map_name="8x8", is_slippery=True, render_mode="ansi")
+      # or
+      env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="ansi")</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>The 8x8 map is harder. Turning slipperiness off isolates planning from randomness.</p></div></div><div class="expected"><strong>Expected output</strong>A changed environment; rerun training and compare reward curves.</div></div>
+              </section>
+              <div class="chapter-nav">
+                <a class="breadcrumb" href="chapter-4-unsupervised.html#unsupervised">← Previous Chapter</a>
+                <a class="next-btn" href="chapter-6-vision.html#computer-vision">Next Chapter → Computer Vision</a>
+              </div>
+            </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built for <strong>Mechanical Engineering Freshmen</strong> - Robotics Track</p>
+    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>
