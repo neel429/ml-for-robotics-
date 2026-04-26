@@ -1,1289 +1,2353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Machine Learning for Robotics | ME Freshmen Guide</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    --bg: #060b18;
-    --bg2: #0d1526;
-    --bg3: #111c35;
-    --card: #0f1a30;
-    --border: #1e3058;
-    --blue: #4da8ff;
-    --cyan: #00e5cc;
-    --orange: #ff6b35;
-    --yellow: #ffc947;
-    --green: #4cffb3;
-    --text: #cdd8ef;
-    --muted: #6a829e;
-    --white: #f0f6ff;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Outfit', sans-serif;
-    font-size: 17px;
-    line-height: 1.75;
-    overflow-x: hidden;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML for Robotics | Complete Beginner Curriculum</title>
+  <meta name="description" content="A free, browser-only machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg2: #111827;
+      --bg3: #172033;
+      --card: #101826;
+      --card2: #121d2f;
+      --border: #263449;
+      --border-strong: #3b4f6f;
+      --text: #d7e2f0;
+      --muted: #8da2bb;
+      --white: #f8fbff;
+      --blue: #4da8ff;
+      --cyan: #22d3ee;
+      --amber: #f59e0b;
+      --green: #34d399;
+      --orange: #f97316;
+      --pink: #ec4899;
+      --purple: #a78bfa;
+      --indigo: #6366f1;
+      --danger: #fb7185;
+      --ch0: #94a3b8;
+      --ch1: #22d3ee;
+      --ch2: #a78bfa;
+      --ch3: #34d399;
+      --ch4: #f59e0b;
+      --ch5: #f97316;
+      --ch6: #ec4899;
+      --ch7: #6366f1;
+      --sidebar: 260px;
+      --topbar: 48px;
+      color-scheme: dark;
+    }
 
-  /* ── CANVAS BG ── */
-  #bg-canvas {
-    position: fixed; inset: 0;
-    z-index: 0; pointer-events: none;
-    opacity: 0.35;
-  }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgba(34, 211, 238, 0.035), transparent 420px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, 48px 48px, 48px 48px, auto;
+      color: var(--text);
+      font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      line-height: 1.72;
+      overflow-x: hidden;
+    }
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(6,11,24,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 0;
-    padding: 0 40px; height: 60px;
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    color: var(--cyan);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-right: auto;
-    white-space: nowrap;
-  }
-  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 12.5px;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 6px;
-    transition: all .2s;
-    white-space: nowrap;
-  }
-  .nav-links a:hover { color: var(--white); background: var(--bg3); }
-  .project-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
-    padding: 36px; text-decoration: none; display: block;
-    transition: border-color .25s, transform .25s;
-    position: relative; overflow: hidden;
-  }
-  .project-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(0,229,204,.04), rgba(255,107,53,.04));
-    opacity: 0; transition: opacity .25s;
-  }
-  .project-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
-  .project-card:hover::before { opacity: 1; }
-  .proj-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
-  .proj-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px; color: var(--white); margin-bottom: 12px; line-height: 1.2; }
-  .proj-desc { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.65; }
-  .proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
-  .proj-arrow { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--cyan); font-weight: 600; }
-  .proj-stack { display: flex; gap: 20px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 4px; }
-  .proj-stack-item { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-  .proj-stack-item span { font-size: 15px; }
+    a { color: inherit; }
+    p { margin: 0 0 1rem; }
+    strong { color: var(--white); }
+    code {
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.86em;
+      color: var(--cyan);
+      background: rgba(23, 32, 51, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 0.1rem 0.35rem;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      font-size: inherit;
+    }
+    h1, h2, h3, h4 { color: var(--white); line-height: 1.14; margin: 0; }
+    h1 { font-size: clamp(2.6rem, 8vw, 5.4rem); letter-spacing: 0; }
+    h2 { font-size: clamp(2rem, 4vw, 3.1rem); }
+    h3 { font-size: 1.45rem; margin-top: 2.25rem; margin-bottom: 0.7rem; }
+    h4 { font-size: 1.03rem; margin: 1.1rem 0 0.45rem; }
+    ul, ol { padding-left: 1.3rem; margin-top: 0.35rem; }
+    li { margin: 0.25rem 0; }
+    .mono { font-family: "JetBrains Mono", Consolas, Monaco, monospace; }
 
-  /* ── SECTIONS ── */
-  .wrap { position: relative; z-index: 1; }
-  section { padding: 100px 0; }
-  .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--topbar);
+      z-index: 1000;
+      display: grid;
+      grid-template-columns: minmax(160px, 1fr) minmax(0, 1.3fr) auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1.1rem;
+      background: rgba(13, 17, 23, 0.88);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+    .top-title {
+      color: var(--cyan);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .current-chapter {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.86rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hamburger {
+      display: none;
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      color: var(--white);
+      background: var(--bg3);
+      border-radius: 7px;
+      width: 36px;
+      height: 34px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .progress-track {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      background: rgba(38, 52, 73, 0.65);
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--green), var(--pink));
+      transition: width 0.08s linear;
+    }
 
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex; align-items: center;
-    padding-top: 60px;
-  }
-  .hero-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; font-weight: 500;
-    color: var(--cyan);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 32px; height: 2px;
-    background: var(--cyan);
-  }
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(42px, 7vw, 80px);
-    line-height: 1.05;
-    color: var(--white);
-    margin-bottom: 28px;
-  }
-  h1 span.accent { color: var(--cyan); }
-  h1 span.orange { color: var(--orange); }
-  .hero-sub {
-    font-size: 19px;
-    color: var(--muted);
-    max-width: 580px;
-    margin-bottom: 48px;
-    line-height: 1.7;
-  }
-  .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 56px; }
-  .tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    padding: 5px 14px;
-    border-radius: 100px;
-    border: 1px solid;
-    font-weight: 500;
-  }
-  .tag-blue { color: var(--blue); border-color: var(--blue); background: rgba(77,168,255,.07); }
-  .tag-cyan { color: var(--cyan); border-color: var(--cyan); background: rgba(0,229,204,.07); }
-  .tag-orange { color: var(--orange); border-color: var(--orange); background: rgba(255,107,53,.07); }
-  .tag-yellow { color: var(--yellow); border-color: var(--yellow); background: rgba(255,201,71,.07); }
-  .tag-green { color: var(--green); border-color: var(--green); background: rgba(76,255,179,.07); }
+    .sidebar {
+      position: fixed;
+      top: var(--topbar);
+      bottom: 0;
+      left: 0;
+      width: var(--sidebar);
+      z-index: 900;
+      background: rgba(13, 17, 23, 0.94);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1rem 0.85rem;
+    }
+    .sidebar-title {
+      color: var(--white);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin: 0.25rem 0 0.85rem;
+      font-weight: 800;
+    }
+    .nav-tree details {
+      border: 1px solid transparent;
+      border-radius: 8px;
+      margin-bottom: 0.35rem;
+    }
+    .nav-tree details[open] { background: rgba(255,255,255,0.025); border-color: rgba(255,255,255,0.04); }
+    .nav-tree summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.46rem 0.5rem;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.86rem;
+      border-radius: 7px;
+    }
+    .nav-tree summary::-webkit-details-marker { display: none; }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--chapter-color, var(--cyan));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--chapter-color, var(--cyan)) 18%, transparent);
+      flex: 0 0 auto;
+    }
+    .nav-tree a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      padding: 0.36rem 0.45rem 0.36rem 1.45rem;
+      border-left: 2px solid transparent;
+      border-radius: 0 6px 6px 0;
+    }
+    .nav-tree a:hover,
+    .nav-tree a:focus-visible {
+      color: var(--white);
+      background: rgba(255,255,255,0.04);
+      outline: none;
+    }
+    .nav-tree a.active {
+      color: var(--white);
+      border-left-color: var(--chapter-color, var(--cyan));
+      background: color-mix(in srgb, var(--chapter-color, var(--cyan)) 13%, transparent);
+    }
+    .back-top {
+      position: sticky;
+      bottom: 0;
+      display: block;
+      margin-top: 1rem;
+      padding: 0.6rem 0.75rem;
+      color: var(--white);
+      text-align: center;
+      text-decoration: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .drawer-scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 850;
+      background: rgba(0, 0, 0, 0.56);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
 
-  .hero-stats {
-    display: flex; gap: 48px; flex-wrap: wrap;
-    padding-top: 40px;
-    border-top: 1px solid var(--border);
-  }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 36px;
-    color: var(--white);
-  }
-  .stat-num span { color: var(--cyan); }
-  .stat-label { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+    .page {
+      margin-left: var(--sidebar);
+      padding-top: calc(var(--topbar) + 1.6rem);
+      position: relative;
+      z-index: 1;
+    }
+    .container {
+      width: min(900px, calc(100vw - var(--sidebar) - 4rem));
+      margin: 0 auto;
+    }
+    .wide-container {
+      width: min(1080px, calc(100vw - var(--sidebar) - 3rem));
+      margin: 0 auto;
+    }
 
-  /* ── SECTION HEADERS ── */
-  .section-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: var(--cyan);
-    letter-spacing: .15em; text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-num::before { content: ''; width: 28px; height: 2px; background: var(--cyan); display: inline-block; }
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(30px, 4vw, 44px);
-    color: var(--white);
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-  h2 .accent { color: var(--cyan); }
-  h3 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    color: var(--white);
-    margin-bottom: 12px;
-    margin-top: 36px;
-  }
-  p { margin-bottom: 18px; color: var(--text); }
-  .lead { font-size: 19px; color: var(--text); margin-bottom: 28px; }
+    .toc-card,
+    .chapter,
+    .section-card,
+    .card,
+    .callout,
+    .code-card,
+    .data-table,
+    details.solution {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    }
+    .toc-card {
+      background: rgba(16, 24, 38, 0.84);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.35rem;
+      margin: 0 0 1.4rem;
+    }
+    .toc-kicker,
+    .eyebrow,
+    .chapter-kicker,
+    .project-label {
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      color: var(--chapter-color, var(--cyan));
+      font-size: 0.73rem;
+    }
+    .toc-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0.35rem 0 1rem;
+    }
+    .toc-title h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+    .toc-time { color: var(--muted); font-size: 0.9rem; white-space: nowrap; }
+    .toc-groups {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+    .toc-group {
+      background: rgba(23, 32, 51, 0.74);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      min-width: 0;
+    }
+    .toc-group h3 {
+      font-size: 0.98rem;
+      margin: 0 0 0.7rem;
+      color: var(--white);
+    }
+    .toc-group a {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.6rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.32rem 0;
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .toc-group a:last-child { border-bottom: 0; }
+    .toc-group a:hover { color: var(--white); }
+    .read-time {
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      color: var(--chapter-color, var(--cyan));
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
-    transition: border-color .2s;
-  }
-  .card:hover { border-color: var(--blue); }
+    .chapter {
+      --chapter-color: var(--ch0);
+      position: relative;
+      margin: 1.4rem 0;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      background: rgba(16, 24, 38, 0.86);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--chapter-color);
+      border-radius: 8px;
+    }
+    .chapter.ch0 { --chapter-color: var(--ch0); }
+    .chapter.ch1 { --chapter-color: var(--ch1); }
+    .chapter.ch2 { --chapter-color: var(--ch2); }
+    .chapter.ch3 { --chapter-color: var(--ch3); }
+    .chapter.ch4 { --chapter-color: var(--ch4); }
+    .chapter.ch5 { --chapter-color: var(--ch5); }
+    .chapter.ch6 { --chapter-color: var(--ch6); }
+    .chapter.ch7 { --chapter-color: var(--ch7); }
+    .chapter-header {
+      position: relative;
+      padding-right: 8rem;
+      margin-bottom: 1.25rem;
+    }
+    .chapter-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 1px solid color-mix(in srgb, var(--chapter-color) 55%, var(--border));
+      background: color-mix(in srgb, var(--chapter-color) 12%, transparent);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 0.28rem 0.65rem;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .breadcrumb {
+      display: inline-flex;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.84rem;
+      margin-bottom: 0.75rem;
+    }
+    .breadcrumb:hover { color: var(--white); }
+    .chapter h2 span { color: var(--chapter-color); }
+    .lead {
+      font-size: 1.13rem;
+      color: var(--text);
+      margin-top: 0.9rem;
+      max-width: 760px;
+    }
+    .section-card {
+      background: rgba(18, 29, 47, 0.84);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin: 1rem 0;
+    }
+    .section-card h3:first-child,
+    .section-card h4:first-child { margin-top: 0; }
 
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin: 36px 0; }
+    .hero-panel {
+      min-height: min(700px, calc(100vh - 120px));
+      display: grid;
+      align-items: center;
+      padding: clamp(1.2rem, 3vw, 2rem) 0 1rem;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(270px, 0.72fr);
+      gap: 1.4rem;
+      align-items: center;
+    }
+    .hero-sub {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin-top: 1.1rem;
+    }
+    .hero-tags,
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin: 1.1rem 0;
+    }
+    .tag,
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid color-mix(in srgb, var(--chapter-color, var(--cyan)) 52%, var(--border));
+      color: var(--white);
+      background: color-mix(in srgb, var(--chapter-color, var(--cyan)) 10%, transparent);
+      border-radius: 999px;
+      padding: 0.27rem 0.65rem;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    .journey {
+      display: grid;
+      gap: 0.55rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.54);
+    }
+    .journey-step {
+      display: grid;
+      grid-template-columns: 2.2rem 1fr;
+      gap: 0.7rem;
+      align-items: center;
+      padding: 0.55rem;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 7px;
+      background: rgba(255,255,255,0.025);
+    }
+    .journey-num {
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--bg);
+      background: var(--chapter-color);
+      font-weight: 800;
+    }
+    .journey-step strong { display: block; }
+    .journey-step span { color: var(--muted); font-size: 0.88rem; }
 
-  .type-card { border-radius: 16px; padding: 28px; position: relative; overflow: hidden; }
-  .type-card::before {
-    content: ''; position: absolute;
-    inset: 0; opacity: .06;
-    background: currentColor;
-  }
-  .type-icon { font-size: 32px; margin-bottom: 16px; }
-  .type-card h3 { font-size: 18px; margin-top: 0; }
-  .type-card p { font-size: 14.5px; color: var(--muted); margin-bottom: 0; }
-  .type-blue { color: var(--blue); border: 1px solid var(--blue); }
-  .type-cyan { color: var(--cyan); border: 1px solid var(--cyan); }
-  .type-orange { color: var(--orange); border: 1px solid var(--orange); }
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card {
+      background: rgba(16, 24, 38, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .card h3,
+    .card h4 { margin-top: 0; }
+    .card .icon { font-size: 1.65rem; margin-bottom: 0.35rem; }
+    .muted { color: var(--muted); }
+    .mini { font-size: 0.9rem; }
 
-  /* ── CALLOUT BOXES ── */
-  .callout {
-    border-radius: 12px;
-    padding: 22px 26px;
-    margin: 28px 0;
-    display: flex; gap: 16px;
-    align-items: flex-start;
-  }
-  .callout-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
-  .callout-body { flex: 1; }
-  .callout-title { font-weight: 600; color: var(--white); font-size: 15px; margin-bottom: 4px; }
-  .callout-body p { font-size: 14.5px; color: var(--muted); margin-bottom: 0; }
-  .callout-blue { background: rgba(77,168,255,.08); border: 1px solid rgba(77,168,255,.2); }
-  .callout-orange { background: rgba(255,107,53,.08); border: 1px solid rgba(255,107,53,.2); }
-  .callout-cyan { background: rgba(0,229,204,.08); border: 1px solid rgba(0,229,204,.2); }
-  .callout-green { background: rgba(76,255,179,.08); border: 1px solid rgba(76,255,179,.2); }
+    .callout {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      margin: 1rem 0;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid color-mix(in srgb, var(--callout-color) 45%, var(--border));
+      border-left: 5px solid var(--callout-color);
+      background: color-mix(in srgb, var(--callout-color) 8%, rgba(16,24,38,0.9));
+    }
+    .callout .callout-icon {
+      width: 1.8rem;
+      height: 1.8rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--callout-color) 17%, transparent);
+      color: var(--white);
+      font-size: 1rem;
+    }
+    .callout-title {
+      color: var(--white);
+      font-weight: 800;
+      margin-bottom: 0.12rem;
+    }
+    .callout p:last-child { margin-bottom: 0; }
+    .tip { --callout-color: var(--blue); }
+    .warning { --callout-color: var(--amber); }
+    .robotics { --callout-color: var(--green); }
+    .exercise-note { --callout-color: var(--purple); }
+    .download { --callout-color: var(--yellow, #facc15); }
+    .callout[role="alert"] { border-left-width: 6px; }
 
-  /* ── CODE BLOCKS ── */
-  .code-block {
-    background: #040810;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin: 28px 0;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .code-header {
-    background: var(--bg3);
-    padding: 10px 20px;
-    display: flex; align-items: center; gap: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-  .code-dots { display: flex; gap: 6px; }
-  .code-dots span {
-    width: 10px; height: 10px; border-radius: 50%;
-  }
-  .dot-r { background: #ff5f57; }
-  .dot-y { background: #ffbd2e; }
-  .dot-g { background: #28ca41; }
-  .code-filename { font-size: 12px; color: var(--muted); margin-left: 6px; }
-  .code-body {
-    padding: 24px 28px;
-    font-size: 13.5px;
-    line-height: 1.8;
-    overflow-x: auto;
-    white-space: pre;
-    color: #abb2bf;
-  }
-  /* Syntax colors */
-  .kw { color: #c678dd; }
-  .fn { color: #61afef; }
-  .st { color: #98c379; }
-  .cm { color: #5c6370; font-style: italic; }
-  .num { color: #d19a66; }
-  .cl { color: #e5c07b; }
-  .op { color: #56b6c2; }
-  .var { color: #e06c75; }
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 0.65rem;
+      margin: 1rem 0;
+    }
+    .step {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.8rem;
+      align-items: start;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+    }
+    .step::before {
+      content: counter(step);
+      width: 1.8rem;
+      height: 1.8rem;
+      display: grid;
+      place-items: center;
+      background: var(--chapter-color);
+      color: var(--bg);
+      border-radius: 50%;
+      font-weight: 800;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.84rem;
+    }
 
-  /* ── EXERCISE BLOCKS ── */
-  .exercise {
-    background: linear-gradient(135deg, rgba(0,229,204,.04) 0%, rgba(77,168,255,.04) 100%);
-    border: 1px solid rgba(0,229,204,.25);
-    border-radius: 16px;
-    padding: 36px;
-    margin: 40px 0;
-  }
-  .exercise-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--cyan);
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .exercise-label::before {
-    content: '⚡';
-  }
-  .exercise h3 { color: var(--white); font-size: 20px; margin-top: 0; }
-  .exercise p { font-size: 15px; }
+    .diagram {
+      border: 1px solid var(--border);
+      background: rgba(13, 17, 23, 0.52);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .flow-row {
+      min-width: 620px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(115px, 1fr));
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .flow-node {
+      text-align: center;
+      border: 1px solid color-mix(in srgb, var(--chapter-color) 45%, var(--border));
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--chapter-color) 9%, transparent);
+      padding: 0.8rem 0.65rem;
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-weight: 700;
+    }
+    .arrow {
+      color: var(--chapter-color);
+      text-align: center;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-weight: 800;
+    }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .matrix .card { min-height: 130px; }
+    .library-map {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(145px, 1fr));
+      gap: 0.65rem;
+      min-width: 760px;
+    }
+    .library-map .card { text-align: center; }
 
-  /* ── TERM GLOSSARY ── */
-  .glossary { display: grid; gap: 16px; margin: 28px 0; }
-  .term-row {
-    display: grid; grid-template-columns: 200px 1fr;
-    gap: 20px; align-items: start;
-    padding: 18px 22px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
-  .term-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--yellow);
-    padding-top: 2px;
-  }
-  .term-def { font-size: 14.5px; color: var(--text); }
-  .term-def strong { color: var(--white); }
+    .code-card {
+      position: relative;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #050812;
+    }
+    .code-card figcaption {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      padding: 0.55rem 0.75rem;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.76rem;
+    }
+    .copy-btn,
+    .colab-btn,
+    .next-btn,
+    .table-sort {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      border-radius: 7px;
+      color: var(--white);
+      background: rgba(255,255,255,0.055);
+      padding: 0.38rem 0.62rem;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.78rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .copy-btn:hover,
+    .copy-btn:focus-visible,
+    .next-btn:hover,
+    .next-btn:focus-visible,
+    .table-sort:hover,
+    .table-sort:focus-visible {
+      border-color: var(--chapter-color);
+      outline: none;
+    }
+    .colab-btn {
+      background: #facc15;
+      color: #201600;
+      border-color: #fde047;
+      width: fit-content;
+    }
+    .code-card pre {
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.82rem;
+      line-height: 1.72;
+    }
+    .why-output {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+    }
+    .why-output .callout { margin: 0; }
+    .expected {
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--chapter-color);
+      background: rgba(255,255,255,0.025);
+      border-radius: 8px;
+      padding: 0.9rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .expected strong { display: block; margin-bottom: 0.25rem; }
 
-  /* ── COMPANY LOGOS STRIP ── */
-  .company-strip {
-    display: flex; flex-wrap: wrap; gap: 12px;
-    margin: 28px 0;
-  }
-  .company-badge {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 18px;
-    font-size: 13.5px;
-    font-weight: 600;
-    color: var(--muted);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .company-badge span { font-size: 16px; }
+    details.solution {
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(13,17,23,0.5);
+      overflow: hidden;
+    }
+    details.solution summary {
+      cursor: pointer;
+      padding: 0.8rem 1rem;
+      color: var(--white);
+      font-weight: 800;
+      background: rgba(255,255,255,0.035);
+    }
+    details.solution > div { padding: 1rem; }
 
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 0;
-  }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 1rem 0;
+      font-size: 0.94rem;
+    }
+    .data-table th,
+    .data-table td {
+      padding: 0.7rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table th {
+      background: var(--bg3);
+      color: var(--white);
+      font-size: 0.82rem;
+    }
+    .data-table tr:last-child td { border-bottom: 0; }
+    .table-wrap { overflow-x: auto; }
 
-  /* ── INLINE CODE ── */
-  code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .85em;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2px 7px;
-    color: var(--cyan);
-  }
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+    }
+    .next-btn {
+      color: var(--bg);
+      background: var(--chapter-color);
+      border-color: var(--chapter-color);
+    }
+    .footer {
+      margin-left: var(--sidebar);
+      padding: 2rem 1rem 3rem;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: rgba(13,17,23,0.82);
+    }
 
-  /* ── RL diagram ── */
-  .rl-loop {
-    display: flex; align-items: center; justify-content: center;
-    gap: 0; margin: 36px 0; flex-wrap: wrap;
-  }
-  .rl-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 22px;
-    text-align: center;
-    min-width: 120px;
-  }
-  .rl-box .rl-icon { font-size: 26px; margin-bottom: 6px; }
-  .rl-box .rl-label { font-size: 13px; font-weight: 600; color: var(--white); }
-  .rl-box .rl-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
-  .rl-arrow {
-    font-size: 22px; color: var(--cyan);
-    padding: 0 8px;
-  }
+    .decision-tree {
+      display: grid;
+      gap: 0.75rem;
+      min-width: 720px;
+    }
+    .decision-node {
+      border: 1px solid color-mix(in srgb, var(--chapter-color) 44%, var(--border));
+      background: color-mix(in srgb, var(--chapter-color) 8%, transparent);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+    .decision-branches {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 8.5rem 1fr;
+      gap: 1rem;
+      padding: 0.9rem;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--chapter-color);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.025);
+    }
+    .timeline-item strong { color: var(--chapter-color); }
 
-  /* ── FOOTER ── */
-  footer {
-    padding: 60px 0 40px;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 14px;
-  }
-  footer strong { color: var(--white); }
-
-  /* ── SCROLL ANIMATIONS ── */
-  .fade-up {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .js-ready .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity .6s ease, transform .6s ease;
-  }
-  .js-ready .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 640px) {
-    nav { padding: 0 16px; }
-    .nav-links { display: none; }
-    .container { padding: 0 20px; }
-    .term-row { grid-template-columns: 1fr; gap: 6px; }
-    .hero-stats { gap: 28px; }
-  }
-</style>
+    @media (min-width: 1280px) {
+      .container { width: min(900px, calc(100vw - var(--sidebar) - 6rem)); }
+    }
+    @media (max-width: 1180px) {
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toc-groups,
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 1023px) {
+      .hamburger { display: inline-grid; place-items: center; }
+      .topbar { grid-template-columns: 1fr minmax(0, 1fr) auto; }
+      .sidebar {
+        transform: translateX(-105%);
+        transition: transform 0.22s ease;
+        box-shadow: 20px 0 40px rgba(0,0,0,0.28);
+      }
+      body.drawer-open .sidebar { transform: translateX(0); }
+      body.drawer-open .drawer-scrim { opacity: 1; pointer-events: auto; }
+      .page,
+      .footer { margin-left: 0; }
+      .container,
+      .wide-container { width: min(900px, calc(100vw - 2rem)); }
+      .toc-groups { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 767px) {
+      body { font-size: 16px; }
+      .topbar { grid-template-columns: 1fr auto; }
+      .current-chapter { display: none; }
+      .page { padding-top: calc(var(--topbar) + 0.9rem); }
+      .chapter { padding: 1rem; }
+      .chapter-header { padding-right: 0; }
+      .chapter-badge {
+        position: static;
+        display: inline-flex;
+        margin-bottom: 0.75rem;
+      }
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .why-output,
+      .decision-branches,
+      .timeline-item { grid-template-columns: 1fr; }
+      .toc-title { display: block; }
+      .flow-row { min-width: 560px; }
+      .code-card pre { font-size: 0.76rem; }
+    }
+  </style>
 </head>
 <body>
+  <header class="topbar" aria-label="Sticky site header">
+    <a class="top-title" href="#top">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Table of Contents</div>
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
 
-<canvas id="bg-canvas"></canvas>
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">ML × Robotics</div>
-  <div class="nav-links">
-    <a href="#what-is-ml">What is ML?</a>
-    <a href="#types">Types</a>
-    <a href="#supervised">Supervised</a>
-    <a href="#unsupervised">Unsupervised</a>
-    <a href="#computer-vision">Vision</a>
-    <a href="#projects" style="color:var(--orange)">Projects</a>
-  </div>
-</nav>
+  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
+    <div class="sidebar-title">Course Navigation</div>
+    <nav class="nav-tree">
+      <details open style="--chapter-color: var(--ch0)">
+        <summary><span class="dot"></span>Chapter 0</summary>
+        <a href="#chapter-0">Welcome</a>
+        <a href="#build">What You Will Build</a>
+        <a href="#tools">Tools You Need</a>
+        <a href="#reading-tips">Reading Tips</a>
+      </details>
+      <details open style="--chapter-color: var(--ch1)">
+        <summary><span class="dot"></span>Chapter 1</summary>
+        <a href="#python">Python Fundamentals</a>
+        <a href="#python-colab">1.1 Colab</a>
+        <a href="#variables">1.2 Variables</a>
+        <a href="#data-structures">1.3 Data Structures</a>
+        <a href="#control-flow">1.4 Control Flow</a>
+        <a href="#loops">1.5 Loops</a>
+        <a href="#functions">1.6 Functions</a>
+        <a href="#libraries">1.7 Libraries</a>
+        <a href="#checkpoint">1.8 Checkpoint</a>
+      </details>
+      <details open style="--chapter-color: var(--ch2)">
+        <summary><span class="dot"></span>Chapter 2</summary>
+        <a href="#what-is-ml">What is ML?</a>
+        <a href="#types">Three Flavors</a>
+        <a href="#when-to-use">When to Use Which</a>
+      </details>
+      <details open style="--chapter-color: var(--ch3)">
+        <summary><span class="dot"></span>Chapter 3</summary>
+        <a href="#supervised">Supervised Learning</a>
+        <a href="#classification-regression">Classification & Regression</a>
+        <a href="#algorithms">Key Algorithms</a>
+        <a href="#ml-pipeline">ML Pipeline</a>
+        <a href="#robot-failure-project">Robot Arm Failure Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch4)">
+        <summary><span class="dot"></span>Chapter 4</summary>
+        <a href="#unsupervised">Unsupervised Learning</a>
+        <a href="#clustering">Clustering</a>
+        <a href="#kmeans">K-Means</a>
+        <a href="#sensor-cluster-project">Vibration Clustering Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch5)">
+        <summary><span class="dot"></span>Chapter 5</summary>
+        <a href="#reinforcement-learning">Reinforcement Learning</a>
+        <a href="#q-learning">Q-Learning</a>
+        <a href="#maze-project">FrozenLake Maze Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch6)">
+        <summary><span class="dot"></span>Chapter 6</summary>
+        <a href="#computer-vision">Computer Vision</a>
+        <a href="#opencv">OpenCV</a>
+        <a href="#tensorflow">TensorFlow/Keras</a>
+        <a href="#cnn">CNNs</a>
+        <a href="#traffic-sign-project">Traffic Sign Project</a>
+      </details>
+      <details open style="--chapter-color: var(--ch7)">
+        <summary><span class="dot"></span>Chapter 7</summary>
+        <a href="#whats-next">What's Next?</a>
+        <a href="#decision-guide">Decision Guide</a>
+        <a href="#roadmap">Learning Roadmap</a>
+        <a href="#papers">Papers to Read</a>
+      </details>
+      <details style="--chapter-color: var(--cyan)">
+        <summary><span class="dot"></span>Project Archive</summary>
+        <a href="#projects">Student Projects</a>
+      </details>
+    </nav>
+    <a class="back-top" href="#top">Back to top</a>
+  </aside>
 
-<div class="wrap">
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="container">
-      <div class="hero-eyebrow">Mechanical Engineering × AI</div>
-      <h1>Machine Learning<br/>for <span class="accent">Robotics</span><br/><span class="orange">Engineers</span></h1>
-      <p class="hero-sub">
-        A practical, hands-on introduction to ML for freshmen. No prior coding experience required — 
-        just curiosity and a browser with Google Colab.
-      </p>
-      <div class="hero-tags">
-        <span class="tag tag-blue">Python</span>
-        <span class="tag tag-cyan">Google Colab</span>
-        <span class="tag tag-orange">Supervised Learning</span>
-        <span class="tag tag-yellow">Unsupervised Learning</span>
-        <span class="tag tag-green">Computer Vision</span>
-      </div>
-      <div class="hero-stats">
-        <div>
-          <div class="stat-num">5<span>+</span></div>
-          <div class="stat-label">Core Concepts</div>
+  <main class="page" id="top">
+    <div class="wide-container">
+      <section class="toc-card" aria-labelledby="toc-title">
+        <div class="toc-kicker">Self-contained course</div>
+        <div class="toc-title">
+          <h2 id="toc-title">Table of Contents</h2>
+          <div class="toc-time">~6-8 hours total</div>
         </div>
-        <div>
-          <div class="stat-num">3<span>×</span></div>
-          <div class="stat-label">Colab Exercises</div>
-        </div>
-        <div>
-          <div class="stat-num">0<span>$</span></div>
-          <div class="stat-label">Cost to Run Everything</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- SECTION 1: WHAT IS ML -->
-  <section id="what-is-ml">
-    <div class="container">
-      <div class="section-num fade-up">01 / Introduction</div>
-      <h2 class="fade-up">What is <span class="accent">Machine Learning?</span></h2>
-      <p class="lead fade-up">
-        Imagine teaching a robot to catch a ball. The old way: you write thousands of rules — 
-        "if ball is at x=50 and moving left at 3 m/s, move arm to position y=120..." 
-        That's impossible to get right. Machine learning is a completely different idea.
-      </p>
-      <p class="fade-up">
-        <strong style="color:var(--white)">Instead of programming rules, you feed the robot examples and let it figure out the rules itself.</strong>
-        Show it 10,000 throws. It watches, finds patterns, and builds its own internal model of how to catch.
-        That's machine learning — computers learning from data, not from explicit instructions.
-      </p>
-
-      <div class="callout callout-blue fade-up">
-        <div class="callout-icon">🤖</div>
-        <div class="callout-body">
-          <div class="callout-title">The Robotics Angle</div>
-          <p>Almost every modern robot uses ML in some form — Boston Dynamics' Atlas learning to walk over rough terrain, 
-          surgical robots recognizing tissue types, autonomous cars detecting pedestrians. 
-          As a ME student going into robotics, ML is your superpower.</p>
-        </div>
-      </div>
-
-      <h3 class="fade-up">Traditional Programming vs Machine Learning</h3>
-      <div class="card-grid fade-up">
-        <div class="card">
-          <div style="font-size:28px;margin-bottom:14px">📜</div>
-          <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:10px">Traditional</div>
-          <p style="font-size:14px;color:var(--muted)"><strong style="color:var(--text)">Input:</strong> Data + Rules<br/>
-          <strong style="color:var(--text)">Output:</strong> Answers</p>
-          <p style="font-size:14px;color:var(--muted);margin-bottom:0">You write the logic. The computer follows it exactly.</p>
-        </div>
-        <div class="card" style="border-color:var(--cyan)">
-          <div style="font-size:28px;margin-bottom:14px">🧠</div>
-          <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--cyan);margin-bottom:10px">Machine Learning</div>
-          <p style="font-size:14px;color:var(--muted)"><strong style="color:var(--text)">Input:</strong> Data + Answers<br/>
-          <strong style="color:var(--text)">Output:</strong> Rules (a model)</p>
-          <p style="font-size:14px;color:var(--muted);margin-bottom:0">The computer learns the logic from examples.</p>
-        </div>
-      </div>
-
-      <p class="fade-up">
-        ML is not magic — it's math (mostly statistics and calculus) applied cleverly to large datasets. 
-        The "learning" happens through an optimization process where the model adjusts its internal parameters 
-        to minimize errors on examples it has seen. We'll unpack exactly how this works in each section.
-      </p>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- SECTION 2: TYPES -->
-  <section id="types">
-    <div class="container">
-      <div class="section-num fade-up">02 / Overview</div>
-      <h2 class="fade-up">Three Flavors of <span class="accent">Machine Learning</span></h2>
-      <p class="lead fade-up">
-        Not all machine learning is the same. The type you choose depends on what data you have 
-        and what problem you're solving. Here are the three main families:
-      </p>
-
-      <div class="card-grid fade-up" style="margin-top:32px">
-        <div class="type-card type-blue">
-          <div class="type-icon">🏷️</div>
-          <h3 style="color:var(--blue)">Supervised Learning</h3>
-          <p>Learn from <strong style="color:var(--text)">labeled examples</strong>. You give the model input-output pairs 
-          and it learns to map one to the other. Like showing a robot "this sensor reading → safe, that reading → obstacle."</p>
-        </div>
-        <div class="type-card type-cyan">
-          <div class="type-icon">🔍</div>
-          <h3 style="color:var(--cyan)">Unsupervised Learning</h3>
-          <p>Find <strong style="color:var(--text)">hidden structure</strong> in data with no labels. 
-          Useful for grouping sensor readings, detecting anomalies in a machine, 
-          or discovering that your robot behaves differently in two environments.</p>
-        </div>
-        <div class="type-card type-orange">
-          <div class="type-icon">🎮</div>
-          <h3 style="color:var(--orange)">Reinforcement Learning</h3>
-          <p>Learn through <strong style="color:var(--text)">trial and error</strong> with rewards. 
-          A robot tries actions, gets feedback (reward or penalty), and slowly learns the optimal strategy. 
-          This is how robots learn to walk and play games.</p>
-        </div>
-      </div>
-
-      <h3 class="fade-up">Reinforcement Learning: The Robot's Perspective</h3>
-      <p class="fade-up">RL is especially cool for robotics. Here's the core loop:</p>
-      <div class="rl-loop fade-up">
-        <div class="rl-box">
-          <div class="rl-icon">🤖</div>
-          <div class="rl-label">Agent</div>
-          <div class="rl-sub">(The Robot)</div>
-        </div>
-        <div class="rl-arrow">→</div>
-        <div class="rl-box">
-          <div class="rl-icon">🌍</div>
-          <div class="rl-label">Environment</div>
-          <div class="rl-sub">(The World)</div>
-        </div>
-        <div class="rl-arrow">→</div>
-        <div class="rl-box">
-          <div class="rl-icon">🏆</div>
-          <div class="rl-label">Reward</div>
-          <div class="rl-sub">(Feedback Signal)</div>
-        </div>
-        <div class="rl-arrow">→</div>
-        <div class="rl-box">
-          <div class="rl-icon">📈</div>
-          <div class="rl-label">Better Policy</div>
-          <div class="rl-sub">(Learned Behavior)</div>
-        </div>
-      </div>
-      <div class="callout callout-orange fade-up">
-        <div class="callout-icon">🎯</div>
-        <div class="callout-body">
-          <div class="callout-title">Real Example: OpenAI's Robot Hand</div>
-          <p>OpenAI trained a robotic hand to solve a Rubik's Cube purely through RL — 
-          it played millions of simulated games, got rewarded when it moved closer to solving it, 
-          and eventually mastered real-world manipulation. No human ever wrote rules for "how to hold a cube."</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- SECTION 3: SUPERVISED LEARNING -->
-  <section id="supervised">
-    <div class="container">
-      <div class="section-num fade-up">03 / Hands-On</div>
-      <h2 class="fade-up"><span class="accent">Supervised</span> Learning</h2>
-      <p class="lead fade-up">
-        This is the most widely used type of ML. You have a dataset of (input, output) pairs, 
-        and you want the model to learn a function that maps inputs to correct outputs.
-      </p>
-
-      <h3 class="fade-up">Classification vs Regression</h3>
-      <div class="card-grid fade-up">
-        <div class="card">
-          <p style="font-size:13px;color:var(--cyan);font-family:'JetBrains Mono',monospace;margin-bottom:8px">CLASSIFICATION</p>
-          <p style="font-size:15px;color:var(--text)">Predict a <strong style="color:var(--white)">category</strong>. 
-          <br/>Example: Is this movie a <em>Hollywood Thriller</em> or <em>Sci-Fi</em>?<br/>
-          Output: one of several discrete labels.</p>
-        </div>
-        <div class="card">
-          <p style="font-size:13px;color:var(--orange);font-family:'JetBrains Mono',monospace;margin-bottom:8px">REGRESSION</p>
-          <p style="font-size:15px;color:var(--text)">Predict a <strong style="color:var(--white)">number</strong>. 
-          <br/>Example: Given house features, what price is expected?<br/>
-          Output: a continuous value.</p>
-        </div>
-      </div>
-
-      <p class="fade-up">
-        The model learns by comparing its predictions to the true answers and adjusting its internal weights 
-        to reduce the difference. This process is called <strong style="color:var(--white)">training</strong>, 
-        and the measure of "how wrong" the model is is called the <strong style="color:var(--white)">loss</strong>.
-      </p>
-      <p class="fade-up">
-        For beginners, 2D datasets are especially helpful because you can literally <strong style="color:var(--white)">see the learning problem</strong>.
-        One feature becomes the X-axis, one feature becomes the Y-axis, and you can watch the model separate the classes with a visible boundary.
-      </p>
-
-      <div class="exercise fade-up">
-        <div class="exercise-label">Exercise 01 — Google Colab</div>
-        <h3>🎬 Building a Movie Genre Classifier</h3>
-        <p style="color:var(--muted)">
-          In this exercise, you'll train a classifier that predicts whether a movie is more like a
-          Hollywood thriller or a sci-fi movie based on just two features:
-          <code>CGI Budget</code> and <code>Number of Jump Scares</code>.
-          Because the data is 2D, you can plot the raw points directly and visualize the learned decision boundary.
-          Copy the code below into a new Google Colab notebook and run each cell.
-        </p>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">supervised_exercise.ipynb — Cell 1: Install & Import</div>
+        <div class="toc-groups">
+          <div class="toc-group" style="--chapter-color: var(--ch1)">
+            <h3>Foundations</h3>
+            <a href="#chapter-0"><span>Chapter 0: Welcome & Setup</span><span class="read-time">~20 min</span></a>
+            <a href="#python"><span>Chapter 1: Python Programming Fundamentals</span><span class="read-time">~70 min</span></a>
           </div>
-          <div class="code-body"><span class="cm"># Cell 1 — Run this first</span>
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
-<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
-<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> <span class="cl">LogisticRegression</span>
-<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
-<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> <span class="cl">StandardScaler</span>
-
-<span class="fn">print</span>(<span class="st">"Libraries loaded! 🚀"</span>)</div>
-        </div>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">supervised_exercise.ipynb — Cell 2: Generate Data</div>
+          <div class="toc-group" style="--chapter-color: var(--ch4)">
+            <h3>Machine Learning</h3>
+            <a href="#what-is-ml"><span>Chapter 2: What is Machine Learning?</span><span class="read-time">~25 min</span></a>
+            <a href="#supervised"><span>Chapter 3: Supervised Learning Project</span><span class="read-time">~70 min</span></a>
+            <a href="#unsupervised"><span>Chapter 4: Unsupervised Learning Project</span><span class="read-time">~55 min</span></a>
+            <a href="#reinforcement-learning"><span>Chapter 5: Reinforcement Learning Project</span><span class="read-time">~55 min</span></a>
           </div>
-          <div class="code-body"><span class="cm"># Cell 2 — Generate a 2D movie dataset
-# Feature 1 (X-axis): CGI budget
-# Feature 2 (Y-axis): number of jump scares
-# Label: 0 = Hollywood Thriller, 1 = Sci-Fi</span>
-
-np.<span class="fn">random</span>.seed(<span class="num">42</span>)
-n_samples = <span class="num">400</span>
-
-<span class="cm"># Hollywood thrillers: moderate CGI, lots of jump scares</span>
-thriller = np.column_stack([
-    np.random.<span class="fn">normal</span>(<span class="num">45</span>, <span class="num">10</span>, n_samples // <span class="num">2</span>),  <span class="cm"># CGI budget</span>
-    np.random.<span class="fn">normal</span>(<span class="num">18</span>, <span class="num">4</span>, n_samples // <span class="num">2</span>)   <span class="cm"># jump scares</span>
-])
-
-<span class="cm"># Sci-fi: high CGI, fewer jump scares</span>
-sci_fi = np.column_stack([
-    np.random.<span class="fn">normal</span>(<span class="num">90</span>, <span class="num">12</span>, n_samples // <span class="num">2</span>),
-    np.random.<span class="fn">normal</span>(<span class="num">6</span>, <span class="num">3</span>, n_samples // <span class="num">2</span>)
-])
-
-X = np.<span class="fn">vstack</span>([thriller, sci_fi])
-y = np.<span class="fn">array</span>([<span class="num">0</span>] * (n_samples // <span class="num">2</span>) + [<span class="num">1</span>] * (n_samples // <span class="num">2</span>))
-
-<span class="fn">print</span>(<span class="st">f"Dataset: {X.shape[0]} samples, {X.shape[1]} features"</span>)
-<span class="fn">print</span>(<span class="st">f"Hollywood Thriller: {(y==0).sum()}  |  Sci-Fi: {(y==1).sum()}"</span>)
-
-plt.<span class="fn">figure</span>(figsize=(<span class="num">7</span>, <span class="num">5</span>))
-plt.<span class="fn">scatter</span>(thriller[:, <span class="num">0</span>], thriller[:, <span class="num">1</span>], c=<span class="st">"#4da8ff"</span>, alpha=<span class="num">0.7</span>, label=<span class="st">"Hollywood Thriller"</span>)
-plt.<span class="fn">scatter</span>(sci_fi[:, <span class="num">0</span>], sci_fi[:, <span class="num">1</span>], c=<span class="st">"#ff6b35"</span>, alpha=<span class="num">0.7</span>, label=<span class="st">"Sci-Fi"</span>)
-plt.<span class="fn">xlabel</span>(<span class="st">"CGI Budget"</span>)
-plt.<span class="fn">ylabel</span>(<span class="st">"Number of Jump Scares"</span>)
-plt.<span class="fn">title</span>(<span class="st">"2D Movie Genre Dataset"</span>)
-plt.<span class="fn">legend</span>()
-plt.<span class="fn">show</span>()</div>
-        </div>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">supervised_exercise.ipynb — Cell 3: Train & Evaluate</div>
+          <div class="toc-group" style="--chapter-color: var(--ch6)">
+            <h3>Computer Vision</h3>
+            <a href="#computer-vision"><span>Chapter 6: Traffic Sign Classifier</span><span class="read-time">~75 min</span></a>
+            <a href="#whats-next"><span>Chapter 7: What's Next?</span><span class="read-time">~20 min</span></a>
+            <a href="#projects"><span>Student Project Archive</span><span class="read-time">optional</span></a>
           </div>
-          <div class="code-body"><span class="cm"># Cell 3 — Scale, train, and visualize the decision boundary</span>
+        </div>
+      </section>
+    </div>
 
-<span class="cm"># Split data: 80% training, 20% testing</span>
-X_train, X_test, y_train, y_test = <span class="fn">train_test_split</span>(
-    X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>, stratify=y
+    <div class="container">
+      <article class="chapter ch0 observe" id="chapter-0" data-title="Chapter 0 — Welcome & How to Use This Guide">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 0 / 7</span>
+          <a class="breadcrumb" href="#top">← Previous: Table of Contents</a>
+          <div class="chapter-kicker">Welcome & orientation</div>
+          <h1>Machine Learning for <span style="color:var(--ch1)">Robotics</span> Engineers</h1>
+          <p class="hero-sub">You're a freshmen ME student. You may have never written a line of code. That's exactly who this guide is for.</p>
+        </header>
+
+        <section class="hero-panel" aria-labelledby="journey-title">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">Mechanical Engineering x AI</div>
+              <h2 id="journey-title">From zero Python to robotics ML projects</h2>
+              <p class="lead">This page is a long-scroll textbook, lab manual, and project checklist. You will learn the programming basics, the core ML families, and how to run full notebooks in Google Colab without installing anything locally.</p>
+              <div class="hero-tags" style="--chapter-color: var(--ch1)">
+                <span class="tag">Python</span>
+                <span class="tag">Google Colab</span>
+                <span class="tag">Kaggle datasets</span>
+                <span class="tag">Robotics sensors</span>
+              </div>
+            </div>
+            <div class="journey" aria-label="Learning journey timeline">
+              <div class="journey-step"><div class="journey-num">0</div><div><strong>Setup</strong><span>Colab, Kaggle, how to read this guide</span></div></div>
+              <div class="journey-step"><div class="journey-num">1</div><div><strong>Python</strong><span>Variables, loops, functions, libraries</span></div></div>
+              <div class="journey-step"><div class="journey-num">2</div><div><strong>ML concepts</strong><span>Supervised, unsupervised, reinforcement</span></div></div>
+              <div class="journey-step"><div class="journey-num">3</div><div><strong>Projects</strong><span>Failure prediction, vibration clusters, maze navigation</span></div></div>
+              <div class="journey-step"><div class="journey-num">4</div><div><strong>Vision</strong><span>OpenCV, CNNs, traffic sign classifier</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="build" class="section-card">
+          <h3>What You Will Build</h3>
+          <div class="grid-3">
+            <div class="card">
+              <div class="icon">⚙️</div>
+              <h4>Robot Failure Predictor</h4>
+              <p>Predict whether a machine is likely to fail from temperature, torque, speed, and wear readings.</p>
+              <p class="mini muted"><strong>Stack:</strong> Pandas, scikit-learn, Logistic Regression, Random Forest</p>
+            </div>
+            <div class="card">
+              <div class="icon">📈</div>
+              <h4>Sensor Cluster Analyzer</h4>
+              <p>Group vibration windows into operating modes without labels, then interpret what each group means.</p>
+              <p class="mini muted"><strong>Stack:</strong> NumPy, FFT features, K-Means, PCA, DBSCAN</p>
+            </div>
+            <div class="card">
+              <div class="icon">🚦</div>
+              <h4>Traffic Sign Classifier</h4>
+              <p>Train a convolutional neural network that recognizes real traffic signs for mobile robots.</p>
+              <p class="mini muted"><strong>Stack:</strong> OpenCV, TensorFlow/Keras, CNNs, GTSRB</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="tools" class="section-card">
+          <h3>Tools You Need: Zero Installation</h3>
+          <p>Everything runs in the browser with Google Colab. Colab gives you a free notebook where text, code, charts, and results live together. Kaggle gives you free access to real datasets.</p>
+          <div class="steps">
+            <div class="step"><div><strong>Open Colab.</strong><br />Go to <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">colab.research.google.com</a>, sign in, and choose <strong>New Notebook</strong>.</div></div>
+            <div class="step"><div><strong>Create your first cell.</strong><br />Click the gray code cell and type <code>print("Hello, Robot!")</code>.</div></div>
+            <div class="step"><div><strong>Run a cell.</strong><br />Press <code>Shift+Enter</code>. The output appears directly underneath the cell.</div></div>
+            <div class="step"><div><strong>Create a free Kaggle account.</strong><br />Go to <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a>. We use Kaggle because it hosts clean public datasets.</div></div>
+            <div class="step"><div><strong>Get your Kaggle API key.</strong><br />Kaggle account menu → Settings → API → Create New Token. It downloads <code>kaggle.json</code>.</div></div>
+            <div class="step"><div><strong>Upload the key in Colab.</strong><br />Each Kaggle project starts with an upload cell. Run it, choose <code>kaggle.json</code>, and the notebook downloads the dataset.</div></div>
+          </div>
+          <div class="diagram" aria-label="Colab cell workflow diagram">
+            <div class="flow-row">
+              <div class="flow-node">Open Colab</div><div class="arrow">→</div>
+              <div class="flow-node">Write code cell</div><div class="arrow">→</div>
+              <div class="flow-node">Shift+Enter runs it</div>
+            </div>
+          </div>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div><div class="callout-title">Kaggle key safety</div><p>Your <code>kaggle.json</code> key belongs to your account. Upload it only inside your own Colab notebook and do not paste it into public code.</p></div>
+          </div>
+        </section>
+
+        <section id="reading-tips" class="section-card">
+          <h3>Reading Tips</h3>
+          <ul>
+            <li>Read top to bottom the first time. The early Python ideas are used later without re-explaining them.</li>
+            <li>Use the sidebar to jump back to specific topics when a notebook cell feels unfamiliar.</li>
+            <li>Every 💡 tip box is something that trips beginners up. Read those carefully.</li>
+            <li>Every ★ Project section has a full Colab-style notebook on the page. Do not skip the projects.</li>
+          </ul>
+        </section>
+
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#top">← Table of Contents</a>
+          <a class="next-btn" href="#python">Next Chapter → Python Fundamentals</a>
+        </div>
+      </article>
+
+      <article class="chapter ch1 observe" id="python" data-title="Chapter 1 — Python Programming Fundamentals">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 1 / 7</span>
+          <a class="breadcrumb" href="#chapter-0">← Previous Chapter: Welcome</a>
+          <div class="chapter-kicker">Foundations</div>
+          <h2>Python Programming <span>Fundamentals</span></h2>
+          <p class="lead">Every section follows the same pattern: concept, code example, common mistake, and mini exercise. Open a blank Colab notebook and type the examples yourself.</p>
+        </header>
+
+        <section id="python-colab" class="section-card observe" data-title="1.1 Why Python & Setting Up Colab">
+          <h3>1.1 Why Python & Setting Up Colab</h3>
+          <p><strong>Concept.</strong> Python is the default language of machine learning because the syntax is readable and the ecosystem is huge. NumPy, Pandas, scikit-learn, TensorFlow, PyTorch, OpenCV, and nearly every robotics ML example you find online will have Python support.</p>
+          <div class="grid-2">
+            <div class="card">
+              <h4>C++</h4>
+              <figure class="code-card">
+                <figcaption>Same idea in C++</figcaption>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+int main() {
+  std::cout &lt;&lt; "Hello, Robot!" &lt;&lt; std::endl;
+  return 0;
+}</code></pre>
+              </figure>
+            </div>
+            <div class="card">
+              <h4>Python</h4>
+              <figure class="code-card">
+                <figcaption>Your first Python cell</figcaption>
+<pre><code class="language-python">print("Hello, Robot!")</code></pre>
+              </figure>
+            </div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Run <code>print("Hello, Robot!")</code> in Colab. Then change the message to include your name and your robot's name.</p></div>
+          </div>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div><div class="callout-title">Common Mistake</div><p>Do not worry about installing Python on your laptop yet. For this course, run the cells in Colab so everyone starts from the same environment.</p></div>
+          </div>
+        </section>
+
+        <section id="variables" class="section-card observe" data-title="1.2 Variables & Data Types">
+          <h3>1.2 Variables & Data Types</h3>
+          <p><strong>Concept.</strong> A variable is a named box that holds a value. Python has four beginner-friendly basic types: <code>int</code> for whole numbers, <code>float</code> for decimals, <code>str</code> for text, and <code>bool</code> for true/false values.</p>
+          <figure class="code-card">
+            <figcaption>Robot sensor variables</figcaption>
+<pre><code class="language-python"># Robot sensor variables
+distance = 2.45          # float - distance in meters
+is_obstacle = True       # bool - obstacle detected?
+robot_name = "ARIA"      # str - robot's name
+wheels = 4               # int - number of wheels
+
+print(type(distance))
+print(type(is_obstacle))
+print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")</code></pre>
+          </figure>
+          <p>Type conversion changes one type into another: <code>int("42")</code>, <code>str(3.14)</code>, and <code>float("2.0")</code>. An f-string lets you insert variables into a string: <code>f"The sensor reads {value:.2f} meters"</code>.</p>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div><div class="callout-title">Tip</div><p>Python is case-sensitive. <code>Distance</code> and <code>distance</code> are different variables.</p></div>
+          </div>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div><div class="callout-title">Common Mistake</div><p>Do not mix types unexpectedly. <code>"5" + 5</code> will crash. Use <code>int("5") + 5</code> instead.</p></div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Declare 3 variables for a robot: speed as a float, battery level as an int from 0-100, and current task as a string. Print a status report using an f-string.</p></div>
+          </div>
+        </section>
+
+        <section id="data-structures" class="section-card observe" data-title="1.3 Data Structures">
+          <h3>1.3 Data Structures: Lists, Tuples, Sets, Dictionaries</h3>
+          <p><strong>Concept.</strong> Data structures are containers. They let you keep related values together instead of creating a separate variable for everything.</p>
+          <h4>Lists</h4>
+          <p>A list is ordered and mutable. Use it for values that arrive over time, like ultrasonic sensor readings.</p>
+          <p class="mini muted">Key operations: indexing with <code>my_list[0]</code>, negative indexing with <code>my_list[-1]</code>, slicing with <code>my_list[1:3]</code>, and methods like <code>.append()</code>, <code>.remove()</code>, <code>.pop()</code>, and <code>.sort()</code>. Use <code>len(my_list)</code> for length.</p>
+          <figure class="code-card">
+            <figcaption>Lists: sensor readings over time</figcaption>
+<pre><code class="language-python">sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]
+sensor_readings.append(1.8)          # add new reading
+
+print(f"Latest reading: {sensor_readings[-1]}m")
+print(f"Closest obstacle: {min(sensor_readings):.1f}m")
+print(f"Total readings: {len(sensor_readings)}")
+print(f"Middle slice: {sensor_readings[1:3]}")</code></pre>
+          </figure>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Create a list of 5 robot speeds. Find the max, min, and average with <code>sum()</code> and <code>len()</code>.</p></div>
+          </div>
+          <h4>Tuples</h4>
+          <p>A tuple is ordered and immutable. Use it when data should not change, like a fixed home coordinate.</p>
+          <figure class="code-card">
+            <figcaption>Tuples: fixed robot configuration</figcaption>
+<pre><code class="language-python">home_position = (0.0, 0.0)
+wheel_diameter = (0.12,)       # single-element tuple needs a comma
+
+x, y = home_position           # tuple unpacking
+print(f"Home is at x={x}, y={y}")</code></pre>
+          </figure>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div><div class="callout-title">Tip</div><p>If you try to change a tuple element, Python throws a <code>TypeError</code>. That is the point: it protects fixed data.</p></div>
+          </div>
+          <h4>Sets</h4>
+          <p>A set is unordered and keeps unique elements only. It is useful when a camera reports objects and you only care which object types appeared.</p>
+          <p class="mini muted">Key operations: <code>.add()</code>, <code>.remove()</code>, membership with <code>in</code>, union with <code>|</code>, intersection with <code>&amp;</code>, and difference with <code>-</code>.</p>
+          <figure class="code-card">
+            <figcaption>Sets: unique objects seen by a robot</figcaption>
+<pre><code class="language-python">objects_seen = {"chair", "table", "door", "chair", "wall"}
+print(objects_seen)               # duplicates removed automatically
+objects_seen.add("human")
+print(f"Unique objects: {len(objects_seen)}")
+
+room_a_objects = {"chair", "table", "lamp"}
+room_b_objects = {"table", "plant", "lamp"}
+shared = room_a_objects & room_b_objects
+print(f"Objects in both rooms: {shared}")</code></pre>
+          </figure>
+          <h4>Dictionaries</h4>
+          <p>A dictionary stores key-value pairs. Use it for named robot state, sensor packets, and configuration settings.</p>
+          <p class="mini muted">Key operations: access with <code>dict[key]</code>, safer access with <code>.get(key, default)</code>, and inspection with <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>.</p>
+          <figure class="code-card">
+            <figcaption>Dictionaries: robot state packet</figcaption>
+<pre><code class="language-python">robot_state = {
+    "name": "ARIA",
+    "battery": 87,
+    "speed": 1.2,
+    "task": "mapping",
+    "obstacles_detected": 3
+}
+
+print(f"Battery: {robot_state['battery']}%")
+robot_state["battery"] -= 5
+robot_state["location"] = (3.1, 4.2)
+
+camera_status = robot_state.get("camera", "not installed")
+print(f"Camera: {camera_status}")
+
+for key, value in robot_state.items():
+    print(f"  {key}: {value}")</code></pre>
+          </figure>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div><div class="callout-title">Common Mistake</div><p><code>robot_state["camera"]</code> crashes if the key does not exist. Use <code>.get("camera", "not installed")</code> when a key is optional.</p></div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Create a dictionary representing a robot with at least 5 attributes. Decrease the battery by 10 and print all keys that have numeric values.</p></div>
+          </div>
+        </section>
+
+        <section id="control-flow" class="section-card observe" data-title="1.4 Control Flow">
+          <h3>1.4 Control Flow: if / elif / else</h3>
+          <p><strong>Concept.</strong> Control flow lets your program make decisions. Comparisons include <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>. Logical operators include <code>and</code>, <code>or</code>, and <code>not</code>.</p>
+          <figure class="code-card">
+            <figcaption>Battery and obstacle decisions</figcaption>
+<pre><code class="language-python">battery = 23
+distance_to_obstacle = 0.4
+
+if battery < 10:
+    print("CRITICAL: Return to base immediately!")
+elif battery < 25:
+    print("WARNING: Low battery. Finish current task and return.")
+    if distance_to_obstacle < 0.5:
+        print("ALSO: Obstacle too close - slow down!")
+else:
+    print("Battery OK. Continuing mission.")
+
+safe_zones = {"base", "charging_dock", "lab_entrance"}
+current_zone = "charging_dock"
+if current_zone in safe_zones:
+    print(f"{current_zone} is a safe zone. Power down.")</code></pre>
+          </figure>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div><div class="callout-title">Tip</div><p>Use <code>elif</code> instead of multiple <code>if</code> blocks when conditions are mutually exclusive. It is clearer and avoids accidental double responses.</p></div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Write a function that takes a distance reading in meters and prints <code>STOP</code> if it is under 0.3m, <code>SLOW DOWN</code> if it is under 0.8m, and <code>ALL CLEAR</code> otherwise.</p></div>
+          </div>
+        </section>
+
+        <section id="loops" class="section-card observe" data-title="1.5 Loops">
+          <h3>1.5 Loops: for and while</h3>
+          <p><strong>Concept.</strong> Loops repeat work. Use <code>for</code> when you know what collection you are walking through. Use <code>while</code> when you repeat until a condition changes.</p>
+          <p class="mini muted">You will also see <code>continue</code> to skip the rest of the current loop iteration and <code>zip()</code> to walk through two lists together, such as timestamps and readings.</p>
+          <figure class="code-card">
+            <figcaption>For loops, range, while loops, and list comprehensions</figcaption>
+<pre><code class="language-python">sensor_log = [1.5, 0.8, 2.3, 0.2, 1.9]
+
+print("Scanning sensor log...")
+for i, reading in enumerate(sensor_log):
+    if reading < 0.5:
+        print(f"  Reading #{i}: {reading:.1f}m - DANGER")
+    else:
+        print(f"  Reading #{i}: {reading:.1f}m - OK")
+
+print("\nStarting 5-second countdown:")
+for second in range(5, 0, -1):
+    print(f"  {second}...")
+print("  LAUNCH!")
+
+battery = 100
+distance_traveled = 0.0
+
+while battery > 20:
+    battery -= 5
+    distance_traveled += 0.3
+    if distance_traveled >= 1.2:
+        print(f"Destination reached! Battery remaining: {battery}%")
+        break
+else:
+    print(f"Battery too low! Only traveled {distance_traveled:.1f}m")
+
+raw_readings = [1.5, -0.2, 0.9, 2.1, -0.1]
+clean_readings = [r for r in raw_readings if r > 0]
+print(f"\nClean readings: {clean_readings}")</code></pre>
+          </figure>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div><div class="callout-title">Common Mistake</div><p>A <code>while</code> loop can run forever if the condition never changes. Make sure something inside the loop moves the program toward stopping.</p></div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Use a for loop to count how many motor temperatures are above 80°C and calculate the average temperature. Then rewrite the filtering step as a list comprehension.</p></div>
+          </div>
+        </section>
+
+        <section id="functions" class="section-card observe" data-title="1.6 Functions">
+          <h3>1.6 Functions</h3>
+          <p><strong>Concept.</strong> Functions package reusable behavior. They make code easier to test, read, and repair. A function can take parameters, use default values, and return a result.</p>
+          <figure class="code-card">
+            <figcaption>Function: analyze robot sensor readings</figcaption>
+<pre><code class="language-python">def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
+    """
+    Analyze a list of sensor readings and return a summary.
+    """
+    if not readings:
+        return {"error": "No readings provided"}
+
+    clean = [r for r in readings if r > 0]
+
+    return {
+        "min": min(clean),
+        "max": max(clean),
+        "average": sum(clean) / len(clean),
+        "danger_count": sum(1 for r in clean if r < danger_threshold),
+        "unit": unit
+    }
+
+data = [1.2, 0.3, 0.8, 0.4, 2.1, 0.1, -0.5, 1.6]
+result = analyze_sensor_data(data, danger_threshold=0.5)
+
+print(f"Min distance:  {result['min']:.2f}{result['unit']}")
+print(f"Max distance:  {result['max']:.2f}{result['unit']}")
+print(f"Average:       {result['average']:.2f}{result['unit']}")
+print(f"Danger events: {result['danger_count']}")</code></pre>
+          </figure>
+          <p><code>*args</code> means "accept extra positional arguments" and <code>**kwargs</code> means "accept extra named arguments." You do not need them often yet, but you will see them in library functions.</p>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div><div class="callout-title">Scope</div><p>Variables created inside a function are local. Code outside the function cannot see them unless the function returns them.</p></div>
+          </div>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div><div class="callout-title">Common Mistake</div><p>Printing a value is not the same as returning it. If another part of your program needs the result, use <code>return</code>.</p></div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Write <code>convert_speed(value, from_unit, to_unit)</code> to convert between <code>m/s</code>, <code>km/h</code>, and <code>mph</code>. Return the converted value and print a formatted message.</p></div>
+          </div>
+        </section>
+
+        <section id="libraries" class="section-card observe" data-title="1.7 Libraries & Imports">
+          <h3>1.7 Libraries & Imports</h3>
+          <p><strong>Concept.</strong> A library is code someone else packaged so you do not have to rebuild everything from scratch. In Colab, common ML libraries are already installed. For anything missing, you can run <code>!pip install package_name</code>.</p>
+          <div class="diagram">
+            <div class="library-map" aria-label="Library map">
+              <div class="card"><h4>NumPy</h4><p class="mini muted">Arrays and math</p></div>
+              <div class="card"><h4>Pandas</h4><p class="mini muted">Data tables</p></div>
+              <div class="card"><h4>Matplotlib</h4><p class="mini muted">Plots and charts</p></div>
+              <div class="card"><h4>Scikit-learn</h4><p class="mini muted">Classic ML</p></div>
+              <div class="card"><h4>TensorFlow/Keras</h4><p class="mini muted">Neural networks</p></div>
+            </div>
+          </div>
+          <figure class="code-card">
+            <figcaption>Standard ML import block</figcaption>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sensor_array = np.array([1.2, 0.9, 1.5, 2.1, 0.3, 1.8])
+
+print(f"Mean: {np.mean(sensor_array):.3f}")
+print(f"Std Dev: {np.std(sensor_array):.3f}")
+print(f"Readings above 1.0m: {np.sum(sensor_array > 1.0)}")
+
+sensor_array_cm = sensor_array * 100
+print(f"In cm: {sensor_array_cm}")</code></pre>
+          </figure>
+          <div class="callout robotics" role="note">
+            <div class="callout-icon">🤖</div>
+            <div><div class="callout-title">Robotics Connection</div><p>Robotics data is often arrays: images, lidar scans, sensor logs, joint angles, and motor current. NumPy is the shared foundation underneath most of those tools.</p></div>
+          </div>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div><div class="callout-title">Common Mistake</div><p><code>import numpy</code> works, but the standard nickname is <code>import numpy as np</code>. Most tutorials assume that alias.</p></div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Mini Exercise</div><p>Create a NumPy array of 10 motor current readings. Print the average, maximum, and how many readings are above a safety threshold you choose.</p></div>
+          </div>
+        </section>
+
+        <section id="checkpoint" class="section-card observe" data-title="1.8 Checkpoint Exercise">
+          <h3>1.8 ★ Checkpoint Exercise: Sensor Data Parser</h3>
+          <p><strong>The task.</strong> A robot has been collecting data for 30 minutes. You are given a raw log as a list of dictionaries. Parse it, clean it, and produce a summary report.</p>
+          <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+          <figure class="code-card">
+            <figcaption>Checkpoint starter code: simulated robot log</figcaption>
+<pre><code class="language-python">robot_log = [
+    {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
+    {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
+    {"time": "10:00", "distance": 0.4, "motor_temp": 66.1, "battery": 87,  "task": "avoidance"},
+    {"time": "15:00", "distance": 2.2, "motor_temp": 63.4, "battery": 80,  "task": "delivery"},
+    {"time": "20:00", "distance": -1,  "motor_temp": 71.0, "battery": 73,  "task": "delivery"},
+    {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
+    {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
+]
+
+# TODO:
+# 1. Count total entries and sensor errors
+# 2. Filter out distance == -1 entries
+# 3. Find highest motor temperature and task
+# 4. Calculate average battery drain per minute
+# 5. Use a set to find unique tasks
+# 6. Print a formatted report using f-strings</code></pre>
+          </figure>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div><div class="callout-title">Self-check</div><p>[ ] Did you use a function? [ ] Did you use a list comprehension? [ ] Did you use a dictionary for the summary? [ ] Is your output clearly formatted?</p></div>
+          </div>
+          <details class="solution">
+            <summary>Show Solution</summary>
+            <div>
+              <figure class="code-card">
+                <figcaption>Checkpoint solution</figcaption>
+<pre><code class="language-python">def summarize_robot_log(log):
+    total_entries = len(log)
+    sensor_error_count = sum(1 for row in log if row["distance"] == -1)
+    clean_log = [row for row in log if row["distance"] != -1]
+
+    hottest = max(log, key=lambda row: row["motor_temp"])
+    minutes = int(log[-1]["time"].split(":")[0]) - int(log[0]["time"].split(":")[0])
+    battery_drain = log[0]["battery"] - log[-1]["battery"]
+    average_drain = battery_drain / minutes
+    unique_tasks = {row["task"] for row in log}
+
+    return {
+        "total_entries": total_entries,
+        "sensor_errors": sensor_error_count,
+        "valid_entries": len(clean_log),
+        "hottest_temp": hottest["motor_temp"],
+        "hottest_task": hottest["task"],
+        "average_drain": average_drain,
+        "unique_tasks": unique_tasks
+    }
+
+summary = summarize_robot_log(robot_log)
+
+print("ROBOT LOG SUMMARY")
+print("-----------------")
+print(f"Total entries:       {summary['total_entries']}")
+print(f"Sensor errors:       {summary['sensor_errors']}")
+print(f"Valid entries:       {summary['valid_entries']}")
+print(f"Highest temperature: {summary['hottest_temp']:.1f} C during {summary['hottest_task']}")
+print(f"Battery drain/min:   {summary['average_drain']:.2f}%")
+print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</code></pre>
+              </figure>
+            </div>
+          </details>
+        </section>
+
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#chapter-0">← Previous Chapter</a>
+          <a class="next-btn" href="#what-is-ml">Next Chapter → What is ML?</a>
+        </div>
+      </article>
+
+      <article class="chapter ch2 observe" id="what-is-ml" data-title="Chapter 2 — What is Machine Learning?">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 2 / 7</span>
+          <a class="breadcrumb" href="#python">← Previous Chapter: Python Fundamentals</a>
+          <div class="chapter-kicker">ML introduction</div>
+          <h2>What is <span>Machine Learning?</span></h2>
+          <p class="lead">Imagine teaching a robot to catch a ball. The old way: you write thousands of rules like "if ball is at x=50 and moving left at 3 m/s, move arm to position y=120." That is impossible to get right. Machine learning is a completely different idea.</p>
+        </header>
+        <p><strong>Instead of programming rules, you feed the robot examples and let it figure out the rules itself.</strong> Show it 10,000 throws. It watches, finds patterns, and builds its own internal model of how to catch. That's machine learning: computers learning from data, not from explicit instructions.</p>
+        <div class="callout robotics" role="note">
+          <div class="callout-icon">🤖</div>
+          <div><div class="callout-title">The Robotics Angle</div><p>Almost every modern robot uses ML in some form: walking over rough terrain, recognizing tissue types, detecting pedestrians, sorting packages, or spotting defects on a factory line.</p></div>
+        </div>
+        <section class="section-card observe" data-title="2.1 Traditional Programming vs ML">
+          <h3>2.1 Traditional Programming vs ML</h3>
+          <div class="grid-2">
+            <div class="card"><h4>Traditional Programming</h4><p><strong>Input:</strong> data + rules<br /><strong>Output:</strong> answers</p><p class="muted">You write the logic. The computer follows it exactly.</p></div>
+            <div class="card" style="border-color:var(--ch2)"><h4>Machine Learning</h4><p><strong>Input:</strong> data + answers<br /><strong>Output:</strong> rules, also called a model</p><p class="muted">The computer learns the logic from examples.</p></div>
+          </div>
+        </section>
+        <section id="types" class="section-card observe" data-title="2.2 Three Flavors of ML">
+          <h3>2.2 Three Flavors of ML</h3>
+          <div class="grid-3">
+            <div class="card"><div class="icon">🏷️</div><h4>Supervised Learning</h4><p>Learn from labeled examples. Example: sensor readings labeled as failed or healthy.</p></div>
+            <div class="card"><div class="icon">🔍</div><h4>Unsupervised Learning</h4><p>Find hidden structure without labels. Example: group vibration patterns into operating modes.</p></div>
+            <div class="card"><div class="icon">🎮</div><h4>Reinforcement Learning</h4><p>Learn through actions and rewards. Example: a robot learns a navigation policy by trial and error.</p></div>
+          </div>
+        </section>
+        <section id="when-to-use" class="section-card observe" data-title="2.3 When to Use Which">
+          <h3>2.3 When to Use Which</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Question</th><th>Use</th><th>Robotics Example</th></tr></thead>
+              <tbody>
+                <tr><td>Do you have labeled answers?</td><td>Supervised learning</td><td>Predict failure from known historical failures.</td></tr>
+                <tr><td>Do you have raw data but no labels?</td><td>Unsupervised learning</td><td>Cluster sensor behavior into normal and unusual modes.</td></tr>
+                <tr><td>Does the system learn by acting?</td><td>Reinforcement learning</td><td>Teach a robot to navigate a maze.</td></tr>
+                <tr><td>Is the input an image or video?</td><td>Computer vision</td><td>Classify signs, detect parts, follow lanes.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#python">← Previous Chapter</a>
+          <a class="next-btn" href="#supervised">Next Chapter → Supervised Learning</a>
+        </div>
+      </article>
+
+      <article class="chapter ch3 observe" id="supervised" data-title="Chapter 3 — Supervised Learning">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 3 / 7</span>
+          <a class="breadcrumb" href="#what-is-ml">← Previous Chapter: What is ML?</a>
+          <div class="chapter-kicker">Kaggle project</div>
+          <h2>Supervised Learning: <span>Robot Arm Failure Prediction</span></h2>
+          <p class="lead">Supervised learning learns from examples where each row has inputs and a known answer. Here the answer is whether a machine failed.</p>
+        </header>
+
+        <section id="classification-regression" class="section-card observe" data-title="3.1 Classification & Regression">
+          <h3>3.1 Concept: Classification & Regression</h3>
+          <p>In <strong>classification</strong>, the model predicts a category, such as <code>failure</code> or <code>normal</code>. In <strong>regression</strong>, the model predicts a number, such as remaining useful life in hours.</p>
+          <div class="diagram">
+            <div class="flow-row" aria-label="Supervised learning loop">
+              <div class="flow-node">Input features</div><div class="arrow">→</div>
+              <div class="flow-node">Model prediction</div><div class="arrow">→</div>
+              <div class="flow-node">Compare to label, adjust, repeat</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card"><h4>Features</h4><p class="muted">The inputs: air temperature, process temperature, rotational speed, torque, and tool wear.</p></div>
+            <div class="card"><h4>Labels</h4><p class="muted">The answer we want to predict: failure or no failure.</p></div>
+          </div>
+          <p>We split training and test data because the model must prove it can handle examples it did not memorize. Overfitting is like memorizing exam answers instead of understanding the material.</p>
+          <div class="grid-4">
+            <div class="card"><h4>Accuracy</h4><p class="mini muted">Overall percent correct.</p></div>
+            <div class="card"><h4>Precision</h4><p class="mini muted">When the model says failure, how often is it right?</p></div>
+            <div class="card"><h4>Recall</h4><p class="mini muted">Of all true failures, how many did it catch?</p></div>
+            <div class="card"><h4>F1-score</h4><p class="mini muted">A balance between precision and recall.</p></div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" aria-label="Confusion matrix diagram">
+              <thead><tr><th></th><th>Predicted Normal</th><th>Predicted Failure</th></tr></thead>
+              <tbody>
+                <tr><th>Actual Normal</th><td>True Negative<br /><span class="muted">Correctly ignored healthy machine</span></td><td>False Positive<br /><span class="muted">False alarm</span></td></tr>
+                <tr><th>Actual Failure</th><td>False Negative<br /><span class="muted">Missed failure</span></td><td>True Positive<br /><span class="muted">Caught failure</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="algorithms" class="section-card observe" data-title="3.2 Key Algorithms">
+          <h3>3.2 Key Algorithms Explained</h3>
+          <div class="grid-2">
+            <div class="card"><h4>Logistic Regression</h4><p>Despite the name, it is for classification. Think of it as drawing the best straight-line boundary between two groups.</p><p class="muted">Use when you want a fast, interpretable baseline.</p></div>
+            <div class="card"><h4>Decision Tree</h4><p>A flowchart the model builds itself. At each node, it asks the best yes/no question about your data.</p><p class="muted">Use when explanation matters.</p></div>
+            <div class="card"><h4>Random Forest</h4><p>Many decision trees vote on the answer. The group is usually more robust than one tree.</p><p class="muted">Use when tabular performance matters.</p></div>
+            <div class="card"><h4>Support Vector Machine</h4><p>Finds the widest possible highway between classes, then classifies by which side a point lands on.</p><p class="muted">Use for smaller datasets with clear margins.</p></div>
+          </div>
+          <div class="diagram">
+            <div class="matrix">
+              <div class="card"><h4>Simple + Interpretable</h4><p>Logistic Regression</p></div>
+              <div class="card"><h4>Complex + Interpretable</h4><p>Decision Tree</p></div>
+              <div class="card"><h4>Simple + Performance</h4><p>Support Vector Machine</p></div>
+              <div class="card"><h4>Complex + Performance</h4><p>Random Forest</p></div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table sortable" aria-label="Algorithm comparison table">
+              <thead>
+                <tr>
+                  <th><button class="table-sort" type="button" data-sort="0">Algorithm</button></th>
+                  <th><button class="table-sort" type="button" data-sort="1">Type</button></th>
+                  <th><button class="table-sort" type="button" data-sort="2">Interpretable</button></th>
+                  <th><button class="table-sort" type="button" data-sort="3">Speed</button></th>
+                  <th>Best For</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Logistic Regression</td><td>Linear classifier</td><td>High</td><td>Fast</td><td>Baselines and explanations</td></tr>
+                <tr><td>Decision Tree</td><td>Tree classifier</td><td>High</td><td>Fast</td><td>Readable rules</td></tr>
+                <tr><td>Random Forest</td><td>Ensemble</td><td>Medium</td><td>Medium</td><td>Strong tabular accuracy</td></tr>
+                <tr><td>Support Vector Machine</td><td>Margin classifier</td><td>Medium</td><td>Medium</td><td>Smaller clean datasets</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ml-pipeline" class="section-card observe" data-title="3.3 The ML Pipeline">
+          <h3>3.3 The ML Pipeline</h3>
+          <div class="steps">
+            <div class="step"><div><strong>Get Data</strong> from Kaggle.</div></div>
+            <div class="step"><div><strong>Explore Data</strong> with <code>head()</code>, <code>info()</code>, and charts.</div></div>
+            <div class="step"><div><strong>Clean Data</strong> by checking missing values and outliers.</div></div>
+            <div class="step"><div><strong>Feature Engineering</strong> turns raw columns into useful inputs.</div></div>
+            <div class="step"><div><strong>Split</strong> into train and test sets, commonly 80/20.</div></div>
+            <div class="step"><div><strong>Scale</strong> numeric features with <code>StandardScaler</code>.</div></div>
+            <div class="step"><div><strong>Train Model</strong> on the training set.</div></div>
+            <div class="step"><div><strong>Evaluate</strong> with accuracy, F1, and a confusion matrix.</div></div>
+            <div class="step"><div><strong>Tune</strong> algorithms and hyperparameters.</div></div>
+            <div class="step"><div><strong>Deploy / Use</strong> the model in a decision workflow.</div></div>
+          </div>
+        </section>
+
+        <section id="robot-failure-project" class="section-card observe" data-title="3.4 Project: Robot Arm Failure Prediction">
+          <h3>3.4 ★ Project: Robot Arm Failure Prediction</h3>
+          <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">AI4I 2020 Predictive Maintenance Dataset</a>. It has 10,000 engineering-relevant rows and supports binary failure prediction.</p>
+          <div class="callout download" role="note">
+            <div class="callout-icon">⬇</div>
+            <div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">predictive-maintenance-dataset-ai4i-2020</a>.</p></div>
+          </div>
+          <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div><div class="callout-title">Kaggle API Setup</div><p>Create a free Kaggle account, go to Account → Create New Token, upload <code>kaggle.json</code> in Cell 1, and the dataset downloads automatically.</p></div>
+          </div>
+
+          <h4>Cell-by-cell notebook</h4>
+          <figure class="code-card"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
+from google.colab import files
+files.upload()  # choose kaggle.json
+
+!mkdir -p ~/.kaggle
+!cp kaggle.json ~/.kaggle/
+!chmod 600 ~/.kaggle/kaggle.json</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download private-account dataset files.</p></div></div><div class="expected"><strong>Expected output</strong>Upload widget appears, then no error after <code>chmod</code>.</div></div>
+          <figure class="code-card"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
+!unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The command pulls the zipped CSV into Colab and extracts it into a local <code>data</code> folder.</p></div></div><div class="expected"><strong>Expected output</strong>One CSV file appears under <code>data/</code>.</div></div>
+          <figure class="code-card"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Pandas handles tables, Matplotlib draws charts, and scikit-learn provides splitting, scaling, models, and metrics.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output if imports succeed.</div></div>
+          <figure class="code-card"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
+display(df.head())
+df.info()
+display(df.describe())</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>head()</code> shows example rows, <code>info()</code> shows column types, and <code>describe()</code> gives quick numeric ranges.</p></div></div><div class="expected"><strong>Expected output</strong>Rows with temperature, speed, torque, tool wear, and failure columns.</div></div>
+          <figure class="code-card"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
+counts.plot(kind="bar", color=["#34d399", "#fb7185"])
+plt.xticks([0, 1], ["Normal", "Failure"], rotation=0)
+plt.title("Failure vs normal examples")
+plt.ylabel("Rows")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Failures are usually rare. A model can look accurate by guessing normal too often, so class balance matters.</p></div></div><div class="expected"><strong>Expected output</strong>A bar chart with many more normal rows than failure rows.</div></div>
+          <figure class="code-card"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
+plt.figure(figsize=(9, 7))
+plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
+plt.colorbar(label="Correlation")
+plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)
+plt.yticks(range(len(corr.columns)), corr.columns)
+plt.title("Numeric feature correlations")
+plt.tight_layout()
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Correlation helps you spot repeated information and features that move with failure.</p></div></div><div class="expected"><strong>Expected output</strong>A heatmap where red means positive correlation and blue means negative correlation.</div></div>
+          <figure class="code-card"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
+print(missing[missing > 0])
+print(f"Total missing values: {missing.sum()}")</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Most scikit-learn models cannot train with missing values, so always check before modeling.</p></div></div><div class="expected"><strong>Expected output</strong>Usually <code>Total missing values: 0</code> for this dataset.</div></div>
+          <figure class="code-card"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
+    "Air temperature [K]",
+    "Process temperature [K]",
+    "Rotational speed [rpm]",
+    "Torque [Nm]",
+    "Tool wear [min]"
+]
+X = df[feature_cols]
+y = df["Machine failure"]
+print(X.shape, y.shape)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>X</code> is the input table and <code>y</code> is the label. Keeping those separate is the core supervised learning pattern.</p></div></div><div class="expected"><strong>Expected output</strong><code>(10000, 5) (10000,)</code> or similar.</div></div>
+          <figure class="code-card"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+print(X_train.shape, X_test.shape)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The test set is held back so evaluation measures generalization. <code>stratify=y</code> keeps the same failure ratio in both sets.</p></div></div><div class="expected"><strong>Expected output</strong>About 8,000 training rows and 2,000 test rows.</div></div>
+          <figure class="code-card"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)</code></pre></figure>
+          <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Fit the scaler on training data only. Fitting on test data leaks information from the exam into the study guide.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
+          <figure class="code-card"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
+log_reg.fit(X_train_scaled, y_train)
+log_pred = log_reg.predict(X_test_scaled)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Logistic regression is the baseline. <code>class_weight="balanced"</code> helps when failures are rare.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>log_pred</code>.</div></div>
+          <figure class="code-card"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
+ConfusionMatrixDisplay.from_predictions(y_test, log_pred, display_labels=["Normal", "Failure"])
+plt.title("Logistic Regression Confusion Matrix")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The classification report gives precision, recall, and F1. The confusion matrix shows which mistakes the model makes.</p></div></div><div class="expected"><strong>Expected output</strong>Text metrics plus a 2x2 confusion matrix.</div></div>
+          <figure class="code-card"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42,
+    class_weight="balanced"
+)
+forest.fit(X_train, y_train)
+forest_pred = forest.predict(X_test)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Random forests do not require scaling and often perform well on tabular engineering data.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>forest_pred</code>.</div></div>
+          <figure class="code-card"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
+forest_f1 = f1_score(y_test, forest_pred)
+
+print(f"Logistic Regression F1: {log_f1:.3f}")
+print(f"Random Forest F1:       {forest_f1:.3f}")</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>F1 is useful for rare failures because it punishes both false alarms and missed failures.</p></div></div><div class="expected"><strong>Expected output</strong>Two F1 scores; discuss which one is better and why.</div></div>
+          <figure class="code-card"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+scores = []
+
+for n in tree_counts:
+    model = RandomForestClassifier(n_estimators=n, random_state=42, class_weight="balanced")
+    model.fit(X_train, y_train)
+    scores.append(f1_score(y_test, model.predict(X_test)))
+
+plt.plot(tree_counts, scores, marker="o")
+plt.xlabel("Number of trees")
+plt.ylabel("F1 score")
+plt.title("Random Forest tuning")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>Hyperparameter tuning asks whether more model capacity improves performance enough to justify extra computation.</p></div></div><div class="expected"><strong>Expected output</strong>A line plot of F1 score versus number of trees.</div></div>
+        </section>
+
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#what-is-ml">← Previous Chapter</a>
+          <a class="next-btn" href="#unsupervised">Next Chapter → Unsupervised Learning</a>
+        </div>
+      </article>
+
+      <article class="chapter ch4 observe" id="unsupervised" data-title="Chapter 4 — Unsupervised Learning">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 4 / 7</span>
+          <a class="breadcrumb" href="#supervised">← Previous Chapter: Supervised Learning</a>
+          <div class="chapter-kicker">Kaggle project</div>
+          <h2>Unsupervised Learning: <span>Industrial Vibration Clustering</span></h2>
+          <p class="lead">Unsupervised learning finds structure when nobody has labeled the rows. That makes it valuable for sensor streams, vibration logs, and exploratory robotics data.</p>
+        </header>
+        <section id="clustering" class="section-card observe" data-title="4.1 Clustering & Dimensionality Reduction">
+          <h3>4.1 Concept: Clustering & Dimensionality Reduction</h3>
+          <p><strong>Clustering</strong> groups similar rows. If a motor has normal, imbalanced, and loose modes, vibration windows may naturally form three groups even without labels.</p>
+          <p><strong>PCA</strong> reduces many features into two or three axes so humans can visualize high-dimensional data. It does not magically explain the system, but it helps you inspect patterns.</p>
+          <div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Robotics Connection</div><p>When a robot enters a new environment, unlabeled sensor patterns are often the first clue that something changed.</p></div></div>
+        </section>
+        <section id="kmeans" class="section-card observe" data-title="4.2 K-Means Deep Dive">
+          <h3>4.2 K-Means Deep Dive</h3>
+          <div class="grid-4">
+            <div class="card"><h4>1. Random init</h4><p class="mini muted">Place K centroids randomly.</p></div>
+            <div class="card"><h4>2. Assign</h4><p class="mini muted">Assign each point to the nearest centroid.</p></div>
+            <div class="card"><h4>3. Recompute</h4><p class="mini muted">Move each centroid to the average of its assigned points.</p></div>
+            <div class="card"><h4>4. Converge</h4><p class="mini muted">Repeat until assignments stop changing.</p></div>
+          </div>
+          <p>Use the <strong>Elbow Method</strong> to choose K: plot inertia for K=1 to 10. The elbow is where extra clusters stop helping much. Use <strong>DBSCAN</strong> when clusters are odd shapes or when you do not know K.</p>
+        </section>
+        <section id="sensor-cluster-project" class="section-card observe" data-title="4.3 Project: Clustering Vibration Readings">
+          <h3>4.3 ★ Project: Clustering Robot Sensor Readings</h3>
+          <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
+          <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
+          <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+          <figure class="code-card"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
+from google.colab import files
+files.upload()
+!mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+!kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
+!unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
+          <figure class="code-card"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from pathlib import Path
+
+files = list(Path("vibration_data").glob("*.csv"))
+if files:
+    df = pd.read_csv(files[0])
+else:
+    t = np.linspace(0, 60, 6000)
+    signal = np.r_[np.sin(12*t[:2000]), 1.5*np.sin(18*t[:2000]), np.sin(12*t[:2000]) + .4*np.sin(45*t[:2000])]
+    df = pd.DataFrame({"time": t, "vibration": signal})
+
+display(df.head())
+print(df.shape)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The code is robust: it uses Kaggle data when present and synthetic vibration data when unavailable.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
+          <figure class="code-card"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
+plt.figure(figsize=(12, 3))
+plt.plot(df[signal_col].values[:2000])
+plt.title("Raw vibration signal")
+plt.xlabel("Sample")
+plt.ylabel("Amplitude")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Always look at raw sensor data before feature engineering. Bad units or flat lines show up immediately.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
+          <figure class="code-card"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+window = 256
+features = []
+
+for start in range(0, len(values) - window, window):
+    chunk = values[start:start + window]
+    fft = np.abs(np.fft.rfft(chunk))
+    features.append({
+        "mean": chunk.mean(),
+        "std": chunk.std(),
+        "max": chunk.max(),
+        "fft_peak": fft[1:].argmax() + 1
+    })
+
+feature_df = pd.DataFrame(features)
+display(feature_df.head())</code></pre></figure>
+          <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>ML models do not understand raw waves automatically. Window statistics and FFT peaks summarize behavior.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
+          <figure class="code-card"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>K-Means uses distance. Scaling keeps a large numeric column from dominating the distance calculation.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
+          <figure class="code-card"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
+
+ks = range(1, 11)
+inertias = []
+for k in ks:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init="auto")
+    kmeans.fit(X_scaled)
+    inertias.append(kmeans.inertia_)
+
+plt.plot(list(ks), inertias, marker="o")
+plt.xlabel("K")
+plt.ylabel("Inertia")
+plt.title("Elbow Method")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The elbow suggests a reasonable number of clusters before improvements flatten out.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend.</div></div>
+          <figure class="code-card"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
+cluster_labels = kmeans.fit_predict(X_scaled)
+feature_df["cluster"] = cluster_labels
+display(feature_df.groupby("cluster").mean())</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Cluster averages help you give engineering names to groups, such as normal or high-vibration.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
+          <figure class="code-card"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2, random_state=42)
+points_2d = pca.fit_transform(X_scaled)
+
+plt.scatter(points_2d[:, 0], points_2d[:, 1], c=cluster_labels, cmap="viridis")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.title("K-Means clusters in PCA space")
+plt.colorbar(label="Cluster")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>PCA compresses the feature table into two axes so you can inspect whether clusters separate visually.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
+          <figure class="code-card"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
+display(summary)
+
+for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
+    print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
+          <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>The ML output is only useful after you translate it into engineering language.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
+          <figure class="code-card"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
+
+dbscan = DBSCAN(eps=0.8, min_samples=5)
+db_labels = dbscan.fit_predict(X_scaled)
+
+plt.scatter(points_2d[:, 0], points_2d[:, 1], c=db_labels, cmap="tab10")
+plt.title("DBSCAN clusters in PCA space")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>DBSCAN can mark outliers as <code>-1</code> and find non-round clusters, but it is sensitive to <code>eps</code>.</p></div></div><div class="expected"><strong>Expected output</strong>A second cluster plot, sometimes with outliers.</div></div>
+        </section>
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#supervised">← Previous Chapter</a>
+          <a class="next-btn" href="#reinforcement-learning">Next Chapter → Reinforcement Learning</a>
+        </div>
+      </article>
+
+      <article class="chapter ch5 observe" id="reinforcement-learning" data-title="Chapter 5 — Reinforcement Learning">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 5 / 7</span>
+          <a class="breadcrumb" href="#unsupervised">← Previous Chapter: Unsupervised Learning</a>
+          <div class="chapter-kicker">Gym project</div>
+          <h2>Reinforcement Learning: <span>Teach a Robot to Navigate a Maze</span></h2>
+          <p class="lead">Reinforcement learning is about actions, rewards, and practice. The model is not given labels; it learns which actions lead to better outcomes.</p>
+        </header>
+        <section class="section-card observe" data-title="5.1 Agent, Environment, Reward">
+          <h3>5.1 Concept: Agent, Environment, Reward</h3>
+          <div class="diagram">
+            <div class="flow-row" aria-label="Reinforcement learning loop">
+              <div class="flow-node">Agent</div><div class="arrow">action →</div>
+              <div class="flow-node">Environment</div><div class="arrow">reward + state →</div>
+              <div class="flow-node">Agent updates policy</div>
+            </div>
+          </div>
+          <p>RL is different from supervised learning because there is no answer key for every state. The agent must explore, make mistakes, and learn from reward signals.</p>
+          <p>Real robotics uses RL in legged locomotion, drone control, robotic surgery research, dexterous manipulation, and simulation-to-real training.</p>
+        </section>
+        <section id="q-learning" class="section-card observe" data-title="5.2 Q-Learning Explained">
+          <h3>5.2 Q-Learning Explained with a Grid</h3>
+          <p>A Q-table stores the expected value of taking each action in each state. In FrozenLake, there are 16 grid states and 4 actions, so the table is 16 x 4.</p>
+          <figure class="code-card">
+            <figcaption>Q-learning update equation</figcaption>
+<pre><code>Q(s, a) <- Q(s, a) + alpha [ r + gamma * max Q(s', a') - Q(s, a) ]
+           old value    rate   reward discount best future value</code></pre>
+          </figure>
+          <ul>
+            <li><strong>s</strong>: current state.</li>
+            <li><strong>a</strong>: action chosen.</li>
+            <li><strong>alpha</strong>: learning rate, or how aggressively we update.</li>
+            <li><strong>r</strong>: immediate reward.</li>
+            <li><strong>gamma</strong>: discount factor for future rewards.</li>
+          </ul>
+          <p><strong>Exploration vs exploitation</strong> is the central tradeoff. Early on, the agent flips a biased coin and explores random moves often. Later, it mostly exploits the best actions it has learned.</p>
+        </section>
+        <section id="maze-project" class="section-card observe" data-title="5.3 Project: FrozenLake Maze">
+          <h3>5.3 ★ Project: Teaching a Robot to Navigate a Maze</h3>
+          <p><strong>Environment:</strong> OpenAI Gym / Gymnasium <code>FrozenLake-v1</code>. The notebook logs rewards to CSV, uploads them as a Kaggle dataset, and loads them back for analysis.</p>
+          <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>This project generates <code>frozenlake_training_log.csv</code>. Upload or retrieve logs through <a href="https://www.kaggle.com/datasets" target="_blank" rel="noreferrer">kaggle.com/datasets</a>.</p></div></div>
+          <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+          <figure class="code-card"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
+import gymnasium as gym
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Installs the grid-world environment and imports the tools for tables, arrays, and charts.</p></div></div><div class="expected"><strong>Expected output</strong>Installation completes with no import errors.</div></div>
+          <figure class="code-card"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
+state, info = env.reset(seed=42)
+print(env.render())</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates a 4x4 map. Slippery ice adds randomness, which makes learning harder and more realistic.</p></div></div><div class="expected"><strong>Expected output</strong>An ASCII grid with S, F, H, and G.</div></div>
+          <figure class="code-card"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
+print("Actions:", env.action_space.n)
+print("0=Left, 1=Down, 2=Right, 3=Up")</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Confirms that the state is a grid square and the action is a movement direction.</p></div></div><div class="expected"><strong>Expected output</strong><code>States: 16</code>, <code>Actions: 4</code>.</div></div>
+          <figure class="code-card"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
+print(q_table.shape)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The agent starts knowing nothing, so every action value starts at zero.</p></div></div><div class="expected"><strong>Expected output</strong><code>(16, 4)</code>.</div></div>
+          <figure class="code-card"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
+alpha = 0.8
+gamma = 0.95
+epsilon = 1.0
+epsilon_decay = 0.995
+min_epsilon = 0.05
+logs = []
+
+for episode in range(episodes):
+    state, info = env.reset()
+    done = False
+    total_reward = 0
+
+    while not done:
+        if np.random.random() < epsilon:
+            action = env.action_space.sample()
+        else:
+            action = np.argmax(q_table[state])
+
+        next_state, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
+
+        best_next = np.max(q_table[next_state])
+        q_table[state, action] += alpha * (reward + gamma * best_next - q_table[state, action])
+
+        state = next_state
+        total_reward += reward
+
+    epsilon = max(min_epsilon, epsilon * epsilon_decay)
+    logs.append({"episode": episode, "reward": total_reward, "epsilon": epsilon})</code></pre></figure>
+          <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This is the learning loop: choose action, observe reward, update Q-table, repeat.</p></div></div><div class="expected"><strong>Expected output</strong>No output until the next plotting cell.</div></div>
+          <figure class="code-card"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
+log_df["rolling_reward"] = log_df["reward"].rolling(50).mean()
+
+plt.plot(log_df["episode"], log_df["rolling_reward"])
+plt.xlabel("Episode")
+plt.ylabel("Rolling average reward")
+plt.title("Q-learning progress")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Rolling averages smooth noisy rewards so learning trends are easier to see.</p></div></div><div class="expected"><strong>Expected output</strong>A curve that should rise as the policy improves.</div></div>
+          <figure class="code-card"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
+policy = arrows[np.argmax(q_table, axis=1)].reshape(4, 4)
+print(policy)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Converts best actions into arrows so you can inspect the learned navigation plan.</p></div></div><div class="expected"><strong>Expected output</strong>A 4x4 grid of arrows.</div></div>
+          <figure class="code-card"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
+done = False
+while not done:
+    action = np.argmax(q_table[state])
+    state, reward, terminated, truncated, info = env.step(action)
+    done = terminated or truncated
+    print(env.render())
+print("Final reward:", reward)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Runs one greedy episode using the learned policy instead of random exploration.</p></div></div><div class="expected"><strong>Expected output</strong>Several grid frames and a final reward of 0 or 1.</div></div>
+          <figure class="code-card"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
+print("Saved frozenlake_training_log.csv")
+
+# Optional: create a Kaggle dataset manually from this CSV,
+# then use the Kaggle API to download it in a future notebook.</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The CSV turns your RL experiment into a dataset you can share and re-analyze.</p></div></div><div class="expected"><strong>Expected output</strong>A saved CSV file in Colab's file browser.</div></div>
+          <figure class="code-card"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
+env = gym.make("FrozenLake-v1", map_name="8x8", is_slippery=True, render_mode="ansi")
+# or
+env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="ansi")</code></pre></figure>
+          <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>The 8x8 map is harder. Turning slipperiness off isolates planning from randomness.</p></div></div><div class="expected"><strong>Expected output</strong>A changed environment; rerun training and compare reward curves.</div></div>
+        </section>
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#unsupervised">← Previous Chapter</a>
+          <a class="next-btn" href="#computer-vision">Next Chapter → Computer Vision</a>
+        </div>
+      </article>
+
+      <article class="chapter ch6 observe" id="computer-vision" data-title="Chapter 6 — Computer Vision for Robotics">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 6 / 7</span>
+          <a class="breadcrumb" href="#reinforcement-learning">← Previous Chapter: Reinforcement Learning</a>
+          <div class="chapter-kicker">Kaggle project</div>
+          <h2>Computer Vision for Robotics: <span>Traffic Sign Classifier</span></h2>
+          <p class="lead">Computer vision lets robots use cameras as sensors. This chapter replaces the old MNIST demo with a real traffic sign classification project.</p>
+        </header>
+        <section class="section-card observe" data-title="6.1 Why Vision Matters">
+          <h3>6.1 Why Vision Matters in Robotics</h3>
+          <p>Cameras are cheap, rich sensors. Robots use vision to read signs, detect obstacles, estimate pose, inspect parts, track lanes, and understand human workspaces.</p>
+        </section>
+        <section id="opencv" class="section-card observe" data-title="6.3 OpenCV">
+          <h3>6.2 Tools: OpenCV</h3>
+          <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
+          <figure class="code-card"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+
+img_bgr = cv2.imread("traffic_sign.jpg")
+print(img_bgr.shape)             # height, width, channels
+
+img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+small = cv2.resize(img_rgb, (32, 32))
+edges = cv2.Canny(small, threshold1=50, threshold2=150)
+
+cv2.rectangle(img_rgb, (20, 20), (120, 120), (0, 255, 0), 2)
+plt.imshow(img_rgb)
+plt.axis("off")
+plt.show()</code></pre></figure>
+          <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">BGR vs RGB</div><p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p></div></div>
+        </section>
+        <section id="tensorflow" class="section-card observe" data-title="6.3 TensorFlow/Keras">
+          <h3>6.3 Tools: TensorFlow/Keras</h3>
+          <p>TensorFlow is Google's library for building and training neural networks. Keras is the friendly wrapper on top, like power steering on a car. You will use tensors, layers, models, epochs, batches, loss functions, and optimizers.</p>
+          <div class="diagram">
+            <div class="flow-row" aria-label="Keras sequential stack">
+              <div class="flow-node">Input image</div><div class="arrow">→</div>
+              <div class="flow-node">Layers stacked in order</div><div class="arrow">→</div>
+              <div class="flow-node">Class probabilities</div>
+            </div>
+          </div>
+        </section>
+        <section id="cnn" class="section-card observe" data-title="6.2 CNNs">
+          <h3>6.4 How Convolutional Neural Networks See</h3>
+          <p>A normal neural network sees a flat list of pixels. A CNN scans small filters across the image, so it can learn edges, corners, textures, shapes, and eventually objects.</p>
+          <div class="diagram">
+            <div class="flow-row" aria-label="CNN architecture diagram">
+              <div class="flow-node">Input 32x32 image</div><div class="arrow">→</div>
+              <div class="flow-node">Conv2D + MaxPool</div><div class="arrow">→</div>
+              <div class="flow-node">Dense → 43 signs</div>
+            </div>
+          </div>
+          <figure class="code-card"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
+    [-1, 0, 1],
+    [-2, 0, 2],
+    [-1, 0, 1]
+])</code></pre></figure>
+        </section>
+        <section id="traffic-sign-project" class="section-card observe" data-title="6.4 Project: Traffic Sign Classifier">
+          <h3>6.5 ★ Project: Traffic Sign Classifier with TensorFlow + OpenCV</h3>
+          <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
+          <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
+          <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+          <figure class="code-card"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
+from google.colab import files
+files.upload()
+!mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+!kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
+!unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
+          <figure class="code-card"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+
+train_csv = Path("gtsrb/Train.csv")
+df = pd.read_csv(train_csv)
+display(df.head())
+df["ClassId"].value_counts().sort_index().plot(kind="bar", figsize=(14, 4))
+plt.title("Images per traffic sign class")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows metadata and checks whether classes are balanced.</p></div></div><div class="expected"><strong>Expected output</strong>A table and a 43-bar class count chart.</div></div>
+          <figure class="code-card"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
+import numpy as np
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+images, labels = [], []
+for _, row in df.iterrows():
+    path = Path("gtsrb") / row["Path"]
+    img = cv2.imread(str(path))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, (32, 32))
+    img = img.astype("float32") / 255.0
+    images.append(img)
+    labels.append(row["ClassId"])
+
+X = np.array(images)
+y = np.array(labels)
+print(X.shape, y.shape)</code></pre></figure>
+          <figure class="code-card"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
+    rotation_range=10,
+    zoom_range=0.10,
+    horizontal_flip=True
 )
 
-<span class="cm"># Normalize features (important! keeps all features on the same scale)</span>
-scaler = <span class="cl">StandardScaler</span>()
-X_train = scaler.<span class="fn">fit_transform</span>(X_train)
-X_test  = scaler.<span class="fn">transform</span>(X_test)
+# Use with care: horizontal flips can change the meaning of some traffic signs.</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples.</p></div></div><div class="expected"><strong>Expected output</strong><code>(num_images, 32, 32, 3)</code> and labels.</div></div>
+          <figure class="code-card"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
 
-<span class="cm"># Train the model</span>
-model = <span class="cl">LogisticRegression</span>()
-model.<span class="fn">fit</span>(X_train, y_train)
-
-<span class="cm"># Evaluate</span>
-y_pred = model.<span class="fn">predict</span>(X_test)
-<span class="fn">print</span>(<span class="fn">classification_report</span>(y_test, y_pred, target_names=[<span class="st">"Hollywood Thriller"</span>, <span class="st">"Sci-Fi"</span>]))
-
-<span class="cm"># Create a mesh grid to draw the decision boundary</span>
-x_min, x_max = X[:, <span class="num">0</span>].<span class="fn">min</span>() - <span class="num">10</span>, X[:, <span class="num">0</span>].<span class="fn">max</span>() + <span class="num">10</span>
-y_min, y_max = X[:, <span class="num">1</span>].<span class="fn">min</span>() - <span class="num">3</span>, X[:, <span class="num">1</span>].<span class="fn">max</span>() + <span class="num">3</span>
-xx, yy = np.<span class="fn">meshgrid</span>(
-    np.<span class="fn">linspace</span>(x_min, x_max, <span class="num">300</span>),
-    np.<span class="fn">linspace</span>(y_min, y_max, <span class="num">300</span>)
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
 )
+X_val, X_test, y_val, y_test = train_test_split(
+    X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
+)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates separate data for training, tuning during training, and final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No output; three splits are ready.</div></div>
+          <figure class="code-card"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
 
-grid = np.<span class="fn">c_</span>[xx.<span class="fn">ravel</span>(), yy.<span class="fn">ravel</span>()]
-grid_scaled = scaler.<span class="fn">transform</span>(grid)
-Z = model.<span class="fn">predict</span>(grid_scaled).<span class="fn">reshape</span>(xx.shape)
-
-plt.<span class="fn">figure</span>(figsize=(<span class="num">8</span>, <span class="num">6</span>))
-plt.<span class="fn">contourf</span>(xx, yy, Z, alpha=<span class="num">0.22</span>, levels=[-<span class="num">0.5</span>, <span class="num">0.5</span>, <span class="num">1.5</span>], colors=[<span class="st">"#4da8ff"</span>, <span class="st">"#ff6b35"</span>])
-plt.<span class="fn">scatter</span>(X[y == <span class="num">0</span>, <span class="num">0</span>], X[y == <span class="num">0</span>, <span class="num">1</span>], c=<span class="st">"#4da8ff"</span>, edgecolors=<span class="st">"white"</span>, label=<span class="st">"Hollywood Thriller"</span>)
-plt.<span class="fn">scatter</span>(X[y == <span class="num">1</span>, <span class="num">0</span>], X[y == <span class="num">1</span>, <span class="num">1</span>], c=<span class="st">"#ff6b35"</span>, edgecolors=<span class="st">"white"</span>, label=<span class="st">"Sci-Fi"</span>)
-plt.<span class="fn">xlabel</span>(<span class="st">"CGI Budget"</span>)
-plt.<span class="fn">ylabel</span>(<span class="st">"Number of Jump Scares"</span>)
-plt.<span class="fn">title</span>(<span class="st">"Movie Genre Classification with Decision Boundary"</span>)
-plt.<span class="fn">legend</span>()
-plt.<span class="fn">show</span>()</div>
-        </div>
-
-        <div class="callout callout-cyan">
-          <div class="callout-icon">💡</div>
-          <div class="callout-body">
-            <div class="callout-title">What to look for</div>
-            <p>The big win here is that you can <strong style="color:var(--white)">see the classifier thinking</strong>.
-            The background colors show the model's predicted region for each genre.
-            Try moving the two clusters closer together in Cell 2 — the decision boundary becomes less clean and the classification report gets worse.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- SECTION 4: UNSUPERVISED -->
-  <section id="unsupervised">
-    <div class="container">
-      <div class="section-num fade-up">04 / Hands-On</div>
-      <h2 class="fade-up"><span class="accent">Unsupervised</span> Learning</h2>
-      <p class="lead fade-up">
-        What if you have data but no one has labeled it yet? Unsupervised learning finds 
-        hidden patterns and structure in raw, unlabeled data — no answers required.
-      </p>
-      <p class="fade-up">
-        A 2D clustering example is great for beginners because the clusters are directly visible.
-        You do not need PCA or any other dimensionality reduction trick just to understand what the algorithm found.
-      </p>
-
-      <h3 class="fade-up">Clustering: Finding Natural Groups</h3>
-      <p class="fade-up">
-        The most common unsupervised technique is <strong style="color:var(--white)">clustering</strong> — 
-        grouping data points that are similar to each other. Think of it like this: you have a dataset
-        of foods and no idea how they naturally group together. K-Means can tell you
-        "there are 3 natural dietary groups in your data" even without labels.
-      </p>
-
-      <div class="callout callout-blue fade-up">
-        <div class="callout-icon">🔧</div>
-        <div class="callout-body">
-          <div class="callout-title">Where people use this</div>
-          <p>Grouping foods by nutritional profile, segmenting customers, clustering songs by listening behavior,
-          finding similar articles, and spotting strange usage patterns are all unsupervised problems.</p>
-        </div>
-      </div>
-
-      <div class="exercise fade-up">
-        <div class="exercise-label">Exercise 02 — Google Colab</div>
-        <h3>🥗 Dietary Grouping with K-Means</h3>
-        <p style="color:var(--muted)">
-          You'll take unlabeled 2D nutrition data and use K-Means to automatically discover
-          three distinct dietary groups using only <code>Caloric Density</code> and <code>Protein Content</code>.
-          Because the dataset is already 2D, the raw scatter plot and the learned centroids are easy to interpret.
-        </p>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">unsupervised_exercise.ipynb — Cell 1: Setup & Data</div>
-          </div>
-          <div class="code-body"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
-<span class="kw">from</span> sklearn.cluster <span class="kw">import</span> <span class="cl">KMeans</span>
-<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> <span class="cl">StandardScaler</span>
-
-np.<span class="fn">random</span>.seed(<span class="num">7</span>)
-
-<span class="cm"># Simulate 3 unlabeled dietary groups (we pretend we don't know the labels)</span>
-<span class="cm"># Group 0: High-protein foods</span>
-<span class="cm"># Group 1: High-calorie / high-carb foods</span>
-<span class="cm"># Group 2: Low-calorie foods</span>
-
-modes = []
-<span class="kw">for</span> mean, std, n <span class="kw">in</span> [
-    ([<span class="num">4.0</span>,  <span class="num">28</span>], [<span class="num">0.5</span>, <span class="num">4</span>], <span class="num">250</span>),   <span class="cm"># high-protein</span>
-    ([<span class="num">7.5</span>,  <span class="num">9</span>],  [<span class="num">0.8</span>, <span class="num">3</span>], <span class="num">250</span>),   <span class="cm"># high-calorie/high-carb</span>
-    ([<span class="num">2.0</span>,  <span class="num">6</span>],  [<span class="num">0.4</span>, <span class="num">2</span>], <span class="num">250</span>)    <span class="cm"># low-calorie</span>
-]:
-    modes.<span class="fn">append</span>(np.random.<span class="fn">normal</span>(mean, std, (n, <span class="num">2</span>)))
-
-<span class="cm"># Stack and shuffle — no labels!</span>
-X_raw = np.<span class="fn">vstack</span>(modes)
-np.random.<span class="fn">shuffle</span>(X_raw)
-<span class="fn">print</span>(<span class="st">f"Raw data shape: {X_raw.shape}"</span>)
-<span class="fn">print</span>(<span class="st">"Columns: [caloric_density, protein_content]"</span>)
-
-plt.<span class="fn">figure</span>(figsize=(<span class="num">7</span>, <span class="num">5</span>))
-plt.<span class="fn">scatter</span>(X_raw[:, <span class="num">0</span>], X_raw[:, <span class="num">1</span>], alpha=<span class="num">0.55</span>, c=<span class="st">"#73b2ff"</span>, s=<span class="num">22</span>)
-plt.<span class="fn">xlabel</span>(<span class="st">"Caloric Density"</span>)
-plt.<span class="fn">ylabel</span>(<span class="st">"Protein Content"</span>)
-plt.<span class="fn">title</span>(<span class="st">"Raw 2D Dietary Dataset"</span>)
-plt.<span class="fn">show</span>()</div>
-        </div>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">unsupervised_exercise.ipynb — Cell 2: Cluster & Visualize</div>
-          </div>
-          <div class="code-body"><span class="cm"># Cell 2 — Scale, cluster, and visualize in 2D</span>
-
-scaler = <span class="cl">StandardScaler</span>()
-X = scaler.<span class="fn">fit_transform</span>(X_raw)
-
-<span class="cm"># K-Means: tell it we suspect 3 groups</span>
-kmeans = <span class="cl">KMeans</span>(n_clusters=<span class="num">3</span>, random_state=<span class="num">42</span>, n_init=<span class="num">10</span>)
-labels = kmeans.<span class="fn">fit_predict</span>(X)
-
-<span class="cm"># Bring centroids back to the original feature scale</span>
-centroids = scaler.<span class="fn">inverse_transform</span>(kmeans.cluster_centers_)
-
-<span class="cm"># Plot the raw 2D data and the learned centroids</span>
-colors = [<span class="st">'#4da8ff'</span>, <span class="st">'#00e5cc'</span>, <span class="st">'#ff6b35'</span>]
-cluster_names = [<span class="st">'Cluster A'</span>, <span class="st">'Cluster B'</span>, <span class="st">'Cluster C'</span>]
-
-plt.<span class="fn">figure</span>(figsize=(<span class="num">9</span>, <span class="num">5</span>))
-<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
-    mask = labels == i
-    plt.<span class="fn">scatter</span>(X_raw[mask, <span class="num">0</span>], X_raw[mask, <span class="num">1</span>],
-               c=colors[i], label=cluster_names[i], alpha=<span class="num">0.6</span>, s=<span class="num">18</span>)
-
-plt.<span class="fn">scatter</span>(centroids[:, <span class="num">0</span>], centroids[:, <span class="num">1</span>],
-           c=<span class="st">"black"</span>, marker=<span class="st">"X"</span>, s=<span class="num">180</span>, label=<span class="st">"Centroids"</span>)
-
-plt.<span class="fn">title</span>(<span class="st">"Dietary Groups (K-Means Clustering)"</span>)
-plt.<span class="fn">xlabel</span>(<span class="st">"Caloric Density"</span>)
-plt.<span class="fn">ylabel</span>(<span class="st">"Protein Content"</span>)
-plt.<span class="fn">legend</span>()
-plt.<span class="fn">tight_layout</span>()
-plt.<span class="fn">show</span>()
-
-<span class="cm"># Inspect cluster centroids to understand what each group represents</span>
-<span class="fn">print</span>(<span class="st">"\nCluster Centroids (original scale):"</span>)
-<span class="fn">print</span>(<span class="st">"         CaloricDensity  ProteinContent"</span>)
-<span class="kw">for</span> i, c <span class="kw">in</span> <span class="fn">enumerate</span>(centroids):
-    <span class="fn">print</span>(<span class="st">f"Cluster {i}: {c[0]:7.2f}         {c[1]:7.2f}"</span>)</div>
-        </div>
-
-        <div class="callout callout-green">
-          <div class="callout-icon">🧪</div>
-          <div class="callout-body">
-            <div class="callout-title">Try This!</div>
-            <p>Change <code>n_clusters</code> to 2 or 5. Does the result still make sense? 
-            This is one of the challenges of unsupervised learning — you have to decide 
-            how many clusters to look for. 
-            Try plotting the "inertia" (within-cluster sum of squares) for k=1 to 8 
-            to find the "elbow" that suggests the natural number of groups.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- SECTION 5: COMPUTER VISION -->
-  <section id="computer-vision">
-    <div class="container">
-      <div class="section-num fade-up">05 / Deep Learning</div>
-      <h2 class="fade-up">Computer <span class="accent">Vision</span></h2>
-      <p class="lead fade-up">
-        Computers can't "see" the way you do. A 640×480 image is just 921,600 numbers. 
-        Computer vision is the field of teaching machines to make sense of those numbers — 
-        to detect edges, recognize faces, read text, track motion, or identify tumors.
-        It's one of the most impactful areas of AI ever created.
-      </p>
-
-      <h3 class="fade-up">Why Should a Robotics Engineer Care?</h3>
-      <p class="fade-up">
-        Your robots will need eyes. Whether it's a drone navigating a warehouse, 
-        a surgical robot avoiding blood vessels, or an assembly robot checking for defects — 
-        <strong style="color:var(--white)">vision is how robots understand the world around them.</strong> 
-        Computer vision is the bridge between raw camera data and actionable decisions.
-      </p>
-
-      <h3 class="fade-up">Who's Using It Right Now?</h3>
-      <div class="company-strip fade-up">
-        <div class="company-badge"><span>🚗</span> Tesla Autopilot</div>
-        <div class="company-badge"><span>🏭</span> Boston Dynamics</div>
-        <div class="company-badge"><span>🏥</span> Intuitive Surgical</div>
-        <div class="company-badge"><span>📦</span> Amazon Robotics</div>
-        <div class="company-badge"><span>🔬</span> DeepMind</div>
-        <div class="company-badge"><span>🤖</span> NVIDIA Isaac</div>
-        <div class="company-badge"><span>✈️</span> Lockheed Martin</div>
-        <div class="company-badge"><span>🌿</span> John Deere AI</div>
-      </div>
-
-      <h3 class="fade-up">Neural Networks: The Engine Behind Vision</h3>
-      <p class="fade-up">
-        Modern computer vision is powered by <strong style="color:var(--white)">Convolutional Neural Networks (CNNs)</strong> — 
-        models loosely inspired by the visual cortex of the brain. A neural network is a stack of 
-        <em>layers</em>, each transforming the data a little more until a final prediction pops out.
-        Before diving into CNNs, let's build a simpler neural network from scratch and understand 
-        every knob you can turn.
-      </p>
-
-      <h3 class="fade-up">Key Terms Explained</h3>
-      <div class="glossary fade-up">
-        <div class="term-row">
-          <div class="term-name">Loss Function</div>
-          <div class="term-def"><strong>How wrong is the model?</strong> It computes a single number representing the error between 
-          the model's predictions and the true answers. Training tries to minimize this number. 
-          Common ones: <em>Cross-Entropy</em> for classification, <em>MSE</em> for regression.</div>
-        </div>
-        <div class="term-row">
-          <div class="term-name">Learning Rate</div>
-          <div class="term-def"><strong>How big a step does the model take</strong> when it adjusts its weights after each batch? 
-          Too high → overshoots, loss bounces around and never settles. 
-          Too low → training is extremely slow and may get stuck. 
-          A good start is <code>0.001</code>.</div>
-        </div>
-        <div class="term-row">
-          <div class="term-name">Epoch</div>
-          <div class="term-def">One complete pass through the <strong>entire training dataset</strong>. 
-          Training usually runs for many epochs. Think of it as how many times the model 
-          has "read the textbook."</div>
-        </div>
-        <div class="term-row">
-          <div class="term-name">Batch Size</div>
-          <div class="term-def">Instead of updating weights after every single sample (too noisy) 
-          or the full dataset (too slow), we use <strong>mini-batches</strong>. 
-          A batch size of 32 means the model sees 32 images before updating once.</div>
-        </div>
-        <div class="term-row">
-          <div class="term-name">Dropout</div>
-          <div class="term-def">A regularization trick: during training, randomly <strong>turn off</strong> a fraction 
-          of neurons each step. This prevents the model from memorizing the training data 
-          (overfitting) and forces it to learn more robust features. 
-          <code>Dropout(0.3)</code> drops 30% of neurons at random.</div>
-        </div>
-        <div class="term-row">
-          <div class="term-name">Activation Function</div>
-          <div class="term-def">Applied after each layer. Without it, stacking layers is just matrix multiplication — 
-          linear, boring, limited. <strong>ReLU</strong> (<em>max(0,x)</em>) is the most popular: 
-          it lets positive signals through and kills negatives. <strong>Softmax</strong> 
-          at the end converts scores into probabilities.</div>
-        </div>
-        <div class="term-row">
-          <div class="term-name">Overfitting</div>
-          <div class="term-def">When your model memorizes the training data instead of learning to generalize. 
-          <strong>Signs:</strong> Training accuracy is 99%, test accuracy is 72%. 
-          Fixes: dropout, more data, early stopping, simpler model.</div>
-        </div>
-      </div>
-
-      <div class="exercise fade-up">
-        <div class="exercise-label">Exercise 03 — Google Colab</div>
-        <h3>🧠 Build a Neural Network to Read Handwritten Digits (MNIST)</h3>
-        <p style="color:var(--muted)">
-          MNIST is the "Hello World" of deep learning. It's a dataset of 70,000 handwritten 
-          digits (0–9), each 28×28 pixels. You'll build, train, and experiment with a neural 
-          network from scratch using Keras — and see directly how each hyperparameter affects performance.
-        </p>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">mnist_neural_network.ipynb — Cell 1: Load Data</div>
-          </div>
-          <div class="code-body"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
-<span class="kw">import</span> tensorflow <span class="kw">as</span> tf
-<span class="kw">from</span> tensorflow <span class="kw">import</span> keras
-<span class="kw">from</span> tensorflow.keras <span class="kw">import</span> layers
-
-<span class="fn">print</span>(<span class="st">f"TensorFlow version: {tf.__version__}"</span>)
-
-<span class="cm"># Load MNIST — 60,000 training images, 10,000 test images</span>
-(X_train, y_train), (X_test, y_test) = keras.datasets.mnist.<span class="fn">load_data</span>()
-
-<span class="cm"># Normalize pixel values from [0, 255] → [0, 1]</span>
-X_train = X_train / <span class="num">255.0</span>
-X_test  = X_test  / <span class="num">255.0</span>
-
-<span class="fn">print</span>(<span class="st">f"Training: {X_train.shape}  |  Test: {X_test.shape}"</span>)
-
-<span class="cm"># Visualize some samples</span>
-fig, axes = plt.<span class="fn">subplots</span>(<span class="num">2</span>, <span class="num">8</span>, figsize=(<span class="num">14</span>, <span class="num">4</span>))
-<span class="kw">for</span> i, ax <span class="kw">in</span> <span class="fn">enumerate</span>(axes.<span class="fn">flat</span>):
-    ax.<span class="fn">imshow</span>(X_train[i], cmap=<span class="st">'gray'</span>)
-    ax.<span class="fn">set_title</span>(<span class="st">str</span>(y_train[i]), fontsize=<span class="num">10</span>)
-    ax.<span class="fn">axis</span>(<span class="st">'off'</span>)
-plt.<span class="fn">suptitle</span>(<span class="st">"Sample MNIST Digits"</span>, y=<span class="num">1.02</span>)
-plt.<span class="fn">tight_layout</span>()
-plt.<span class="fn">show</span>()</div>
-        </div>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">mnist_neural_network.ipynb — Cell 2: Build the Network</div>
-          </div>
-          <div class="code-body"><span class="cm"># Cell 2 — Define the neural network architecture
-#
-# Architecture:
-#   Input: 28x28 image → flatten to 784 numbers
-#   Dense(256, relu) → learns low-level features
-#   Dropout(0.3)     → prevents overfitting
-#   Dense(128, relu) → learns higher-level combinations
-#   Dropout(0.3)
-#   Dense(10, softmax) → outputs probabilities for digits 0-9</span>
-
-model = keras.<span class="cl">Sequential</span>([
-    layers.<span class="cl">Flatten</span>(input_shape=(<span class="num">28</span>, <span class="num">28</span>)),   <span class="cm"># 28x28 → 784 flat vector</span>
-
-    layers.<span class="cl">Dense</span>(<span class="num">256</span>, activation=<span class="st">'relu'</span>),    <span class="cm"># Hidden layer 1</span>
-    layers.<span class="cl">Dropout</span>(<span class="num">0.3</span>),                     <span class="cm"># Drop 30% at random</span>
-
-    layers.<span class="cl">Dense</span>(<span class="num">128</span>, activation=<span class="st">'relu'</span>),    <span class="cm"># Hidden layer 2</span>
-    layers.<span class="cl">Dropout</span>(<span class="num">0.3</span>),
-
-    layers.<span class="cl">Dense</span>(<span class="num">10</span>, activation=<span class="st">'softmax'</span>)  <span class="cm"># Output: 10 class probabilities</span>
+model = keras.Sequential([
+    layers.Conv2D(32, (3, 3), activation="relu", input_shape=(32, 32, 3)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation="relu"),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(256, activation="relu"),
+    layers.Dropout(0.5),
+    layers.Dense(43, activation="softmax")
 ])
-
-model.<span class="fn">compile</span>(
-    optimizer=keras.optimizers.<span class="cl">Adam</span>(learning_rate=<span class="num">0.001</span>),
-    loss=<span class="st">'sparse_categorical_crossentropy'</span>,
-    metrics=[<span class="st">'accuracy'</span>]
-)
-
-model.<span class="fn">summary</span>()  <span class="cm"># Print architecture</span></div>
-        </div>
-
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">mnist_neural_network.ipynb — Cell 3: Train</div>
-          </div>
-          <div class="code-body"><span class="cm"># Cell 3 — Train the model and plot learning curves</span>
-
-history = model.<span class="fn">fit</span>(
+model.summary()</code></pre></figure>
+          <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision.</p></div></div><div class="expected"><strong>Expected output</strong>A model summary with trainable parameters.</div></div>
+          <figure class="code-card"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p><code>adam</code> updates weights, loss measures wrongness, and accuracy reports percent correct.</p></div></div><div class="expected"><strong>Expected output</strong>No output; model is ready to train.</div></div>
+          <figure class="code-card"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
     X_train, y_train,
-    epochs=<span class="num">15</span>,
-    batch_size=<span class="num">64</span>,
-    validation_split=<span class="num">0.1</span>,  <span class="cm"># use 10% of training data to monitor validation loss</span>
-    verbose=<span class="num">1</span>
+    validation_data=(X_val, y_val),
+    epochs=15,
+    batch_size=64
+)</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Each epoch passes through the training set once and reports train/validation accuracy.</p></div></div><div class="expected"><strong>Expected output</strong>A live progress bar for each epoch.</div></div>
+          <figure class="code-card"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+axes[0].plot(history.history["accuracy"], label="train")
+axes[0].plot(history.history["val_accuracy"], label="val")
+axes[0].set_title("Accuracy")
+axes[0].legend()
+
+axes[1].plot(history.history["loss"], label="train")
+axes[1].plot(history.history["val_loss"], label="val")
+axes[1].set_title("Loss")
+axes[1].legend()
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">What this does</div><p>If training accuracy rises but validation accuracy stalls, the model may be overfitting.</p></div></div><div class="expected"><strong>Expected output</strong>Two learning curves.</div></div>
+          <figure class="code-card"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print(f"Test accuracy: {test_acc:.3f}")</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The test set is used once at the end to estimate real-world performance.</p></div></div><div class="expected"><strong>Expected output</strong>A single test accuracy value.</div></div>
+          <figure class="code-card"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
+
+pred = np.argmax(model.predict(X_test), axis=1)
+cm = confusion_matrix(y_test, pred)
+
+plt.figure(figsize=(9, 9))
+plt.imshow(cm, cmap="Blues")
+plt.title("43-class confusion matrix")
+plt.xlabel("Predicted class")
+plt.ylabel("True class")
+plt.colorbar()
+plt.show()
+
+mistakes = []
+for true_id in range(43):
+    for pred_id in range(43):
+        if true_id != pred_id and cm[true_id, pred_id] > 0:
+            mistakes.append((cm[true_id, pred_id], true_id, pred_id))
+print(sorted(mistakes, reverse=True)[:10])</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions.</p></div></div><div class="expected"><strong>Expected output</strong>A 43x43 plot and top 10 confusion tuples.</div></div>
+          <figure class="code-card"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
+probs = model.predict(X_test[idx:idx+1])[0]
+pred_label = np.argmax(probs)
+confidence = probs[pred_label]
+
+plt.imshow(X_test[idx])
+plt.title(f"Predicted {pred_label}, true {y_test[idx]}, confidence {confidence:.1%}")
+plt.axis("off")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows a concrete example instead of only aggregate metrics.</p></div></div><div class="expected"><strong>Expected output</strong>A sign image with predicted label, true label, and confidence.</div></div>
+          <figure class="code-card"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
+raw_bgr = cv2.imread(str(sample_path))
+raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
+
+model_input = cv2.resize(raw_rgb, (32, 32)).astype("float32") / 255.0
+probs = model.predict(model_input[None, ...])[0]
+pred_label = np.argmax(probs)
+confidence = probs[pred_label]
+
+overlay = raw_rgb.copy()
+cv2.putText(
+    overlay,
+    f"Class {pred_label}: {confidence:.1%}",
+    (5, 25),
+    cv2.FONT_HERSHEY_SIMPLEX,
+    0.7,
+    (255, 255, 255),
+    2
 )
 
-<span class="cm"># Plot loss and accuracy curves</span>
-fig, (ax1, ax2) = plt.<span class="fn">subplots</span>(<span class="num">1</span>, <span class="num">2</span>, figsize=(<span class="num">12</span>, <span class="num">4</span>))
-
-ax1.<span class="fn">plot</span>(history.history[<span class="st">'loss'</span>],     label=<span class="st">'Train Loss'</span>, color=<span class="st">'#4da8ff'</span>)
-ax1.<span class="fn">plot</span>(history.history[<span class="st">'val_loss'</span>], label=<span class="st">'Val Loss'</span>,   color=<span class="st">'#ff6b35'</span>)
-ax1.<span class="fn">set_title</span>(<span class="st">'Loss over Epochs'</span>); ax1.<span class="fn">legend</span>(); ax1.<span class="fn">set_xlabel</span>(<span class="st">'Epoch'</span>)
-
-ax2.<span class="fn">plot</span>(history.history[<span class="st">'accuracy'</span>],     label=<span class="st">'Train Accuracy'</span>, color=<span class="st">'#4da8ff'</span>)
-ax2.<span class="fn">plot</span>(history.history[<span class="st">'val_accuracy'</span>], label=<span class="st">'Val Accuracy'</span>,   color=<span class="st">'#ff6b35'</span>)
-ax2.<span class="fn">set_title</span>(<span class="st">'Accuracy over Epochs'</span>); ax2.<span class="fn">legend</span>(); ax2.<span class="fn">set_xlabel</span>(<span class="st">'Epoch'</span>)
-
-plt.<span class="fn">tight_layout</span>()
-plt.<span class="fn">show</span>()
-
-test_loss, test_acc = model.<span class="fn">evaluate</span>(X_test, y_test, verbose=<span class="num">0</span>)
-<span class="fn">print</span>(<span class="st">f"\n✅ Test Accuracy: {test_acc*100:.2f}%"</span>)</div>
+plt.imshow(overlay)
+plt.axis("off")
+plt.show()</code></pre></figure>
+          <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top.</p></div></div><div class="expected"><strong>Expected output</strong>A traffic sign image with prediction text overlaid.</div></div>
+          <figure class="code-card"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
+# layers.Conv2D(128, (3, 3), activation="relu"),
+# layers.MaxPooling2D((2, 2)),
+#
+# Retrain and compare validation accuracy and training time.</code></pre></figure>
+          <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>A deeper network may learn richer features, but it can also overfit or train slower.</p></div></div><div class="expected"><strong>Expected output</strong>Your comparison notes.</div></div>
+        </section>
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#reinforcement-learning">← Previous Chapter</a>
+          <a class="next-btn" href="#whats-next">Next Chapter → What's Next?</a>
         </div>
+      </article>
 
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <div class="code-filename">mnist_neural_network.ipynb — Cell 4: Visualize Predictions</div>
+      <article class="chapter ch7 observe" id="whats-next" data-title="Chapter 7 — What's Next?">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 7 / 7</span>
+          <a class="breadcrumb" href="#computer-vision">← Previous Chapter: Computer Vision</a>
+          <div class="chapter-kicker">Next steps</div>
+          <h2>What's <span>Next?</span></h2>
+          <p class="lead">You now have the map: Python basics, supervised learning, clustering, reinforcement learning, and computer vision. The next step is choosing the right tool for your own robotics problem.</p>
+        </header>
+        <section id="decision-guide" class="section-card observe" data-title="7.1 Decision Guide">
+          <h3>7.1 Which ML Technique Should I Use?</h3>
+          <div class="diagram">
+            <div class="decision-tree" aria-label="Machine learning decision tree">
+              <div class="decision-node"><strong>Do you have labeled data?</strong></div>
+              <div class="decision-branches">
+                <div class="decision-node"><strong>YES → Supervised Learning</strong><br />Predicting a number? Regression.<br />Predicting a category? Classification.<br />Need explanation? Decision Tree or Logistic Regression.<br />Need accuracy? Random Forest, Gradient Boosting, or CNN for images.</div>
+                <div class="decision-node"><strong>NO → Unsupervised Learning</strong><br />Know how many groups? K-Means.<br />Odd shapes or unknown groups? DBSCAN.<br />Visualize high-dimensional data? PCA or t-SNE.</div>
+              </div>
+              <div class="decision-node"><strong>Learning through interaction?</strong><br />Use Reinforcement Learning → Q-Learning → Deep Q-Network → PPO.</div>
+            </div>
           </div>
-          <div class="code-body"><span class="cm"># Cell 4 — See what the model actually predicts</span>
-
-predictions = model.<span class="fn">predict</span>(X_test)
-predicted_labels = np.<span class="fn">argmax</span>(predictions, axis=<span class="num">1</span>)
-
-fig, axes = plt.<span class="fn">subplots</span>(<span class="num">3</span>, <span class="num">8</span>, figsize=(<span class="num">14</span>, <span class="num">6</span>))
-<span class="kw">for</span> i, ax <span class="kw">in</span> <span class="fn">enumerate</span>(axes.<span class="fn">flat</span>):
-    ax.<span class="fn">imshow</span>(X_test[i], cmap=<span class="st">'gray'</span>)
-    color = <span class="st">'green'</span> <span class="kw">if</span> predicted_labels[i] == y_test[i] <span class="kw">else</span> <span class="st">'red'</span>
-    ax.<span class="fn">set_title</span>(<span class="st">f"P:{predicted_labels[i]} T:{y_test[i]}"</span>,
-                fontsize=<span class="num">8</span>, color=color)
-    ax.<span class="fn">axis</span>(<span class="st">'off'</span>)
-plt.<span class="fn">suptitle</span>(<span class="st">"Green = Correct, Red = Wrong"</span>, fontsize=<span class="num">12</span>)
-plt.<span class="fn">tight_layout</span>()
-plt.<span class="fn">show</span>()</div>
-        </div>
-
-        <div class="callout callout-orange">
-          <div class="callout-icon">🔬</div>
-          <div class="callout-body">
-            <div class="callout-title">Experiments to Try</div>
-            <p>
-              <strong style="color:var(--white)">1. Kill the Dropout</strong> — Remove the <code>Dropout</code> layers. 
-              Does training accuracy go up? Does test accuracy go down? That's overfitting in action.<br/><br/>
-              <strong style="color:var(--white)">2. Crank the Learning Rate</strong> — Change <code>learning_rate</code> to <code>0.1</code>. 
-              Watch the loss curve spike and never settle.<br/><br/>
-              <strong style="color:var(--white)">3. Go Tiny</strong> — Change both Dense layers to 32 neurons. 
-              How does accuracy change? You just built a much smaller model.<br/><br/>
-              <strong style="color:var(--white)">4. More Epochs</strong> — Set <code>epochs=30</code>. 
-              Does val_loss start rising while train_loss keeps dropping? That's the overfitting moment.
-            </p>
+        </section>
+        <section id="roadmap" class="section-card observe" data-title="7.2 Learning Roadmap">
+          <h3>7.2 Recommended Learning Roadmap</h3>
+          <div class="timeline">
+            <div class="timeline-item"><strong>Month 1</strong><span>Finish this guide and complete the Colab projects.</span></div>
+            <div class="timeline-item"><strong>Month 2</strong><span>Take Kaggle Intro to ML and enter a beginner competition.</span></div>
+            <div class="timeline-item"><strong>Month 3</strong><span>Start fast.ai Practical Deep Learning.</span></div>
+            <div class="timeline-item"><strong>Semester 2</strong><span>Build a physical robot project using your phone camera, OpenCV, and a small model.</span></div>
+            <div class="timeline-item"><strong>Year 2</strong><span>Learn ROS, PyTorch, simulation, and more RL with MuJoCo or Isaac Sim.</span></div>
           </div>
+        </section>
+        <section id="papers" class="section-card observe" data-title="7.3 Papers to Read">
+          <h3>7.3 Real Robotics ML Papers to Read</h3>
+          <div class="grid-2">
+            <div class="card"><h4><a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noreferrer">Playing Atari with Deep Reinforcement Learning</a></h4><p class="muted">DeepMind showed that a neural network could learn control policies from pixels and reward. It is a clean entry point into deep RL.</p></div>
+            <div class="card"><h4><a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks" target="_blank" rel="noreferrer">ImageNet Classification with Deep CNNs</a></h4><p class="muted">AlexNet made modern computer vision explode by proving deep CNNs could dominate image classification.</p></div>
+            <div class="card"><h4><a href="https://arxiv.org/abs/2109.11978" target="_blank" rel="noreferrer">Learning to Walk in Minutes</a></h4><p class="muted">This ANYmal work shows how massive parallel simulation can train legged locomotion quickly.</p></div>
+            <div class="card"><h4><a href="https://arxiv.org/abs/1604.07316" target="_blank" rel="noreferrer">End to End Learning for Self-Driving Cars</a></h4><p class="muted">NVIDIA trained a network to map camera images directly to steering commands, a landmark vision-to-control example.</p></div>
+            <div class="card"><h4><a href="https://arxiv.org/abs/1612.00593" target="_blank" rel="noreferrer">PointNet</a></h4><p class="muted">PointNet handles unordered 3D point clouds, which matter for lidar, depth cameras, and robot scene understanding.</p></div>
+          </div>
+        </section>
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="#computer-vision">← Previous Chapter</a>
+          <a class="next-btn" href="#top">Next Chapter → Review from the Top</a>
         </div>
-      </div>
+      </article>
 
-      <h3 class="fade-up">What's Next: Convolutional Neural Networks</h3>
-      <p class="fade-up">
-        The network you just built treats each pixel independently — it has no concept of 
-        spatial structure. A <strong style="color:var(--white)">Convolutional Neural Network (CNN)</strong> 
-        fixes this by scanning the image with small filters (like edge detectors, 
-        corner detectors, texture detectors) before making a decision. 
-        CNNs are what power Tesla's cameras, industrial inspection systems, and 
-        robot navigation — and they're your next frontier.
-      </p>
-
-      <div class="callout callout-cyan fade-up">
-        <div class="callout-icon">🚀</div>
-        <div class="callout-body">
-          <div class="callout-title">The Bigger Picture</div>
-          <p>You've now seen all three pillars: supervised learning finds patterns in labeled data, 
-          unsupervised learning finds structure in raw data, and neural networks let you learn 
-          representations that no human could hand-engineer. 
-          Put a camera on a robot arm + train a CNN on what it sees, and you have a robot 
-          that can identify, grasp, and sort objects — a project you can build by the end of the semester.</p>
-        </div>
-      </div>
+      <section class="chapter observe" id="projects" data-title="Student Project Archive" style="--chapter-color: var(--cyan)">
+        <header class="chapter-header">
+          <span class="chapter-badge">Archive</span>
+          <a class="breadcrumb" href="#whats-next">← Previous: What's Next?</a>
+          <div class="chapter-kicker">Real-world build</div>
+          <h2>Student <span>Projects</span></h2>
+          <p class="lead">The original project page remains available as an applied robotics build after the curriculum.</p>
+        </header>
+        <a class="card" href="project.html" style="display:block;text-decoration:none;border-color:var(--cyan)">
+          <div class="project-label">Project 01 — Autonomous Robotics</div>
+          <h3>Ball-Following Robot with YOLO + PID Control</h3>
+          <p class="muted">A ground-up object-tracking robot: Roboflow data, YOLO detection, PID steering and distance control, ESP32 firmware, UDP motor commands, and real-time behavior states.</p>
+          <div class="chip-row" style="--chapter-color: var(--cyan)">
+            <span class="chip">YOLOv8</span><span class="chip">Roboflow</span><span class="chip">PID Control</span><span class="chip">ESP32</span><span class="chip">UDP / WiFi</span>
+          </div>
+          <strong>View full project breakdown →</strong>
+        </a>
+      </section>
     </div>
-  </section>
+  </main>
 
-</div><!-- /wrap -->
-
-  <!-- PROJECTS -->
-  <div class="divider"></div>
-  <section id="projects">
-    <div class="container">
-      <div class="section-num fade-up">06 / Real World</div>
-      <h2 class="fade-up">Student <span class="accent">Projects</span></h2>
-      <p class="lead fade-up">See what these concepts look like when they're built into real hardware.</p>
-
-      <a href="project.html" class="project-card fade-up">
-        <div class="proj-label">Project 01 — Autonomous Robotics</div>
-        <div class="proj-title">Ball-Following Robot<br/>with YOLO + PID Control</div>
-        <div class="proj-desc">
-          A ground-up object-tracking robot — from labeling training data on Roboflow, 
-          to real-time YOLO detection on a laptop, dual PID controllers for steering and distance, 
-          and live ESP32 firmware receiving UDP motor commands over WiFi at 30+ FPS.
-        </div>
-        <div class="proj-tags">
-          <span class="tag tag-purple">YOLOv8</span>
-          <span class="tag tag-orange">Roboflow</span>
-          <span class="tag tag-cyan">PID Control</span>
-          <span class="tag tag-blue">ESP32</span>
-          <span class="tag tag-yellow">TB6612FNG</span>
-          <span class="tag tag-green">UDP / WiFi</span>
-        </div>
-        <div class="proj-arrow">View full project breakdown →</div>
-        <div class="proj-stack">
-          <div class="proj-stack-item"><span>🧠</span> YOLO inference on CPU/CUDA</div>
-          <div class="proj-stack-item"><span>📡</span> UDP over WiFi @ 30ms</div>
-          <div class="proj-stack-item"><span>⚙️</span> PWM motor control</div>
-          <div class="proj-stack-item"><span>🎯</span> 4-state behavior machine</div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-</div><!-- /wrap -->
-
-<footer>
-  <div class="container">
+  <footer class="footer">
     <p>Built for <strong>Mechanical Engineering Freshmen</strong> — Robotics Track</p>
-    <p style="margin-top:8px;font-size:13px">All exercises run free on <strong>Google Colab</strong> · No local setup required</p>
-  </div>
-</footer>
+    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
+  </footer>
 
-<script>
-  document.documentElement.classList.add('js-ready');
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    const body = document.body;
+    const drawerToggle = document.getElementById("drawerToggle");
+    const drawerScrim = document.getElementById("drawerScrim");
+    const progressFill = document.getElementById("progressFill");
+    const currentChapter = document.getElementById("currentChapter");
+    const navLinks = Array.from(document.querySelectorAll(".nav-tree a[href^='#']"));
 
-  // ── ANIMATED GRID BACKGROUND ──
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, dots = [];
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    initDots();
-  }
-
-  function initDots() {
-    dots = [];
-    const spacing = 60;
-    for (let x = 0; x < W; x += spacing) {
-      for (let y = 0; y < H; y += spacing) {
-        dots.push({
-          bx: x, by: y,
-          x: x + (Math.random() - .5) * 20,
-          y: y + (Math.random() - .5) * 20,
-          vx: (Math.random() - .5) * 0.3,
-          vy: (Math.random() - .5) * 0.3,
-        });
-      }
+    if (window.hljs) {
+      window.hljs.highlightAll();
     }
-  }
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    // Update positions
-    dots.forEach(d => {
-      d.x += d.vx; d.y += d.vy;
-      const dx = d.x - d.bx, dy = d.y - d.by;
-      if (Math.abs(dx) > 18) d.vx *= -1;
-      if (Math.abs(dy) > 18) d.vy *= -1;
-    });
-    // Draw lines between nearby dots
-    ctx.strokeStyle = '#1e3058';
-    ctx.lineWidth = 0.6;
-    for (let i = 0; i < dots.length; i++) {
-      for (let j = i + 1; j < dots.length; j++) {
-        const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 85) {
-          ctx.globalAlpha = (1 - dist/85) * 0.5;
-          ctx.beginPath();
-          ctx.moveTo(dots[i].x, dots[i].y);
-          ctx.lineTo(dots[j].x, dots[j].y);
-          ctx.stroke();
+    function setDrawer(open) {
+      body.classList.toggle("drawer-open", open);
+      drawerToggle.setAttribute("aria-expanded", String(open));
+      drawerToggle.setAttribute("aria-label", open ? "Close navigation drawer" : "Open navigation drawer");
+    }
+
+    drawerToggle.addEventListener("click", () => setDrawer(!body.classList.contains("drawer-open")));
+    drawerScrim.addEventListener("click", () => setDrawer(false));
+    navLinks.forEach(link => link.addEventListener("click", () => setDrawer(false)));
+
+    function updateProgress() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      progressFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    }
+    document.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+
+    document.querySelectorAll(".code-card").forEach((figure) => {
+      const caption = figure.querySelector("figcaption");
+      const code = figure.querySelector("code");
+      if (!caption || !code || caption.querySelector(".copy-btn")) return;
+
+      const button = document.createElement("button");
+      button.className = "copy-btn";
+      button.type = "button";
+      button.textContent = "Copy";
+      button.setAttribute("aria-label", "Copy code block");
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(code.innerText);
+          button.textContent = "Copied";
+          setTimeout(() => { button.textContent = "Copy"; }, 1200);
+        } catch (error) {
+          button.textContent = "Select code";
+          setTimeout(() => { button.textContent = "Copy"; }, 1600);
         }
-      }
-    }
-    // Draw dots
-    ctx.globalAlpha = 1;
-    dots.forEach(d => {
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#1e3058';
-      ctx.fill();
+      });
+      caption.appendChild(button);
     });
-    requestAnimationFrame(draw);
-  }
 
-  window.addEventListener('resize', resize);
-  resize();
-  draw();
+    const observed = Array.from(document.querySelectorAll(".observe[id]"));
+    const activeObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
 
-  // ── SCROLL FADE-IN ──
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</script>
+      const id = visible.target.id;
+      const title = visible.target.dataset.title || visible.target.querySelector("h2,h3,h1")?.textContent || "ML x Robotics";
+      currentChapter.textContent = title;
+      navLinks.forEach(link => {
+        const isActive = link.getAttribute("href") === `#${id}`;
+        link.classList.toggle("active", isActive);
+        if (isActive) {
+          const details = link.closest("details");
+          if (details) details.open = true;
+        }
+      });
+    }, { rootMargin: "-18% 0px -70% 0px", threshold: [0.05, 0.2, 0.45] });
+    observed.forEach(section => activeObserver.observe(section));
+
+    document.querySelectorAll(".sortable").forEach(table => {
+      const tbody = table.querySelector("tbody");
+      table.querySelectorAll(".table-sort").forEach(button => {
+        let ascending = true;
+        button.addEventListener("click", () => {
+          const index = Number(button.dataset.sort);
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          rows.sort((a, b) => {
+            const left = a.children[index].textContent.trim();
+            const right = b.children[index].textContent.trim();
+            return ascending ? left.localeCompare(right) : right.localeCompare(left);
+          });
+          ascending = !ascending;
+          rows.forEach(row => tbody.appendChild(row));
+        });
+      });
+    });
+  </script>
 </body>
 </html>
