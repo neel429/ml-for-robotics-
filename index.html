@@ -3,161 +3,1947 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ML for Robotics | Course Home</title>
+  <title>ML for Robotics | Interactive Course</title>
   <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
-    <script>try{const theme=localStorage.getItem("mlr-theme");if(theme)document.documentElement.dataset.theme=theme;}catch(error){}</script>
+  <script>try{const theme=localStorage.getItem("mlr-theme");if(theme==="light")document.documentElement.classList.add("light-mode");}catch(error){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 </head>
-<body>
-  <header class="topbar" aria-label="Sticky site header">
-    <a class="top-title" href="index.html#top">ML x Robotics</a>
-    <div class="current-chapter" id="currentChapter">Table of Contents</div>
-    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open navigation drawer" aria-expanded="false">☰</button>
+<body class="lesson-app" id="top">
+  <header class="topbar lesson-topbar" aria-label="Course header">
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open lesson navigation" aria-expanded="false">&#9776;</button>
+    <a class="top-title" href="index.html?lesson=home" data-lesson-link="home">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Course Dashboard</div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode">Light</button>
     <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
   </header>
-
   <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
-
-  <aside class="sidebar" id="sidebar" aria-label="Chapter navigation">
-    <div class="sidebar-title">Course Navigation</div>
-    <nav class="nav-tree">
-      <details open style="--chapter-color: var(--ch0)">
-        <summary><span class="dot"></span>Chapter 0</summary>
-        <a href="chapter-0.html#chapter-0">Welcome</a>
-        <a href="chapter-0.html#build">What You Will Build</a>
-        <a href="chapter-0.html#tools">Tools You Need</a>
-        <a href="chapter-0.html#reading-tips">Reading Tips</a>
-      </details>
-      <details open style="--chapter-color: var(--ch1)">
-        <summary><span class="dot"></span>Chapter 1</summary>
-        <a href="chapter-1-python.html#python">Python Fundamentals</a>
-        <a href="chapter-1-python.html#python-colab">1.1 Colab</a>
-        <a href="chapter-1-python.html#variables">1.2 Variables</a>
-        <a href="chapter-1-python.html#data-structures">1.3 Data Structures</a>
-        <a href="chapter-1-python.html#control-flow">1.4 Control Flow</a>
-        <a href="chapter-1-python.html#loops">1.5 Loops</a>
-        <a href="chapter-1-python.html#functions">1.6 Functions</a>
-        <a href="chapter-1-python.html#libraries">1.7 Libraries</a>
-        <a href="chapter-1-python.html#checkpoint">1.8 Checkpoint</a>
-      </details>
-      <details open style="--chapter-color: var(--ch2)">
-        <summary><span class="dot"></span>Chapter 2</summary>
-        <a href="chapter-2-ml.html#what-is-ml">What is ML?</a>
-        <a href="chapter-2-ml.html#types">Three Flavors</a>
-        <a href="chapter-2-ml.html#when-to-use">When to Use Which</a>
-      </details>
-      <details open style="--chapter-color: var(--ch3)">
-        <summary><span class="dot"></span>Chapter 3</summary>
-        <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
-        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
-        <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
-        <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
-        <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
-      </details>
-      <details open style="--chapter-color: var(--ch4)">
-        <summary><span class="dot"></span>Chapter 4</summary>
-        <a href="chapter-4-unsupervised.html#unsupervised">Unsupervised Learning</a>
-        <a href="chapter-4-unsupervised.html#clustering">Clustering</a>
-        <a href="chapter-4-unsupervised.html#kmeans">K-Means</a>
-        <a href="chapter-4-unsupervised.html#sensor-cluster-project">Vibration Clustering Project</a>
-      </details>
-      <details open style="--chapter-color: var(--ch5)">
-        <summary><span class="dot"></span>Chapter 5</summary>
-        <a href="chapter-5-rl.html#reinforcement-learning">Reinforcement Learning</a>
-        <a href="chapter-5-rl.html#q-learning">Q-Learning</a>
-        <a href="chapter-5-rl.html#maze-project">FrozenLake Maze Project</a>
-      </details>
-      <details open style="--chapter-color: var(--ch6)">
-        <summary><span class="dot"></span>Chapter 6</summary>
-        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
-        <a href="chapter-6-vision.html#opencv">OpenCV</a>
-        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
-        <a href="chapter-6-vision.html#cnn">CNNs</a>
-        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
-      </details>
-      <details open style="--chapter-color: var(--ch7)">
-        <summary><span class="dot"></span>Chapter 7</summary>
-        <a href="chapter-7-next.html#whats-next">What's Next?</a>
-        <a href="chapter-7-next.html#decision-guide">Decision Guide</a>
-        <a href="chapter-7-next.html#roadmap">Learning Roadmap</a>
-        <a href="chapter-7-next.html#papers">Papers to Read</a>
-      </details>
-      <details style="--chapter-color: var(--cyan)">
-        <summary><span class="dot"></span>Project Archive</summary>
-        <a href="student-projects.html#projects">Student Projects</a>
-      </details>
-    </nav>
-    <a class="back-top" href="#top">Back to top</a>
-  </aside>
-
-  <main class="page" id="top">
-    <div class="container">
-      <section class="chapter ch0 observe" id="home" data-title="ML for Robotics - Course Home">
-  <header class="chapter-header">
-    <span class="chapter-badge">Course Home</span>
-    <div class="chapter-kicker">Mechanical Engineering x AI</div>
-    <h1>Machine Learning for <span style="color:var(--ch1)">Robotics</span> Engineers</h1>
-    <p class="hero-sub">A free, browser-only curriculum for mechanical engineering freshmen. Start with Colab setup, learn Python, then build robotics-adjacent ML projects using real datasets.</p>
-  </header>
-  <div class="grid-3">
-    <a class="card" href="chapter-0.html#chapter-0" style="text-decoration:none"><h3>Start Here</h3><p class="muted">Set up Colab and Kaggle, then learn how to use the guide.</p></a>
-    <a class="card" href="chapter-1-python.html#python" style="text-decoration:none"><h3>Learn Python</h3><p class="muted">Variables, data structures, control flow, loops, functions, and libraries.</p></a>
-    <a class="card" href="chapter-3-supervised.html#robot-failure-project" style="text-decoration:none"><h3>Build Projects</h3><p class="muted">Failure prediction, vibration clustering, Q-learning, and traffic sign classification.</p></a>
-  </div>
+  <aside class="sidebar lesson-sidebar" id="sidebar" aria-label="Lesson navigation">
+<div class="sidebar-title">Course Lessons</div>
+<a class="lesson-link dashboard-link" href="?lesson=home" data-lesson-link="home"><span>Course Dashboard</span><span class="completion-dot" aria-hidden="true"></span></a>
+<nav class="lesson-tree"><div class="lesson-group" data-chapter="ch0" style="--chapter-accent:var(--ch0)">
+<button class="lesson-group-header" type="button" aria-expanded="true"><span>Ch 0: Welcome & How to Use This Guide</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch0-welcome" data-lesson-link="ch0-welcome"><span>Welcome</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch0-build" data-lesson-link="ch0-build"><span>What You Will Build</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch0-tools" data-lesson-link="ch0-tools"><span>Tools You Need</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch0-reading-tips" data-lesson-link="ch0-reading-tips"><span>Reading Tips</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch1" style="--chapter-accent:var(--ch1)">
+<button class="lesson-group-header" type="button" aria-expanded="true"><span>Ch 1: Python Programming Fundamentals</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch1-overview" data-lesson-link="ch1-overview"><span>Python Fundamentals</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-colab" data-lesson-link="ch1-colab"><span>1.1 Why Python & Colab</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-variables" data-lesson-link="ch1-variables"><span>1.2 Variables & Data Types</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-data-structures" data-lesson-link="ch1-data-structures"><span>1.3 Data Structures</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-control-flow" data-lesson-link="ch1-control-flow"><span>1.4 Control Flow</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-loops" data-lesson-link="ch1-loops"><span>1.5 Loops</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-functions" data-lesson-link="ch1-functions"><span>1.6 Functions</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch1-libraries" data-lesson-link="ch1-libraries"><span>1.7 Libraries & Imports</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch1-checkpoint" data-lesson-link="ch1-checkpoint"><span>* 1.8 Checkpoint Exercise</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch2" style="--chapter-accent:var(--ch2)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 2: What is Machine Learning?</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch2-overview" data-lesson-link="ch2-overview"><span>What is ML?</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch2-traditional" data-lesson-link="ch2-traditional"><span>2.1 Traditional vs ML</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch2-types" data-lesson-link="ch2-types"><span>2.2 Three Flavors</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch2-when-to-use" data-lesson-link="ch2-when-to-use"><span>2.3 When to Use Which</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch3" style="--chapter-accent:var(--ch3)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 3: Supervised Learning</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch3-overview" data-lesson-link="ch3-overview"><span>Supervised Learning</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch3-classification-regression" data-lesson-link="ch3-classification-regression"><span>3.1 Classification & Regression</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch3-algorithms" data-lesson-link="ch3-algorithms"><span>3.2 Key Algorithms</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch3-pipeline" data-lesson-link="ch3-pipeline"><span>3.3 ML Pipeline</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch3-project" data-lesson-link="ch3-project"><span>* 3.4 Failure Project</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch4" style="--chapter-accent:var(--ch4)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 4: Unsupervised Learning</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch4-overview" data-lesson-link="ch4-overview"><span>Unsupervised Learning</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch4-clustering" data-lesson-link="ch4-clustering"><span>4.1 Clustering & PCA</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch4-kmeans" data-lesson-link="ch4-kmeans"><span>4.2 K-Means</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch4-project" data-lesson-link="ch4-project"><span>* 4.3 Vibration Project</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch5" style="--chapter-accent:var(--ch5)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 5: Reinforcement Learning</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch5-overview" data-lesson-link="ch5-overview"><span>Reinforcement Learning</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch5-loop" data-lesson-link="ch5-loop"><span>5.1 Agent & Reward</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch5-q-learning" data-lesson-link="ch5-q-learning"><span>5.2 Q-Learning</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch5-project" data-lesson-link="ch5-project"><span>* 5.3 Maze Project</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch6" style="--chapter-accent:var(--ch6)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 6: Computer Vision for Robotics</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch6-overview" data-lesson-link="ch6-overview"><span>Computer Vision</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-why-vision" data-lesson-link="ch6-why-vision"><span>6.1 Why Vision Matters</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-opencv" data-lesson-link="ch6-opencv"><span>6.2 OpenCV</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-tensorflow" data-lesson-link="ch6-tensorflow"><span>6.3 TensorFlow/Keras</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-cnn" data-lesson-link="ch6-cnn"><span>6.4 CNNs</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch6-project" data-lesson-link="ch6-project"><span>* 6.5 Traffic Sign Project</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="ch7" style="--chapter-accent:var(--ch7)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 7: What's Next?</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch7-overview" data-lesson-link="ch7-overview"><span>What's Next?</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch7-decision-guide" data-lesson-link="ch7-decision-guide"><span>7.1 Decision Guide</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch7-roadmap" data-lesson-link="ch7-roadmap"><span>7.2 Roadmap</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch7-papers" data-lesson-link="ch7-papers"><span>7.3 Papers</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
+<div class="lesson-group" data-chapter="projects" style="--chapter-accent:var(--cyan)">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>Project Archive</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link is-exercise" href="?lesson=project-archive" data-lesson-link="project-archive"><span>* Student Projects</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div></nav>
+</aside>
+  <main class="content-panel" id="contentPanel" tabindex="-1">
+    <article class="lesson-content dashboard-content" data-lesson="home" data-chapter="home" data-chapter-title="Course Dashboard" style="--chapter-accent:var(--cyan)">
+<section class="dashboard-hero">
+<div>
+<div class="lesson-kicker">Mechanical Engineering x AI</div>
+<h1>Machine Learning for Robotics Engineers</h1>
+<p>A browser-based course dashboard for learning Python, machine learning, reinforcement learning, and computer vision through robotics-flavored examples.</p>
+<div class="dashboard-actions"><a class="chapter-start-btn" href="?lesson=ch0-welcome" data-lesson-link="ch0-welcome">Start Course</a><button class="jump-last-btn" id="jumpLastBtn" type="button">Jump to where you left off</button></div>
+</div>
+<div class="dashboard-stats"><strong data-total-progress>0%</strong><span>course complete</span></div>
 </section>
-    </div>
-    <div class="wide-container">
-            <section class="toc-card" aria-labelledby="toc-title">
-              <div class="toc-kicker">Self-contained course</div>
-              <div class="toc-title">
-                <h2 id="toc-title">Table of Contents</h2>
-                <div class="toc-time">~6-8 hours total</div>
+<section class="build-strip" aria-label="What you will build">
+<a href="?lesson=ch3-project" data-lesson-link="ch3-project"><span>??</span><strong>Robot Failure Predictor</strong><small>scikit-learn + AI4I</small></a>
+<a href="?lesson=ch4-project" data-lesson-link="ch4-project"><span>??</span><strong>Sensor Cluster Analyzer</strong><small>K-Means + PCA</small></a>
+<a href="?lesson=ch6-project" data-lesson-link="ch6-project"><span>??</span><strong>Traffic Sign Classifier</strong><small>OpenCV + Keras</small></a>
+</section>
+<section class="chapter-dashboard-grid"><article class="chapter-card" data-chapter-card="ch0" style="--chapter-accent:var(--ch0)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 0</span><span>4 lessons</span></div>
+<h2>Welcome & How to Use This Guide</h2>
+<p>Set up the course tools and understand what you will build.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch0">0 / 4 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch0-welcome" data-lesson-link="ch0-welcome">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch1" style="--chapter-accent:var(--ch1)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 1</span><span>9 lessons</span></div>
+<h2>Python Programming Fundamentals</h2>
+<p>Learn variables, data structures, control flow, loops, functions, and imports.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch1">0 / 9 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch1-overview" data-lesson-link="ch1-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch2" style="--chapter-accent:var(--ch2)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 2</span><span>4 lessons</span></div>
+<h2>What is Machine Learning?</h2>
+<p>Understand ML, the three learning families, and when to use each.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch2">0 / 4 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch2-overview" data-lesson-link="ch2-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch3" style="--chapter-accent:var(--ch3)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 3</span><span>5 lessons</span></div>
+<h2>Supervised Learning</h2>
+<p>Train models from labeled data using a robot arm failure prediction project.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch3">0 / 5 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch3-overview" data-lesson-link="ch3-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch4" style="--chapter-accent:var(--ch4)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 4</span><span>4 lessons</span></div>
+<h2>Unsupervised Learning</h2>
+<p>Cluster vibration sensor readings and interpret hidden structure.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch4">0 / 4 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch4-overview" data-lesson-link="ch4-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch5" style="--chapter-accent:var(--ch5)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 5</span><span>4 lessons</span></div>
+<h2>Reinforcement Learning</h2>
+<p>Use Q-learning to teach an agent to navigate a FrozenLake maze.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch5">0 / 4 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch5-overview" data-lesson-link="ch5-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch6" style="--chapter-accent:var(--ch6)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 6</span><span>6 lessons</span></div>
+<h2>Computer Vision for Robotics</h2>
+<p>Learn OpenCV, CNNs, and train a traffic sign classifier.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch6">0 / 6 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch6-overview" data-lesson-link="ch6-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="ch7" style="--chapter-accent:var(--ch7)">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Chapter 7</span><span>4 lessons</span></div>
+<h2>What's Next?</h2>
+<p>Pick the right technique and choose your next learning path.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch7">0 / 4 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=ch7-overview" data-lesson-link="ch7-overview">Start</a>
+</article></section>
+</article>
+    <article class="lesson-content" data-lesson="ch0-welcome" data-chapter="ch0" data-chapter-title="Chapter 0: Welcome & How to Use This Guide" style="--chapter-accent:var(--ch0)">
+<div class="lesson-kicker">Chapter 0: Welcome & How to Use This Guide <span>&rsaquo;</span> Welcome & How to Use This Guide</div>
+<h1>Welcome & How to Use This Guide</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 0 / 7</span>
+                <a class="breadcrumb" href="?lesson=home" data-lesson-link="home">← Previous: Table of Contents</a>
+                <div class="chapter-kicker">Welcome & orientation</div>
+                <h1>Machine Learning for <span style="color:var(--ch1)">Robotics</span> Engineers</h1>
+                <p class="hero-sub">You're a freshmen ME student. You may have never written a line of code. That's exactly who this guide is for.</p>
+              </header>
+      
+              <section class="hero-panel" aria-labelledby="journey-title">
+                <div class="hero-grid">
+                  <div>
+                    <div class="eyebrow">Mechanical Engineering x AI</div>
+                    <h2 id="journey-title">From zero Python to robotics ML projects</h2>
+                    <p class="lead">This page is a long-scroll textbook, lab manual, and project checklist. You will learn the programming basics, the core ML families, and how to run full notebooks in Google Colab without installing anything locally.</p>
+                    <div class="hero-tags" style="--chapter-color: var(--ch1)">
+                      <span class="tag">Python</span>
+                      <span class="tag">Google Colab</span>
+                      <span class="tag">Kaggle datasets</span>
+                      <span class="tag">Robotics sensors</span>
+                    </div>
+                  </div>
+                  <div class="journey" aria-label="Learning journey timeline">
+                    <div class="journey-step"><div class="journey-num">0</div><div><strong>Setup</strong><span>Colab, Kaggle, how to read this guide</span></div></div>
+                    <div class="journey-step"><div class="journey-num">1</div><div><strong>Python</strong><span>Variables, loops, functions, libraries</span></div></div>
+                    <div class="journey-step"><div class="journey-num">2</div><div><strong>ML concepts</strong><span>Supervised, unsupervised, reinforcement</span></div></div>
+                    <div class="journey-step"><div class="journey-num">3</div><div><strong>Projects</strong><span>Failure prediction, vibration clusters, maze navigation</span></div></div>
+                    <div class="journey-step"><div class="journey-num">4</div><div><strong>Vision</strong><span>OpenCV, CNNs, traffic sign classifier</span></div></div>
+                  </div>
+                </div>
+              </section>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch0-welcome">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<span></span>
+<a class="lesson-nav-btn next" href="?lesson=ch0-build" data-lesson-link="ch0-build"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">What You Will Build &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch0-build" data-chapter="ch0" data-chapter-title="Chapter 0: Welcome & How to Use This Guide" style="--chapter-accent:var(--ch0)">
+<div class="lesson-kicker">Chapter 0: Welcome & How to Use This Guide <span>&rsaquo;</span> What You Will Build</div>
+<h1>What You Will Build</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>What You Will Build</h3>
+                <div class="grid-3">
+                  <div class="card">
+                    <div class="icon">⚙️</div>
+                    <h4>Robot Failure Predictor</h4>
+                    <p>Predict whether a machine is likely to fail from temperature, torque, speed, and wear readings.</p>
+                    <p class="mini muted"><strong>Stack:</strong> Pandas, scikit-learn, Logistic Regression, Random Forest</p>
+                  </div>
+                  <div class="card">
+                    <div class="icon">📈</div>
+                    <h4>Sensor Cluster Analyzer</h4>
+                    <p>Group vibration windows into operating modes without labels, then interpret what each group means.</p>
+                    <p class="mini muted"><strong>Stack:</strong> NumPy, FFT features, K-Means, PCA, DBSCAN</p>
+                  </div>
+                  <div class="card">
+                    <div class="icon">🚦</div>
+                    <h4>Traffic Sign Classifier</h4>
+                    <p>Train a convolutional neural network that recognizes real traffic signs for mobile robots.</p>
+                    <p class="mini muted"><strong>Stack:</strong> OpenCV, TensorFlow/Keras, CNNs, GTSRB</p>
+                  </div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch0-build">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch0-welcome" data-lesson-link="ch0-welcome"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Welcome</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch0-tools" data-lesson-link="ch0-tools"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Tools You Need &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch0-tools" data-chapter="ch0" data-chapter-title="Chapter 0: Welcome & How to Use This Guide" style="--chapter-accent:var(--ch0)">
+<div class="lesson-kicker">Chapter 0: Welcome & How to Use This Guide <span>&rsaquo;</span> Tools You Need</div>
+<h1>Tools You Need</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>Tools You Need: Zero Installation</h3>
+                <p>Everything runs in the browser with Google Colab. Colab gives you a free notebook where text, code, charts, and results live together. Kaggle gives you free access to real datasets.</p>
+                <div class="steps">
+                  <div class="step"><div><strong>Open Colab.</strong><br />Go to <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">colab.research.google.com</a>, sign in, and choose <strong>New Notebook</strong>.</div></div>
+                  <div class="step"><div><strong>Create your first cell.</strong><br />Click the gray code cell and type <code>print("Hello, Robot!")</code>.</div></div>
+                  <div class="step"><div><strong>Run a cell.</strong><br />Press <code>Shift+Enter</code>. The output appears directly underneath the cell.</div></div>
+                  <div class="step"><div><strong>Create a free Kaggle account.</strong><br />Go to <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a>. We use Kaggle because it hosts clean public datasets.</div></div>
+                  <div class="step"><div><strong>Get your Kaggle API key.</strong><br />Kaggle account menu → Settings → API → Create New Token. It downloads <code>kaggle.json</code>.</div></div>
+                  <div class="step"><div><strong>Upload the key in Colab.</strong><br />Each Kaggle project starts with an upload cell. Run it, choose <code>kaggle.json</code>, and the notebook downloads the dataset.</div></div>
+                </div>
+                <div class="diagram" aria-label="Colab cell workflow diagram">
+                  <div class="flow-row">
+                    <div class="flow-node">Open Colab</div><div class="arrow">→</div>
+                    <div class="flow-node">Write code cell</div><div class="arrow">→</div>
+                    <div class="flow-node">Shift+Enter runs it</div>
+                  </div>
+                </div>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Kaggle key safety</div><p>Your <code>kaggle.json</code> key belongs to your account. Upload it only inside your own Colab notebook and do not paste it into public code.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch0-tools">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch0-build" data-lesson-link="ch0-build"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; What You Will Build</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch0-reading-tips" data-lesson-link="ch0-reading-tips"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Reading Tips &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch0-reading-tips" data-chapter="ch0" data-chapter-title="Chapter 0: Welcome & How to Use This Guide" style="--chapter-accent:var(--ch0)">
+<div class="lesson-kicker">Chapter 0: Welcome & How to Use This Guide <span>&rsaquo;</span> Reading Tips</div>
+<h1>Reading Tips</h1>
+<div class="lesson-meta"><span>Beginner</span><span>4 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>Reading Tips</h3>
+                <ul>
+                  <li>Read top to bottom the first time. The early Python ideas are used later without re-explaining them.</li>
+                  <li>Use the sidebar to jump back to specific topics when a notebook cell feels unfamiliar.</li>
+                  <li>Every 💡 tip box is something that trips beginners up. Read those carefully.</li>
+                  <li>Every ★ Project section has a full Colab-style notebook on the page. Do not skip the projects.</li>
+                </ul>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch0-reading-tips">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch0-tools" data-lesson-link="ch0-tools"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Tools You Need</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-overview" data-lesson-link="ch1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Python Fundamentals &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-overview" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> Python Programming Fundamentals</div>
+<h1>Python Programming Fundamentals</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Python</span><p>A readable programming language used heavily in machine learning, robotics tooling, data analysis, and automation.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 1 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch0-welcome" data-lesson-link="ch0-welcome">← Previous Chapter: Welcome</a>
+                <div class="chapter-kicker">Foundations</div>
+                <h2>Python Programming <span>Fundamentals</span></h2>
+                <p class="lead">Every section follows the same pattern: concept, code example, common mistake, and mini exercise. Open a blank Colab notebook and type the examples yourself.</p>
+              </header>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch0-reading-tips" data-lesson-link="ch0-reading-tips"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Reading Tips</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-colab" data-lesson-link="ch1-colab"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.1 Why Python & Colab &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-colab" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.1 Why Python & Setting Up Colab</div>
+<h1>1.1 Why Python & Setting Up Colab</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>1.1 Why Python & Setting Up Colab</h3>
+                <p><strong>Concept.</strong> Python is the default language of machine learning because the syntax is readable and the ecosystem is huge. NumPy, Pandas, scikit-learn, TensorFlow, PyTorch, OpenCV, and nearly every robotics ML example you find online will have Python support.</p>
+                <div class="grid-2">
+                  <div class="card">
+                    <h4>C++</h4>
+                    <figure class="code-card">
+                      <figcaption>Same idea in C++</figcaption>
+      <pre><code class="language-cpp">#include &lt;iostream&gt;
+      int main() {
+        std::cout &lt;&lt; "Hello, Robot!" &lt;&lt; std::endl;
+        return 0;
+      }</code></pre>
+                    </figure>
+                  </div>
+                  <div class="card">
+                    <h4>Python</h4>
+                    <figure class="code-card">
+                      <figcaption>Your first Python cell</figcaption>
+      <pre><code class="language-python">print("Hello, Robot!")</code></pre>
+                    </figure>
+                  </div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Run <code>print("Hello, Robot!")</code> in Colab. Then change the message to include your name and your robot's name.</p></div>
+                </div>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Common Mistake</div><p>Do not worry about installing Python on your laptop yet. For this course, run the cells in Colab so everyone starts from the same environment.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-colab">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-overview" data-lesson-link="ch1-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Python Fundamentals</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-variables" data-lesson-link="ch1-variables"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.2 Variables & Data Types &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-variables" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.2 Variables & Data Types</div>
+<h1>1.2 Variables & Data Types</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Variable</span><p>A named container in memory that holds a value. Think of it as a labelled box for robot data.</p></div>
+<div class="lesson-body">
+<h3>1.2 Variables & Data Types</h3>
+                <p><strong>Concept.</strong> A variable is a named box that holds a value. Python has four beginner-friendly basic types: <code>int</code> for whole numbers, <code>float</code> for decimals, <code>str</code> for text, and <code>bool</code> for true/false values.</p>
+                <figure class="code-card">
+                  <figcaption>Robot sensor variables</figcaption>
+      <pre><code class="language-python"># Robot sensor variables
+      distance = 2.45          # float - distance in meters
+      is_obstacle = True       # bool - obstacle detected?
+      robot_name = "ARIA"      # str - robot's name
+      wheels = 4               # int - number of wheels
+      
+      print(type(distance))
+      print(type(is_obstacle))
+      print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")</code></pre>
+                </figure>
+                <p>Type conversion changes one type into another: <code>int("42")</code>, <code>str(3.14)</code>, and <code>float("2.0")</code>. An f-string lets you insert variables into a string: <code>f"The sensor reads {value:.2f} meters"</code>.</p>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Tip</div><p>Python is case-sensitive. <code>Distance</code> and <code>distance</code> are different variables.</p></div>
+                </div>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Common Mistake</div><p>Do not mix types unexpectedly. <code>"5" + 5</code> will crash. Use <code>int("5") + 5</code> instead.</p></div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Declare 3 variables for a robot: speed as a float, battery level as an int from 0-100, and current task as a string. Print a status report using an f-string.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-variables">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-colab" data-lesson-link="ch1-colab"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.1 Why Python & Colab</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-data-structures" data-lesson-link="ch1-data-structures"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.3 Data Structures &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-data-structures" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.3 Data Structures</div>
+<h1>1.3 Data Structures</h1>
+<div class="lesson-meta"><span>Beginner</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Data Structure</span><p>A container pattern for organizing related values, such as lists of readings or dictionaries of robot state.</p></div>
+<div class="lesson-body">
+<h3>1.3 Data Structures: Lists, Tuples, Sets, Dictionaries</h3>
+                <p><strong>Concept.</strong> Data structures are containers. They let you keep related values together instead of creating a separate variable for everything.</p>
+                <h4>Lists</h4>
+                <p>A list is ordered and mutable. Use it for values that arrive over time, like ultrasonic sensor readings.</p>
+                <p class="mini muted">Key operations: indexing with <code>my_list[0]</code>, negative indexing with <code>my_list[-1]</code>, slicing with <code>my_list[1:3]</code>, and methods like <code>.append()</code>, <code>.remove()</code>, <code>.pop()</code>, and <code>.sort()</code>. Use <code>len(my_list)</code> for length.</p>
+                <figure class="code-card">
+                  <figcaption>Lists: sensor readings over time</figcaption>
+      <pre><code class="language-python">sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]
+      sensor_readings.append(1.8)          # add new reading
+      
+      print(f"Latest reading: {sensor_readings[-1]}m")
+      print(f"Closest obstacle: {min(sensor_readings):.1f}m")
+      print(f"Total readings: {len(sensor_readings)}")
+      print(f"Middle slice: {sensor_readings[1:3]}")</code></pre>
+                </figure>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Create a list of 5 robot speeds. Find the max, min, and average with <code>sum()</code> and <code>len()</code>.</p></div>
+                </div>
+                <h4>Tuples</h4>
+                <p>A tuple is ordered and immutable. Use it when data should not change, like a fixed home coordinate.</p>
+                <figure class="code-card">
+                  <figcaption>Tuples: fixed robot configuration</figcaption>
+      <pre><code class="language-python">home_position = (0.0, 0.0)
+      wheel_diameter = (0.12,)       # single-element tuple needs a comma
+      
+      x, y = home_position           # tuple unpacking
+      print(f"Home is at x={x}, y={y}")</code></pre>
+                </figure>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Tip</div><p>If you try to change a tuple element, Python throws a <code>TypeError</code>. That is the point: it protects fixed data.</p></div>
+                </div>
+                <h4>Sets</h4>
+                <p>A set is unordered and keeps unique elements only. It is useful when a camera reports objects and you only care which object types appeared.</p>
+                <p class="mini muted">Key operations: <code>.add()</code>, <code>.remove()</code>, membership with <code>in</code>, union with <code>|</code>, intersection with <code>&amp;</code>, and difference with <code>-</code>.</p>
+                <figure class="code-card">
+                  <figcaption>Sets: unique objects seen by a robot</figcaption>
+      <pre><code class="language-python">objects_seen = {"chair", "table", "door", "chair", "wall"}
+      print(objects_seen)               # duplicates removed automatically
+      objects_seen.add("human")
+      print(f"Unique objects: {len(objects_seen)}")
+      
+      room_a_objects = {"chair", "table", "lamp"}
+      room_b_objects = {"table", "plant", "lamp"}
+      shared = room_a_objects & room_b_objects
+      print(f"Objects in both rooms: {shared}")</code></pre>
+                </figure>
+                <h4>Dictionaries</h4>
+                <p>A dictionary stores key-value pairs. Use it for named robot state, sensor packets, and configuration settings.</p>
+                <p class="mini muted">Key operations: access with <code>dict[key]</code>, safer access with <code>.get(key, default)</code>, and inspection with <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>.</p>
+                <figure class="code-card">
+                  <figcaption>Dictionaries: robot state packet</figcaption>
+      <pre><code class="language-python">robot_state = {
+          "name": "ARIA",
+          "battery": 87,
+          "speed": 1.2,
+          "task": "mapping",
+          "obstacles_detected": 3
+      }
+      
+      print(f"Battery: {robot_state['battery']}%")
+      robot_state["battery"] -= 5
+      robot_state["location"] = (3.1, 4.2)
+      
+      camera_status = robot_state.get("camera", "not installed")
+      print(f"Camera: {camera_status}")
+      
+      for key, value in robot_state.items():
+          print(f"  {key}: {value}")</code></pre>
+                </figure>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Common Mistake</div><p><code>robot_state["camera"]</code> crashes if the key does not exist. Use <code>.get("camera", "not installed")</code> when a key is optional.</p></div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Create a dictionary representing a robot with at least 5 attributes. Decrease the battery by 10 and print all keys that have numeric values.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-data-structures">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-variables" data-lesson-link="ch1-variables"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.2 Variables & Data Types</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-control-flow" data-lesson-link="ch1-control-flow"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.4 Control Flow &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-control-flow" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.4 Control Flow</div>
+<h1>1.4 Control Flow</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Control Flow</span><p>The part of a program that decides which code runs based on conditions.</p></div>
+<div class="lesson-body">
+<h3>1.4 Control Flow: if / elif / else</h3>
+                <p><strong>Concept.</strong> Control flow lets your program make decisions. Comparisons include <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>. Logical operators include <code>and</code>, <code>or</code>, and <code>not</code>.</p>
+                <figure class="code-card">
+                  <figcaption>Battery and obstacle decisions</figcaption>
+      <pre><code class="language-python">battery = 23
+      distance_to_obstacle = 0.4
+      
+      if battery < 10:
+          print("CRITICAL: Return to base immediately!")
+      elif battery < 25:
+          print("WARNING: Low battery. Finish current task and return.")
+          if distance_to_obstacle < 0.5:
+              print("ALSO: Obstacle too close - slow down!")
+      else:
+          print("Battery OK. Continuing mission.")
+      
+      safe_zones = {"base", "charging_dock", "lab_entrance"}
+      current_zone = "charging_dock"
+      if current_zone in safe_zones:
+          print(f"{current_zone} is a safe zone. Power down.")</code></pre>
+                </figure>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Tip</div><p>Use <code>elif</code> instead of multiple <code>if</code> blocks when conditions are mutually exclusive. It is clearer and avoids accidental double responses.</p></div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Write a function that takes a distance reading in meters and prints <code>STOP</code> if it is under 0.3m, <code>SLOW DOWN</code> if it is under 0.8m, and <code>ALL CLEAR</code> otherwise.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-control-flow">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-data-structures" data-lesson-link="ch1-data-structures"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.3 Data Structures</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-loops" data-lesson-link="ch1-loops"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.5 Loops &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-loops" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.5 Loops</div>
+<h1>1.5 Loops</h1>
+<div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Loop</span><p>A programming structure that repeats work over a collection or until a condition changes.</p></div>
+<div class="lesson-body">
+<h3>1.5 Loops: for and while</h3>
+                <p><strong>Concept.</strong> Loops repeat work. Use <code>for</code> when you know what collection you are walking through. Use <code>while</code> when you repeat until a condition changes.</p>
+                <p class="mini muted">You will also see <code>continue</code> to skip the rest of the current loop iteration and <code>zip()</code> to walk through two lists together, such as timestamps and readings.</p>
+                <figure class="code-card">
+                  <figcaption>For loops, range, while loops, and list comprehensions</figcaption>
+      <pre><code class="language-python">sensor_log = [1.5, 0.8, 2.3, 0.2, 1.9]
+      
+      print("Scanning sensor log...")
+      for i, reading in enumerate(sensor_log):
+          if reading < 0.5:
+              print(f"  Reading #{i}: {reading:.1f}m - DANGER")
+          else:
+              print(f"  Reading #{i}: {reading:.1f}m - OK")
+      
+      print("\nStarting 5-second countdown:")
+      for second in range(5, 0, -1):
+          print(f"  {second}...")
+      print("  LAUNCH!")
+      
+      battery = 100
+      distance_traveled = 0.0
+      
+      while battery > 20:
+          battery -= 5
+          distance_traveled += 0.3
+          if distance_traveled >= 1.2:
+              print(f"Destination reached! Battery remaining: {battery}%")
+              break
+      else:
+          print(f"Battery too low! Only traveled {distance_traveled:.1f}m")
+      
+      raw_readings = [1.5, -0.2, 0.9, 2.1, -0.1]
+      clean_readings = [r for r in raw_readings if r > 0]
+      print(f"\nClean readings: {clean_readings}")</code></pre>
+                </figure>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Common Mistake</div><p>A <code>while</code> loop can run forever if the condition never changes. Make sure something inside the loop moves the program toward stopping.</p></div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Use a for loop to count how many motor temperatures are above 80°C and calculate the average temperature. Then rewrite the filtering step as a list comprehension.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-loops">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-control-flow" data-lesson-link="ch1-control-flow"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.4 Control Flow</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-functions" data-lesson-link="ch1-functions"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.6 Functions &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-functions" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.6 Functions</div>
+<h1>1.6 Functions</h1>
+<div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Function</span><p>A reusable block of code with a name, inputs, and often a returned result.</p></div>
+<div class="lesson-body">
+<h3>1.6 Functions</h3>
+                <p><strong>Concept.</strong> Functions package reusable behavior. They make code easier to test, read, and repair. A function can take parameters, use default values, and return a result.</p>
+                <figure class="code-card">
+                  <figcaption>Function: analyze robot sensor readings</figcaption>
+      <pre><code class="language-python">def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
+          """
+          Analyze a list of sensor readings and return a summary.
+          """
+          if not readings:
+              return {"error": "No readings provided"}
+      
+          clean = [r for r in readings if r > 0]
+      
+          return {
+              "min": min(clean),
+              "max": max(clean),
+              "average": sum(clean) / len(clean),
+              "danger_count": sum(1 for r in clean if r < danger_threshold),
+              "unit": unit
+          }
+      
+      data = [1.2, 0.3, 0.8, 0.4, 2.1, 0.1, -0.5, 1.6]
+      result = analyze_sensor_data(data, danger_threshold=0.5)
+      
+      print(f"Min distance:  {result['min']:.2f}{result['unit']}")
+      print(f"Max distance:  {result['max']:.2f}{result['unit']}")
+      print(f"Average:       {result['average']:.2f}{result['unit']}")
+      print(f"Danger events: {result['danger_count']}")</code></pre>
+                </figure>
+                <p><code>*args</code> means "accept extra positional arguments" and <code>**kwargs</code> means "accept extra named arguments." You do not need them often yet, but you will see them in library functions.</p>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Scope</div><p>Variables created inside a function are local. Code outside the function cannot see them unless the function returns them.</p></div>
+                </div>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Common Mistake</div><p>Printing a value is not the same as returning it. If another part of your program needs the result, use <code>return</code>.</p></div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Write <code>convert_speed(value, from_unit, to_unit)</code> to convert between <code>m/s</code>, <code>km/h</code>, and <code>mph</code>. Return the converted value and print a formatted message.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-functions">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-loops" data-lesson-link="ch1-loops"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.5 Loops</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-libraries" data-lesson-link="ch1-libraries"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.7 Libraries & Imports &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch1-libraries" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.7 Libraries & Imports</div>
+<h1>1.7 Libraries & Imports</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Library</span><p>A package of reusable code written by other developers so you do not rebuild common tools from scratch.</p></div>
+<div class="lesson-body">
+<h3>1.7 Libraries & Imports</h3>
+                <p><strong>Concept.</strong> A library is code someone else packaged so you do not have to rebuild everything from scratch. In Colab, common ML libraries are already installed. For anything missing, you can run <code>!pip install package_name</code>.</p>
+                <div class="diagram">
+                  <div class="library-map" aria-label="Library map">
+                    <div class="card"><h4>NumPy</h4><p class="mini muted">Arrays and math</p></div>
+                    <div class="card"><h4>Pandas</h4><p class="mini muted">Data tables</p></div>
+                    <div class="card"><h4>Matplotlib</h4><p class="mini muted">Plots and charts</p></div>
+                    <div class="card"><h4>Scikit-learn</h4><p class="mini muted">Classic ML</p></div>
+                    <div class="card"><h4>TensorFlow/Keras</h4><p class="mini muted">Neural networks</p></div>
+                  </div>
+                </div>
+                <figure class="code-card">
+                  <figcaption>Standard ML import block</figcaption>
+      <pre><code class="language-python">import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      
+      sensor_array = np.array([1.2, 0.9, 1.5, 2.1, 0.3, 1.8])
+      
+      print(f"Mean: {np.mean(sensor_array):.3f}")
+      print(f"Std Dev: {np.std(sensor_array):.3f}")
+      print(f"Readings above 1.0m: {np.sum(sensor_array > 1.0)}")
+      
+      sensor_array_cm = sensor_array * 100
+      print(f"In cm: {sensor_array_cm}")</code></pre>
+                </figure>
+                <div class="callout robotics" role="note">
+                  <div class="callout-icon">🤖</div>
+                  <div><div class="callout-title">Robotics Connection</div><p>Robotics data is often arrays: images, lidar scans, sensor logs, joint angles, and motor current. NumPy is the shared foundation underneath most of those tools.</p></div>
+                </div>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Common Mistake</div><p><code>import numpy</code> works, but the standard nickname is <code>import numpy as np</code>. Most tutorials assume that alias.</p></div>
+                </div>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Mini Exercise</div><p>Create a NumPy array of 10 motor current readings. Print the average, maximum, and how many readings are above a safety threshold you choose.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-libraries">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-functions" data-lesson-link="ch1-functions"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.6 Functions</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch1-checkpoint" data-lesson-link="ch1-checkpoint"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">1.8 Checkpoint Exercise &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="ch1-checkpoint" data-chapter="ch1" data-chapter-title="Chapter 1: Python Programming Fundamentals" style="--chapter-accent:var(--ch1)">
+<div class="lesson-kicker">Chapter 1: Python Programming Fundamentals <span>&rsaquo;</span> 1.8 Checkpoint Exercise: Sensor Data Parser</div>
+<h1>1.8 Checkpoint Exercise: Sensor Data Parser</h1>
+<div class="lesson-meta"><span>Beginner</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>1.8 ★ Checkpoint Exercise: Sensor Data Parser</h3>
+                <p><strong>The task.</strong> A robot has been collecting data for 30 minutes. You are given a raw log as a list of dictionaries. Parse it, clean it, and produce a summary report.</p>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card">
+                  <figcaption>Checkpoint starter code: simulated robot log</figcaption>
+      <pre><code class="language-python">robot_log = [
+          {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
+          {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
+          {"time": "10:00", "distance": 0.4, "motor_temp": 66.1, "battery": 87,  "task": "avoidance"},
+          {"time": "15:00", "distance": 2.2, "motor_temp": 63.4, "battery": 80,  "task": "delivery"},
+          {"time": "20:00", "distance": -1,  "motor_temp": 71.0, "battery": 73,  "task": "delivery"},
+          {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
+          {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
+      ]
+      
+      # TODO:
+      # 1. Count total entries and sensor errors
+      # 2. Filter out distance == -1 entries
+      # 3. Find highest motor temperature and task
+      # 4. Calculate average battery drain per minute
+      # 5. Use a set to find unique tasks
+      # 6. Print a formatted report using f-strings</code></pre>
+                </figure>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Self-check</div><p>[ ] Did you use a function? [ ] Did you use a list comprehension? [ ] Did you use a dictionary for the summary? [ ] Is your output clearly formatted?</p></div>
+                </div>
+                <details class="solution">
+                  <summary>Show Solution</summary>
+                  <div>
+                    <figure class="code-card">
+                      <figcaption>Checkpoint solution</figcaption>
+      <pre><code class="language-python">def summarize_robot_log(log):
+          total_entries = len(log)
+          sensor_error_count = sum(1 for row in log if row["distance"] == -1)
+          clean_log = [row for row in log if row["distance"] != -1]
+      
+          hottest = max(log, key=lambda row: row["motor_temp"])
+          minutes = int(log[-1]["time"].split(":")[0]) - int(log[0]["time"].split(":")[0])
+          battery_drain = log[0]["battery"] - log[-1]["battery"]
+          average_drain = battery_drain / minutes
+          unique_tasks = {row["task"] for row in log}
+      
+          return {
+              "total_entries": total_entries,
+              "sensor_errors": sensor_error_count,
+              "valid_entries": len(clean_log),
+              "hottest_temp": hottest["motor_temp"],
+              "hottest_task": hottest["task"],
+              "average_drain": average_drain,
+              "unique_tasks": unique_tasks
+          }
+      
+      summary = summarize_robot_log(robot_log)
+      
+      print("ROBOT LOG SUMMARY")
+      print("-----------------")
+      print(f"Total entries:       {summary['total_entries']}")
+      print(f"Sensor errors:       {summary['sensor_errors']}")
+      print(f"Valid entries:       {summary['valid_entries']}")
+      print(f"Highest temperature: {summary['hottest_temp']:.1f} C during {summary['hottest_task']}")
+      print(f"Battery drain/min:   {summary['average_drain']:.2f}%")
+      print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</code></pre>
+                    </figure>
+                  </div>
+                </details>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch1-checkpoint">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-libraries" data-lesson-link="ch1-libraries"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.7 Libraries & Imports</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch2-overview" data-lesson-link="ch2-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">What is ML? &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch2-overview" data-chapter="ch2" data-chapter-title="Chapter 2: What is Machine Learning?" style="--chapter-accent:var(--ch2)">
+<div class="lesson-kicker">Chapter 2: What is Machine Learning? <span>&rsaquo;</span> What is Machine Learning?</div>
+<h1>What is Machine Learning?</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Machine Learning</span><p>A way to build programs that learn patterns from examples instead of following only hand-written rules.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 2 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch1-overview" data-lesson-link="ch1-overview">← Previous Chapter: Python Fundamentals</a>
+                <div class="chapter-kicker">ML introduction</div>
+                <h2>What is <span>Machine Learning?</span></h2>
+                <p class="lead">Imagine teaching a robot to catch a ball. The old way: you write thousands of rules like "if ball is at x=50 and moving left at 3 m/s, move arm to position y=120." That is impossible to get right. Machine learning is a completely different idea.</p>
+              </header>
+              <p><strong>Instead of programming rules, you feed the robot examples and let it figure out the rules itself.</strong> Show it 10,000 throws. It watches, finds patterns, and builds its own internal model of how to catch. That's machine learning: computers learning from data, not from explicit instructions.</p>
+              <div class="callout robotics" role="note">
+                <div class="callout-icon">🤖</div>
+                <div><div class="callout-title">The Robotics Angle</div><p>Almost every modern robot uses ML in some form: walking over rough terrain, recognizing tissue types, detecting pedestrians, sorting packages, or spotting defects on a factory line.</p></div>
               </div>
-              <div class="toc-groups">
-                <div class="toc-group" style="--chapter-color: var(--ch1)">
-                  <h3>Foundations</h3>
-                  <a href="chapter-0.html#chapter-0"><span>Chapter 0: Welcome & Setup</span><span class="read-time">~20 min</span></a>
-                  <a href="chapter-1-python.html#python"><span>Chapter 1: Python Programming Fundamentals</span><span class="read-time">~70 min</span></a>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch2-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch1-checkpoint" data-lesson-link="ch1-checkpoint"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 1.8 Checkpoint Exercise</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch2-traditional" data-lesson-link="ch2-traditional"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">2.1 Traditional vs ML &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch2-traditional" data-chapter="ch2" data-chapter-title="Chapter 2: What is Machine Learning?" style="--chapter-accent:var(--ch2)">
+<div class="lesson-kicker">Chapter 2: What is Machine Learning? <span>&rsaquo;</span> 2.1 Traditional Programming vs ML</div>
+<h1>2.1 Traditional Programming vs ML</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>2.1 Traditional Programming vs ML</h3>
+                <div class="grid-2">
+                  <div class="card"><h4>Traditional Programming</h4><p><strong>Input:</strong> data + rules<br /><strong>Output:</strong> answers</p><p class="muted">You write the logic. The computer follows it exactly.</p></div>
+                  <div class="card" style="border-color:var(--ch2)"><h4>Machine Learning</h4><p><strong>Input:</strong> data + answers<br /><strong>Output:</strong> rules, also called a model</p><p class="muted">The computer learns the logic from examples.</p></div>
                 </div>
-                <div class="toc-group" style="--chapter-color: var(--ch4)">
-                  <h3>Machine Learning</h3>
-                  <a href="chapter-2-ml.html#what-is-ml"><span>Chapter 2: What is Machine Learning?</span><span class="read-time">~25 min</span></a>
-                  <a href="chapter-3-supervised.html#supervised"><span>Chapter 3: Supervised Learning Project</span><span class="read-time">~70 min</span></a>
-                  <a href="chapter-4-unsupervised.html#unsupervised"><span>Chapter 4: Unsupervised Learning Project</span><span class="read-time">~55 min</span></a>
-                  <a href="chapter-5-rl.html#reinforcement-learning"><span>Chapter 5: Reinforcement Learning Project</span><span class="read-time">~55 min</span></a>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch2-traditional">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch2-overview" data-lesson-link="ch2-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; What is ML?</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch2-types" data-lesson-link="ch2-types"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">2.2 Three Flavors &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch2-types" data-chapter="ch2" data-chapter-title="Chapter 2: What is Machine Learning?" style="--chapter-accent:var(--ch2)">
+<div class="lesson-kicker">Chapter 2: What is Machine Learning? <span>&rsaquo;</span> 2.2 Three Flavors of ML</div>
+<h1>2.2 Three Flavors of ML</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>2.2 Three Flavors of ML</h3>
+                <div class="grid-3">
+                  <div class="card"><div class="icon">🏷️</div><h4>Supervised Learning</h4><p>Learn from labeled examples. Example: sensor readings labeled as failed or healthy.</p></div>
+                  <div class="card"><div class="icon">🔍</div><h4>Unsupervised Learning</h4><p>Find hidden structure without labels. Example: group vibration patterns into operating modes.</p></div>
+                  <div class="card"><div class="icon">🎮</div><h4>Reinforcement Learning</h4><p>Learn through actions and rewards. Example: a robot learns a navigation policy by trial and error.</p></div>
                 </div>
-                <div class="toc-group" style="--chapter-color: var(--ch6)">
-                  <h3>Computer Vision</h3>
-                  <a href="chapter-6-vision.html#computer-vision"><span>Chapter 6: Traffic Sign Classifier</span><span class="read-time">~75 min</span></a>
-                  <a href="chapter-7-next.html#whats-next"><span>Chapter 7: What's Next?</span><span class="read-time">~20 min</span></a>
-                  <a href="student-projects.html#projects"><span>Student Project Archive</span><span class="read-time">optional</span></a>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch2-types">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch2-traditional" data-lesson-link="ch2-traditional"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 2.1 Traditional vs ML</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch2-when-to-use" data-lesson-link="ch2-when-to-use"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">2.3 When to Use Which &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch2-when-to-use" data-chapter="ch2" data-chapter-title="Chapter 2: What is Machine Learning?" style="--chapter-accent:var(--ch2)">
+<div class="lesson-kicker">Chapter 2: What is Machine Learning? <span>&rsaquo;</span> 2.3 When to Use Which</div>
+<h1>2.3 When to Use Which</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>2.3 When to Use Which</h3>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead><tr><th>Question</th><th>Use</th><th>Robotics Example</th></tr></thead>
+                    <tbody>
+                      <tr><td>Do you have labeled answers?</td><td>Supervised learning</td><td>Predict failure from known historical failures.</td></tr>
+                      <tr><td>Do you have raw data but no labels?</td><td>Unsupervised learning</td><td>Cluster sensor behavior into normal and unusual modes.</td></tr>
+                      <tr><td>Does the system learn by acting?</td><td>Reinforcement learning</td><td>Teach a robot to navigate a maze.</td></tr>
+                      <tr><td>Is the input an image or video?</td><td>Computer vision</td><td>Classify signs, detect parts, follow lanes.</td></tr>
+                    </tbody>
+                  </table>
                 </div>
-              </div>
-            </section>
-    </div>
-    <div class="container">
-      <section class="chapter observe" id="projects-preview" data-title="Student Project Archive" style="--chapter-color: var(--cyan)">
-        <header class="chapter-header">
-          <span class="chapter-badge">Archive</span>
-          <div class="chapter-kicker">Applied robotics build</div>
-          <h2>Student <span>Projects</span></h2>
-          <p class="lead">Keep the curriculum pages separate, then use the project archive for larger real-world builds.</p>
-        </header>
-        <a class="next-btn" href="student-projects.html#projects">Open Student Project Archive ?</a>
-      </section>
-    </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch2-when-to-use">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch2-types" data-lesson-link="ch2-types"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 2.2 Three Flavors</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch3-overview" data-lesson-link="ch3-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Supervised Learning &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch3-overview" data-chapter="ch3" data-chapter-title="Chapter 3: Supervised Learning" style="--chapter-accent:var(--ch3)">
+<div class="lesson-kicker">Chapter 3: Supervised Learning <span>&rsaquo;</span> Supervised Learning: Robot Arm Failure Prediction</div>
+<h1>Supervised Learning: Robot Arm Failure Prediction</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Supervised Learning</span><p>Machine learning where each training example includes both inputs and the correct answer label.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 3 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch2-overview" data-lesson-link="ch2-overview">← Previous Chapter: What is ML?</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Supervised Learning: <span>Robot Arm Failure Prediction</span></h2>
+                <p class="lead">Supervised learning learns from examples where each row has inputs and a known answer. Here the answer is whether a machine failed.</p>
+              </header>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch2-when-to-use" data-lesson-link="ch2-when-to-use"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 2.3 When to Use Which</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch3-classification-regression" data-lesson-link="ch3-classification-regression"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">3.1 Classification & Regression &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch3-classification-regression" data-chapter="ch3" data-chapter-title="Chapter 3: Supervised Learning" style="--chapter-accent:var(--ch3)">
+<div class="lesson-kicker">Chapter 3: Supervised Learning <span>&rsaquo;</span> 3.1 Classification & Regression</div>
+<h1>3.1 Classification & Regression</h1>
+<div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>3.1 Concept: Classification & Regression</h3>
+                <p>In <strong>classification</strong>, the model predicts a category, such as <code>failure</code> or <code>normal</code>. In <strong>regression</strong>, the model predicts a number, such as remaining useful life in hours.</p>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="Supervised learning loop">
+                    <div class="flow-node">Input features</div><div class="arrow">→</div>
+                    <div class="flow-node">Model prediction</div><div class="arrow">→</div>
+                    <div class="flow-node">Compare to label, adjust, repeat</div>
+                  </div>
+                </div>
+                <div class="grid-2">
+                  <div class="card"><h4>Features</h4><p class="muted">The inputs: air temperature, process temperature, rotational speed, torque, and tool wear.</p></div>
+                  <div class="card"><h4>Labels</h4><p class="muted">The answer we want to predict: failure or no failure.</p></div>
+                </div>
+                <p>We split training and test data because the model must prove it can handle examples it did not memorize. Overfitting is like memorizing exam answers instead of understanding the material.</p>
+                <div class="grid-4">
+                  <div class="card"><h4>Accuracy</h4><p class="mini muted">Overall percent correct.</p></div>
+                  <div class="card"><h4>Precision</h4><p class="mini muted">When the model says failure, how often is it right?</p></div>
+                  <div class="card"><h4>Recall</h4><p class="mini muted">Of all true failures, how many did it catch?</p></div>
+                  <div class="card"><h4>F1-score</h4><p class="mini muted">A balance between precision and recall.</p></div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table" aria-label="Confusion matrix diagram">
+                    <thead><tr><th></th><th>Predicted Normal</th><th>Predicted Failure</th></tr></thead>
+                    <tbody>
+                      <tr><th>Actual Normal</th><td>True Negative<br /><span class="muted">Correctly ignored healthy machine</span></td><td>False Positive<br /><span class="muted">False alarm</span></td></tr>
+                      <tr><th>Actual Failure</th><td>False Negative<br /><span class="muted">Missed failure</span></td><td>True Positive<br /><span class="muted">Caught failure</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-classification-regression">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-overview" data-lesson-link="ch3-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Supervised Learning</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch3-algorithms" data-lesson-link="ch3-algorithms"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">3.2 Key Algorithms &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch3-algorithms" data-chapter="ch3" data-chapter-title="Chapter 3: Supervised Learning" style="--chapter-accent:var(--ch3)">
+<div class="lesson-kicker">Chapter 3: Supervised Learning <span>&rsaquo;</span> 3.2 Key Algorithms</div>
+<h1>3.2 Key Algorithms</h1>
+<div class="lesson-meta"><span>Beginner</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>3.2 Key Algorithms Explained</h3>
+                <div class="grid-2">
+                  <div class="card"><h4>Logistic Regression</h4><p>Despite the name, it is for classification. Think of it as drawing the best straight-line boundary between two groups.</p><p class="muted">Use when you want a fast, interpretable baseline.</p></div>
+                  <div class="card"><h4>Decision Tree</h4><p>A flowchart the model builds itself. At each node, it asks the best yes/no question about your data.</p><p class="muted">Use when explanation matters.</p></div>
+                  <div class="card"><h4>Random Forest</h4><p>Many decision trees vote on the answer. The group is usually more robust than one tree.</p><p class="muted">Use when tabular performance matters.</p></div>
+                  <div class="card"><h4>Support Vector Machine</h4><p>Finds the widest possible highway between classes, then classifies by which side a point lands on.</p><p class="muted">Use for smaller datasets with clear margins.</p></div>
+                </div>
+                <div class="diagram">
+                  <div class="matrix">
+                    <div class="card"><h4>Simple + Interpretable</h4><p>Logistic Regression</p></div>
+                    <div class="card"><h4>Complex + Interpretable</h4><p>Decision Tree</p></div>
+                    <div class="card"><h4>Simple + Performance</h4><p>Support Vector Machine</p></div>
+                    <div class="card"><h4>Complex + Performance</h4><p>Random Forest</p></div>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table sortable" aria-label="Algorithm comparison table">
+                    <thead>
+                      <tr>
+                        <th><button class="table-sort" type="button" data-sort="0">Algorithm</button></th>
+                        <th><button class="table-sort" type="button" data-sort="1">Type</button></th>
+                        <th><button class="table-sort" type="button" data-sort="2">Interpretable</button></th>
+                        <th><button class="table-sort" type="button" data-sort="3">Speed</button></th>
+                        <th>Best For</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Logistic Regression</td><td>Linear classifier</td><td>High</td><td>Fast</td><td>Baselines and explanations</td></tr>
+                      <tr><td>Decision Tree</td><td>Tree classifier</td><td>High</td><td>Fast</td><td>Readable rules</td></tr>
+                      <tr><td>Random Forest</td><td>Ensemble</td><td>Medium</td><td>Medium</td><td>Strong tabular accuracy</td></tr>
+                      <tr><td>Support Vector Machine</td><td>Margin classifier</td><td>Medium</td><td>Medium</td><td>Smaller clean datasets</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-algorithms">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-classification-regression" data-lesson-link="ch3-classification-regression"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 3.1 Classification & Regression</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch3-pipeline" data-lesson-link="ch3-pipeline"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">3.3 ML Pipeline &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch3-pipeline" data-chapter="ch3" data-chapter-title="Chapter 3: Supervised Learning" style="--chapter-accent:var(--ch3)">
+<div class="lesson-kicker">Chapter 3: Supervised Learning <span>&rsaquo;</span> 3.3 The ML Pipeline</div>
+<h1>3.3 The ML Pipeline</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>3.3 The ML Pipeline</h3>
+                <div class="steps">
+                  <div class="step"><div><strong>Get Data</strong> from Kaggle.</div></div>
+                  <div class="step"><div><strong>Explore Data</strong> with <code>head()</code>, <code>info()</code>, and charts.</div></div>
+                  <div class="step"><div><strong>Clean Data</strong> by checking missing values and outliers.</div></div>
+                  <div class="step"><div><strong>Feature Engineering</strong> turns raw columns into useful inputs.</div></div>
+                  <div class="step"><div><strong>Split</strong> into train and test sets, commonly 80/20.</div></div>
+                  <div class="step"><div><strong>Scale</strong> numeric features with <code>StandardScaler</code>.</div></div>
+                  <div class="step"><div><strong>Train Model</strong> on the training set.</div></div>
+                  <div class="step"><div><strong>Evaluate</strong> with accuracy, F1, and a confusion matrix.</div></div>
+                  <div class="step"><div><strong>Tune</strong> algorithms and hyperparameters.</div></div>
+                  <div class="step"><div><strong>Deploy / Use</strong> the model in a decision workflow.</div></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-pipeline">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-algorithms" data-lesson-link="ch3-algorithms"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 3.2 Key Algorithms</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch3-project" data-lesson-link="ch3-project"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">3.4 Failure Project &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="ch3-project" data-chapter="ch3" data-chapter-title="Chapter 3: Supervised Learning" style="--chapter-accent:var(--ch3)">
+<div class="lesson-kicker">Chapter 3: Supervised Learning <span>&rsaquo;</span> 3.4 Project: Robot Arm Failure Prediction</div>
+<h1>3.4 Project: Robot Arm Failure Prediction</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>35 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>3.4 ★ Project: Robot Arm Failure Prediction</h3>
+                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">AI4I 2020 Predictive Maintenance Dataset</a>. It has 10,000 engineering-relevant rows and supports binary failure prediction.</p>
+                <div class="callout download" role="note">
+                  <div class="callout-icon">⬇</div>
+                  <div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">predictive-maintenance-dataset-ai4i-2020</a>.</p></div>
+                </div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Kaggle API Setup</div><p>Create a free Kaggle account, go to Account → Create New Token, upload <code>kaggle.json</code> in Cell 1, and the dataset downloads automatically.</p></div>
+                </div>
+      
+                <h4>Cell-by-cell notebook</h4>
+                <figure class="code-card"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
+      from google.colab import files
+      files.upload()  # choose kaggle.json
+      
+      !mkdir -p ~/.kaggle
+      !cp kaggle.json ~/.kaggle/
+      !chmod 600 ~/.kaggle/kaggle.json</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download private-account dataset files.</p></div></div><div class="expected"><strong>Expected output</strong>Upload widget appears, then no error after <code>chmod</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
+      !unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The command pulls the zipped CSV into Colab and extracts it into a local <code>data</code> folder.</p></div></div><div class="expected"><strong>Expected output</strong>One CSV file appears under <code>data/</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: Import libraries</figcaption><pre><code class="language-python">import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      from sklearn.model_selection import train_test_split
+      from sklearn.preprocessing import StandardScaler
+      from sklearn.linear_model import LogisticRegression
+      from sklearn.ensemble import RandomForestClassifier
+      from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Pandas handles tables, Matplotlib draws charts, and scikit-learn provides splitting, scaling, models, and metrics.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output if imports succeed.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Load and explore the data</figcaption><pre><code class="language-python">df = pd.read_csv("data/ai4i2020.csv")
+      display(df.head())
+      df.info()
+      display(df.describe())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>head()</code> shows example rows, <code>info()</code> shows column types, and <code>describe()</code> gives quick numeric ranges.</p></div></div><div class="expected"><strong>Expected output</strong>Rows with temperature, speed, torque, tool wear, and failure columns.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Visualize class distribution</figcaption><pre><code class="language-python">counts = df["Machine failure"].value_counts().sort_index()
+      counts.plot(kind="bar", color=["#34d399", "#fb7185"])
+      plt.xticks([0, 1], ["Normal", "Failure"], rotation=0)
+      plt.title("Failure vs normal examples")
+      plt.ylabel("Rows")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Failures are usually rare. A model can look accurate by guessing normal too often, so class balance matters.</p></div></div><div class="expected"><strong>Expected output</strong>A bar chart with many more normal rows than failure rows.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Visualize feature correlations</figcaption><pre><code class="language-python">corr = df.select_dtypes(include="number").corr()
+      plt.figure(figsize=(9, 7))
+      plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
+      plt.colorbar(label="Correlation")
+      plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)
+      plt.yticks(range(len(corr.columns)), corr.columns)
+      plt.title("Numeric feature correlations")
+      plt.tight_layout()
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Correlation helps you spot repeated information and features that move with failure.</p></div></div><div class="expected"><strong>Expected output</strong>A heatmap where red means positive correlation and blue means negative correlation.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Handle missing data</figcaption><pre><code class="language-python">missing = df.isnull().sum()
+      print(missing[missing > 0])
+      print(f"Total missing values: {missing.sum()}")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Most scikit-learn models cannot train with missing values, so always check before modeling.</p></div></div><div class="expected"><strong>Expected output</strong>Usually <code>Total missing values: 0</code> for this dataset.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: Feature selection</figcaption><pre><code class="language-python">feature_cols = [
+          "Air temperature [K]",
+          "Process temperature [K]",
+          "Rotational speed [rpm]",
+          "Torque [Nm]",
+          "Tool wear [min]"
+      ]
+      X = df[feature_cols]
+      y = df["Machine failure"]
+      print(X.shape, y.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p><code>X</code> is the input table and <code>y</code> is the label. Keeping those separate is the core supervised learning pattern.</p></div></div><div class="expected"><strong>Expected output</strong><code>(10000, 5) (10000,)</code> or similar.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Train/test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+          X, y, test_size=0.2, random_state=42, stratify=y
+      )
+      print(X_train.shape, X_test.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The test set is held back so evaluation measures generalization. <code>stratify=y</code> keeps the same failure ratio in both sets.</p></div></div><div class="expected"><strong>Expected output</strong>About 8,000 training rows and 2,000 test rows.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
+      X_train_scaled = scaler.fit_transform(X_train)
+      X_test_scaled = scaler.transform(X_test)</code></pre></figure>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Fit the scaler on training data only. Fitting on test data leaks information from the exam into the study guide.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
+                <figure class="code-card"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
+      log_reg.fit(X_train_scaled, y_train)
+      log_pred = log_reg.predict(X_test_scaled)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Logistic regression is the baseline. <code>class_weight="balanced"</code> helps when failures are rare.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>log_pred</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
+      ConfusionMatrixDisplay.from_predictions(y_test, log_pred, display_labels=["Normal", "Failure"])
+      plt.title("Logistic Regression Confusion Matrix")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The classification report gives precision, recall, and F1. The confusion matrix shows which mistakes the model makes.</p></div></div><div class="expected"><strong>Expected output</strong>Text metrics plus a 2x2 confusion matrix.</div></div>
+                <figure class="code-card"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
+          n_estimators=100,
+          random_state=42,
+          class_weight="balanced"
+      )
+      forest.fit(X_train, y_train)
+      forest_pred = forest.predict(X_test)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Random forests do not require scaling and often perform well on tabular engineering data.</p></div></div><div class="expected"><strong>Expected output</strong>No output; predictions stored in <code>forest_pred</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1 = f1_score(y_test, log_pred)
+      forest_f1 = f1_score(y_test, forest_pred)
+      
+      print(f"Logistic Regression F1: {log_f1:.3f}")
+      print(f"Random Forest F1:       {forest_f1:.3f}")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>F1 is useful for rare failures because it punishes both false alarms and missed failures.</p></div></div><div class="expected"><strong>Expected output</strong>Two F1 scores; discuss which one is better and why.</div></div>
+                <figure class="code-card"><figcaption>Cell 15: Challenge - tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+      scores = []
+      
+      for n in tree_counts:
+          model = RandomForestClassifier(n_estimators=n, random_state=42, class_weight="balanced")
+          model.fit(X_train, y_train)
+          scores.append(f1_score(y_test, model.predict(X_test)))
+      
+      plt.plot(tree_counts, scores, marker="o")
+      plt.xlabel("Number of trees")
+      plt.ylabel("F1 score")
+      plt.title("Random Forest tuning")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>Hyperparameter tuning asks whether more model capacity improves performance enough to justify extra computation.</p></div></div><div class="expected"><strong>Expected output</strong>A line plot of F1 score versus number of trees.</div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-project">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-pipeline" data-lesson-link="ch3-pipeline"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 3.3 ML Pipeline</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-overview" data-lesson-link="ch4-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Unsupervised Learning &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch4-overview" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> Unsupervised Learning: Industrial Vibration Clustering</div>
+<h1>Unsupervised Learning: Industrial Vibration Clustering</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Unsupervised Learning</span><p>Machine learning that searches for structure in data without answer labels.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 4 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch3-overview" data-lesson-link="ch3-overview">← Previous Chapter: Supervised Learning</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Unsupervised Learning: <span>Industrial Vibration Clustering</span></h2>
+                <p class="lead">Unsupervised learning finds structure when nobody has labeled the rows. That makes it valuable for sensor streams, vibration logs, and exploratory robotics data.</p>
+              </header>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch4-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-project" data-lesson-link="ch3-project"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 3.4 Failure Project</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-clustering" data-lesson-link="ch4-clustering"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">4.1 Clustering & PCA &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch4-clustering" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> 4.1 Clustering & Dimensionality Reduction</div>
+<h1>4.1 Clustering & Dimensionality Reduction</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>4.1 Concept: Clustering & Dimensionality Reduction</h3>
+                <p><strong>Clustering</strong> groups similar rows. If a motor has normal, imbalanced, and loose modes, vibration windows may naturally form three groups even without labels.</p>
+                <p><strong>PCA</strong> reduces many features into two or three axes so humans can visualize high-dimensional data. It does not magically explain the system, but it helps you inspect patterns.</p>
+                <div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Robotics Connection</div><p>When a robot enters a new environment, unlabeled sensor patterns are often the first clue that something changed.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch4-clustering">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch4-overview" data-lesson-link="ch4-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Unsupervised Learning</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-kmeans" data-lesson-link="ch4-kmeans"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">4.2 K-Means &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch4-kmeans" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> 4.2 K-Means Deep Dive</div>
+<h1>4.2 K-Means Deep Dive</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>4.2 K-Means Deep Dive</h3>
+                <div class="grid-4">
+                  <div class="card"><h4>1. Random init</h4><p class="mini muted">Place K centroids randomly.</p></div>
+                  <div class="card"><h4>2. Assign</h4><p class="mini muted">Assign each point to the nearest centroid.</p></div>
+                  <div class="card"><h4>3. Recompute</h4><p class="mini muted">Move each centroid to the average of its assigned points.</p></div>
+                  <div class="card"><h4>4. Converge</h4><p class="mini muted">Repeat until assignments stop changing.</p></div>
+                </div>
+                <p>Use the <strong>Elbow Method</strong> to choose K: plot inertia for K=1 to 10. The elbow is where extra clusters stop helping much. Use <strong>DBSCAN</strong> when clusters are odd shapes or when you do not know K.</p>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch4-kmeans">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch4-clustering" data-lesson-link="ch4-clustering"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 4.1 Clustering & PCA</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-project" data-lesson-link="ch4-project"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">4.3 Vibration Project &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="ch4-project" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> 4.3 Project: Clustering Robot Sensor Readings</div>
+<h1>4.3 Project: Clustering Robot Sensor Readings</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>30 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>4.3 ★ Project: Clustering Robot Sensor Readings</h3>
+                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
+                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
+      from google.colab import files
+      files.upload()
+      !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+      !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
+      !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      from pathlib import Path
+      
+      files = list(Path("vibration_data").glob("*.csv"))
+      if files:
+          df = pd.read_csv(files[0])
+      else:
+          t = np.linspace(0, 60, 6000)
+          signal = np.r_[np.sin(12*t[:2000]), 1.5*np.sin(18*t[:2000]), np.sin(12*t[:2000]) + .4*np.sin(45*t[:2000])]
+          df = pd.DataFrame({"time": t, "vibration": signal})
+      
+      display(df.head())
+      print(df.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The code is robust: it uses Kaggle data when present and synthetic vibration data when unavailable.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
+      plt.figure(figsize=(12, 3))
+      plt.plot(df[signal_col].values[:2000])
+      plt.title("Raw vibration signal")
+      plt.xlabel("Sample")
+      plt.ylabel("Amplitude")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Always look at raw sensor data before feature engineering. Bad units or flat lines show up immediately.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+      window = 256
+      features = []
+      
+      for start in range(0, len(values) - window, window):
+          chunk = values[start:start + window]
+          fft = np.abs(np.fft.rfft(chunk))
+          features.append({
+              "mean": chunk.mean(),
+              "std": chunk.std(),
+              "max": chunk.max(),
+              "fft_peak": fft[1:].argmax() + 1
+          })
+      
+      feature_df = pd.DataFrame(features)
+      display(feature_df.head())</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>ML models do not understand raw waves automatically. Window statistics and FFT peaks summarize behavior.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+      
+      scaler = StandardScaler()
+      X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>K-Means uses distance. Scaling keeps a large numeric column from dominating the distance calculation.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
+      
+      ks = range(1, 11)
+      inertias = []
+      for k in ks:
+          kmeans = KMeans(n_clusters=k, random_state=42, n_init="auto")
+          kmeans.fit(X_scaled)
+          inertias.append(kmeans.inertia_)
+      
+      plt.plot(list(ks), inertias, marker="o")
+      plt.xlabel("K")
+      plt.ylabel("Inertia")
+      plt.title("Elbow Method")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The elbow suggests a reasonable number of clusters before improvements flatten out.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
+      cluster_labels = kmeans.fit_predict(X_scaled)
+      feature_df["cluster"] = cluster_labels
+      display(feature_df.groupby("cluster").mean())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Cluster averages help you give engineering names to groups, such as normal or high-vibration.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
+      
+      pca = PCA(n_components=2, random_state=42)
+      points_2d = pca.fit_transform(X_scaled)
+      
+      plt.scatter(points_2d[:, 0], points_2d[:, 1], c=cluster_labels, cmap="viridis")
+      plt.xlabel("PC1")
+      plt.ylabel("PC2")
+      plt.title("K-Means clusters in PCA space")
+      plt.colorbar(label="Cluster")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>PCA compresses the feature table into two axes so you can inspect whether clusters separate visually.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
+      display(summary)
+      
+      for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
+          print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>The ML output is only useful after you translate it into engineering language.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
+      
+      dbscan = DBSCAN(eps=0.8, min_samples=5)
+      db_labels = dbscan.fit_predict(X_scaled)
+      
+      plt.scatter(points_2d[:, 0], points_2d[:, 1], c=db_labels, cmap="tab10")
+      plt.title("DBSCAN clusters in PCA space")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>DBSCAN can mark outliers as <code>-1</code> and find non-round clusters, but it is sensitive to <code>eps</code>.</p></div></div><div class="expected"><strong>Expected output</strong>A second cluster plot, sometimes with outliers.</div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch4-project">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch4-kmeans" data-lesson-link="ch4-kmeans"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 4.2 K-Means</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch5-overview" data-lesson-link="ch5-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Reinforcement Learning &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch5-overview" data-chapter="ch5" data-chapter-title="Chapter 5: Reinforcement Learning" style="--chapter-accent:var(--ch5)">
+<div class="lesson-kicker">Chapter 5: Reinforcement Learning <span>&rsaquo;</span> Reinforcement Learning: Teach a Robot to Navigate a Maze</div>
+<h1>Reinforcement Learning: Teach a Robot to Navigate a Maze</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Reinforcement Learning</span><p>Learning by taking actions, receiving rewards, and improving future decisions.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 5 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch4-overview" data-lesson-link="ch4-overview">← Previous Chapter: Unsupervised Learning</a>
+                <div class="chapter-kicker">Gym project</div>
+                <h2>Reinforcement Learning: <span>Teach a Robot to Navigate a Maze</span></h2>
+                <p class="lead">Reinforcement learning is about actions, rewards, and practice. The model is not given labels; it learns which actions lead to better outcomes.</p>
+              </header>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch5-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch4-project" data-lesson-link="ch4-project"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 4.3 Vibration Project</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch5-loop" data-lesson-link="ch5-loop"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">5.1 Agent & Reward &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch5-loop" data-chapter="ch5" data-chapter-title="Chapter 5: Reinforcement Learning" style="--chapter-accent:var(--ch5)">
+<div class="lesson-kicker">Chapter 5: Reinforcement Learning <span>&rsaquo;</span> 5.1 Agent, Environment, Reward</div>
+<h1>5.1 Agent, Environment, Reward</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>5.1 Concept: Agent, Environment, Reward</h3>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="Reinforcement learning loop">
+                    <div class="flow-node">Agent</div><div class="arrow">action →</div>
+                    <div class="flow-node">Environment</div><div class="arrow">reward + state →</div>
+                    <div class="flow-node">Agent updates policy</div>
+                  </div>
+                </div>
+                <p>RL is different from supervised learning because there is no answer key for every state. The agent must explore, make mistakes, and learn from reward signals.</p>
+                <p>Real robotics uses RL in legged locomotion, drone control, robotic surgery research, dexterous manipulation, and simulation-to-real training.</p>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch5-loop">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch5-overview" data-lesson-link="ch5-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Reinforcement Learning</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch5-q-learning" data-lesson-link="ch5-q-learning"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">5.2 Q-Learning &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch5-q-learning" data-chapter="ch5" data-chapter-title="Chapter 5: Reinforcement Learning" style="--chapter-accent:var(--ch5)">
+<div class="lesson-kicker">Chapter 5: Reinforcement Learning <span>&rsaquo;</span> 5.2 Q-Learning Explained with a Grid</div>
+<h1>5.2 Q-Learning Explained with a Grid</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>5.2 Q-Learning Explained with a Grid</h3>
+                <p>A Q-table stores the expected value of taking each action in each state. In FrozenLake, there are 16 grid states and 4 actions, so the table is 16 x 4.</p>
+                <figure class="code-card">
+                  <figcaption>Q-learning update equation</figcaption>
+      <pre><code>Q(s, a) <- Q(s, a) + alpha [ r + gamma * max Q(s', a') - Q(s, a) ]
+                 old value    rate   reward discount best future value</code></pre>
+                </figure>
+                <ul>
+                  <li><strong>s</strong>: current state.</li>
+                  <li><strong>a</strong>: action chosen.</li>
+                  <li><strong>alpha</strong>: learning rate, or how aggressively we update.</li>
+                  <li><strong>r</strong>: immediate reward.</li>
+                  <li><strong>gamma</strong>: discount factor for future rewards.</li>
+                </ul>
+                <p><strong>Exploration vs exploitation</strong> is the central tradeoff. Early on, the agent flips a biased coin and explores random moves often. Later, it mostly exploits the best actions it has learned.</p>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch5-q-learning">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch5-loop" data-lesson-link="ch5-loop"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 5.1 Agent & Reward</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch5-project" data-lesson-link="ch5-project"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">5.3 Maze Project &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="ch5-project" data-chapter="ch5" data-chapter-title="Chapter 5: Reinforcement Learning" style="--chapter-accent:var(--ch5)">
+<div class="lesson-kicker">Chapter 5: Reinforcement Learning <span>&rsaquo;</span> 5.3 Project: Teaching a Robot to Navigate a Maze</div>
+<h1>5.3 Project: Teaching a Robot to Navigate a Maze</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>30 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>5.3 ★ Project: Teaching a Robot to Navigate a Maze</h3>
+                <p><strong>Environment:</strong> OpenAI Gym / Gymnasium <code>FrozenLake-v1</code>. The notebook logs rewards to CSV, uploads them as a Kaggle dataset, and loads them back for analysis.</p>
+                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>This project generates <code>frozenlake_training_log.csv</code>. Upload or retrieve logs through <a href="https://www.kaggle.com/datasets" target="_blank" rel="noreferrer">kaggle.com/datasets</a>.</p></div></div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card"><figcaption>Cell 1: Install gym, import libraries</figcaption><pre><code class="language-python">!pip -q install gymnasium[toy-text]
+      import gymnasium as gym
+      import numpy as np
+      import pandas as pd
+      import matplotlib.pyplot as plt</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Installs the grid-world environment and imports the tools for tables, arrays, and charts.</p></div></div><div class="expected"><strong>Expected output</strong>Installation completes with no import errors.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Create FrozenLake environment</figcaption><pre><code class="language-python">env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="ansi")
+      state, info = env.reset(seed=42)
+      print(env.render())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates a 4x4 map. Slippery ice adds randomness, which makes learning harder and more realistic.</p></div></div><div class="expected"><strong>Expected output</strong>An ASCII grid with S, F, H, and G.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: Action and observation space</figcaption><pre><code class="language-python">print("States:", env.observation_space.n)
+      print("Actions:", env.action_space.n)
+      print("0=Left, 1=Down, 2=Right, 3=Up")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Confirms that the state is a grid square and the action is a movement direction.</p></div></div><div class="expected"><strong>Expected output</strong><code>States: 16</code>, <code>Actions: 4</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Initialize Q-table</figcaption><pre><code class="language-python">q_table = np.zeros((env.observation_space.n, env.action_space.n))
+      print(q_table.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The agent starts knowing nothing, so every action value starts at zero.</p></div></div><div class="expected"><strong>Expected output</strong><code>(16, 4)</code>.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Train with Q-learning</figcaption><pre><code class="language-python">episodes = 1000
+      alpha = 0.8
+      gamma = 0.95
+      epsilon = 1.0
+      epsilon_decay = 0.995
+      min_epsilon = 0.05
+      logs = []
+      
+      for episode in range(episodes):
+          state, info = env.reset()
+          done = False
+          total_reward = 0
+      
+          while not done:
+              if np.random.random() < epsilon:
+                  action = env.action_space.sample()
+              else:
+                  action = np.argmax(q_table[state])
+      
+              next_state, reward, terminated, truncated, info = env.step(action)
+              done = terminated or truncated
+      
+              best_next = np.max(q_table[next_state])
+              q_table[state, action] += alpha * (reward + gamma * best_next - q_table[state, action])
+      
+              state = next_state
+              total_reward += reward
+      
+          epsilon = max(min_epsilon, epsilon * epsilon_decay)
+          logs.append({"episode": episode, "reward": total_reward, "epsilon": epsilon})</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This is the learning loop: choose action, observe reward, update Q-table, repeat.</p></div></div><div class="expected"><strong>Expected output</strong>No output until the next plotting cell.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Plot reward curve</figcaption><pre><code class="language-python">log_df = pd.DataFrame(logs)
+      log_df["rolling_reward"] = log_df["reward"].rolling(50).mean()
+      
+      plt.plot(log_df["episode"], log_df["rolling_reward"])
+      plt.xlabel("Episode")
+      plt.ylabel("Rolling average reward")
+      plt.title("Q-learning progress")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Rolling averages smooth noisy rewards so learning trends are easier to see.</p></div></div><div class="expected"><strong>Expected output</strong>A curve that should rise as the policy improves.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Visualize learned policy</figcaption><pre><code class="language-python">arrows = np.array(["<", "v", ">", "^"])
+      policy = arrows[np.argmax(q_table, axis=1)].reshape(4, 4)
+      print(policy)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Converts best actions into arrows so you can inspect the learned navigation plan.</p></div></div><div class="expected"><strong>Expected output</strong>A 4x4 grid of arrows.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: Test trained agent</figcaption><pre><code class="language-python">state, info = env.reset(seed=7)
+      done = False
+      while not done:
+          action = np.argmax(q_table[state])
+          state, reward, terminated, truncated, info = env.step(action)
+          done = terminated or truncated
+          print(env.render())
+      print("Final reward:", reward)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Runs one greedy episode using the learned policy instead of random exploration.</p></div></div><div class="expected"><strong>Expected output</strong>Several grid frames and a final reward of 0 or 1.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Kaggle tie-in - save and upload log</figcaption><pre><code class="language-python">log_df.to_csv("frozenlake_training_log.csv", index=False)
+      print("Saved frozenlake_training_log.csv")
+      
+      # Optional: create a Kaggle dataset manually from this CSV,
+      # then use the Kaggle API to download it in a future notebook.</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The CSV turns your RL experiment into a dataset you can share and re-analyze.</p></div></div><div class="expected"><strong>Expected output</strong>A saved CSV file in Colab's file browser.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Challenge - larger map or non-slippery ice</figcaption><pre><code class="language-python"># Try one change at a time:
+      env = gym.make("FrozenLake-v1", map_name="8x8", is_slippery=True, render_mode="ansi")
+      # or
+      env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="ansi")</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>The 8x8 map is harder. Turning slipperiness off isolates planning from randomness.</p></div></div><div class="expected"><strong>Expected output</strong>A changed environment; rerun training and compare reward curves.</div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch5-project">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch5-q-learning" data-lesson-link="ch5-q-learning"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 5.2 Q-Learning</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-overview" data-lesson-link="ch6-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Computer Vision &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch6-overview" data-chapter="ch6" data-chapter-title="Chapter 6: Computer Vision for Robotics" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Computer Vision for Robotics <span>&rsaquo;</span> Computer Vision for Robotics</div>
+<h1>Computer Vision for Robotics</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Computer Vision</span><p>Techniques that let computers interpret images and video as useful sensor data.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 6 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch5-overview" data-lesson-link="ch5-overview">← Previous Chapter: Reinforcement Learning</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Computer Vision for Robotics: <span>Traffic Sign Classifier</span></h2>
+                <p class="lead">Computer vision lets robots use cameras as sensors. This chapter replaces the old MNIST demo with a real traffic sign classification project.</p>
+              </header>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch5-project" data-lesson-link="ch5-project"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 5.3 Maze Project</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-why-vision" data-lesson-link="ch6-why-vision"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.1 Why Vision Matters &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch6-why-vision" data-chapter="ch6" data-chapter-title="Chapter 6: Computer Vision for Robotics" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Computer Vision for Robotics <span>&rsaquo;</span> 6.1 Why Vision Matters in Robotics</div>
+<h1>6.1 Why Vision Matters in Robotics</h1>
+<div class="lesson-meta"><span>Beginner</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>6.1 Why Vision Matters in Robotics</h3>
+                <p>Cameras are cheap, rich sensors. Robots use vision to read signs, detect obstacles, estimate pose, inspect parts, track lanes, and understand human workspaces.</p>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-why-vision">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-overview" data-lesson-link="ch6-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Computer Vision</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-opencv" data-lesson-link="ch6-opencv"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.2 OpenCV &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch6-opencv" data-chapter="ch6" data-chapter-title="Chapter 6: Computer Vision for Robotics" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Computer Vision for Robotics <span>&rsaquo;</span> 6.2 Tools: OpenCV</div>
+<h1>6.2 Tools: OpenCV</h1>
+<div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>6.2 Tools: OpenCV</h3>
+                <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
+                <figure class="code-card"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
+      import matplotlib.pyplot as plt
+      
+      img_bgr = cv2.imread("traffic_sign.jpg")
+      print(img_bgr.shape)             # height, width, channels
+      
+      img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+      small = cv2.resize(img_rgb, (32, 32))
+      edges = cv2.Canny(small, threshold1=50, threshold2=150)
+      
+      cv2.rectangle(img_rgb, (20, 20), (120, 120), (0, 255, 0), 2)
+      plt.imshow(img_rgb)
+      plt.axis("off")
+      plt.show()</code></pre></figure>
+                <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">BGR vs RGB</div><p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-opencv">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-why-vision" data-lesson-link="ch6-why-vision"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.1 Why Vision Matters</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-tensorflow" data-lesson-link="ch6-tensorflow"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.3 TensorFlow/Keras &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch6-tensorflow" data-chapter="ch6" data-chapter-title="Chapter 6: Computer Vision for Robotics" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Computer Vision for Robotics <span>&rsaquo;</span> 6.3 Tools: TensorFlow/Keras</div>
+<h1>6.3 Tools: TensorFlow/Keras</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>6.3 Tools: TensorFlow/Keras</h3>
+                <p>TensorFlow is Google's library for building and training neural networks. Keras is the friendly wrapper on top, like power steering on a car. You will use tensors, layers, models, epochs, batches, loss functions, and optimizers.</p>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="Keras sequential stack">
+                    <div class="flow-node">Input image</div><div class="arrow">→</div>
+                    <div class="flow-node">Layers stacked in order</div><div class="arrow">→</div>
+                    <div class="flow-node">Class probabilities</div>
+                  </div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-tensorflow">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-opencv" data-lesson-link="ch6-opencv"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.2 OpenCV</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-cnn" data-lesson-link="ch6-cnn"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.4 CNNs &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch6-cnn" data-chapter="ch6" data-chapter-title="Chapter 6: Computer Vision for Robotics" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Computer Vision for Robotics <span>&rsaquo;</span> 6.4 How CNNs See</div>
+<h1>6.4 How CNNs See</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>6.4 How Convolutional Neural Networks See</h3>
+                <p>A normal neural network sees a flat list of pixels. A CNN scans small filters across the image, so it can learn edges, corners, textures, shapes, and eventually objects.</p>
+                <div class="diagram">
+                  <div class="flow-row" aria-label="CNN architecture diagram">
+                    <div class="flow-node">Input 32x32 image</div><div class="arrow">→</div>
+                    <div class="flow-node">Conv2D + MaxPool</div><div class="arrow">→</div>
+                    <div class="flow-node">Dense → 43 signs</div>
+                  </div>
+                </div>
+                <figure class="code-card"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
+          [-1, 0, 1],
+          [-2, 0, 2],
+          [-1, 0, 1]
+      ])</code></pre></figure>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-cnn">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-tensorflow" data-lesson-link="ch6-tensorflow"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.3 TensorFlow/Keras</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-project" data-lesson-link="ch6-project"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.5 Traffic Sign Project &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="ch6-project" data-chapter="ch6" data-chapter-title="Chapter 6: Computer Vision for Robotics" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Computer Vision for Robotics <span>&rsaquo;</span> 6.5 Project: Traffic Sign Classifier</div>
+<h1>6.5 Project: Traffic Sign Classifier</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>35 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>6.5 ★ Project: Traffic Sign Classifier with TensorFlow + OpenCV</h3>
+                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
+                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
+                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <figure class="code-card"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
+      from google.colab import files
+      files.upload()
+      !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+      !kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
+      !unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
+                <figure class="code-card"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      
+      train_csv = Path("gtsrb/Train.csv")
+      df = pd.read_csv(train_csv)
+      display(df.head())
+      df["ClassId"].value_counts().sort_index().plot(kind="bar", figsize=(14, 4))
+      plt.title("Images per traffic sign class")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows metadata and checks whether classes are balanced.</p></div></div><div class="expected"><strong>Expected output</strong>A table and a 43-bar class count chart.</div></div>
+                <figure class="code-card"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
+      import numpy as np
+      from tensorflow.keras.preprocessing.image import ImageDataGenerator
+      
+      images, labels = [], []
+      for _, row in df.iterrows():
+          path = Path("gtsrb") / row["Path"]
+          img = cv2.imread(str(path))
+          img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+          img = cv2.resize(img, (32, 32))
+          img = img.astype("float32") / 255.0
+          images.append(img)
+          labels.append(row["ClassId"])
+      
+      X = np.array(images)
+      y = np.array(labels)
+      print(X.shape, y.shape)</code></pre></figure>
+                <figure class="code-card"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
+          rotation_range=10,
+          zoom_range=0.10,
+          horizontal_flip=True
+      )
+      
+      # Use with care: horizontal flips can change the meaning of some traffic signs.</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples.</p></div></div><div class="expected"><strong>Expected output</strong><code>(num_images, 32, 32, 3)</code> and labels.</div></div>
+                <figure class="code-card"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
+      
+      X_train, X_temp, y_train, y_temp = train_test_split(
+          X, y, test_size=0.3, random_state=42, stratify=y
+      )
+      X_val, X_test, y_val, y_test = train_test_split(
+          X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
+      )</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates separate data for training, tuning during training, and final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No output; three splits are ready.</div></div>
+                <figure class="code-card"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
+      from tensorflow import keras
+      from tensorflow.keras import layers
+      
+      model = keras.Sequential([
+          layers.Conv2D(32, (3, 3), activation="relu", input_shape=(32, 32, 3)),
+          layers.MaxPooling2D((2, 2)),
+          layers.Conv2D(64, (3, 3), activation="relu"),
+          layers.MaxPooling2D((2, 2)),
+          layers.Flatten(),
+          layers.Dense(256, activation="relu"),
+          layers.Dropout(0.5),
+          layers.Dense(43, activation="softmax")
+      ])
+      model.summary()</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision.</p></div></div><div class="expected"><strong>Expected output</strong>A model summary with trainable parameters.</div></div>
+                <figure class="code-card"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
+          optimizer="adam",
+          loss="sparse_categorical_crossentropy",
+          metrics=["accuracy"]
+      )</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p><code>adam</code> updates weights, loss measures wrongness, and accuracy reports percent correct.</p></div></div><div class="expected"><strong>Expected output</strong>No output; model is ready to train.</div></div>
+                <figure class="code-card"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
+          X_train, y_train,
+          validation_data=(X_val, y_val),
+          epochs=15,
+          batch_size=64
+      )</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Each epoch passes through the training set once and reports train/validation accuracy.</p></div></div><div class="expected"><strong>Expected output</strong>A live progress bar for each epoch.</div></div>
+                <figure class="code-card"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+      axes[0].plot(history.history["accuracy"], label="train")
+      axes[0].plot(history.history["val_accuracy"], label="val")
+      axes[0].set_title("Accuracy")
+      axes[0].legend()
+      
+      axes[1].plot(history.history["loss"], label="train")
+      axes[1].plot(history.history["val_loss"], label="val")
+      axes[1].set_title("Loss")
+      axes[1].legend()
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">What this does</div><p>If training accuracy rises but validation accuracy stalls, the model may be overfitting.</p></div></div><div class="expected"><strong>Expected output</strong>Two learning curves.</div></div>
+                <figure class="code-card"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+      print(f"Test accuracy: {test_acc:.3f}")</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The test set is used once at the end to estimate real-world performance.</p></div></div><div class="expected"><strong>Expected output</strong>A single test accuracy value.</div></div>
+                <figure class="code-card"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
+      
+      pred = np.argmax(model.predict(X_test), axis=1)
+      cm = confusion_matrix(y_test, pred)
+      
+      plt.figure(figsize=(9, 9))
+      plt.imshow(cm, cmap="Blues")
+      plt.title("43-class confusion matrix")
+      plt.xlabel("Predicted class")
+      plt.ylabel("True class")
+      plt.colorbar()
+      plt.show()
+      
+      mistakes = []
+      for true_id in range(43):
+          for pred_id in range(43):
+              if true_id != pred_id and cm[true_id, pred_id] > 0:
+                  mistakes.append((cm[true_id, pred_id], true_id, pred_id))
+      print(sorted(mistakes, reverse=True)[:10])</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions.</p></div></div><div class="expected"><strong>Expected output</strong>A 43x43 plot and top 10 confusion tuples.</div></div>
+                <figure class="code-card"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
+      probs = model.predict(X_test[idx:idx+1])[0]
+      pred_label = np.argmax(probs)
+      confidence = probs[pred_label]
+      
+      plt.imshow(X_test[idx])
+      plt.title(f"Predicted {pred_label}, true {y_test[idx]}, confidence {confidence:.1%}")
+      plt.axis("off")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows a concrete example instead of only aggregate metrics.</p></div></div><div class="expected"><strong>Expected output</strong>A sign image with predicted label, true label, and confidence.</div></div>
+                <figure class="code-card"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
+      raw_bgr = cv2.imread(str(sample_path))
+      raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
+      
+      model_input = cv2.resize(raw_rgb, (32, 32)).astype("float32") / 255.0
+      probs = model.predict(model_input[None, ...])[0]
+      pred_label = np.argmax(probs)
+      confidence = probs[pred_label]
+      
+      overlay = raw_rgb.copy()
+      cv2.putText(
+          overlay,
+          f"Class {pred_label}: {confidence:.1%}",
+          (5, 25),
+          cv2.FONT_HERSHEY_SIMPLEX,
+          0.7,
+          (255, 255, 255),
+          2
+      )
+      
+      plt.imshow(overlay)
+      plt.axis("off")
+      plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top.</p></div></div><div class="expected"><strong>Expected output</strong>A traffic sign image with prediction text overlaid.</div></div>
+                <figure class="code-card"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
+      # layers.Conv2D(128, (3, 3), activation="relu"),
+      # layers.MaxPooling2D((2, 2)),
+      #
+      # Retrain and compare validation accuracy and training time.</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>A deeper network may learn richer features, but it can also overfit or train slower.</p></div></div><div class="expected"><strong>Expected output</strong>Your comparison notes.</div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-project">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-cnn" data-lesson-link="ch6-cnn"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.4 CNNs</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch7-overview" data-lesson-link="ch7-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">What's Next? &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch7-overview" data-chapter="ch7" data-chapter-title="Chapter 7: What's Next?" style="--chapter-accent:var(--ch7)">
+<div class="lesson-kicker">Chapter 7: What's Next? <span>&rsaquo;</span> What's Next?</div>
+<h1>What's Next?</h1>
+<div class="lesson-meta"><span>Beginner</span><span>5 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 7 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch6-overview" data-lesson-link="ch6-overview">← Previous Chapter: Computer Vision</a>
+                <div class="chapter-kicker">Next steps</div>
+                <h2>What's <span>Next?</span></h2>
+                <p class="lead">You now have the map: Python basics, supervised learning, clustering, reinforcement learning, and computer vision. The next step is choosing the right tool for your own robotics problem.</p>
+              </header>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-project" data-lesson-link="ch6-project"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.5 Traffic Sign Project</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch7-decision-guide" data-lesson-link="ch7-decision-guide"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">7.1 Decision Guide &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch7-decision-guide" data-chapter="ch7" data-chapter-title="Chapter 7: What's Next?" style="--chapter-accent:var(--ch7)">
+<div class="lesson-kicker">Chapter 7: What's Next? <span>&rsaquo;</span> 7.1 Which ML Technique Should I Use?</div>
+<h1>7.1 Which ML Technique Should I Use?</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>7.1 Which ML Technique Should I Use?</h3>
+                <div class="diagram">
+                  <div class="decision-tree" aria-label="Machine learning decision tree">
+                    <div class="decision-node"><strong>Do you have labeled data?</strong></div>
+                    <div class="decision-branches">
+                      <div class="decision-node"><strong>YES → Supervised Learning</strong><br />Predicting a number? Regression.<br />Predicting a category? Classification.<br />Need explanation? Decision Tree or Logistic Regression.<br />Need accuracy? Random Forest, Gradient Boosting, or CNN for images.</div>
+                      <div class="decision-node"><strong>NO → Unsupervised Learning</strong><br />Know how many groups? K-Means.<br />Odd shapes or unknown groups? DBSCAN.<br />Visualize high-dimensional data? PCA or t-SNE.</div>
+                    </div>
+                    <div class="decision-node"><strong>Learning through interaction?</strong><br />Use Reinforcement Learning → Q-Learning → Deep Q-Network → PPO.</div>
+                  </div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-decision-guide">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch7-overview" data-lesson-link="ch7-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; What's Next?</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch7-roadmap" data-lesson-link="ch7-roadmap"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">7.2 Roadmap &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch7-roadmap" data-chapter="ch7" data-chapter-title="Chapter 7: What's Next?" style="--chapter-accent:var(--ch7)">
+<div class="lesson-kicker">Chapter 7: What's Next? <span>&rsaquo;</span> 7.2 Recommended Learning Roadmap</div>
+<h1>7.2 Recommended Learning Roadmap</h1>
+<div class="lesson-meta"><span>Beginner</span><span>5 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>7.2 Recommended Learning Roadmap</h3>
+                <div class="timeline">
+                  <div class="timeline-item"><strong>Month 1</strong><span>Finish this guide and complete the Colab projects.</span></div>
+                  <div class="timeline-item"><strong>Month 2</strong><span>Take Kaggle Intro to ML and enter a beginner competition.</span></div>
+                  <div class="timeline-item"><strong>Month 3</strong><span>Start fast.ai Practical Deep Learning.</span></div>
+                  <div class="timeline-item"><strong>Semester 2</strong><span>Build a physical robot project using your phone camera, OpenCV, and a small model.</span></div>
+                  <div class="timeline-item"><strong>Year 2</strong><span>Learn ROS, PyTorch, simulation, and more RL with MuJoCo or Isaac Sim.</span></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-roadmap">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch7-decision-guide" data-lesson-link="ch7-decision-guide"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 7.1 Decision Guide</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch7-papers" data-lesson-link="ch7-papers"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">7.3 Papers &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch7-papers" data-chapter="ch7" data-chapter-title="Chapter 7: What's Next?" style="--chapter-accent:var(--ch7)">
+<div class="lesson-kicker">Chapter 7: What's Next? <span>&rsaquo;</span> 7.3 Real Robotics ML Papers to Read</div>
+<h1>7.3 Real Robotics ML Papers to Read</h1>
+<div class="lesson-meta"><span>Intermediate</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<h3>7.3 Real Robotics ML Papers to Read</h3>
+                <div class="grid-2">
+                  <div class="card"><h4><a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noreferrer">Playing Atari with Deep Reinforcement Learning</a></h4><p class="muted">DeepMind showed that a neural network could learn control policies from pixels and reward. It is a clean entry point into deep RL.</p></div>
+                  <div class="card"><h4><a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks" target="_blank" rel="noreferrer">ImageNet Classification with Deep CNNs</a></h4><p class="muted">AlexNet made modern computer vision explode by proving deep CNNs could dominate image classification.</p></div>
+                  <div class="card"><h4><a href="https://arxiv.org/abs/2109.11978" target="_blank" rel="noreferrer">Learning to Walk in Minutes</a></h4><p class="muted">This ANYmal work shows how massive parallel simulation can train legged locomotion quickly.</p></div>
+                  <div class="card"><h4><a href="https://arxiv.org/abs/1604.07316" target="_blank" rel="noreferrer">End to End Learning for Self-Driving Cars</a></h4><p class="muted">NVIDIA trained a network to map camera images directly to steering commands, a landmark vision-to-control example.</p></div>
+                  <div class="card"><h4><a href="https://arxiv.org/abs/1612.00593" target="_blank" rel="noreferrer">PointNet</a></h4><p class="muted">PointNet handles unordered 3D point clouds, which matter for lidar, depth cameras, and robot scene understanding.</p></div>
+                </div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-papers">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch7-roadmap" data-lesson-link="ch7-roadmap"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 7.2 Roadmap</span></a>
+<a class="lesson-nav-btn next" href="?lesson=project-archive" data-lesson-link="project-archive"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Student Projects &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="project-archive" data-chapter="projects" data-chapter-title="Student Project Archive" style="--chapter-accent:var(--cyan)">
+<div class="lesson-kicker">Student Project Archive <span>&rsaquo;</span> Student Project Archive</div>
+<h1>Student Project Archive</h1>
+<div class="lesson-meta"><span>Optional</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Archive</span>
+                <a class="breadcrumb" href="?lesson=ch7-overview" data-lesson-link="ch7-overview">← Previous: What's Next?</a>
+                <div class="chapter-kicker">Real-world build</div>
+                <h2>Student <span>Projects</span></h2>
+                <p class="lead">The original project page remains available as an applied robotics build after the curriculum.</p>
+              </header>
+              <a class="card" href="project.html" style="display:block;text-decoration:none;border-color:var(--cyan)">
+                <div class="project-label">Project 01 — Autonomous Robotics</div>
+                <h3>Ball-Following Robot with YOLO + PID Control</h3>
+                <p class="muted">A ground-up object-tracking robot: Roboflow data, YOLO detection, PID steering and distance control, ESP32 firmware, UDP motor commands, and real-time behavior states.</p>
+                <div class="chip-row" style="--chapter-color: var(--cyan)">
+                  <span class="chip">YOLOv8</span><span class="chip">Roboflow</span><span class="chip">PID Control</span><span class="chip">ESP32</span><span class="chip">UDP / WiFi</span>
+                </div>
+                <strong>View full project breakdown →</strong>
+              </a>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="project-archive">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch7-papers" data-lesson-link="ch7-papers"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 7.3 Papers</span></a>
+<span></span>
+</nav>
+</article>
   </main>
-
-  <footer class="footer">
-    <p>Built for <strong>Mechanical Engineering Freshmen</strong> - Robotics Track</p>
-    <p class="mini">All core exercises run free on Google Colab. No local setup required.</p>
-  </footer>
-
+  <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-why-vision","label":"6.1 Why Vision Matters","title":"6.1 Why Vision Matters in Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-opencv","label":"6.2 OpenCV","title":"6.2 Tools: OpenCV","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-tensorflow","label":"6.3 TensorFlow/Keras","title":"6.3 Tools: TensorFlow/Keras","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-cnn","label":"6.4 CNNs","title":"6.4 How CNNs See","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-project","label":"6.5 Traffic Sign Project","title":"6.5 Project: Traffic Sign Classifier","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":true},{"id":"ch7-overview","label":"What's Next?","title":"What's Next?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-decision-guide","label":"7.1 Decision Guide","title":"7.1 Which ML Technique Should I Use?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-roadmap","label":"7.2 Roadmap","title":"7.2 Recommended Learning Roadmap","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-papers","label":"7.3 Papers","title":"7.3 Real Robotics ML Papers to Read","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Computer Vision for Robotics","lessonIds":["ch6-overview","ch6-why-vision","ch6-opencv","ch6-tensorflow","ch6-cnn","ch6-project"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: What's Next?","lessonIds":["ch7-overview","ch7-decision-guide","ch7-roadmap","ch7-papers"],"firstLesson":"ch7-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>

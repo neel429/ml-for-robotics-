@@ -943,3 +943,982 @@
       .flow-row { min-width: 560px; }
       .code-card pre { font-size: 0.76rem; }
     }
+
+/* ------------------------------------------------------------------
+   Lesson SPA overhaul: Yahboom-style shell + GFG-style readability
+------------------------------------------------------------------- */
+html.light-mode,
+html[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --bg-code: #f0f0f0;
+  --border: #d0d7de;
+  --text-primary: #1f2328;
+  --text-muted: #57606a;
+  --text-code: #0550ae;
+  color-scheme: light;
+}
+
+body.lesson-app {
+  --sidebar: 280px;
+  --topbar: 48px;
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-code: #0d1117;
+  --text-primary: #e6edf3;
+  --text-muted: #8b949e;
+  --text-code: #79c0ff;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+body.lesson-app .lesson-topbar {
+  height: 48px;
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) minmax(220px, 1.2fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  background: rgba(13, 17, 23, 0.96);
+  border-bottom: 1px solid #21262d;
+}
+
+html.light-mode body.lesson-app .lesson-topbar {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom-color: #d0d7de;
+}
+
+body.lesson-app .top-title {
+  text-decoration: none;
+  color: var(--cyan);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+body.lesson-app .current-chapter {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+body.lesson-app .theme-toggle,
+body.lesson-app .hamburger {
+  height: 32px;
+  border-radius: 7px;
+  border: 1px solid #30363d;
+  background: #161b22;
+  color: #e6edf3;
+}
+
+html.light-mode body.lesson-app .theme-toggle,
+html.light-mode body.lesson-app .hamburger {
+  background: #f6f8fa;
+  color: #1f2328;
+  border-color: #d0d7de;
+}
+
+body.lesson-app .progress-track {
+  height: 2px;
+  background: #21262d;
+}
+
+body.lesson-app .progress-fill {
+  background: linear-gradient(90deg, #58a6ff, #3fb950);
+  transition: width 0.25s ease;
+}
+
+body.lesson-app .lesson-sidebar {
+  width: 280px;
+  height: calc(100vh - 48px);
+  position: fixed;
+  top: 48px;
+  left: 0;
+  overflow-y: auto;
+  background: #0d1117;
+  border-right: 1px solid #21262d;
+  padding: 12px 0;
+  z-index: 100;
+}
+
+html.light-mode body.lesson-app .lesson-sidebar {
+  background: #f6f8fa;
+  border-right-color: #d0d7de;
+}
+
+body.lesson-app .sidebar-title {
+  padding: 0 16px 10px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+body.lesson-app .lesson-tree {
+  display: grid;
+  gap: 2px;
+}
+
+body.lesson-app .lesson-group {
+  border-left: 3px solid var(--chapter-accent);
+}
+
+body.lesson-app .lesson-group-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font: 800 0.75rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
+}
+
+body.lesson-app .lesson-group.is-collapsed .group-chevron {
+  transform: rotate(-90deg);
+}
+
+body.lesson-app .group-chevron {
+  color: var(--chapter-accent);
+  transition: transform 0.2s ease;
+}
+
+body.lesson-app .lesson-group-body {
+  overflow: hidden;
+  transition: max-height 0.24s ease;
+}
+
+body.lesson-app .lesson-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 16px 8px 28px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+body.lesson-app .dashboard-link {
+  margin: 0 0 8px;
+  padding: 10px 16px;
+  font-weight: 700;
+}
+
+body.lesson-app .lesson-link:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+html.light-mode body.lesson-app .lesson-link:hover {
+  background: rgba(31, 35, 40, 0.06);
+}
+
+body.lesson-app .lesson-link.active {
+  background: rgba(88, 166, 255, 0.12);
+  border-left-color: var(--chapter-accent);
+  color: #fff;
+}
+
+html.light-mode body.lesson-app .lesson-link.active {
+  color: #1f2328;
+}
+
+body.lesson-app .lesson-link.is-exercise {
+  color: #d29922;
+}
+
+body.lesson-app .completion-dot::after {
+  content: "";
+  color: #3fb950;
+  font-weight: 800;
+}
+
+body.lesson-app .lesson-link.is-complete .completion-dot::after {
+  content: "✓";
+}
+
+body.lesson-app .content-panel {
+  position: fixed;
+  top: 48px;
+  left: 280px;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 40px 60px 80px;
+  color: var(--text-primary);
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  background: var(--bg-primary);
+}
+
+body.lesson-app .lesson-content {
+  max-width: 860px;
+  display: none;
+}
+
+body.lesson-app .lesson-content.is-active {
+  display: block;
+}
+
+body.lesson-app .lesson-content[hidden] {
+  display: none !important;
+}
+
+body.lesson-app .lesson-kicker {
+  color: var(--text-muted);
+  font: 700 0.8rem "JetBrains Mono", monospace;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  margin-bottom: 12px;
+}
+
+body.lesson-app .lesson-kicker span {
+  color: var(--chapter-accent);
+  padding: 0 8px;
+}
+
+body.lesson-app .content-panel h1 {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+body.lesson-app .content-panel h2 {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+html.light-mode body.lesson-app .content-panel h2 {
+  border-bottom-color: #d0d7de;
+}
+
+body.lesson-app .content-panel h3 {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.8rem;
+  color: var(--text-primary);
+}
+
+body.lesson-app .content-panel h4 {
+  color: var(--text-primary);
+}
+
+body.lesson-app .content-panel p {
+  margin: 1rem 0;
+}
+
+body.lesson-app .content-panel code:not(pre code) {
+  background: #1c2128;
+  color: #79c0ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.88em;
+  border: 0;
+}
+
+html.light-mode body.lesson-app .content-panel code:not(pre code) {
+  background: #f0f0f0;
+  color: #0550ae;
+}
+
+body.lesson-app .lesson-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0 14px;
+}
+
+body.lesson-app .lesson-meta span {
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--chapter-accent) 10%, transparent);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font: 700 0.72rem "JetBrains Mono", monospace;
+  color: var(--text-primary);
+}
+
+body.lesson-app .lesson-divider {
+  border: 0;
+  border-top: 1px solid #21262d;
+  margin: 18px 0 28px;
+}
+
+html.light-mode body.lesson-app .lesson-divider {
+  border-top-color: #d0d7de;
+}
+
+body.lesson-app .lesson-body .chapter-header,
+body.lesson-app .lesson-body .chapter-badge,
+body.lesson-app .lesson-body .breadcrumb,
+body.lesson-app .lesson-body > .chapter-kicker {
+  display: none;
+}
+
+body.lesson-app .section-card,
+body.lesson-app .card,
+body.lesson-app .toc-card,
+body.lesson-app .chapter {
+  box-shadow: none;
+  background: transparent;
+}
+
+body.lesson-app .section-card {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+body.lesson-app .grid-2,
+body.lesson-app .grid-3,
+body.lesson-app .grid-4,
+body.lesson-app .card-grid {
+  align-items: stretch;
+}
+
+body.lesson-app .card,
+body.lesson-app .toc-group,
+body.lesson-app .expected,
+body.lesson-app .diagram,
+body.lesson-app details.solution,
+body.lesson-app .data-table {
+  background: var(--bg-secondary);
+  border: 1px solid #30363d;
+}
+
+html.light-mode body.lesson-app .card,
+html.light-mode body.lesson-app .toc-group,
+html.light-mode body.lesson-app .expected,
+html.light-mode body.lesson-app .diagram,
+html.light-mode body.lesson-app details.solution,
+html.light-mode body.lesson-app .data-table {
+  background: #f6f8fa;
+  border-color: #d0d7de;
+}
+
+body.lesson-app .definition-card {
+  border-left: 4px solid var(--chapter-accent);
+  background: rgba(88, 166, 255, 0.06);
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+
+body.lesson-app .def-term {
+  font-weight: 700;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+body.lesson-app .step {
+  display: flex;
+  gap: 16px;
+  margin: 1.5rem 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.lesson-app .step::before {
+  width: 32px;
+  height: 32px;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+body.lesson-app .callout {
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border: 1px solid;
+  border-left-width: 1px;
+  background: transparent;
+}
+
+body.lesson-app .callout.tip { background: rgba(56,139,253,0.08); border-color: rgba(56,139,253,0.3); }
+body.lesson-app .callout.warning { background: rgba(210,153,34,0.1); border-color: rgba(210,153,34,0.4); }
+body.lesson-app .callout.robotics { background: rgba(35,197,94,0.08); border-color: rgba(35,197,94,0.3); }
+body.lesson-app .callout.exercise,
+body.lesson-app .callout.exercise-note { background: rgba(163,113,247,0.08); border-color: rgba(163,113,247,0.3); }
+body.lesson-app .callout.download { background: rgba(210,153,34,0.1); border-color: rgba(210,153,34,0.4); }
+
+body.lesson-app .callout .callout-icon {
+  width: auto;
+  height: auto;
+  background: transparent;
+  font-size: 1.3rem;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+body.lesson-app .callout-title,
+body.lesson-app .callout strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+body.lesson-app .lesson-actions {
+  margin-top: 2.5rem;
+}
+
+body.lesson-app .mark-complete-btn,
+body.lesson-app .jump-last-btn,
+body.lesson-app .chapter-start-btn {
+  border: 1px solid #30363d;
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font: 700 0.9rem "Outfit", system-ui, sans-serif;
+}
+
+body.lesson-app .mark-complete-btn.is-complete {
+  background: rgba(35, 197, 94, 0.14);
+  border-color: rgba(35, 197, 94, 0.55);
+  color: #3fb950;
+}
+
+body.lesson-app .chapter-start-btn {
+  display: inline-flex;
+  width: fit-content;
+  background: var(--chapter-accent);
+  color: #010409;
+  border-color: var(--chapter-accent);
+}
+
+body.lesson-app .lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #21262d;
+}
+
+html.light-mode body.lesson-app .lesson-nav {
+  border-top-color: #d0d7de;
+}
+
+body.lesson-app .lesson-nav-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: min(280px, 45%);
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+body.lesson-app .lesson-nav-btn.next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+body.lesson-app .lesson-nav-btn:hover {
+  background: #161b22;
+  border-color: var(--chapter-accent);
+}
+
+html.light-mode body.lesson-app .lesson-nav-btn:hover {
+  background: #f6f8fa;
+}
+
+body.lesson-app .lesson-nav-label {
+  font: 700 0.75rem "JetBrains Mono", monospace;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+body.lesson-app .lesson-nav-title {
+  font: 700 0.95rem "Outfit", system-ui, sans-serif;
+}
+
+body.lesson-app .dashboard-content {
+  max-width: 1120px;
+}
+
+body.lesson-app .dashboard-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid #21262d;
+}
+
+body.lesson-app .dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+body.lesson-app .dashboard-stats {
+  display: grid;
+  place-items: center;
+  min-height: 160px;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+}
+
+body.lesson-app .dashboard-stats strong {
+  font-size: 3rem;
+  color: var(--chapter-accent);
+}
+
+body.lesson-app .dashboard-stats span {
+  color: var(--text-muted);
+  font: 700 0.8rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+}
+
+body.lesson-app .chapter-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+body.lesson-app .chapter-card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+body.lesson-app .chapter-card-strip {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--chapter-accent);
+}
+
+body.lesson-app .chapter-card-top {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font: 700 0.75rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+}
+
+body.lesson-app .chapter-card h2 {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+body.lesson-app .chapter-card p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+body.lesson-app .chapter-card-bar {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #30363d;
+}
+
+body.lesson-app .chapter-card-bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--chapter-accent);
+  transition: width 0.25s ease;
+}
+
+body.lesson-app .chapter-card-progress small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+}
+
+body.lesson-app .build-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 22px 0;
+}
+
+body.lesson-app .build-strip a {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  color: inherit;
+  text-decoration: none;
+}
+
+body.lesson-app .build-strip span {
+  font-size: 1.8rem;
+}
+
+body.lesson-app .build-strip small {
+  color: var(--text-muted);
+}
+
+/* Improved static and interactive code blocks */
+body.lesson-app .code-block {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+  background: #0d1117;
+  font-family: "JetBrains Mono", monospace;
+}
+
+body.lesson-app .code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  font-size: 0.8rem;
+}
+
+body.lesson-app .code-filename,
+body.lesson-app .code-lang,
+body.lesson-app .colab-reason {
+  color: #8b949e;
+  font-family: "JetBrains Mono", monospace;
+}
+
+body.lesson-app .code-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+body.lesson-app .copy-btn,
+body.lesson-app .run-btn,
+body.lesson-app .reset-chapter-btn,
+body.lesson-app .colab-inline-btn {
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: "Outfit", system-ui, sans-serif;
+}
+
+body.lesson-app .copy-btn,
+body.lesson-app .reset-chapter-btn {
+  color: #8b949e;
+  background: transparent;
+  border: 1px solid #30363d;
+}
+
+body.lesson-app .copy-btn:hover,
+body.lesson-app .reset-chapter-btn:hover {
+  color: #e6edf3;
+  border-color: #8b949e;
+}
+
+body.lesson-app .copy-btn.copied {
+  color: #3fb950;
+  border-color: #3fb950;
+}
+
+body.lesson-app .run-btn {
+  background: #1a7f37;
+  color: #fff;
+  border: 1px solid rgba(240,246,252,0.1);
+  white-space: nowrap;
+}
+
+body.lesson-app .run-btn:hover:not(:disabled) {
+  background: #2ea043;
+}
+
+body.lesson-app .run-btn:disabled {
+  background: #1e2a1e;
+  color: #6e7f6e;
+  cursor: not-allowed;
+}
+
+body.lesson-app .colab-inline-btn {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+body.lesson-app .colab-inline-btn img {
+  height: 22px;
+  vertical-align: middle;
+}
+
+body.lesson-app .editor-shell,
+body.lesson-app .static-code-shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+}
+
+body.lesson-app .line-gutter {
+  margin: 0;
+  padding: 16px 10px;
+  min-width: 3.3rem;
+  background: #090d14;
+  color: #6e7681;
+  text-align: right;
+  user-select: none;
+  border-right: 1px solid #21262d;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+body.lesson-app .code-editor {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  border: none;
+  border-bottom: 1px solid #21262d;
+  padding: 16px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  tab-size: 4;
+}
+
+body.lesson-app .code-editor:focus {
+  background: #090d11;
+}
+
+body.lesson-app .static-code-shell pre:not(.line-gutter) {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  background: #0d1117;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+body.lesson-app .static-code-shell code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+body.lesson-app .output-area {
+  background: #010409;
+  padding: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #e6edf3;
+  display: none;
+  border-top: 1px solid #21262d;
+}
+
+body.lesson-app .output-area.has-content {
+  display: block;
+  padding: 14px 16px;
+}
+
+body.lesson-app .output-area pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+body.lesson-app .output-img {
+  max-width: 100%;
+  display: block;
+  border-radius: 6px;
+  margin-top: 10px;
+  border: 1px solid #21262d;
+}
+
+body.lesson-app .output-error {
+  color: #ff7b72;
+  background: rgba(255,123,114,0.07);
+  border-left: 3px solid #da3633;
+  padding: 8px 12px;
+  border-radius: 0 4px 4px 0;
+  white-space: pre-wrap;
+}
+
+body.lesson-app .chapter-reset-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 1rem 0 0.5rem;
+  font: 0.8rem "Outfit", system-ui, sans-serif;
+  color: #8b949e;
+}
+
+body.lesson-app .pyodide-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1f6feb;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+body.lesson-app .pyodide-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html.light-mode body.lesson-app .content-panel,
+html.light-mode body.lesson-app {
+  color: #1f2328;
+  background: #ffffff;
+}
+
+html.light-mode body.lesson-app .code-block,
+html.light-mode body.lesson-app .code-editor,
+html.light-mode body.lesson-app .static-code-shell pre:not(.line-gutter) {
+  background: #f6f8fa;
+  border-color: #d0d7de;
+  color: #1f2328;
+}
+
+html.light-mode body.lesson-app .code-header,
+html.light-mode body.lesson-app .chapter-reset-bar {
+  background: #f6f8fa;
+  border-color: #d0d7de;
+}
+
+html.light-mode body.lesson-app .line-gutter {
+  background: #edf2f7;
+  border-right-color: #d0d7de;
+}
+
+html.light-mode body.lesson-app .output-area {
+  background: #f6f8fa;
+  color: #1f2328;
+  border-top-color: #d0d7de;
+}
+
+html.light-mode body.lesson-app .chapter-card,
+html.light-mode body.lesson-app .build-strip a,
+html.light-mode body.lesson-app .dashboard-stats {
+  background: #f6f8fa;
+  border-color: #d0d7de;
+}
+
+@media (max-width: 900px) {
+  body.lesson-app .lesson-topbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  body.lesson-app .current-chapter {
+    display: none;
+  }
+  body.lesson-app .hamburger {
+    display: inline-grid;
+    place-items: center;
+  }
+  body.lesson-app .lesson-sidebar {
+    transform: translateX(-280px);
+    transition: transform 0.24s ease;
+    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.28);
+  }
+  body.lesson-app.sidebar-open .lesson-sidebar {
+    transform: translateX(0);
+  }
+  body.lesson-app.sidebar-open .drawer-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  body.lesson-app .content-panel {
+    left: 0;
+    padding: 28px 22px 64px;
+  }
+}
+
+@media (max-width: 720px) {
+  body.lesson-app .dashboard-hero,
+  body.lesson-app .chapter-dashboard-grid,
+  body.lesson-app .build-strip,
+  body.lesson-app .grid-2,
+  body.lesson-app .grid-3,
+  body.lesson-app .grid-4,
+  body.lesson-app .why-output {
+    grid-template-columns: 1fr;
+  }
+  body.lesson-app .lesson-nav {
+    flex-direction: column;
+  }
+  body.lesson-app .lesson-nav-btn {
+    min-width: 100%;
+  }
+  body.lesson-app .lesson-nav-btn.next {
+    text-align: left;
+    align-items: flex-start;
+  }
+  body.lesson-app .code-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

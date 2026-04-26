@@ -1,181 +1,308 @@
-const body = document.body;
-    const drawerToggle = document.getElementById("drawerToggle");
-    const drawerScrim = document.getElementById("drawerScrim");
-    const progressFill = document.getElementById("progressFill");
-    const currentChapter = document.getElementById("currentChapter");
-    const navLinks = Array.from(document.querySelectorAll(".nav-tree a[href]"));
-    const legacyHashRoutes = {
-      "chapter-0": "chapter-0.html",
-      "build": "chapter-0.html",
-      "tools": "chapter-0.html",
-      "reading-tips": "chapter-0.html",
-      "python": "chapter-1-python.html",
-      "python-colab": "chapter-1-python.html",
-      "variables": "chapter-1-python.html",
-      "data-structures": "chapter-1-python.html",
-      "control-flow": "chapter-1-python.html",
-      "loops": "chapter-1-python.html",
-      "functions": "chapter-1-python.html",
-      "libraries": "chapter-1-python.html",
-      "checkpoint": "chapter-1-python.html",
-      "what-is-ml": "chapter-2-ml.html",
-      "types": "chapter-2-ml.html",
-      "when-to-use": "chapter-2-ml.html",
-      "supervised": "chapter-3-supervised.html",
-      "classification-regression": "chapter-3-supervised.html",
-      "algorithms": "chapter-3-supervised.html",
-      "ml-pipeline": "chapter-3-supervised.html",
-      "robot-failure-project": "chapter-3-supervised.html",
-      "unsupervised": "chapter-4-unsupervised.html",
-      "clustering": "chapter-4-unsupervised.html",
-      "kmeans": "chapter-4-unsupervised.html",
-      "sensor-cluster-project": "chapter-4-unsupervised.html",
-      "reinforcement-learning": "chapter-5-rl.html",
-      "q-learning": "chapter-5-rl.html",
-      "maze-project": "chapter-5-rl.html",
-      "computer-vision": "chapter-6-vision.html",
-      "opencv": "chapter-6-vision.html",
-      "tensorflow": "chapter-6-vision.html",
-      "cnn": "chapter-6-vision.html",
-      "traffic-sign-project": "chapter-6-vision.html",
-      "whats-next": "chapter-7-next.html",
-      "decision-guide": "chapter-7-next.html",
-      "roadmap": "chapter-7-next.html",
-      "papers": "chapter-7-next.html",
-      "projects": "student-projects.html"
-    };
+(() => {
+  const body = document.body;
+  const isLessonApp = body.classList.contains("lesson-app");
+  let themeToggle = document.getElementById("themeToggle");
+  const drawerToggle = document.getElementById("drawerToggle");
+  const drawerScrim = document.getElementById("drawerScrim");
+  const sidebar = document.getElementById("sidebar");
+  const contentPanel = document.getElementById("contentPanel");
+  const currentChapter = document.getElementById("currentChapter");
+  const progressFill = document.getElementById("progressFill");
+  const lessons = window.COURSE_LESSONS || [];
+  const chapters = window.COURSE_CHAPTERS || [];
+  const lessonIds = lessons.map((lesson) => lesson.id);
+  const lessonById = new Map(lessons.map((lesson) => [lesson.id, lesson]));
+  const legacyHashLessons = {
+    "chapter-0": "ch0-welcome",
+    build: "ch0-build",
+    tools: "ch0-tools",
+    "reading-tips": "ch0-reading-tips",
+    python: "ch1-overview",
+    "python-colab": "ch1-colab",
+    variables: "ch1-variables",
+    "data-structures": "ch1-data-structures",
+    "control-flow": "ch1-control-flow",
+    loops: "ch1-loops",
+    functions: "ch1-functions",
+    libraries: "ch1-libraries",
+    checkpoint: "ch1-checkpoint",
+    "what-is-ml": "ch2-overview",
+    types: "ch2-types",
+    "when-to-use": "ch2-when-to-use",
+    supervised: "ch3-overview",
+    "classification-regression": "ch3-classification-regression",
+    algorithms: "ch3-algorithms",
+    "ml-pipeline": "ch3-pipeline",
+    "robot-failure-project": "ch3-project",
+    unsupervised: "ch4-overview",
+    clustering: "ch4-clustering",
+    kmeans: "ch4-kmeans",
+    "sensor-cluster-project": "ch4-project",
+    "reinforcement-learning": "ch5-overview",
+    "q-learning": "ch5-q-learning",
+    "maze-project": "ch5-project",
+    "computer-vision": "ch6-overview",
+    opencv: "ch6-opencv",
+    tensorflow: "ch6-tensorflow",
+    cnn: "ch6-cnn",
+    "traffic-sign-project": "ch6-project",
+    "whats-next": "ch7-overview",
+    "decision-guide": "ch7-decision-guide",
+    roadmap: "ch7-roadmap",
+    papers: "ch7-papers",
+    projects: "project-archive"
+  };
 
-    const requestedHash = window.location.hash.slice(1);
-    if (requestedHash && !document.getElementById(requestedHash) && legacyHashRoutes[requestedHash]) {
-      window.location.replace(`${legacyHashRoutes[requestedHash]}#${requestedHash}`);
-    }
-
-    const themeToggle = document.createElement("button");
-    themeToggle.className = "theme-toggle";
-    themeToggle.type = "button";
-    drawerToggle.insertAdjacentElement("beforebegin", themeToggle);
-
-    function applyTheme(theme) {
-      const nextTheme = theme === "light" ? "light" : "dark";
-      document.documentElement.dataset.theme = nextTheme;
+  function setTheme(theme) {
+    const nextTheme = theme === "light" ? "light" : "dark";
+    document.documentElement.classList.toggle("light-mode", nextTheme === "light");
+    document.documentElement.dataset.theme = nextTheme;
+    if (themeToggle) {
       themeToggle.textContent = nextTheme === "light" ? "Dark" : "Light";
       themeToggle.setAttribute(
         "aria-label",
         nextTheme === "light" ? "Switch to dark mode" : "Switch to light mode"
       );
-      themeToggle.setAttribute("title", themeToggle.getAttribute("aria-label"));
+    }
+    try {
+      localStorage.setItem("mlr-theme", nextTheme);
+    } catch (error) {
+      // Theme still works for the current page.
+    }
+  }
+
+  function initTheme() {
+    let saved = "dark";
+    try {
+      saved = localStorage.getItem("mlr-theme") || saved;
+    } catch (error) {
+      saved = "dark";
+    }
+    setTheme(saved);
+    themeToggle?.addEventListener("click", () => {
+      const current = document.documentElement.classList.contains("light-mode") ? "light" : "dark";
+      setTheme(current === "light" ? "dark" : "light");
+    });
+  }
+
+  function setSidebarOpen(open) {
+    body.classList.toggle("sidebar-open", open);
+    drawerToggle?.setAttribute("aria-expanded", String(open));
+  }
+
+  function completedKey(lessonId) {
+    return `completed_${lessonId}`;
+  }
+
+  function isCompleted(lessonId) {
+    try {
+      return localStorage.getItem(completedKey(lessonId)) === "true";
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function setCompleted(lessonId, value) {
+    try {
+      localStorage.setItem(completedKey(lessonId), value ? "true" : "false");
+    } catch (error) {
+      // Ignore storage failure; UI still updates for the current page.
+    }
+  }
+
+  function getInitialLesson() {
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get("lesson");
+    if (requested === "home" || lessonById.has(requested)) return requested;
+
+    const legacyHash = window.location.hash.replace("#", "");
+    if (legacyHashLessons[legacyHash]) return legacyHashLessons[legacyHash];
+
+    return "home";
+  }
+
+  function updateCollapsedGroups(activeLessonId) {
+    document.querySelectorAll(".lesson-group").forEach((group) => {
+      const key = group.dataset.chapter;
+      const header = group.querySelector(".lesson-group-header");
+      const bodyEl = group.querySelector(".lesson-group-body");
+      const hasActive = Boolean(group.querySelector(`[data-lesson-link="${activeLessonId}"]`));
+      let collapsed = false;
       try {
-        localStorage.setItem("mlr-theme", nextTheme);
+        const stored = localStorage.getItem(`collapsed_${key}`);
+        collapsed = stored === null ? !hasActive : stored === "true";
       } catch (error) {
-        // Theme still changes for the current page if storage is unavailable.
+        collapsed = !hasActive;
+      }
+      group.classList.toggle("is-collapsed", collapsed);
+      header?.setAttribute("aria-expanded", String(!collapsed));
+      if (bodyEl) bodyEl.style.maxHeight = collapsed ? "0px" : `${bodyEl.scrollHeight}px`;
+    });
+  }
+
+  function updateCompletionUi() {
+    const completedCount = lessons.filter((lesson) => isCompleted(lesson.id)).length;
+    const total = lessons.length || 1;
+    const pct = Math.round((completedCount / total) * 100);
+    if (progressFill) progressFill.style.width = `${pct}%`;
+    document.querySelectorAll("[data-total-progress]").forEach((el) => {
+      el.textContent = `${pct}%`;
+    });
+
+    document.querySelectorAll("[data-lesson-link]").forEach((link) => {
+      const lessonId = link.dataset.lessonLink;
+      const done = lessonId !== "home" && isCompleted(lessonId);
+      link.classList.toggle("is-complete", done);
+    });
+
+    document.querySelectorAll(".mark-complete-btn").forEach((button) => {
+      const lessonId = button.dataset.lesson;
+      const done = isCompleted(lessonId);
+      button.classList.toggle("is-complete", done);
+      button.textContent = done ? "Completed" : "Mark as Complete";
+    });
+
+    chapters.forEach((chapter) => {
+      const chapterCompleted = chapter.lessonIds.filter(isCompleted).length;
+      const chapterTotal = chapter.lessonIds.length || 1;
+      const card = document.querySelector(`[data-chapter-card="${chapter.key}"]`);
+      if (!card) return;
+      const bar = card.querySelector(".chapter-card-bar span");
+      const text = card.querySelector(`[data-card-progress="${chapter.key}"]`);
+      const start = card.querySelector(".chapter-start-btn");
+      const nextLesson = chapter.lessonIds.find((lessonId) => !isCompleted(lessonId)) || chapter.lessonIds[0];
+      if (bar) bar.style.width = `${(chapterCompleted / chapterTotal) * 100}%`;
+      if (text) text.textContent = `${chapterCompleted} / ${chapterTotal} complete`;
+      if (start) {
+        start.textContent = chapterCompleted > 0 ? "Continue" : "Start";
+        start.dataset.lessonLink = nextLesson;
+        start.setAttribute("href", `?lesson=${nextLesson}`);
+      }
+    });
+  }
+
+  function showLesson(lessonId, options = {}) {
+    const targetId = lessonId === "home" || lessonById.has(lessonId) ? lessonId : "home";
+    const target = document.querySelector(`.lesson-content[data-lesson="${targetId}"]`);
+    if (!target) return;
+
+    document.querySelectorAll(".lesson-content").forEach((lesson) => {
+      lesson.classList.toggle("is-active", lesson === target);
+      lesson.hidden = lesson !== target;
+    });
+
+    document.querySelectorAll("[data-lesson-link]").forEach((link) => {
+      link.classList.toggle("active", link.dataset.lessonLink === targetId);
+    });
+
+    const lesson = lessonById.get(targetId);
+    const title = target.dataset.chapterTitle || lesson?.chapterTitle || "Course Dashboard";
+    if (currentChapter) currentChapter.textContent = title;
+
+    updateCollapsedGroups(targetId);
+
+    if (!options.skipHistory) {
+      const url = targetId === "home" ? "index.html?lesson=home" : `index.html?lesson=${targetId}`;
+      history.pushState({ lesson: targetId }, "", url);
+    }
+    if (targetId !== "home") {
+      try {
+        localStorage.setItem("last_lesson", targetId);
+      } catch (error) {
+        // Ignore storage failure.
       }
     }
 
-    let storedTheme = document.documentElement.dataset.theme || "dark";
-    try {
-      storedTheme = localStorage.getItem("mlr-theme") || storedTheme;
-    } catch (error) {
-      storedTheme = storedTheme || "dark";
-    }
-    applyTheme(storedTheme);
+    setSidebarOpen(false);
+    contentPanel?.scrollTo({ top: 0, behavior: options.instant ? "auto" : "smooth" });
+    if (!options.instant) contentPanel?.focus({ preventScroll: true });
+  }
 
-    themeToggle.addEventListener("click", () => {
-      const currentTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
-      applyTheme(currentTheme === "light" ? "dark" : "light");
+  function wireLessonLinks() {
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("[data-lesson-link]");
+      if (!link || !isLessonApp) return;
+      const lessonId = link.dataset.lessonLink;
+      if (!lessonId) return;
+      event.preventDefault();
+      showLesson(lessonId);
     });
+  }
 
-    if (window.hljs) {
-      window.hljs.highlightAll();
-    }
-
-    function setDrawer(open) {
-      body.classList.toggle("drawer-open", open);
-      drawerToggle.setAttribute("aria-expanded", String(open));
-      drawerToggle.setAttribute("aria-label", open ? "Close navigation drawer" : "Open navigation drawer");
-    }
-
-    drawerToggle.addEventListener("click", () => setDrawer(!body.classList.contains("drawer-open")));
-    drawerScrim.addEventListener("click", () => setDrawer(false));
-    navLinks.forEach(link => link.addEventListener("click", () => setDrawer(false)));
-
-    document.querySelectorAll("a[href^='#']").forEach(link => {
-      link.addEventListener("click", () => setDrawer(false));
+  function wireGroups() {
+    document.querySelectorAll(".lesson-group-header").forEach((header) => {
+      header.addEventListener("click", () => {
+        const group = header.closest(".lesson-group");
+        const key = group?.dataset.chapter;
+        const collapsed = !group.classList.contains("is-collapsed");
+        group.classList.toggle("is-collapsed", collapsed);
+        header.setAttribute("aria-expanded", String(!collapsed));
+        const bodyEl = group.querySelector(".lesson-group-body");
+        if (bodyEl) bodyEl.style.maxHeight = collapsed ? "0px" : `${bodyEl.scrollHeight}px`;
+        try {
+          localStorage.setItem(`collapsed_${key}`, String(collapsed));
+        } catch (error) {
+          // Ignore storage failure.
+        }
+      });
     });
+  }
 
-    function updateProgress() {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      progressFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-    }
-    document.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-    updateProgress();
+  function wireCompletion() {
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest(".mark-complete-btn");
+      if (!button) return;
+      setCompleted(button.dataset.lesson, true);
+      updateCompletionUi();
+    });
+  }
 
-    document.querySelectorAll(".code-card").forEach((figure) => {
-      const caption = figure.querySelector("figcaption");
-      const code = figure.querySelector("code");
-      if (!caption || !code || caption.querySelector(".copy-btn")) return;
+  function wireLastLessonButton() {
+    const button = document.getElementById("jumpLastBtn");
+    if (!button) return;
+    button.addEventListener("click", () => {
+      let last = "ch0-welcome";
+      try {
+        last = localStorage.getItem("last_lesson") || last;
+      } catch (error) {
+        last = "ch0-welcome";
+      }
+      showLesson(lessonById.has(last) ? last : "ch0-welcome");
+    });
+  }
 
+  function initFallbackPage() {
+    if (!themeToggle && drawerToggle) {
       const button = document.createElement("button");
-      button.className = "copy-btn";
+      button.className = "theme-toggle";
       button.type = "button";
-      button.textContent = "Copy";
-      button.setAttribute("aria-label", "Copy code block");
-      button.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(code.innerText);
-          button.textContent = "Copied";
-          setTimeout(() => { button.textContent = "Copy"; }, 1200);
-        } catch (error) {
-          button.textContent = "Select code";
-          setTimeout(() => { button.textContent = "Copy"; }, 1600);
-        }
-      });
-      caption.appendChild(button);
+      button.textContent = "Light";
+      drawerToggle.insertAdjacentElement("beforebegin", button);
+      themeToggle = button;
+    }
+    initTheme();
+  }
+
+  function initLessonApp() {
+    initTheme();
+    drawerToggle?.addEventListener("click", () => setSidebarOpen(!body.classList.contains("sidebar-open")));
+    drawerScrim?.addEventListener("click", () => setSidebarOpen(false));
+    wireLessonLinks();
+    wireGroups();
+    wireCompletion();
+    wireLastLessonButton();
+    updateCompletionUi();
+    showLesson(getInitialLesson(), { skipHistory: true, instant: true });
+    window.addEventListener("popstate", () => showLesson(getInitialLesson(), { skipHistory: true, instant: true }));
+    window.addEventListener("resize", () => {
+      const active = document.querySelector(".lesson-link.active")?.dataset.lessonLink || getInitialLesson();
+      updateCollapsedGroups(active);
     });
+  }
 
-    const observed = Array.from(document.querySelectorAll(".observe[id]"));
-    const activeObserver = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!visible) return;
-
-      const id = visible.target.id;
-      const title = visible.target.dataset.title || visible.target.querySelector("h2,h3,h1")?.textContent || "ML x Robotics";
-      currentChapter.textContent = title;
-      navLinks.forEach(link => {
-        let isActive = false;
-        try {
-          const linkUrl = new URL(link.getAttribute("href"), window.location.href);
-          const samePage = linkUrl.pathname === window.location.pathname;
-          isActive = samePage && linkUrl.hash === `#${id}`;
-        } catch (error) {
-          isActive = link.getAttribute("href") === `#${id}`;
-        }
-        link.classList.toggle("active", isActive);
-        if (isActive) {
-          const details = link.closest("details");
-          if (details) details.open = true;
-        }
-      });
-    }, { rootMargin: "-18% 0px -70% 0px", threshold: [0.05, 0.2, 0.45] });
-    observed.forEach(section => activeObserver.observe(section));
-
-    document.querySelectorAll(".sortable").forEach(table => {
-      const tbody = table.querySelector("tbody");
-      table.querySelectorAll(".table-sort").forEach(button => {
-        let ascending = true;
-        button.addEventListener("click", () => {
-          const index = Number(button.dataset.sort);
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          rows.sort((a, b) => {
-            const left = a.children[index].textContent.trim();
-            const right = b.children[index].textContent.trim();
-            return ascending ? left.localeCompare(right) : right.localeCompare(left);
-          });
-          ascending = !ascending;
-          rows.forEach(row => tbody.appendChild(row));
-        });
-      });
-    });
+  if (isLessonApp) {
+    initLessonApp();
+  } else {
+    initFallbackPage();
+  }
+})();
