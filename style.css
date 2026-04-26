@@ -959,6 +959,18 @@ html[data-theme="light"] {
   color-scheme: light;
 }
 
+html.light-mode {
+  --bg: #ffffff;
+  --bg2: #f6f8fa;
+  --bg3: #f0f0f0;
+  --card: #ffffff;
+  --card2: #f6f8fa;
+  --text: #1f2328;
+  --muted: #57606a;
+  --white: #1f2328;
+  --border-strong: #8c959f;
+}
+
 body.lesson-app {
   --sidebar: 280px;
   --topbar: 48px;
@@ -970,6 +982,27 @@ body.lesson-app {
   --text-code: #79c0ff;
   height: 100vh;
   overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app {
+  --bg: #ffffff;
+  --bg2: #f6f8fa;
+  --bg3: #f0f0f0;
+  --card: #ffffff;
+  --card2: #f6f8fa;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --bg-code: #0d1117;
+  --border: #d0d7de;
+  --border-strong: #8c959f;
+  --text: #1f2328;
+  --muted: #57606a;
+  --white: #1f2328;
+  --text-primary: #1f2328;
+  --text-muted: #57606a;
+  --text-code: #0550ae;
   background: var(--bg-primary);
   color: var(--text-primary);
 }
@@ -1224,6 +1257,49 @@ body.lesson-app .content-panel h4 {
 
 body.lesson-app .content-panel p {
   margin: 1rem 0;
+}
+
+body.lesson-app .lesson-body {
+  color: var(--text-primary);
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app :where(
+  .lesson-body,
+  .lesson-body p,
+  .lesson-body li,
+  .lesson-body dd,
+  .lesson-body td,
+  .lesson-body th,
+  .card,
+  .card p,
+  .toc-group,
+  .expected,
+  .diagram,
+  .definition-card,
+  .step,
+  .callout,
+  .data-table,
+  details.solution
+) {
+  color: var(--text-primary);
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app :where(
+  .muted,
+  .mini,
+  .term-def,
+  .lesson-kicker,
+  .code-filename,
+  .code-lang,
+  .colab-reason,
+  .chapter-card p,
+  .chapter-card-top,
+  .chapter-card-progress small,
+  .build-strip small,
+  .dashboard-stats span,
+  .lesson-nav-label
+) {
+  color: var(--text-muted);
 }
 
 body.lesson-app .content-panel code:not(pre code) {
@@ -1853,6 +1929,30 @@ html.light-mode body.lesson-app .chapter-reset-bar {
 html.light-mode body.lesson-app .line-gutter {
   background: #edf2f7;
   border-right-color: #d0d7de;
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .code-block,
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .code-editor,
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .static-code-shell pre:not(.line-gutter) {
+  background: #0d1117;
+  border-color: #30363d;
+  color: #e6edf3;
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .code-header {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .line-gutter {
+  background: #090d14;
+  border-right-color: #21262d;
+  color: #6e7681;
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .reset-chapter-btn:hover {
+  color: #1f2328;
+  border-color: #57606a;
 }
 
 html.light-mode body.lesson-app .output-area {
