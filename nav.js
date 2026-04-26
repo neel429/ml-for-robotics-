@@ -50,6 +50,40 @@ const body = document.body;
       window.location.replace(`${legacyHashRoutes[requestedHash]}#${requestedHash}`);
     }
 
+    const themeToggle = document.createElement("button");
+    themeToggle.className = "theme-toggle";
+    themeToggle.type = "button";
+    drawerToggle.insertAdjacentElement("beforebegin", themeToggle);
+
+    function applyTheme(theme) {
+      const nextTheme = theme === "light" ? "light" : "dark";
+      document.documentElement.dataset.theme = nextTheme;
+      themeToggle.textContent = nextTheme === "light" ? "Dark" : "Light";
+      themeToggle.setAttribute(
+        "aria-label",
+        nextTheme === "light" ? "Switch to dark mode" : "Switch to light mode"
+      );
+      themeToggle.setAttribute("title", themeToggle.getAttribute("aria-label"));
+      try {
+        localStorage.setItem("mlr-theme", nextTheme);
+      } catch (error) {
+        // Theme still changes for the current page if storage is unavailable.
+      }
+    }
+
+    let storedTheme = document.documentElement.dataset.theme || "dark";
+    try {
+      storedTheme = localStorage.getItem("mlr-theme") || storedTheme;
+    } catch (error) {
+      storedTheme = storedTheme || "dark";
+    }
+    applyTheme(storedTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const currentTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+      applyTheme(currentTheme === "light" ? "dark" : "light");
+    });
+
     if (window.hljs) {
       window.hljs.highlightAll();
     }

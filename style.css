@@ -31,6 +31,37 @@
       color-scheme: dark;
     }
 
+    html[data-theme="light"] {
+      --bg: #f6f8fb;
+      --bg2: #edf3f8;
+      --bg3: #e5edf6;
+      --card: #ffffff;
+      --card2: #f8fbff;
+      --border: #d7e1ed;
+      --border-strong: #9fb1c6;
+      --text: #253247;
+      --muted: #64748b;
+      --white: #0f172a;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --amber: #b45309;
+      --green: #047857;
+      --orange: #c2410c;
+      --pink: #be185d;
+      --purple: #7c3aed;
+      --indigo: #4f46e5;
+      --danger: #be123c;
+      --ch0: #64748b;
+      --ch1: #0891b2;
+      --ch2: #7c3aed;
+      --ch3: #059669;
+      --ch4: #b45309;
+      --ch5: #c2410c;
+      --ch6: #be185d;
+      --ch7: #4f46e5;
+      color-scheme: light;
+    }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 70px; }
     body {
@@ -48,6 +79,14 @@
       overflow-x: hidden;
     }
 
+    html[data-theme="light"] body {
+      background:
+        linear-gradient(180deg, rgba(8, 145, 178, 0.08), transparent 420px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+        var(--bg);
+    }
+
     a { color: inherit; }
     p { margin: 0 0 1rem; }
     strong { color: var(--white); }
@@ -59,6 +98,9 @@
       border: 1px solid var(--border);
       border-radius: 5px;
       padding: 0.1rem 0.35rem;
+    }
+    html[data-theme="light"] code {
+      background: rgba(226, 232, 240, 0.92);
     }
     pre code {
       display: block;
@@ -84,13 +126,16 @@
       height: var(--topbar);
       z-index: 1000;
       display: grid;
-      grid-template-columns: minmax(160px, 1fr) minmax(0, 1.3fr) auto;
+      grid-template-columns: minmax(160px, 1fr) minmax(0, 1.3fr) auto auto;
       align-items: center;
       gap: 1rem;
       padding: 0 1.1rem;
       background: rgba(13, 17, 23, 0.88);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(14px);
+    }
+    html[data-theme="light"] .topbar {
+      background: rgba(248, 250, 252, 0.9);
     }
     .top-title {
       color: var(--cyan);
@@ -108,17 +153,39 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .hamburger {
-      display: none;
+    .hamburger,
+    .theme-toggle {
       appearance: none;
       border: 1px solid var(--border-strong);
       color: var(--white);
       background: var(--bg3);
       border-radius: 7px;
-      width: 36px;
       height: 34px;
-      font-size: 1.1rem;
       cursor: pointer;
+    }
+    .hamburger {
+      display: none;
+      width: 36px;
+      font-size: 1.1rem;
+    }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 68px;
+      padding: 0 0.7rem;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible,
+    .hamburger:hover,
+    .hamburger:focus-visible {
+      border-color: var(--cyan);
+      outline: none;
     }
     .progress-track {
       position: absolute;
@@ -146,6 +213,9 @@
       border-right: 1px solid var(--border);
       overflow-y: auto;
       padding: 1rem 0.85rem;
+    }
+    html[data-theme="light"] .sidebar {
+      background: rgba(255, 255, 255, 0.94);
     }
     .sidebar-title {
       color: var(--white);
@@ -759,6 +829,64 @@
     }
     .timeline-item strong { color: var(--chapter-color); }
 
+    html[data-theme="light"] .toc-card,
+    html[data-theme="light"] .chapter,
+    html[data-theme="light"] .section-card,
+    html[data-theme="light"] .card,
+    html[data-theme="light"] .step,
+    html[data-theme="light"] .journey,
+    html[data-theme="light"] .diagram,
+    html[data-theme="light"] .expected,
+    html[data-theme="light"] details.solution,
+    html[data-theme="light"] .timeline-item,
+    html[data-theme="light"] .decision-node {
+      background: rgba(255, 255, 255, 0.92);
+    }
+    html[data-theme="light"] .toc-group,
+    html[data-theme="light"] .journey-step {
+      background: rgba(248, 251, 255, 0.92);
+    }
+    html[data-theme="light"] .nav-tree details[open] {
+      background: rgba(15, 23, 42, 0.045);
+      border-color: rgba(15, 23, 42, 0.07);
+    }
+    html[data-theme="light"] .nav-tree a:hover,
+    html[data-theme="light"] .nav-tree a:focus-visible {
+      background: rgba(15, 23, 42, 0.055);
+    }
+    html[data-theme="light"] .callout {
+      background: color-mix(in srgb, var(--callout-color) 10%, #ffffff);
+    }
+    html[data-theme="light"] .code-card {
+      background: #050812;
+      border-color: #243044;
+    }
+    html[data-theme="light"] .code-card figcaption {
+      background: #111827;
+      border-bottom-color: #243044;
+      color: #cbd5e1;
+    }
+    html[data-theme="light"] .copy-btn {
+      color: #f8fbff;
+      background: #1f2937;
+      border-color: #475569;
+    }
+    html[data-theme="light"] .code-card pre code {
+      background: transparent;
+    }
+    html[data-theme="light"] details.solution summary {
+      background: rgba(15, 23, 42, 0.045);
+    }
+    html[data-theme="light"] .footer {
+      background: rgba(255, 255, 255, 0.88);
+    }
+    html[data-theme="light"] .back-top {
+      background: #ffffff;
+    }
+    html[data-theme="light"] .progress-track {
+      background: rgba(148, 163, 184, 0.45);
+    }
+
     @media (min-width: 1280px) {
       .container { width: min(900px, calc(100vw - var(--sidebar) - 6rem)); }
     }
@@ -770,7 +898,7 @@
     }
     @media (max-width: 1023px) {
       .hamburger { display: inline-grid; place-items: center; }
-      .topbar { grid-template-columns: 1fr minmax(0, 1fr) auto; }
+      .topbar { grid-template-columns: 1fr minmax(0, 1fr) auto auto; }
       .sidebar {
         transform: translateX(-105%);
         transition: transform 0.22s ease;
@@ -786,7 +914,16 @@
     }
     @media (max-width: 767px) {
       body { font-size: 16px; }
-      .topbar { grid-template-columns: 1fr auto; }
+      .topbar {
+        grid-template-columns: minmax(110px, 1fr) auto auto;
+        gap: 0.55rem;
+        padding: 0 0.75rem;
+      }
+      .theme-toggle {
+        min-width: 58px;
+        padding: 0 0.45rem;
+        font-size: 0.66rem;
+      }
       .current-chapter { display: none; }
       .page { padding-top: calc(var(--topbar) + 0.9rem); }
       .chapter { padding: 1rem; }
