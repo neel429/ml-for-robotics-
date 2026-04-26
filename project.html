@@ -26,7 +26,7 @@
     --yellow: #ffd46c;
     --red: #ff7777;
     --text: #d7e5f8;
-    --muted: #7d96b6;
+    --muted: #8b949e;
     --white: #f6fbff;
     --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
     --radius: 22px;
@@ -165,14 +165,14 @@
   .nav-pill {
     padding: 7px 12px;
     font-size: 12px;
-    color: var(--muted);
+    color: var(--text);
     background: transparent;
   }
 
   .theme-toggle {
     appearance: none;
     padding: 7px 12px;
-    color: var(--muted);
+    color: var(--text);
     background: transparent;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
@@ -279,6 +279,7 @@
     border-radius: 999px;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.03);
+    color: var(--white);
   }
 
   .hero-actions {
@@ -351,6 +352,11 @@
     font-family: 'Syne', sans-serif;
     font-size: clamp(28px, 3vw, 42px);
     line-height: 1;
+    color: #ffffff;
+    font-weight: 800;
+  }
+
+  html[data-theme="light"] .stat-value {
     color: var(--white);
   }
 
@@ -425,6 +431,7 @@
     margin-top: 18px;
     border: 1px solid rgba(35, 64, 107, 0.8);
     background: rgba(255, 255, 255, 0.03);
+    color: var(--white);
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
   }

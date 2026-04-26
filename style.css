@@ -529,13 +529,22 @@
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .card {
-      background: rgba(16, 24, 38, 0.9);
-      border: 1px solid var(--border);
+      background: #161b22;
+      border: 1px solid #30363d;
       border-radius: 8px;
       padding: 1rem;
+      color: #c9d1d9;
     }
     .card h3,
-    .card h4 { margin-top: 0; }
+    .card h4 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    .card p,
+    .card li,
+    .card .muted {
+      color: #c9d1d9;
+    }
     .card .icon { font-size: 1.65rem; margin-bottom: 0.35rem; }
     .muted { color: var(--muted); }
     .mini { font-size: 0.9rem; }
@@ -550,6 +559,7 @@
       border: 1px solid color-mix(in srgb, var(--callout-color) 45%, var(--border));
       border-left: 5px solid var(--callout-color);
       background: color-mix(in srgb, var(--callout-color) 8%, rgba(16,24,38,0.9));
+      color: #c9d1d9;
     }
     .callout .callout-icon {
       width: 1.8rem;
@@ -562,9 +572,16 @@
       font-size: 1rem;
     }
     .callout-title {
-      color: var(--white);
+      color: #ffffff;
       font-weight: 800;
       margin-bottom: 0.12rem;
+    }
+    .callout p,
+    .callout li {
+      color: #c9d1d9;
+    }
+    .callout strong {
+      color: #ffffff;
     }
     .callout p:last-child { margin-bottom: 0; }
     .tip { --callout-color: var(--blue); }
@@ -629,11 +646,15 @@
       min-height: 78px;
       display: grid;
       place-items: center;
-      color: var(--white);
+      color: #e6edf3;
       font-weight: 700;
     }
+    .flow-node span,
+    .flow-node small {
+      color: #8b949e;
+    }
     .arrow {
-      color: var(--chapter-color);
+      color: #8b949e;
       text-align: center;
       font-family: "JetBrains Mono", Consolas, Monaco, monospace;
       font-weight: 800;
@@ -727,10 +748,14 @@
       background: rgba(255,255,255,0.025);
       border-radius: 8px;
       padding: 0.9rem;
-      color: var(--muted);
+      color: #c9d1d9;
       font-size: 0.92rem;
     }
-    .expected strong { display: block; margin-bottom: 0.25rem; }
+    .expected strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
+    }
 
     details.solution {
       margin: 1rem 0;
@@ -841,6 +866,29 @@
     html[data-theme="light"] .timeline-item,
     html[data-theme="light"] .decision-node {
       background: rgba(255, 255, 255, 0.92);
+    }
+    html[data-theme="light"] .card,
+    html[data-theme="light"] .card p,
+    html[data-theme="light"] .card li,
+    html[data-theme="light"] .card .muted,
+    html[data-theme="light"] .callout,
+    html[data-theme="light"] .callout p,
+    html[data-theme="light"] .callout li,
+    html[data-theme="light"] .expected {
+      color: var(--text);
+    }
+    html[data-theme="light"] .card h3,
+    html[data-theme="light"] .card h4,
+    html[data-theme="light"] .callout-title,
+    html[data-theme="light"] .callout strong,
+    html[data-theme="light"] .expected strong,
+    html[data-theme="light"] .flow-node {
+      color: var(--white);
+    }
+    html[data-theme="light"] .flow-node span,
+    html[data-theme="light"] .flow-node small,
+    html[data-theme="light"] .arrow {
+      color: var(--muted);
     }
     html[data-theme="light"] .toc-group,
     html[data-theme="light"] .journey-step {
@@ -1458,7 +1506,12 @@ body.lesson-app .callout strong {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-primary);
+  color: #ffffff;
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .callout-title,
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .callout strong {
+  color: #1f2328;
 }
 
 body.lesson-app .lesson-actions {
@@ -1578,7 +1631,8 @@ body.lesson-app .dashboard-stats {
 
 body.lesson-app .dashboard-stats strong {
   font-size: 3rem;
-  color: var(--chapter-accent);
+  color: #ffffff;
+  font-weight: 800;
 }
 
 body.lesson-app .dashboard-stats span {
@@ -1787,7 +1841,7 @@ body.lesson-app .line-gutter {
   padding: 16px 10px;
   min-width: 3.3rem;
   background: #090d14;
-  color: #6e7681;
+  color: #8b949e;
   text-align: right;
   user-select: none;
   border-right: 1px solid #21262d;
@@ -1912,6 +1966,11 @@ html.light-mode body.lesson-app {
   background: #ffffff;
 }
 
+html.light-mode body.lesson-app .dashboard-stats strong,
+html[data-theme="light"] body.lesson-app .dashboard-stats strong {
+  color: #1f2328;
+}
+
 html.light-mode body.lesson-app .code-block,
 html.light-mode body.lesson-app .code-editor,
 html.light-mode body.lesson-app .static-code-shell pre:not(.line-gutter) {
@@ -1947,7 +2006,7 @@ html.light-mode body.lesson-app .line-gutter {
 :is(html.light-mode, html[data-theme="light"]) body.lesson-app .line-gutter {
   background: #090d14;
   border-right-color: #21262d;
-  color: #6e7681;
+  color: #8b949e;
 }
 
 :is(html.light-mode, html[data-theme="light"]) body.lesson-app .reset-chapter-btn:hover {
