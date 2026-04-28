@@ -843,9 +843,15 @@ configure_robot(speed=1.5, task="mapping", battery=87)</code></pre>
                   <div>
                     <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_solution.py">
                       <figcaption>Checkpoint solution</figcaption>
-      <pre><code class="language-python"># NOTE: This solution uses 'robot_log' created by the cell above.
-# If you see NameError: name 'robot_log' is not defined,
-# scroll up and run the data generation cell first, then run this cell.
+      <pre><code class="language-python">robot_log = [
+    {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
+    {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
+    {"time": "10:00", "distance": 0.4, "motor_temp": 66.1, "battery": 87,  "task": "avoidance"},
+    {"time": "15:00", "distance": 2.2, "motor_temp": 63.4, "battery": 80,  "task": "delivery"},
+    {"time": "20:00", "distance": -1,  "motor_temp": 71.0, "battery": 73,  "task": "delivery"},
+    {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
+    {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
+]
 
 def summarize_robot_log(log):
     total_entries = len(log)
