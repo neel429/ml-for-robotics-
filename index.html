@@ -393,6 +393,10 @@ os.chmod('/root/.kaggle/kaggle.json', 600)</code></pre>
 <div class="lesson-body">
 <h3>1.1 Why Python & Setting Up Colab</h3>
                 <p><strong>Concept.</strong> Python is the default language of machine learning because the syntax is readable and the ecosystem is huge. NumPy, Pandas, scikit-learn, TensorFlow, PyTorch, OpenCV, and nearly every robotics ML example you find online will have Python support.</p>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">About the code editors on this site</div><p>The code boxes on this page are yours to edit. You can change any line and press <strong>Run</strong> or <code>Ctrl+Enter</code> to see your version execute instantly in the browser.</p><p>Your browser saves recent edits locally, so reloading this page usually keeps your scratch work. Those edits are not permanent course files, do not sync to other devices, and can disappear if you clear site data. Use <strong>Reset</strong> to restore the original example, and keep serious work in a Colab notebook where it is saved to your Google Drive automatically.</p></div>
+                </div>
                 <div class="grid-2">
                   <div class="card">
                     <h4>C++</h4>
@@ -407,10 +411,6 @@ os.chmod('/root/.kaggle/kaggle.json', 600)</code></pre>
                   </div>
                   <div class="card">
                     <h4>Python</h4>
-                    <div class="callout tip" role="note">
-                      <div class="callout-icon">💡</div>
-                      <div><div class="callout-title">About the code editors on this site</div><p>The code boxes on this page are yours to edit. You can change any line and press <strong>Run</strong> or <code>Ctrl+Enter</code> to see your version execute instantly in the browser.</p><p>Your browser saves recent edits locally, so reloading this page usually keeps your scratch work. Those edits are not permanent course files, do not sync to other devices, and can disappear if you clear site data. Use <strong>Reset</strong> to restore the original example, and keep serious work in a Colab notebook where it is saved to your Google Drive automatically.</p></div>
-                    </div>
                     <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="Your first Python cell">
                       <figcaption>Your first Python cell</figcaption>
       <pre><code class="language-python">print("Hello, Robot!")</code></pre>
@@ -782,11 +782,17 @@ else:
                 <h4>List Comprehensions: a One-Line Loop</h4>
                 <p>A list comprehension is a shorthand way to build a new list from an existing one, all in one line. It looks unusual at first, but it follows a fixed pattern you can memorize.</p>
                 <div class="function-anatomy">
-                  <div class="function-anatomy-row"><pre><code>new_list = [ expression   for item in existing_list   if condition ]</code></pre><div class="function-anatomy-note"><strong>Pattern:</strong> put this expression in the new list, loop over each item in an existing list, and optionally include only items that pass a condition.</div></div>
-                  <div class="function-anatomy-row"><pre><code>new_list = []
-for item in existing_list:
-    if condition:
-        new_list.append(expression)</code></pre><div class="function-anatomy-note">This longer <code>for</code> loop does the same thing. The comprehension is just the compact version.</div></div>
+                  <pre class="function-anatomy-code"><code>new_list = [ <span class="code-highlight" style="--part-color:var(--anno-optional)">expression</span>   for item in <span class="code-highlight" style="--part-color:var(--anno-param)">existing_list</span>   if <span class="code-highlight" style="--part-color:var(--anno-default)">condition</span> ]
+
+new_list = []
+for item in <span class="code-highlight" style="--part-color:var(--anno-param)">existing_list</span>:
+    if <span class="code-highlight" style="--part-color:var(--anno-default)">condition</span>:
+        new_list.append(<span class="code-highlight" style="--part-color:var(--anno-optional)">expression</span>)</code></pre>
+                  <div class="annotation-list">
+                    <div class="annotation-item" style="--part-color:var(--anno-optional)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Expression.</strong> The value to put into the new list. In the long version, this is the value passed into <code>.append()</code>.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-param)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Existing list.</strong> The collection Python loops through. In the long version, it appears after <code>for item in</code>.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-default)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Condition.</strong> The optional test that decides whether an item is included. If the condition is false, that item is skipped.</div></div>
+                  </div>
                 </div>
                 <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="list_comprehensions_one_line_loop.py">
                   <figcaption>List comprehensions: a one-line loop</figcaption>
@@ -856,13 +862,24 @@ print("In cm:", in_cm)</code></pre>
                 </div>
                 <h4>Anatomy of a Function</h4>
                 <div class="function-anatomy">
-                  <div class="function-anatomy-row"><pre><code>def analyze_sensor_data(readings, danger_threshold=0.5):</code></pre><div class="function-anatomy-note"><code>def</code> tells Python you are defining a function. <code>analyze_sensor_data</code> is the function name. <code>readings</code> is a required parameter. <code>danger_threshold=0.5</code> is a parameter with a default value.</div></div>
-                  <div class="function-anatomy-row"><pre><code>    """
+                  <pre class="function-anatomy-code"><code><span class="code-highlight" style="--part-color:var(--anno-keyword)">def</span> <span class="code-highlight" style="--part-color:var(--anno-name)">analyze_sensor_data</span>(<span class="code-highlight" style="--part-color:var(--anno-param)">readings</span>, <span class="code-highlight" style="--part-color:var(--anno-optional)">danger_threshold</span>=<span class="code-highlight" style="--part-color:var(--anno-default)">0.5</span>):
+    <span class="code-highlight" style="--part-color:var(--anno-doc)">"""
     Analyze a list of sensor readings.
     Returns a summary dictionary.
-    """</code></pre><div class="function-anatomy-note">This is a docstring: a triple-quoted string that documents what the function does.</div></div>
-                  <div class="function-anatomy-row"><pre><code>    clean = [r for r in readings if r &gt; 0]
-    return {"min": min(clean)}</code></pre><div class="function-anatomy-note">The function body is indented. <code>return</code> sends a value back to whoever called the function.</div></div>
+    """</span>
+
+    <span class="code-highlight" style="--part-color:var(--anno-body)">clean = [r for r in readings if r &gt; 0]</span>
+    <span class="code-highlight" style="--part-color:var(--anno-return)">return {"min": min(clean)}</span></code></pre>
+                  <div class="annotation-list">
+                    <div class="annotation-item" style="--part-color:var(--anno-keyword)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>def keyword.</strong> Tells Python that the next block defines a function.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-name)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Function name.</strong> This is the name you call later, such as <code>analyze_sensor_data(data)</code>.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-param)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Required parameter.</strong> <code>readings</code> has no default, so the caller must provide it.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-optional)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Optional parameter.</strong> <code>danger_threshold</code> can be provided by the caller, but it also has a fallback value.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-default)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Default value.</strong> If the caller does not pass <code>danger_threshold</code>, Python uses <code>0.5</code>.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-doc)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Docstring.</strong> Triple-quoted text that documents what the function does.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-body)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Function body.</strong> The indented code that runs when the function is called.</div></div>
+                    <div class="annotation-item" style="--part-color:var(--anno-return)"><span class="annotation-dot" aria-hidden="true"></span><div><strong>Return line.</strong> Sends a value back to whoever called the function.</div></div>
+                  </div>
                 </div>
                 <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="function_analyze_robot_sensor_readings.py">
                   <figcaption>Function: analyze robot sensor readings</figcaption>
