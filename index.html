@@ -287,7 +287,38 @@
                   <div class="step"><div><strong>Run a cell.</strong><br />Press <code>Shift+Enter</code>. The output appears directly underneath the cell.</div></div>
                   <div class="step"><div><strong>Create a free Kaggle account.</strong><br />Go to <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a>. We use Kaggle because it hosts clean public datasets.</div></div>
                   <div class="step"><div><strong>Get your Kaggle API key.</strong><br />Kaggle account menu → Settings → API → Create New Token. It downloads <code>kaggle.json</code>.</div></div>
-                  <div class="step"><div><strong>Upload the key in Colab.</strong><br />Each Kaggle project starts with an upload cell. Run it, choose <code>kaggle.json</code>, and the notebook downloads the dataset.</div></div>
+                </div>
+                <h4>Upload your Kaggle key to Colab</h4>
+                <p>Every time you open a Colab notebook, it starts fresh like a brand new computer. That means you have to upload your <code>kaggle.json</code> key once per session before running any Kaggle download. Here is exactly how.</p>
+                <div class="steps">
+                  <div class="step"><div><strong>Open the project notebook.</strong><br />Click the <strong>Open in Colab</strong> button in any project lesson. A new browser tab opens with the notebook.</div></div>
+                  <div class="step"><div><strong>Find the first code cell.</strong><br />The very first cell in every project notebook is labelled <strong>Setup: Upload Kaggle Key</strong>. It looks like this:
+                    <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="setup_upload_kaggle_key.py">
+                      <figcaption>Setup: Upload Kaggle Key</figcaption>
+<pre><code class="language-python">from google.colab import files
+files.upload()    # a file picker dialog will open in your browser</code></pre>
+                    </figure>
+                  </div></div>
+                  <div class="step"><div><strong>Run the cell.</strong><br />Press <code>Shift+Enter</code> or click the play button to the left of the cell. A file picker dialog opens directly in your browser tab.</div></div>
+                  <div class="step"><div><strong>Choose your kaggle.json file.</strong><br />Navigate to wherever you saved <code>kaggle.json</code>, usually your Downloads folder. Select it and click <strong>Open</strong>. You will see a green confirmation message like <code>kaggle.json(application/json) - X bytes, last modified: ...</code> once it uploads successfully.</div></div>
+                  <div class="step"><div><strong>Run the next cell immediately.</strong><br />The second cell moves your key to the location Kaggle expects:
+                    <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="install_kaggle_key.py">
+                      <figcaption>Install Kaggle key for this Colab session</figcaption>
+<pre><code class="language-python">import os
+os.makedirs('/root/.kaggle', exist_ok=True)
+os.rename('kaggle.json', '/root/.kaggle/kaggle.json')
+os.chmod('/root/.kaggle/kaggle.json', 600)</code></pre>
+                    </figure>
+                    After this cell runs, your key is installed. Every <code>!kaggle</code> command in the rest of the notebook will work for this session.
+                  </div></div>
+                </div>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Colab sessions reset</div><p>Colab sessions reset when you close the tab or after 90 minutes of inactivity. You will need to upload <code>kaggle.json</code> again each time you reopen the notebook. This is normal.</p></div>
+                </div>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Keep the key private</div><p>Never paste the contents of <code>kaggle.json</code> directly into a code cell or share your notebook publicly while the key is present. The key is tied to your Kaggle account.</p></div>
                 </div>
                 <div class="diagram" aria-label="Colab cell workflow diagram">
                   <div class="flow-row">
@@ -321,6 +352,10 @@
                   <li>Every 💡 tip box is something that trips beginners up. Read those carefully.</li>
                   <li>Every ★ Project section has a full Colab-style notebook on the page. Do not skip the projects.</li>
                 </ul>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Your progress is saved in this browser</div><p>When you click <strong>Mark as Complete</strong>, your progress is saved in your browser's local storage, the same place websites store your preferences.</p><ul><li>✓ Your progress persists when you close and reopen this tab.</li><li>✓ No account or login needed.</li><li>✗ Progress does not carry over to a different browser or device.</li><li>✗ Clearing your browser history or cookies will reset your progress.</li></ul><p>If you want to track progress across devices, keep a personal checklist in Notion, Google Docs, or even a piece of paper.</p></div>
+                </div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch0-reading-tips">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -372,11 +407,19 @@
                   </div>
                   <div class="card">
                     <h4>Python</h4>
+                    <div class="callout tip" role="note">
+                      <div class="callout-icon">💡</div>
+                      <div><div class="callout-title">About the code editors on this site</div><p>The code boxes on this page are yours to edit. You can change any line and press <strong>Run</strong> or <code>Ctrl+Enter</code> to see your version execute instantly in the browser.</p><p>Your browser saves recent edits locally, so reloading this page usually keeps your scratch work. Those edits are not permanent course files, do not sync to other devices, and can disappear if you clear site data. Use <strong>Reset</strong> to restore the original example, and keep serious work in a Colab notebook where it is saved to your Google Drive automatically.</p></div>
+                    </div>
                     <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="Your first Python cell">
                       <figcaption>Your first Python cell</figcaption>
       <pre><code class="language-python">print("Hello, Robot!")</code></pre>
                     </figure>
                   </div>
+                </div>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Which Python is running on this page?</div><p>When you press <strong>Run</strong> on a code block on this website, you are running CPython 3.12 compiled to WebAssembly via <a href="https://pyodide.org" target="_blank" rel="noreferrer">Pyodide</a>. It is the same Python you would install on your laptop, not a simulation or a simplified version.</p><p>Available packages in the browser interpreter: NumPy, Pandas, Matplotlib, SciPy, and scikit-learn.</p><p>Not available in the browser because they are too large: TensorFlow, PyTorch, and OpenCV. Code cells that need those packages show an <strong>Open in Colab</strong> button instead. Colab gives you a full Linux machine with GPU access.</p><p>In Google Colab, you are running standard Python on a Google-managed Linux server. The exact default version can change over time, so check it with <code>!python --version</code> in a Colab cell. The beginner code in this course works in both places.</p></div>
                 </div>
                 <div class="callout exercise-note" role="note">
                   <div class="callout-icon">📝</div>
@@ -398,10 +441,34 @@
 <h1>1.2 Variables & Data Types</h1>
 <div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
 <hr class="lesson-divider" />
+<div class="definition-card python-difference-card"><span class="def-term">Python vs Other Languages</span><h3>Python vs Other Languages: Three Things That Will Surprise You</h3>
+                <h4>No curly braces: Python uses indentation</h4>
+                <p>In C, C++, or Java, blocks of code are wrapped in curly braces <code>{ }</code>. In Python, indentation, the spaces at the start of a line, is the structure. A block starts when indentation increases and ends when it goes back.</p>
+                <div class="language-compare">
+                  <div><h4>C++ uses braces</h4><figure class="code-card" data-runnable="false" data-chapter="1" data-filename="cpp_low_battery_example.cpp"><figcaption>C++</figcaption><pre><code class="language-cpp">if (battery &lt; 10) {
+    std::cout &lt;&lt; "Low battery";
+    returnToBase();
+}</code></pre></figure></div>
+                  <div><h4>Python uses indentation</h4><figure class="code-card" data-runnable="false" data-chapter="1" data-filename="python_low_battery_example.py"><figcaption>Python</figcaption><pre><code class="language-python">if battery &lt; 10:
+    print("Low battery")
+    return_to_base()</code></pre></figure></div>
+                </div>
+                <p><strong>Rule:</strong> Always use 4 spaces for each level of indentation. Do not mix spaces and tabs. Python will throw an <code>IndentationError</code>.</p>
+                <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">IndentationError is common</div><p>If Python says <code>unexpected indent</code> or <code>expected an indented block</code>, look at the spaces at the start of the offending line.</p></div></div>
+                <h4>No semicolons at the end of lines</h4>
+                <p>Python does not need a semicolon at the end of each statement. One line equals one statement. Just press Enter and start the next line.</p>
+                <h4>No type declarations: Python figures out the type itself</h4>
+                <p>In C++ you write <code>int wheels = 4;</code>. In Python you write <code>wheels = 4</code>.</p>
+                <p>Python looks at the value <code>4</code> and knows it is an integer automatically. This is called dynamic typing. You never need to write the type name when creating a variable. However, Python still has types. You just do not have to declare them. You can always check with <code>print(type(wheels))</code>, which prints <code>&lt;class 'int'&gt;</code>.</p></div>
 <div class="definition-card"><span class="def-term">Variable</span><p>A named container in memory that holds a value. Think of it as a labelled box for robot data.</p></div>
 <div class="lesson-body">
 <h3>1.2 Variables & Data Types</h3>
                 <p><strong>Concept.</strong> A variable is a named box that holds a value. Python has four beginner-friendly basic types: <code>int</code> for whole numbers, <code>float</code> for decimals, <code>str</code> for text, and <code>bool</code> for true/false values.</p>
+                <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch1-variables.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Colab notebook is pre-filled</div><p>The Colab notebook contains every code cell from this lesson in order, exactly as shown on this page. It opens pre-filled so you can run cells top to bottom, modify them, and save your own copy to Google Drive with <strong>File → Save a copy in Drive</strong>.</p></div>
+                </div>
                 <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="robot_sensor_variables.py">
                   <figcaption>Robot sensor variables</figcaption>
       <pre><code class="language-python"># Robot sensor variables
@@ -414,6 +481,17 @@
       print(type(is_obstacle))
       print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")</code></pre>
                 </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>distance = 2.45</code></td><td>Creates a variable named <code>distance</code> and stores a decimal number, which Python calls a <code>float</code>.</td></tr>
+                    <tr><td><code>is_obstacle = True</code></td><td>Stores a boolean value. Booleans are either <code>True</code> or <code>False</code>.</td></tr>
+                    <tr><td><code>robot_name = "ARIA"</code></td><td>Stores text as a string. Strings are wrapped in quotes.</td></tr>
+                    <tr><td><code>wheels = 4</code></td><td>Stores a whole number, which Python calls an <code>int</code>.</td></tr>
+                    <tr><td><code>print(type(distance))</code></td><td>Prints the Python type of the value stored in <code>distance</code>.</td></tr>
+                    <tr><td><code>f"{robot_name} ..."</code></td><td>Uses an f-string to insert variable values into a readable message.</td></tr>
+                  </tbody>
+                </table>
                 <p>Type conversion changes one type into another: <code>int("42")</code>, <code>str(3.14)</code>, and <code>float("2.0")</code>. An f-string lets you insert variables into a string: <code>f"The sensor reads {value:.2f} meters"</code>.</p>
                 <div class="callout tip" role="note">
                   <div class="callout-icon">💡</div>
@@ -443,6 +521,11 @@
 <div class="lesson-body">
 <h3>1.3 Data Structures: Lists, Tuples, Sets, Dictionaries</h3>
                 <p><strong>Concept.</strong> Data structures are containers. They let you keep related values together instead of creating a separate variable for everything.</p>
+                <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch1-data-structures.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Colab notebook is pre-filled</div><p>The Colab notebook contains every code cell from this lesson in order, exactly as shown on this page. It opens pre-filled so you can run cells top to bottom, modify them, and save your own copy to Google Drive with <strong>File → Save a copy in Drive</strong>.</p></div>
+                </div>
                 <h4>Lists</h4>
                 <p>A list is ordered and mutable. Use it for values that arrive over time, like ultrasonic sensor readings.</p>
                 <p class="mini muted">Key operations: indexing with <code>my_list[0]</code>, negative indexing with <code>my_list[-1]</code>, slicing with <code>my_list[1:3]</code>, and methods like <code>.append()</code>, <code>.remove()</code>, <code>.pop()</code>, and <code>.sort()</code>. Use <code>len(my_list)</code> for length.</p>
@@ -456,6 +539,17 @@
       print(f"Total readings: {len(sensor_readings)}")
       print(f"Middle slice: {sensor_readings[1:3]}")</code></pre>
                 </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]</code></td><td>Creates a list. Square brackets <code>[ ]</code> tell Python this is a list, and commas separate the values.</td></tr>
+                    <tr><td><code>sensor_readings.append(1.8)</code></td><td><code>.append()</code> is a list method. It adds one item to the end of the existing list.</td></tr>
+                    <tr><td><code>sensor_readings[-1]</code></td><td>Uses a negative index. <code>-1</code> means the last item, <code>-2</code> means the second-to-last item, and so on.</td></tr>
+                    <tr><td><code>min(sensor_readings)</code></td><td>Calls Python's built-in <code>min()</code> function and returns the smallest value in the list.</td></tr>
+                    <tr><td><code>len(sensor_readings)</code></td><td>Returns the number of items in the list.</td></tr>
+                    <tr><td><code>sensor_readings[1:3]</code></td><td>Creates a slice. It starts at index <code>1</code> and stops before index <code>3</code>.</td></tr>
+                  </tbody>
+                </table>
                 <div class="callout exercise-note" role="note">
                   <div class="callout-icon">📝</div>
                   <div><div class="callout-title">Mini Exercise</div><p>Create a list of 5 robot speeds. Find the max, min, and average with <code>sum()</code> and <code>len()</code>.</p></div>
@@ -470,6 +564,15 @@
       x, y = home_position           # tuple unpacking
       print(f"Home is at x={x}, y={y}")</code></pre>
                 </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>home_position = (0.0, 0.0)</code></td><td>Creates a tuple. Parentheses <code>( )</code> group values that should stay together.</td></tr>
+                    <tr><td><code>wheel_diameter = (0.12,)</code></td><td>Creates a one-item tuple. The comma is required; without it, Python treats the parentheses like normal grouping.</td></tr>
+                    <tr><td><code>x, y = home_position</code></td><td>Uses tuple unpacking. Python assigns the first value to <code>x</code> and the second value to <code>y</code>.</td></tr>
+                    <tr><td><code>print(f"Home is at x={x}, y={y}")</code></td><td>Uses an f-string to insert the unpacked values into a readable message.</td></tr>
+                  </tbody>
+                </table>
                 <div class="callout tip" role="note">
                   <div class="callout-icon">💡</div>
                   <div><div class="callout-title">Tip</div><p>If you try to change a tuple element, Python throws a <code>TypeError</code>. That is the point: it protects fixed data.</p></div>
@@ -489,6 +592,15 @@
       shared = room_a_objects & room_b_objects
       print(f"Objects in both rooms: {shared}")</code></pre>
                 </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>objects_seen = {"chair", "table", "door", "chair", "wall"}</code></td><td>Creates a set. Duplicate values are automatically kept only once.</td></tr>
+                    <tr><td><code>objects_seen.add("human")</code></td><td>Adds one new value to the set.</td></tr>
+                    <tr><td><code>len(objects_seen)</code></td><td>Counts how many unique objects are in the set.</td></tr>
+                    <tr><td><code>room_a_objects &amp; room_b_objects</code></td><td>Computes the intersection: only the objects that appear in both sets.</td></tr>
+                  </tbody>
+                </table>
                 <h4>Dictionaries</h4>
                 <p>A dictionary stores key-value pairs. Use it for named robot state, sensor packets, and configuration settings.</p>
                 <p class="mini muted">Key operations: access with <code>dict[key]</code>, safer access with <code>.get(key, default)</code>, and inspection with <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>.</p>
@@ -512,6 +624,18 @@
       for key, value in robot_state.items():
           print(f"  {key}: {value}")</code></pre>
                 </figure>
+                <p>When you call <code>robot_state.items()</code>, Python gives you back each key-value pair as a small tuple: <code>("name", "ARIA")</code>, <code>("battery", 87)</code>, and so on. The line <code>for key, value in robot_state.items():</code> uses tuple unpacking. Each pair is split into <code>key</code> and <code>value</code> automatically on every loop iteration.</p>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>robot_state = { ... }</code></td><td>Creates a dictionary. Each entry has a key on the left and a value on the right.</td></tr>
+                    <tr><td><code>robot_state['battery']</code></td><td>Looks up the value stored under the key <code>"battery"</code>. This crashes if the key does not exist.</td></tr>
+                    <tr><td><code>robot_state["battery"] -= 5</code></td><td>Subtracts 5 from the existing battery value and stores the result back in the dictionary.</td></tr>
+                    <tr><td><code>robot_state["location"] = (3.1, 4.2)</code></td><td>Adds a new key-value pair. The location value is a tuple.</td></tr>
+                    <tr><td><code>robot_state.get("camera", "not installed")</code></td><td>Safely asks for a key. If <code>"camera"</code> is missing, Python returns the default value instead of crashing.</td></tr>
+                    <tr><td><code>for key, value in robot_state.items():</code></td><td>Loops through key-value pairs. <code>.items()</code> returns pairs, and tuple unpacking splits each pair into two variables.</td></tr>
+                  </tbody>
+                </table>
                 <div class="callout warning" role="alert">
                   <div class="callout-icon">⚠️</div>
                   <div><div class="callout-title">Common Mistake</div><p><code>robot_state["camera"]</code> crashes if the key does not exist. Use <code>.get("camera", "not installed")</code> when a key is optional.</p></div>
@@ -555,6 +679,23 @@
       if current_zone in safe_zones:
           print(f"{current_zone} is a safe zone. Power down.")</code></pre>
                 </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>battery = 23</code></td><td>Stores the current battery level as an integer.</td></tr>
+                    <tr><td><code>distance_to_obstacle = 0.4</code></td><td>Stores a sensor reading as a float in meters.</td></tr>
+                    <tr><td><code>if battery &lt; 10:</code></td><td>Starts the first decision branch. The indented line below it runs only if this condition is true.</td></tr>
+                    <tr><td><code>elif battery &lt; 25:</code></td><td>Checks a second condition only if the first condition was false.</td></tr>
+                    <tr><td><code>if distance_to_obstacle &lt; 0.5:</code></td><td>Starts a nested <code>if</code>. It is indented one extra level because it belongs inside the low-battery branch.</td></tr>
+                    <tr><td><code>else:</code></td><td>Runs only when the earlier battery conditions were false.</td></tr>
+                    <tr><td><code>safe_zones = {"base", "charging_dock", "lab_entrance"}</code></td><td>Creates a set of allowed safe-zone names.</td></tr>
+                    <tr><td><code>if current_zone in safe_zones:</code></td><td>Uses <code>in</code> to test whether the current zone appears in the set.</td></tr>
+                  </tbody>
+                </table>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Nested indentation</div><p>The obstacle check is indented one more level because it only runs inside the <code>elif battery &lt; 25</code> branch. If it lined up with <code>elif</code>, it would be a separate decision instead.</p></div>
+                </div>
                 <div class="callout tip" role="note">
                   <div class="callout-icon">💡</div>
                   <div><div class="callout-title">Tip</div><p>Use <code>elif</code> instead of multiple <code>if</code> blocks when conditions are mutually exclusive. It is clearer and avoids accidental double responses.</p></div>
@@ -580,38 +721,110 @@
 <h3>1.5 Loops: for and while</h3>
                 <p><strong>Concept.</strong> Loops repeat work. Use <code>for</code> when you know what collection you are walking through. Use <code>while</code> when you repeat until a condition changes.</p>
                 <p class="mini muted">You will also see <code>continue</code> to skip the rest of the current loop iteration and <code>zip()</code> to walk through two lists together, such as timestamps and readings.</p>
-                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="for_loops_range_while_loops_and_list_comprehensions.py">
-                  <figcaption>For loops, range, while loops, and list comprehensions</figcaption>
+                <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch1-loops.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Colab notebook is pre-filled</div><p>The Colab notebook contains every code cell from this lesson in order, exactly as shown on this page. It opens pre-filled so you can run cells top to bottom, modify them, and save your own copy to Google Drive with <strong>File → Save a copy in Drive</strong>.</p></div>
+                </div>
+                <h4>For loops</h4>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="for_loops_enumerate_and_zip.py">
+                  <figcaption>For loops with enumerate and zip</figcaption>
       <pre><code class="language-python">sensor_log = [1.5, 0.8, 2.3, 0.2, 1.9]
-      
-      print("Scanning sensor log...")
-      for i, reading in enumerate(sensor_log):
-          if reading < 0.5:
-              print(f"  Reading #{i}: {reading:.1f}m - DANGER")
-          else:
-              print(f"  Reading #{i}: {reading:.1f}m - OK")
-      
-      print("\nStarting 5-second countdown:")
-      for second in range(5, 0, -1):
-          print(f"  {second}...")
-      print("  LAUNCH!")
-      
-      battery = 100
-      distance_traveled = 0.0
-      
-      while battery > 20:
-          battery -= 5
-          distance_traveled += 0.3
-          if distance_traveled >= 1.2:
-              print(f"Destination reached! Battery remaining: {battery}%")
-              break
-      else:
-          print(f"Battery too low! Only traveled {distance_traveled:.1f}m")
-      
-      raw_readings = [1.5, -0.2, 0.9, 2.1, -0.1]
-      clean_readings = [r for r in raw_readings if r > 0]
-      print(f"\nClean readings: {clean_readings}")</code></pre>
+timestamps = ["00:00", "00:05", "00:10", "00:15", "00:20"]
+
+print("Scanning sensor log...")
+for i, reading in enumerate(sensor_log):
+    if reading < 0.5:
+        print(f"  Reading #{i}: {reading:.1f}m - DANGER")
+    else:
+        print(f"  Reading #{i}: {reading:.1f}m - OK")
+
+print("\nReadings with timestamps:")
+for time, reading in zip(timestamps, sensor_log):
+    print(f"  {time}: {reading:.1f}m")</code></pre>
                 </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>sensor_log = [...]</code></td><td>Stores the readings in a list so the loop can visit them one at a time.</td></tr>
+                    <tr><td><code>timestamps = [...]</code></td><td>Stores matching time labels in a second list.</td></tr>
+                    <tr><td><code>for i, reading in enumerate(sensor_log):</code></td><td><code>enumerate()</code> returns two values each time: the index and the reading. Python unpacks them into <code>i</code> and <code>reading</code>.</td></tr>
+                    <tr><td><code>if reading &lt; 0.5:</code></td><td>Checks the current reading and chooses the danger message when the obstacle is close.</td></tr>
+                    <tr><td><code>for time, reading in zip(timestamps, sensor_log):</code></td><td><code>zip()</code> walks through two lists together and returns pairs like <code>("00:00", 1.5)</code>.</td></tr>
+                  </tbody>
+                </table>
+                <h4>While loops</h4>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="while_loop_battery_until_destination.py">
+                  <figcaption>While loop: battery until destination</figcaption>
+      <pre><code class="language-python">battery = 100
+distance_traveled = 0.0
+
+while battery > 20:
+    battery -= 5
+    distance_traveled += 0.3
+    if distance_traveled >= 1.2:
+        print(f"Destination reached! Battery remaining: {battery}%")
+        break
+else:
+    print(f"Battery too low! Only traveled {distance_traveled:.1f}m")</code></pre>
+                </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>battery = 100</code></td><td>Starts the simulated battery at 100 percent.</td></tr>
+                    <tr><td><code>while battery &gt; 20:</code></td><td>Repeats the indented block as long as the condition remains true.</td></tr>
+                    <tr><td><code>battery -= 5</code></td><td>Subtracts 5 from the battery each loop. This moves the loop toward stopping.</td></tr>
+                    <tr><td><code>distance_traveled += 0.3</code></td><td>Adds another 0.3 meters to the simulated trip.</td></tr>
+                    <tr><td><code>break</code></td><td>Exits the loop immediately when the destination is reached.</td></tr>
+                    <tr><td><code>else:</code></td><td>Runs only if the <code>while</code> loop ended naturally, not if it ended with <code>break</code>.</td></tr>
+                  </tbody>
+                </table>
+                <h4>List Comprehensions: a One-Line Loop</h4>
+                <p>A list comprehension is a shorthand way to build a new list from an existing one, all in one line. It looks unusual at first, but it follows a fixed pattern you can memorize.</p>
+                <div class="function-anatomy">
+                  <div class="function-anatomy-row"><pre><code>new_list = [ expression   for item in existing_list   if condition ]</code></pre><div class="function-anatomy-note"><strong>Pattern:</strong> put this expression in the new list, loop over each item in an existing list, and optionally include only items that pass a condition.</div></div>
+                  <div class="function-anatomy-row"><pre><code>new_list = []
+for item in existing_list:
+    if condition:
+        new_list.append(expression)</code></pre><div class="function-anatomy-note">This longer <code>for</code> loop does the same thing. The comprehension is just the compact version.</div></div>
+                </div>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="list_comprehensions_one_line_loop.py">
+                  <figcaption>List comprehensions: a one-line loop</figcaption>
+      <pre><code class="language-python"># Long version (normal for loop)
+raw_readings = [1.5, -0.2, 0.9, 2.1, -0.1]
+
+clean_readings_long = []               # start with empty list
+for r in raw_readings:                 # go through every item
+    if r > 0:                          # only keep positive values
+        clean_readings_long.append(r)  # add to new list
+
+print("Long version:", clean_readings_long)
+
+# Short version (list comprehension - identical result)
+clean_readings_short = [r for r in raw_readings if r > 0]
+#                        keep r   for every r       only if r > 0
+
+print("Short version:", clean_readings_short)
+
+# Another example: convert all readings from meters to centimeters
+in_cm = [r * 100 for r in clean_readings_short]
+print("In cm:", in_cm)</code></pre>
+                </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>clean_readings_long = []</code></td><td>Creates an empty list that the long loop will fill.</td></tr>
+                    <tr><td><code>for r in raw_readings:</code></td><td>Visits each raw reading one at a time.</td></tr>
+                    <tr><td><code>if r &gt; 0:</code></td><td>Filters out invalid negative readings.</td></tr>
+                    <tr><td><code>clean_readings_long.append(r)</code></td><td>Adds the valid reading to the new list.</td></tr>
+                    <tr><td><code>[r for r in raw_readings if r &gt; 0]</code></td><td>Does the same loop, filter, and append operation in one line.</td></tr>
+                    <tr><td><code>[r * 100 for r in clean_readings_short]</code></td><td>Builds a new list by converting each meter reading to centimeters. There is no filter this time.</td></tr>
+                  </tbody>
+                </table>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Reading list comprehensions</div><p>When you see <code>[something for x in something_else]</code>, that is a list comprehension. Read it as: build a list by taking <code>x</code> from <code>something_else</code>, and optionally filtering. Once you spot the pattern, it becomes easy to read.</p></div>
+                </div>
                 <div class="callout warning" role="alert">
                   <div class="callout-icon">⚠️</div>
                   <div><div class="callout-title">Common Mistake</div><p>A <code>while</code> loop can run forever if the condition never changes. Make sure something inside the loop moves the program toward stopping.</p></div>
@@ -636,6 +849,21 @@
 <div class="lesson-body">
 <h3>1.6 Functions</h3>
                 <p><strong>Concept.</strong> Functions package reusable behavior. They make code easier to test, read, and repair. A function can take parameters, use default values, and return a result.</p>
+                <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch1-functions.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Colab notebook is pre-filled</div><p>The Colab notebook contains every code cell from this lesson in order, exactly as shown on this page. It opens pre-filled so you can run cells top to bottom, modify them, and save your own copy to Google Drive with <strong>File → Save a copy in Drive</strong>.</p></div>
+                </div>
+                <h4>Anatomy of a Function</h4>
+                <div class="function-anatomy">
+                  <div class="function-anatomy-row"><pre><code>def analyze_sensor_data(readings, danger_threshold=0.5):</code></pre><div class="function-anatomy-note"><code>def</code> tells Python you are defining a function. <code>analyze_sensor_data</code> is the function name. <code>readings</code> is a required parameter. <code>danger_threshold=0.5</code> is a parameter with a default value.</div></div>
+                  <div class="function-anatomy-row"><pre><code>    """
+    Analyze a list of sensor readings.
+    Returns a summary dictionary.
+    """</code></pre><div class="function-anatomy-note">This is a docstring: a triple-quoted string that documents what the function does.</div></div>
+                  <div class="function-anatomy-row"><pre><code>    clean = [r for r in readings if r &gt; 0]
+    return {"min": min(clean)}</code></pre><div class="function-anatomy-note">The function body is indented. <code>return</code> sends a value back to whoever called the function.</div></div>
+                </div>
                 <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="function_analyze_robot_sensor_readings.py">
                   <figcaption>Function: analyze robot sensor readings</figcaption>
       <pre><code class="language-python">def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
@@ -663,7 +891,164 @@
       print(f"Average:       {result['average']:.2f}{result['unit']}")
       print(f"Danger events: {result['danger_count']}")</code></pre>
                 </figure>
-                <p><code>*args</code> means "accept extra positional arguments" and <code>**kwargs</code> means "accept extra named arguments." You do not need them often yet, but you will see them in library functions.</p>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>def analyze_sensor_data(...):</code></td><td>Defines a reusable function with three parameters. <code>danger_threshold</code> and <code>unit</code> have default values.</td></tr>
+                    <tr><td><code>"""Analyze ..."""</code></td><td>Documents the function with a docstring. Python ignores it during normal execution, but tools can display it as help text.</td></tr>
+                    <tr><td><code>if not readings:</code></td><td>Checks for an empty list. Empty lists count as false in Python.</td></tr>
+                    <tr><td><code>clean = [r for r in readings if r &gt; 0]</code></td><td>Uses a list comprehension to keep only positive readings.</td></tr>
+                    <tr><td><code>return { ... }</code></td><td>Returns a dictionary containing several named summary values.</td></tr>
+                    <tr><td><code>sum(1 for r in clean if r &lt; danger_threshold)</code></td><td>Counts readings below the danger threshold by adding one for each matching reading.</td></tr>
+                    <tr><td><code>result = analyze_sensor_data(...)</code></td><td>Calls the function and stores its returned dictionary in <code>result</code>.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Commenting</h4>
+                <p>Python has two ways to write comments. Comments are ignored by Python. They exist only for humans reading the code.</p>
+                <p>Single-line comment: anything after a <code>#</code> on a line is a comment. Multi-line comment: wrap text in triple quotes <code>""" ... """</code>. When used at the start of a function, this is called a docstring.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="comments_and_docstrings.py">
+                  <figcaption>Commenting and docstrings</figcaption>
+      <pre><code class="language-python"># This is a single-line comment. Python ignores everything after the #.
+
+distance = 2.45   # you can also put a comment at the end of a line
+
+"""
+This is a multi-line comment (also called a docstring when it appears
+at the start of a function or file).
+Python does not execute any of this text.
+"""
+
+def get_battery_warning(level):
+    """
+    Return a warning string based on battery level.
+    level: int from 0 to 100
+    Returns: str
+    """
+    if level &lt; 10:
+        return "CRITICAL"
+    elif level &lt; 25:
+        return "LOW"
+    return "OK"
+
+print(get_battery_warning(8))
+print(get_battery_warning(50))</code></pre>
+                </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code># This is a single-line comment</code></td><td>Starts a comment. Python skips the rest of the line.</td></tr>
+                    <tr><td><code>distance = 2.45   # ...</code></td><td>Stores a number, then adds a human note after the code.</td></tr>
+                    <tr><td><code>""" ... """</code></td><td>Creates a multi-line string. At the top of a function, this becomes a docstring.</td></tr>
+                    <tr><td><code>def get_battery_warning(level):</code></td><td>Defines a function with one required parameter.</td></tr>
+                    <tr><td><code>return "CRITICAL"</code></td><td>Stops the function and sends the string back to the caller.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Returning Multiple Values</h4>
+                <p>Most languages need special syntax to return more than one value from a function. In Python, you just separate values with a comma. Python automatically packs them into a tuple and unpacks them on the other side.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="returning_multiple_values.py">
+                  <figcaption>Returning multiple values</figcaption>
+      <pre><code class="language-python">def analyze_motor(temperature, rpm):
+    """
+    Check motor health. Returns two values: a status string and a boolean.
+    """
+    is_overheating = temperature &gt; 80
+
+    if temperature &gt; 90:
+        status = "SHUTDOWN"
+    elif temperature &gt; 80:
+        status = "WARNING"
+    else:
+        status = "OK"
+
+    return status, is_overheating   # returning TWO values, separated by a comma
+
+# Method 1: capture both values into two variables
+motor_status, overheating = analyze_motor(85, 3000)
+print(f"Status: {motor_status}")          # WARNING
+print(f"Overheating: {overheating}")      # True
+
+# Method 2: capture as a single tuple (Python packs them automatically)
+result = analyze_motor(65, 2800)
+print(f"Full result tuple: {result}")     # ('OK', False)
+print(f"Just the status: {result[0]}")    # OK</code></pre>
+                </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>return status, is_overheating</code></td><td>Returns two values. Python wraps them in a tuple automatically, such as <code>("WARNING", True)</code>.</td></tr>
+                    <tr><td><code>motor_status, overheating = analyze_motor(...)</code></td><td>Uses tuple unpacking. Python splits the tuple and assigns the first value to <code>motor_status</code> and the second to <code>overheating</code>.</td></tr>
+                    <tr><td><code>result = analyze_motor(65, 2800)</code></td><td>Stores the whole returned tuple in one variable.</td></tr>
+                    <tr><td><code>result[0]</code></td><td>Reads the first item from the tuple.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Positional vs Named Arguments</h4>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="positional_vs_named_arguments.py">
+                  <figcaption>Positional vs named arguments</figcaption>
+      <pre><code class="language-python">def set_robot_speed(speed, unit="m/s", silent=False):
+    """Set robot speed. unit defaults to m/s, silent defaults to False."""
+    if not silent:
+        print(f"Setting speed to {speed} {unit}")
+    return speed
+
+# POSITIONAL: arguments matched by their position in the definition
+set_robot_speed(1.5)
+set_robot_speed(2.0, "km/h")
+
+# NAMED: arguments matched by name, order does not matter
+set_robot_speed(speed=1.5, silent=True)
+set_robot_speed(silent=True, speed=1.5)
+set_robot_speed(1.5, silent=True, unit="mph")
+
+# DEFAULT VALUES: if you do not pass an argument, Python uses the default.</code></pre>
+                </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>speed</code></td><td>Required parameter. The caller must provide this. Omitting it causes a <code>TypeError</code>.</td></tr>
+                    <tr><td><code>unit="m/s"</code></td><td>Optional parameter with a default value. If the caller does not pass it, Python uses <code>"m/s"</code>.</td></tr>
+                    <tr><td><code>silent=False</code></td><td>Another optional parameter. It defaults to <code>False</code>.</td></tr>
+                    <tr><td><code>set_robot_speed(2.0, "km/h")</code></td><td>Passes positional arguments. Python matches them left to right.</td></tr>
+                    <tr><td><code>set_robot_speed(silent=True, speed=1.5)</code></td><td>Passes named arguments. Order does not matter because the names identify the parameters.</td></tr>
+                    <tr><td><code>set_robot_speed(1.5, silent=True, unit="mph")</code></td><td>Mixes styles. Positional arguments must come first, then named arguments.</td></tr>
+                  </tbody>
+                </table>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Parameter order rule</div><p>Required parameters with no default must always come before optional parameters with defaults in the function definition.</p></div>
+                </div>
+                <h4><code>*args</code> and <code>**kwargs</code></h4>
+                <p>You do not need to write functions with <code>*args</code> or <code>**kwargs</code> yourself yet. But you will see them when you look at library documentation. Here is just enough to recognize them.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="args_and_kwargs.py">
+                  <figcaption>*args and **kwargs</figcaption>
+      <pre><code class="language-python"># *args collects any number of positional arguments into a tuple
+def print_all_readings(*args):
+    """Accept any number of readings."""
+    for reading in args:
+        print(f"  {reading}m")
+
+print_all_readings(1.2, 0.9, 1.5, 2.1)
+
+# **kwargs collects any number of named arguments into a dictionary
+def configure_robot(**kwargs):
+    """Accept any named settings."""
+    for key, value in kwargs.items():
+        print(f"  {key} = {value}")
+
+configure_robot(speed=1.5, task="mapping", battery=87)</code></pre>
+                </figure>
+                <table class="code-anatomy">
+                  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>def print_all_readings(*args):</code></td><td>Collects any number of extra positional arguments into a tuple named <code>args</code>.</td></tr>
+                    <tr><td><code>for reading in args:</code></td><td>Loops through every value that was passed in.</td></tr>
+                    <tr><td><code>def configure_robot(**kwargs):</code></td><td>Collects any number of named arguments into a dictionary named <code>kwargs</code>.</td></tr>
+                    <tr><td><code>kwargs.items()</code></td><td>Returns key-value pairs so the loop can unpack each setting name and value.</td></tr>
+                  </tbody>
+                </table>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Names are convention</div><p>The names <code>*args</code> and <code>**kwargs</code> are convention, not keywords. The <code>*</code> and <code>**</code> are what matter. You could write <code>*values</code> or <code>**settings</code>, but use <code>*args</code> and <code>**kwargs</code> so other developers recognize the pattern.</p></div>
+                </div>
                 <div class="callout tip" role="note">
                   <div class="callout-icon">💡</div>
                   <div><div class="callout-title">Scope</div><p>Variables created inside a function are local. Code outside the function cannot see them unless the function returns them.</p></div>
@@ -692,6 +1077,33 @@
 <div class="lesson-body">
 <h3>1.7 Libraries & Imports</h3>
                 <p><strong>Concept.</strong> A library is code someone else packaged so you do not have to rebuild everything from scratch. In Colab, common ML libraries are already installed. For anything missing, you can run <code>!pip install package_name</code>.</p>
+                <h4>Installing and Importing Libraries</h4>
+                <p>Python comes with a set of built-in tools called the standard library: things like <code>math</code>, <code>random</code>, <code>datetime</code>, and <code>os</code>. But the tools we need for machine learning, such as NumPy, Pandas, Matplotlib, and scikit-learn, are third-party packages. Other developers wrote them and published them for free.</p>
+                <p>All Python packages live on a public registry called <a href="https://pypi.org" target="_blank" rel="noreferrer">PyPI</a>. When you run <code>!pip install numpy</code>, <code>pip</code>, Python's package manager, downloads NumPy from PyPI and installs it.</p>
+                <p>The <code>!</code> at the start of a line in a Colab cell means: run this as a shell command, not as Python. You run it in a Colab code cell, not in a Python file.</p>
+                <figure class="code-card" data-runnable="false" data-chapter="1" data-filename="install_common_ml_packages_colab.py">
+                  <figcaption>Colab package install command</figcaption>
+      <pre><code class="language-python">!pip install numpy pandas matplotlib scikit-learn</code></pre>
+                </figure>
+                <p>After running that cell, those packages are available for the rest of your Colab session. You do not need to install them again until you start a new session.</p>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Most common packages are already installed</div><p>Most packages come pre-installed in Google Colab. You only need <code>!pip install</code> for packages that are less common. If you try to import something and see <code>ModuleNotFoundError</code>, that is your signal to run <code>!pip install package-name</code> first.</p></div>
+                </div>
+                <p>The install name and the import name are sometimes different. Here are the package names used in this course.</p>
+                <table class="data-table">
+                  <thead><tr><th>What we call it</th><th>pip install command</th><th>import statement</th></tr></thead>
+                  <tbody>
+                    <tr><td>NumPy</td><td><code>!pip install numpy</code></td><td><code>import numpy as np</code></td></tr>
+                    <tr><td>Pandas</td><td><code>!pip install pandas</code></td><td><code>import pandas as pd</code></td></tr>
+                    <tr><td>Matplotlib</td><td><code>!pip install matplotlib</code></td><td><code>import matplotlib.pyplot as plt</code></td></tr>
+                    <tr><td>Scikit-learn</td><td><code>!pip install scikit-learn</code></td><td><code>from sklearn import ...</code></td></tr>
+                    <tr><td>OpenCV</td><td><code>!pip install opencv-python</code></td><td><code>import cv2</code></td></tr>
+                    <tr><td>TensorFlow</td><td><code>!pip install tensorflow</code></td><td><code>import tensorflow as tf</code></td></tr>
+                    <tr><td>OpenAI Gym</td><td><code>!pip install gymnasium</code></td><td><code>import gymnasium as gym</code></td></tr>
+                  </tbody>
+                </table>
+                <p><strong>Note:</strong> The install name <code>scikit-learn</code> is different from the import name <code>sklearn</code>. This is the most common source of confusion. Always look up the correct import name in the library's official documentation.</p>
                 <div class="diagram">
                   <div class="library-map" aria-label="Library map">
                     <div class="card"><h4>NumPy</h4><p class="mini muted">Arrays and math</p></div>
@@ -744,9 +1156,14 @@
 <div class="lesson-body">
 <h3>1.8 ★ Checkpoint Exercise: Sensor Data Parser</h3>
                 <p><strong>The task.</strong> A robot has been collecting data for 30 minutes. You are given a raw log as a list of dictionaries. Parse it, clean it, and produce a summary report.</p>
-                <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
+                <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch1-checkpoint.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Colab notebook is pre-filled</div><p>The Colab notebook contains every code cell from this lesson in order, exactly as shown on this page. It opens pre-filled so you can run cells top to bottom, modify them, and save your own copy to Google Drive with <strong>File → Save a copy in Drive</strong>.</p></div>
+                </div>
+                <p><strong>Run this cell first.</strong> It creates the simulated robot log you will analyze. You do not need to understand every line right now. Just run it and move on.</p>
                 <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_starter_code_simulated_robot_log.py">
-                  <figcaption>Checkpoint starter code: simulated robot log</figcaption>
+                  <figcaption>Cell 1: create simulated robot log</figcaption>
       <pre><code class="language-python">robot_log = [
           {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
           {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
@@ -755,16 +1172,13 @@
           {"time": "20:00", "distance": -1,  "motor_temp": 71.0, "battery": 73,  "task": "delivery"},
           {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
           {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
-      ]
-      
-      # TODO:
-      # 1. Count total entries and sensor errors
-      # 2. Filter out distance == -1 entries
-      # 3. Find highest motor temperature and task
-      # 4. Calculate average battery drain per minute
-      # 5. Use a set to find unique tasks
-      # 6. Print a formatted report using f-strings</code></pre>
+      ]</code></pre>
                 </figure>
+                <p>The variable <code>robot_log</code> now contains 30 minutes of sensor data. Your job is to analyze it. Try the exercise yourself before opening the solution.</p>
+                <div class="callout exercise-note" role="note">
+                  <div class="callout-icon">📝</div>
+                  <div><div class="callout-title">Exercise</div><p>Write analysis code that does the following: count total entries and sensor errors, filter out <code>distance == -1</code> entries, find the highest motor temperature and its task, calculate average battery drain per minute, use a set to find unique tasks, and print a formatted report using f-strings.</p></div>
+                </div>
                 <div class="callout exercise-note" role="note">
                   <div class="callout-icon">📝</div>
                   <div><div class="callout-title">Self-check</div><p>[ ] Did you use a function? [ ] Did you use a list comprehension? [ ] Did you use a dictionary for the summary? [ ] Is your output clearly formatted?</p></div>
@@ -774,37 +1188,41 @@
                   <div>
                     <figure class="code-card" data-runnable="true" data-chapter="1" data-filename="checkpoint_solution.py">
                       <figcaption>Checkpoint solution</figcaption>
-      <pre><code class="language-python">def summarize_robot_log(log):
-          total_entries = len(log)
-          sensor_error_count = sum(1 for row in log if row["distance"] == -1)
-          clean_log = [row for row in log if row["distance"] != -1]
-      
-          hottest = max(log, key=lambda row: row["motor_temp"])
-          minutes = int(log[-1]["time"].split(":")[0]) - int(log[0]["time"].split(":")[0])
-          battery_drain = log[0]["battery"] - log[-1]["battery"]
-          average_drain = battery_drain / minutes
-          unique_tasks = {row["task"] for row in log}
-      
-          return {
-              "total_entries": total_entries,
-              "sensor_errors": sensor_error_count,
-              "valid_entries": len(clean_log),
-              "hottest_temp": hottest["motor_temp"],
-              "hottest_task": hottest["task"],
-              "average_drain": average_drain,
-              "unique_tasks": unique_tasks
-          }
-      
-      summary = summarize_robot_log(robot_log)
-      
-      print("ROBOT LOG SUMMARY")
-      print("-----------------")
-      print(f"Total entries:       {summary['total_entries']}")
-      print(f"Sensor errors:       {summary['sensor_errors']}")
-      print(f"Valid entries:       {summary['valid_entries']}")
-      print(f"Highest temperature: {summary['hottest_temp']:.1f} C during {summary['hottest_task']}")
-      print(f"Battery drain/min:   {summary['average_drain']:.2f}%")
-      print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</code></pre>
+      <pre><code class="language-python"># NOTE: This solution uses 'robot_log' created by the cell above.
+# If you see NameError: name 'robot_log' is not defined,
+# scroll up and run the data generation cell first, then run this cell.
+
+def summarize_robot_log(log):
+    total_entries = len(log)
+    sensor_error_count = sum(1 for row in log if row["distance"] == -1)
+    clean_log = [row for row in log if row["distance"] != -1]
+
+    hottest = max(log, key=lambda row: row["motor_temp"])
+    minutes = int(log[-1]["time"].split(":")[0]) - int(log[0]["time"].split(":")[0])
+    battery_drain = log[0]["battery"] - log[-1]["battery"]
+    average_drain = battery_drain / minutes
+    unique_tasks = {row["task"] for row in log}
+
+    return {
+        "total_entries": total_entries,
+        "sensor_errors": sensor_error_count,
+        "valid_entries": len(clean_log),
+        "hottest_temp": hottest["motor_temp"],
+        "hottest_task": hottest["task"],
+        "average_drain": average_drain,
+        "unique_tasks": unique_tasks
+    }
+
+summary = summarize_robot_log(robot_log)
+
+print("ROBOT LOG SUMMARY")
+print("-----------------")
+print(f"Total entries:       {summary['total_entries']}")
+print(f"Sensor errors:       {summary['sensor_errors']}")
+print(f"Valid entries:       {summary['valid_entries']}")
+print(f"Highest temperature: {summary['hottest_temp']:.1f} C during {summary['hottest_task']}")
+print(f"Battery drain/min:   {summary['average_drain']:.2f}%")
+print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</code></pre>
                     </figure>
                   </div>
                 </details>

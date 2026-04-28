@@ -585,6 +585,7 @@
     }
     .callout p:last-child { margin-bottom: 0; }
     .tip { --callout-color: var(--blue); }
+    .info { --callout-color: var(--cyan); }
     .warning { --callout-color: var(--amber); }
     .robotics { --callout-color: var(--green); }
     .exercise-note { --callout-color: var(--purple); }
@@ -796,6 +797,112 @@
     }
     .data-table tr:last-child td { border-bottom: 0; }
     .table-wrap { overflow-x: auto; }
+
+    .definition-card {
+      border-left: 4px solid var(--chapter-color, var(--chapter-accent, var(--blue)));
+      background: rgba(88, 166, 255, 0.06);
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0 1.4rem;
+    }
+    .def-term {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: var(--white);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .language-compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .language-compare .code-card {
+      margin: 0;
+    }
+
+    .code-anatomy {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.875rem;
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .code-anatomy th {
+      text-align: left;
+      padding: 6px 12px;
+      background: #161b22;
+      color: #8b949e;
+      border-bottom: 1px solid #30363d;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .code-anatomy td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #21262d;
+      vertical-align: top;
+    }
+    .code-anatomy tr:last-child td {
+      border-bottom: none;
+    }
+    .code-anatomy td:first-child {
+      width: 42%;
+      color: #79c0ff;
+    }
+    .code-anatomy td:first-child code {
+      white-space: normal;
+    }
+    .code-anatomy td:last-child {
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+
+    .function-anatomy {
+      display: grid;
+      gap: 0.7rem;
+      margin: 1rem 0 1.5rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(13,17,23,0.68);
+    }
+    .function-anatomy-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.95fr) minmax(0, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .function-anatomy code,
+    .function-anatomy pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: #e6edf3;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+    }
+    .function-anatomy-note {
+      color: #c9d1d9;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 720px) {
+      .language-compare,
+      .function-anatomy-row {
+        grid-template-columns: 1fr;
+      }
+      .code-anatomy {
+        display: block;
+        overflow-x: auto;
+      }
+      .code-anatomy td:first-child {
+        min-width: 220px;
+      }
+    }
 
     .chapter-nav {
       display: flex;
@@ -1484,6 +1591,7 @@ body.lesson-app .callout {
 }
 
 body.lesson-app .callout.tip { background: rgba(56,139,253,0.08); border-color: rgba(56,139,253,0.3); }
+body.lesson-app .callout.info { background: rgba(34,211,238,0.08); border-color: rgba(34,211,238,0.3); }
 body.lesson-app .callout.warning { background: rgba(210,153,34,0.1); border-color: rgba(210,153,34,0.4); }
 body.lesson-app .callout.robotics { background: rgba(35,197,94,0.08); border-color: rgba(35,197,94,0.3); }
 body.lesson-app .callout.exercise,
@@ -1763,6 +1871,7 @@ body:not(.lesson-app) .code-actions {
 
 body:not(.lesson-app) .copy-btn,
 body:not(.lesson-app) .run-btn,
+body:not(.lesson-app) .reset-code-btn,
 body:not(.lesson-app) .reset-chapter-btn {
   appearance: none;
   border: 1px solid var(--border-strong);
@@ -1778,6 +1887,13 @@ body:not(.lesson-app) .reset-chapter-btn {
 body:not(.lesson-app) .run-btn {
   background: #1a7f37;
   color: #fff;
+}
+
+body:not(.lesson-app) .reset-code-btn:hover,
+body:not(.lesson-app) .reset-code-btn:focus-visible {
+  border-color: var(--amber);
+  color: var(--amber);
+  outline: none;
 }
 
 body:not(.lesson-app) .editor-shell,
@@ -1920,6 +2036,7 @@ body.lesson-app .code-actions {
 
 body.lesson-app .copy-btn,
 body.lesson-app .run-btn,
+body.lesson-app .reset-code-btn,
 body.lesson-app .reset-chapter-btn,
 body.lesson-app .colab-inline-btn {
   border-radius: 6px;
@@ -1932,6 +2049,7 @@ body.lesson-app .colab-inline-btn {
 }
 
 body.lesson-app .copy-btn,
+body.lesson-app .reset-code-btn,
 body.lesson-app .reset-chapter-btn {
   color: #8b949e;
   background: transparent;
@@ -1939,9 +2057,15 @@ body.lesson-app .reset-chapter-btn {
 }
 
 body.lesson-app .copy-btn:hover,
+body.lesson-app .reset-code-btn:hover,
 body.lesson-app .reset-chapter-btn:hover {
   color: #e6edf3;
   border-color: #8b949e;
+}
+
+body.lesson-app .reset-code-btn:hover {
+  color: #d29922;
+  border-color: #d29922;
 }
 
 body.lesson-app .copy-btn.copied {
@@ -2159,6 +2283,7 @@ html.light-mode body.lesson-app .line-gutter {
   color: #8b949e;
 }
 
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .reset-code-btn:hover,
 :is(html.light-mode, html[data-theme="light"]) body.lesson-app .reset-chapter-btn:hover {
   color: #1f2328;
   border-color: #57606a;

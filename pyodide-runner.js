@@ -149,6 +149,44 @@
     return Array.from({ length: count }, (_, index) => index + 1).join("\n");
   }
 
+  function generateId(code) {
+    let h = 0;
+    const text = String(code || "");
+    for (let i = 0; i < text.length; i += 1) {
+      h = (Math.imul(31, h) + text.charCodeAt(i)) | 0;
+    }
+    return Math.abs(h).toString(36);
+  }
+
+  function storageKeyFor(block, code) {
+    const storageId = block.dataset.storageId || `${block.dataset.session || block.dataset.chapter || "course"}_${block.dataset.filename || generateId(code)}`;
+    return `code_${storageId.replace(/\s+/g, "_")}`;
+  }
+
+  function readSavedCode(storageKey) {
+    try {
+      return window.localStorage.getItem(storageKey);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveCode(storageKey, code) {
+    try {
+      window.localStorage.setItem(storageKey, code);
+    } catch (error) {
+      // Some privacy modes block localStorage; the editor still works as a scratchpad.
+    }
+  }
+
+  function clearSavedCode(storageKey) {
+    try {
+      window.localStorage.removeItem(storageKey);
+    } catch (error) {
+      // Ignore storage failures; reset still updates the editor text.
+    }
+  }
+
   function updateLineNumbers(block) {
     const editor = block.querySelector(".code-editor");
     const gutter = block.querySelector(".line-gutter");
@@ -358,6 +396,42 @@ _result
     });
   }
 
+  function wireCodePersistence(block, originalCode) {
+    const editor = block.querySelector(".code-editor");
+    if (!editor || editor.dataset.persistenceInitialized === "true") return;
+
+    editor.dataset.persistenceInitialized = "true";
+    const storageKey = storageKeyFor(block, originalCode);
+    const saved = readSavedCode(storageKey);
+    if (saved !== null) {
+      editor.value = saved;
+      updateLineNumbers(block);
+    }
+
+    let saveTimer;
+    editor.addEventListener("input", () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        saveCode(storageKey, editor.value);
+      }, 800);
+    });
+
+    const resetBtn = block.querySelector(".reset-code-btn");
+    if (!resetBtn || resetBtn.dataset.initialized === "true") return;
+    resetBtn.dataset.initialized = "true";
+    resetBtn.addEventListener("click", () => {
+      clearTimeout(saveTimer);
+      editor.value = originalCode;
+      clearSavedCode(storageKey);
+      updateLineNumbers(block);
+      resetBtn.textContent = "✓ Reset";
+      setTimeout(() => {
+        resetBtn.textContent = "↺ Reset";
+      }, 1500);
+      editor.focus();
+    });
+  }
+
   function addResetBar(block, session, chapter) {
     if (!session) return;
     const existing = Array.from(document.querySelectorAll(".reset-chapter-btn"))
@@ -411,6 +485,7 @@ _result
         <div class="code-actions">
           <span class="code-lang">${python ? "Python" : "Text"}</span>
           <button class="copy-btn" type="button" title="Copy code">Copy</button>
+          ${runnable ? `<button class="reset-code-btn" type="button" title="Reset this code cell to the original example">↺ Reset</button>` : ""}
           ${runnable ? `<button class="run-btn" type="button" data-chapter="${escapeHtml(chapter)}" data-session="${escapeHtml(session)}">Run</button>` : ""}
           ${colabOnly ? `<a class="colab-inline-btn" href="${colabUrl}" target="_blank" rel="noreferrer"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a><span class="colab-reason" title="This cell needs Google Colab or unsupported browser packages.">Run in Colab</span>` : ""}
         </div>
@@ -426,6 +501,7 @@ _result
     if (runnable) {
       addResetBar(block, session, chapter);
       const editor = block.querySelector(".code-editor");
+      wireCodePersistence(block, code);
       editor?.addEventListener("input", () => updateLineNumbers(block));
       wireTabKey(editor);
       wireRunButton(block);

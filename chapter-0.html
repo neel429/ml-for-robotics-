@@ -161,7 +161,38 @@
                   <div class="step"><div><strong>Run a cell.</strong><br />Press <code>Shift+Enter</code>. The output appears directly underneath the cell.</div></div>
                   <div class="step"><div><strong>Create a free Kaggle account.</strong><br />Go to <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a>. We use Kaggle because it hosts clean public datasets.</div></div>
                   <div class="step"><div><strong>Get your Kaggle API key.</strong><br />Kaggle account menu → Settings → API → Create New Token. It downloads <code>kaggle.json</code>.</div></div>
-                  <div class="step"><div><strong>Upload the key in Colab.</strong><br />Each Kaggle project starts with an upload cell. Run it, choose <code>kaggle.json</code>, and the notebook downloads the dataset.</div></div>
+                </div>
+                <h4>Upload your Kaggle key to Colab</h4>
+                <p>Every time you open a Colab notebook, it starts fresh like a brand new computer. That means you have to upload your <code>kaggle.json</code> key once per session before running any Kaggle download. Here is exactly how.</p>
+                <div class="steps">
+                  <div class="step"><div><strong>Open the project notebook.</strong><br />Click the <strong>Open in Colab</strong> button in any project lesson. A new browser tab opens with the notebook.</div></div>
+                  <div class="step"><div><strong>Find the first code cell.</strong><br />The very first cell in every project notebook is labelled <strong>Setup: Upload Kaggle Key</strong>. It looks like this:
+                    <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="setup_upload_kaggle_key.py">
+                      <figcaption>Setup: Upload Kaggle Key</figcaption>
+<pre><code class="language-python">from google.colab import files
+files.upload()    # a file picker dialog will open in your browser</code></pre>
+                    </figure>
+                  </div></div>
+                  <div class="step"><div><strong>Run the cell.</strong><br />Press <code>Shift+Enter</code> or click the play button to the left of the cell. A file picker dialog opens directly in your browser tab.</div></div>
+                  <div class="step"><div><strong>Choose your kaggle.json file.</strong><br />Navigate to wherever you saved <code>kaggle.json</code>, usually your Downloads folder. Select it and click <strong>Open</strong>. You will see a green confirmation message like <code>kaggle.json(application/json) - X bytes, last modified: ...</code> once it uploads successfully.</div></div>
+                  <div class="step"><div><strong>Run the next cell immediately.</strong><br />The second cell moves your key to the location Kaggle expects:
+                    <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="install_kaggle_key.py">
+                      <figcaption>Install Kaggle key for this Colab session</figcaption>
+<pre><code class="language-python">import os
+os.makedirs('/root/.kaggle', exist_ok=True)
+os.rename('kaggle.json', '/root/.kaggle/kaggle.json')
+os.chmod('/root/.kaggle/kaggle.json', 600)</code></pre>
+                    </figure>
+                    After this cell runs, your key is installed. Every <code>!kaggle</code> command in the rest of the notebook will work for this session.
+                  </div></div>
+                </div>
+                <div class="callout warning" role="alert">
+                  <div class="callout-icon">⚠️</div>
+                  <div><div class="callout-title">Colab sessions reset</div><p>Colab sessions reset when you close the tab or after 90 minutes of inactivity. You will need to upload <code>kaggle.json</code> again each time you reopen the notebook. This is normal.</p></div>
+                </div>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Keep the key private</div><p>Never paste the contents of <code>kaggle.json</code> directly into a code cell or share your notebook publicly while the key is present. The key is tied to your Kaggle account.</p></div>
                 </div>
                 <div class="diagram" aria-label="Colab cell workflow diagram">
                   <div class="flow-row">
@@ -184,6 +215,10 @@
                   <li>Every 💡 tip box is something that trips beginners up. Read those carefully.</li>
                   <li>Every ★ Project section has a full Colab-style notebook on the page. Do not skip the projects.</li>
                 </ul>
+                <div class="callout info" role="note">
+                  <div class="callout-icon">ℹ</div>
+                  <div><div class="callout-title">Your progress is saved in this browser</div><p>When you click <strong>Mark as Complete</strong>, your progress is saved in your browser's local storage, the same place websites store your preferences.</p><ul><li>✓ Your progress persists when you close and reopen this tab.</li><li>✓ No account or login needed.</li><li>✗ Progress does not carry over to a different browser or device.</li><li>✗ Clearing your browser history or cookies will reset your progress.</li></ul><p>If you want to track progress across devices, keep a personal checklist in Notion, Google Docs, or even a piece of paper.</p></div>
+                </div>
               </section>
       
               <div class="chapter-nav">
