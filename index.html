@@ -105,9 +105,26 @@
 <a class="lesson-link" href="?lesson=ch7-papers" data-lesson-link="ch7-papers"><span>7.3 Papers</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
+<div class="lesson-group" data-chapter="projA" style="--chapter-accent:#10b981">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project A: Train Your First Detector <span class="prereq-chip">Prerequisite</span></span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link is-exercise" href="?lesson=projA-overview" data-lesson-link="projA-overview"><span>★ PA.0 What is Object Detection?</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-yolo26" data-lesson-link="projA-yolo26"><span>PA.1 Introducing YOLO26</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-vscode" data-lesson-link="projA-vscode"><span>PA.2 VS Code & Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span>PA.3 Collecting Data</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span>PA.4 Labeling Images</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span>PA.5 Exporting Dataset</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-training" data-lesson-link="projA-training"><span>PA.6 Training in Colab</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-results" data-lesson-link="projA-results"><span>PA.7 Training Results</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-local-inference" data-lesson-link="projA-local-inference"><span>PA.8 Local Inference</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-model-output" data-lesson-link="projA-model-output"><span>PA.9 Model Output</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-ready" data-lesson-link="projA-ready"><span>PA.10 Preparing for Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
 <div class="lesson-group" data-chapter="proj1" style="--chapter-accent:#f97316">
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 1: Object Tracker</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
+<div class="project-prereq-note">Complete Project A first &mdash; it produces the <code>best.pt</code> file used here.</div>
 <a class="lesson-link is-exercise" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span>★ P1.0 What We Are Building</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span>P1.1 Setting Up VS Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span>P1.2 Installing Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -209,6 +226,14 @@
 <p>Pick the right technique and choose your next learning path.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="ch7">0 / 4 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=ch7-overview" data-lesson-link="ch7-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="projA" style="--chapter-accent:#10b981">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Project A</span><span>11 lessons</span></div>
+<h2>Train Your First Detector</h2>
+<p>Collect Roboflow data, label boxes, train YOLO26n in Colab, and run your own detector locally.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projA">0 / 11 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=projA-overview" data-lesson-link="projA-overview">Start</a>
 </article>
 <article class="chapter-card" data-chapter-card="proj1" style="--chapter-accent:#f97316">
 <div class="chapter-card-strip"></div>
@@ -2377,6 +2402,521 @@ os.chmod("/root/.kaggle/kaggle.json", 0o600)
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-papers">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=ch7-roadmap" data-lesson-link="ch7-roadmap"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 7.2 Roadmap</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-overview" data-lesson-link="projA-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project A &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="projA-overview" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.0 What is Object Detection?</div>
+<h1>PA.0 What is Object Detection?</h1>
+<div class="lesson-meta"><span>Prerequisite Project</span><span>Concept</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Object detection is the bridge between computer vision and robot action. Instead of only asking what is in an image, the detector tells the robot where the target is, how confident the model is, and how large the object appears in the frame.</p>
+<div class="grid-3">
+<div class="definition-card"><span class="def-term">Image Classification</span><p>Given an image, output one label. Is this a cat or a dog? The model looks at the whole image and gives one answer.</p></div>
+<div class="definition-card"><span class="def-term">Object Detection</span><p>Given an image, find every instance of target objects and draw a box around each one. Output: a list of boxes, each with a class name and a confidence score. This is what YOLO does.</p></div>
+<div class="definition-card"><span class="def-term">Instance Segmentation</span><p>Like detection but instead of a box, draw the exact pixel outline of each object. More precise, much slower.</p></div>
+</div>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Why detection is right for tracking</div><p>For robot tracking, detection is the right choice. You need to know where the object is, using the bounding box center, and how big it appears, using box area as a proxy for distance. Classification alone cannot give you position. Segmentation is overkill and too slow for real-time control.</p></div></div>
+<h3>What A Bounding Box Actually Is</h3>
+<p>Every detection is a rectangle described by four numbers. You will see two formats often: corner coordinates for inference and normalized center coordinates for training labels.</p>
+<div class="diagram object-box-diagram" aria-label="Bounding box coordinate formats">
+<div class="detector-frame"><div class="detector-box"><span>target object</span></div><span class="coord-label coord-tl">(120, 45)</span><span class="coord-label coord-br">(380, 290)</span><span class="coord-label coord-center">center: (0.50, 0.30)</span></div>
+<div class="grid-2" style="margin-top:1rem">
+<div><h4>xyxy: corner format</h4><p><code>[x_top_left, y_top_left, x_bottom_right, y_bottom_right]</code></p><p>Example: <code>[120, 45, 380, 290]</code>. Project 1 uses this format when reading YOLO output.</p></div>
+<div><h4>xywh: center format</h4><p><code>[x_center, y_center, width, height]</code>, normalized from 0 to 1.</p><p>Example: <code>[0.5, 0.3, 0.18, 0.24]</code>. YOLO training labels use this format.</p></div>
+</div>
+</div>
+<h3>What A Confidence Score Is</h3>
+<p>YOLO proposes many candidate boxes. Each box gets a confidence score from 0 to 1, meaning how sure the model is that the box contains the target object. Boxes below the threshold are discarded.</p>
+<div class="diagram confidence-diagram" aria-label="Confidence threshold scale"><div class="confidence-scale"><span>0.0<br />many false positives</span><strong>0.5-0.6<br />sweet spot</strong><span>1.0<br />only obvious detections</span></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch7-papers" data-lesson-link="ch7-papers"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 7.3 Papers</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-yolo26" data-lesson-link="projA-yolo26"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.1 Introducing YOLO26 &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-yolo26" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.1 Introducing YOLO26</div>
+<h1>PA.1 Introducing YOLO26</h1>
+<div class="lesson-meta"><span>Prerequisite Project</span><span>YOLO26n</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">YOLO stands for You Only Look Once. It processes the whole image in a single forward pass through the neural network and produces all detections at once, which is why it is fast enough for real-time robotics.</p>
+<p>Before YOLO-style detectors, many systems scanned an image with repeated sliding windows. That was accurate enough for some tasks but too slow for a robot that must react while moving. YOLO trades that repeated scanning for one direct prediction pass.</p>
+<h3>The YOLO Family</h3>
+<p>YOLO has moved through many generations: v1 through v8, then v9, v10, v11, and now YOLO26. Each generation improved the speed and accuracy tradeoff. In this course we use YOLO26 because the nano model is aimed at edge and low-power devices, which is the same constraint robots usually face.</p>
+<p>Reference for the model family: <a href="https://docs.ultralytics.com/models/yolo26/" target="_blank" rel="noreferrer">Ultralytics YOLO26 documentation</a>.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th>Size</th><th>Speed (CPU)</th><th>Good for</th></tr></thead><tbody><tr><td><code>yolo26n</code></td><td>3.5 MB</td><td>Very fast</td><td>This course ✓</td></tr><tr><td><code>yolo26s</code></td><td>11 MB</td><td>Fast</td><td>When nano isn't accurate enough</td></tr><tr><td><code>yolo26m</code></td><td>30 MB</td><td>Medium</td><td>Good GPU available</td></tr><tr><td><code>yolo26l</code></td><td>59 MB</td><td>Slow on CPU</td><td>Server/cloud deployment</td></tr></tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Nano is enough for the first detector</div><p>For a simple task like detecting one object type against a clear background, such as a ball, mug, or cone, nano is genuinely enough. The limitation of a small model is usually crowded, complex scenes. Your first robot-tracking use case is intentionally simpler than that.</p></div></div>
+<h3>What End-To-End Means</h3>
+<p>Older YOLO versions needed a post-processing step called Non-Maximum Suppression to remove duplicate boxes. YOLO26 is designed to produce one clean prediction per object directly. In practice that means slightly faster inference, simpler code, and easier deployment on hardware with limited post-processing support.</p>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Designed for edge deployment</div><p>YOLO26 was specifically designed for edge deployment: the same category as microcontrollers, embedded computers, and low-power laptops used around real robots. Learning it here transfers directly to deploying ML on physical hardware later.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-yolo26">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-overview" data-lesson-link="projA-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.0 Object Detection</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-vscode" data-lesson-link="projA-vscode"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.2 VS Code & Dependencies &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-vscode" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.2 Setting Up VS Code & Dependencies</div>
+<h1>PA.2 Setting Up VS Code & Dependencies</h1>
+<div class="lesson-meta"><span>Beginner</span><span>Run locally</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Already set up VS Code from Project 1?</div><p>If you already completed P1.1 and P1.2, you can skip the VS Code setup and jump to PA.3. This project comes first in the course order, so the full setup is included here.</p></div></div>
+<div class="steps">
+<div class="step"><div><strong>Install VS Code.</strong><br />Go to <a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer">code.visualstudio.com</a> and install the free editor for Windows, macOS, or Linux.</div></div>
+<div class="step"><div><strong>Install the Python extension.</strong><br />Open VS Code, click Extensions, search for <strong>Python</strong>, and install the Microsoft extension.</div></div>
+<div class="step"><div><strong>Install Python.</strong><br />Use Python 3.10 or 3.11 for the smoothest package compatibility. On Windows, tick <strong>Add Python to PATH</strong>.</div></div>
+<div class="step"><div><strong>Create a folder.</strong><br />Make a new folder called <code>my-detector</code>. Keep it separate from the later <code>object-tracker</code> folder.</div></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Windows PATH warning</div><p>If you skip <strong>Add Python to PATH</strong>, commands like <code>python --version</code> can fail with <code>python is not recognized</code>. Re-run the Python installer and tick that box.</p></div></div>
+<h3>pip and Virtual Environments</h3>
+<p><code>pip</code> is Python's package manager. It downloads and installs libraries from the internet. A virtual environment is an isolated copy of Python just for this project, so packages installed here do not affect other Python projects on your machine.</p>
+<p>Open the VS Code terminal in your <code>my-detector</code> folder and run these commands. After activation, the terminal prompt should start with <code>(venv)</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Terminal"><figcaption><span>Terminal setup commands</span></figcaption><pre><code class="language-bash">python --version
+python -m venv venv
+venv\Scripts\activate      # Windows
+source venv/bin/activate    # macOS / Linux
+pip install ultralytics roboflow opencv-python</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Package</th><th>Role in this project</th></tr></thead><tbody><tr><td><code>ultralytics</code></td><td>Loads YOLO26, runs training, runs inference</td></tr><tr><td><code>roboflow</code></td><td>Downloads your labeled dataset from Roboflow in the right format</td></tr><tr><td><code>opencv-python</code></td><td>Opens your webcam and displays the detection results</td></tr></tbody></table></div>
+<h3>Verify Installation</h3>
+<p>Create <code>test_setup.py</code>, type this code, and run <code>python test_setup.py</code>. If <strong>All good!</strong> prints, the environment is ready.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="test_setup.py"><figcaption><span>test_setup.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">from ultralytics import YOLO
+import cv2
+import roboflow
+
+print(&quot;All good!&quot;)</code></pre></figure>
+<h3>Download YOLO26n Weights</h3>
+<p>Create <code>download_model.py</code> and run it once. Ultralytics downloads <code>yolo26n.pt</code> automatically on the first run.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="download_model.py"><figcaption><span>download_model.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">from ultralytics import YOLO
+
+model = YOLO(&quot;yolo26n.pt&quot;)  # downloads automatically on first run
+print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.parameters()):,}&quot;)</code></pre></figure>
+<p>A parameter is one learned number inside the neural network. YOLO26n already learned millions of these numbers during its original training, and fine-tuning adjusts them toward your target object.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">What is COCO?</div><p>YOLO26n comes pre-trained on COCO, a dataset of 118,000 images covering 80 common object categories. We fine-tune this pre-trained model on your custom data. Fine-tuning keeps most of what the model already learned and adapts the last layers to your object, which is why you only need about 100-150 images instead of 100,000.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-vscode">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-yolo26" data-lesson-link="projA-yolo26"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.1 YOLO26</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.3 Collecting Data &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-roboflow-data" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.3 Collecting Your Data with Roboflow</div>
+<h1>PA.3 Collecting Your Data with Roboflow</h1>
+<div class="lesson-meta"><span>Data Collection</span><span>Roboflow</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Data quality matters more than model architecture in this project. A small, clean, varied dataset usually beats a larger dataset full of repeated backgrounds and sloppy labels.</p>
+<div class="steps">
+<div class="step"><div><strong>Create a free Roboflow account.</strong><br />Go to <a href="https://roboflow.com/" target="_blank" rel="noreferrer">roboflow.com</a> and sign up. The free tier is enough for this project.</div></div>
+<div class="step"><div><strong>Create a new project.</strong><br />Choose <strong>Object Detection</strong>, name it after your target object, and set the annotation group to a lowercase class name with no spaces, such as <code>ball</code>.</div></div>
+<div class="step"><div><strong>Pick one object.</strong><br />Start with one target class. A single-class detector is easier to train, easier to debug, and ideal for Project 1.</div></div>
+</div>
+<div class="grid-2">
+<div class="card"><h4>Good first targets</h4><p>A brightly colored ball, a mug, a water bottle, a small toy, or a colored cone. Distinct shape and color help the model learn faster.</p></div>
+<div class="card"><h4>Avoid at first</h4><p>Human faces, multiple similar objects, cloth, paper, or anything that changes shape significantly. These add complexity before you need it.</p></div>
+</div>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Why a ball works so well</div><p>The ball is the classic robot-tracking target because it looks similar from every angle and often has a color that separates it from the background. That means the model needs fewer images to learn the object reliably.</p></div></div>
+<h3>Capture A Varied Dataset</h3>
+<p>Collect at least <strong>150 images</strong>. If you can collect 300, do it. The model needs variation because the robot will not see the object from one perfect angle in one perfect room.</p>
+<div class="steps">
+<div class="step"><div><strong>Distances:</strong> close, medium, and far.</div></div>
+<div class="step"><div><strong>Angles:</strong> straight on, from the left, from the right, and from above.</div></div>
+<div class="step"><div><strong>Backgrounds:</strong> different rooms, floors, desks, and surfaces.</div></div>
+<div class="step"><div><strong>Lighting:</strong> bright room, dim room, window light, and shadows.</div></div>
+<div class="step"><div><strong>Partial occlusion:</strong> hide part of the object behind something in a few images.</div></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not collect one-background data</div><p>The biggest beginner mistake is collecting every image in one location with one background. The model learns the background as part of the object, then fails in a new room. Vary backgrounds deliberately.</p></div></div>
+<p>Upload images by dragging them into your Roboflow project, or use the Roboflow mobile app to capture directly into the project.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-roboflow-data">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-vscode" data-lesson-link="projA-vscode"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.2 Setup</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.4 Labeling Images &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-labeling" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.4 Labeling Your Images</div>
+<h1>PA.4 Labeling Your Images</h1>
+<div class="lesson-meta"><span>Annotation</span><span>Bounding Boxes</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Labeling means drawing a tight rectangle around every visible instance of your object. This is the most repetitive part of the project, and it sets the ceiling for model quality.</p>
+<div class="steps">
+<div class="step"><div>Open your Roboflow project and click <strong>Annotate</strong>.</div></div>
+<div class="step"><div>Open the first image, press <strong>B</strong>, or choose the box tool.</div></div>
+<div class="step"><div>Click and drag a rectangle tightly around the object.</div></div>
+<div class="step"><div>Type your class name. After the first label, Roboflow autocompletes it.</div></div>
+<div class="step"><div>Press Enter, then use the right arrow key to move to the next image.</div></div>
+</div>
+<h3>Good Labeling Rules</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Rule</th><th>Why it matters</th></tr></thead><tbody><tr><td>Draw the box tightly around the object.</td><td>Loose boxes include background pixels, which teaches the detector that background belongs to the object.</td></tr><tr><td>Label every instance in the image.</td><td>If you miss one, the model can be punished for detecting a real object you forgot to label.</td></tr><tr><td>Skip objects that are less than 20% visible.</td><td>Heavily occluded targets provide weak signal and inconsistent labels hurt more than they help.</td></tr><tr><td>Keep box tightness consistent.</td><td>Inconsistent labels create noise that reduces final accuracy.</td></tr></tbody></table></div>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Labeling time estimate</div><p>Labeling 150 images takes roughly 30-45 minutes if your object appears once per image. It is repetitive, but there is no shortcut: label quality is the ceiling on model quality.</p></div></div>
+<h3>Using Auto-Label Carefully</h3>
+<p>Roboflow has AI auto-labeling. For the first 50 images, label manually. Then try auto-label and correct its mistakes for the rest. This hybrid pattern is what professionals use: automate the boring part, then inspect every result.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-labeling">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.3 Collecting Data</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.5 Exporting Dataset &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-exporting" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.5 Exporting the Dataset</div>
+<h1>PA.5 Exporting the Dataset</h1>
+<div class="lesson-meta"><span>Dataset Prep</span><span>YOLO Format</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Before training, Roboflow packages your images into the folder layout YOLO expects. This lesson also introduces train, validation, and test splits.</p>
+<h3>Train / Validation / Test Split</h3>
+<div class="grid-3">
+<div class="definition-card"><span class="def-term">Training set</span><p>The practice problems the model learns from.</p></div>
+<div class="definition-card"><span class="def-term">Validation set</span><p>The practice exam checked during training to tune progress.</p></div>
+<div class="definition-card"><span class="def-term">Test set</span><p>The final exam, used only at the end to estimate real performance.</p></div>
+</div>
+<div class="diagram split-diagram" aria-label="Dataset split example"><div class="split-bar"><span style="flex:80">120 train</span><span style="flex:15">22 val</span><span style="flex:5">8 test</span></div><p class="muted">150 images becomes roughly 80% train, 15% validation, and 5% test.</p></div>
+<h3>Augmentation</h3>
+<p>Augmentation creates extra training variation by transforming existing images. It teaches the model to ignore harmless changes like mild rotation or lighting differences.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Augmentation</th><th>Why use it</th></tr></thead><tbody><tr><td>Horizontal flip</td><td>The object should still be recognized when mirrored.</td></tr><tr><td>Rotation ±15°</td><td>Handles camera tilt and imperfect robot mounting.</td></tr><tr><td>Brightness ±25%</td><td>Handles different lighting conditions.</td></tr><tr><td>Blur up to 1.5px</td><td>Handles slight focus or motion blur.</td></tr></tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Avoid extreme augmentation</div><p>Do not enable too many augmentations on a small dataset. If transformations become unrealistic, the model learns impossible scenarios instead of useful robustness.</p></div></div>
+<h3>Export In YOLOv8 Format</h3>
+<div class="steps">
+<div class="step"><div>Click <strong>Generate</strong> to create a dataset version.</div></div>
+<div class="step"><div>Click <strong>Export Dataset</strong>.</div></div>
+<div class="step"><div>Choose <strong>YOLOv8</strong>. This format also works for YOLO26.</div></div>
+<div class="step"><div>Choose <strong>Get download code</strong>. Roboflow gives you a Python snippet.</div></div>
+</div>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="roboflow_download_snippet.py"><figcaption><span>Roboflow download snippet</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
+
+rf = Roboflow(api_key=&quot;YOUR_KEY_HERE&quot;)
+project = rf.workspace(&quot;YOUR_WORKSPACE&quot;).project(&quot;YOUR_PROJECT&quot;)
+version = project.version(1)
+dataset = version.download(&quot;yolov8&quot;)</code></pre></figure>
+<p>Save this snippet. You will paste your own version into the Colab notebook in the next lesson.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Why YOLOv8 format works for YOLO26</div><p>YOLO26 uses the same dataset layout as YOLOv8: image folders plus matching <code>.txt</code> label files. Ultralytics kept this format consistent across model generations.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-exporting">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.4 Labeling Images</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-training" data-lesson-link="projA-training"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.6 Training in Colab &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-training" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.6 Training in Google Colab</div>
+<h1>PA.6 Training in Google Colab</h1>
+<div class="lesson-meta"><span>Colab</span><span>GPU Training</span><span>20 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Training runs in Google Colab because the GPU makes this step fast. Inference runs locally later; training is the one part where cloud GPU is the right tool.</p>
+<a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/projA-training.ipynb" target="_blank" rel="noreferrer">Open Project A Colab Notebook</a>
+<h3>Why Colab For Training?</h3>
+<p>Training 50 epochs on 150 images can take 2-4 hours on a CPU. A free Colab T4 GPU usually finishes this project in about 8-12 minutes.</p>
+<div class="steps">
+<div class="step"><div>Open the notebook in Colab.</div></div>
+<div class="step"><div>Go to <strong>Runtime → Change runtime type</strong>.</div></div>
+<div class="step"><div>Choose <strong>T4 GPU</strong> and click Save.</div></div>
+<div class="step"><div>Check <strong>Runtime → View resources</strong> to confirm GPU memory appears.</div></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Colab free tier limit</div><p>Colab free tier gives limited daily GPU time, but this project only needs about 10 minutes. Do not leave the notebook idle because Colab can disconnect and clear the session.</p></div></div>
+<h3>Training Notebook Cells</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 1: Install dependencies"><figcaption><span>Cell 1: Install dependencies</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">!pip install ultralytics roboflow -q</code></pre></figure>
+<p><code>-q</code> means quiet; it suppresses the long install log.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 2: Check GPU"><figcaption><span>Cell 2: Check GPU</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import torch
+
+print(f&quot;CUDA available: {torch.cuda.is_available()}&quot;)
+print(f&quot;GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else &#x27;None - check runtime type&#x27;}&quot;)</code></pre></figure>
+<p>If this prints <code>None</code>, switch the runtime to GPU before training.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 3: Roboflow download"><figcaption><span>Cell 3: Download dataset from Roboflow</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
+
+rf = Roboflow(api_key=&quot;YOUR_KEY_HERE&quot;)
+project = rf.workspace(&quot;YOUR_WORKSPACE&quot;).project(&quot;YOUR_PROJECT&quot;)
+version = project.version(1)
+dataset = version.download(&quot;yolov8&quot;)</code></pre></figure>
+<p>Paste your own Roboflow snippet from PA.5. Your API key, workspace, project, and version will differ.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 4: Inspect dataset"><figcaption><span>Cell 4: Inspect dataset structure</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import os
+
+dataset_path = &quot;YOUR-PROJECT-NAME-1&quot;  # folder Roboflow created
+for split in [&quot;train&quot;, &quot;valid&quot;, &quot;test&quot;]:
+    images = len(os.listdir(f&quot;{dataset_path}/{split}/images&quot;))
+    labels = len(os.listdir(f&quot;{dataset_path}/{split}/labels&quot;))
+    print(f&quot;{split}: {images} images, {labels} labels&quot;)</code></pre></figure>
+<p>A mismatch between images and labels means the export or dataset path is wrong. Fix that before training.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 5: Inspect labels"><figcaption><span>Cell 5: Look at one label file</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import random
+
+label_files = os.listdir(f&quot;{dataset_path}/train/labels&quot;)
+sample = random.choice(label_files)
+with open(f&quot;{dataset_path}/train/labels/{sample}&quot;) as f:
+    content = f.read()
+print(f&quot;File: {sample}&quot;)
+print(f&quot;Contents:\n{content}&quot;)
+print(&quot;\nFormat: class_id  x_center  y_center  width  height (all normalized 0-1)&quot;)</code></pre></figure>
+<p>This connects the raw YOLO label numbers back to the normalized <code>xywh</code> format from PA.0.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 6: Visualize labels"><figcaption><span>Cell 6: Visualize one training image</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+
+img_dir = f&quot;{dataset_path}/train/images&quot;
+lbl_dir = f&quot;{dataset_path}/train/labels&quot;
+
+img_file = random.choice(os.listdir(img_dir))
+lbl_file = img_file.replace(&quot;.jpg&quot;, &quot;.txt&quot;).replace(&quot;.png&quot;, &quot;.txt&quot;)
+
+img = cv2.imread(f&quot;{img_dir}/{img_file}&quot;)
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+h, w = img.shape[:2]
+
+with open(f&quot;{lbl_dir}/{lbl_file}&quot;) as f:
+    for line in f:
+        parts = list(map(float, line.strip().split()))
+        cx, cy, bw, bh = parts[1]*w, parts[2]*h, parts[3]*w, parts[4]*h
+        x1, y1 = int(cx - bw/2), int(cy - bh/2)
+        x2, y2 = int(cx + bw/2), int(cy + bh/2)
+        cv2.rectangle(img, (x1,y1), (x2,y2), (0,255,0), 2)
+
+plt.imshow(img)
+plt.title(f&quot;Sample: {img_file}&quot;)
+plt.axis(&quot;off&quot;)
+plt.show()</code></pre></figure>
+<p>Always look at your labels before training. If the box is wrong, the model is not the problem yet.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 7: Train YOLO26n"><figcaption><span>Cell 7: Train YOLO26n</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from ultralytics import YOLO
+
+model = YOLO(&quot;yolo26n.pt&quot;)   # start from pretrained nano weights
+
+results = model.train(
+    data=f&quot;{dataset_path}/data.yaml&quot;,
+    epochs=50,
+    imgsz=416,
+    batch=16,
+    name=&quot;my_detector&quot;,
+    patience=15,          # stop early if val loss stops improving
+    save=True,
+    device=0              # GPU device 0 - auto-falls back to CPU
+)</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Argument</th><th>Value</th><th>What it means</th></tr></thead><tbody><tr><td><code>data</code></td><td><code>data.yaml</code></td><td>Roboflow config listing class names and folder paths.</td></tr><tr><td><code>epochs</code></td><td><code>50</code></td><td>Loop through the full training set 50 times. Enough for small datasets.</td></tr><tr><td><code>imgsz</code></td><td><code>416</code></td><td>Resize images to 416x416. Larger is more accurate but slower.</td></tr><tr><td><code>batch</code></td><td><code>16</code></td><td>Process 16 images at once. Reduce to 8 if Colab runs out of memory.</td></tr><tr><td><code>patience</code></td><td><code>15</code></td><td>Stop early if validation accuracy stops improving.</td></tr><tr><td><code>device</code></td><td><code>0</code></td><td>Use GPU device 0, with CPU fallback if needed.</td></tr></tbody></table></div>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 8: Find best.pt"><figcaption><span>Cell 8: Find trained weights</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import glob
+
+weights = glob.glob(&quot;runs/detect/my_detector/weights/best.pt&quot;)
+print(f&quot;Best weights saved at: {weights[0]}&quot;)</code></pre></figure>
+<p><code>best.pt</code> is saved at the epoch with the best validation accuracy, not necessarily the last epoch.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-training">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.5 Exporting Dataset</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-results" data-lesson-link="projA-results"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.7 Training Results &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-results" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.7 Reading the Training Results</div>
+<h1>PA.7 Reading the Training Results</h1>
+<div class="lesson-meta"><span>Evaluation</span><span>Metrics</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Training does not end when the progress bar reaches 100%. The output files tell you whether your model is reliable enough for robot control.</p>
+<h3>Training Output Folder</h3>
+<div class="diagram folder-tree" aria-label="Ultralytics training output folder"><pre>runs/detect/my_detector/
+├── weights/
+│   ├── best.pt      &lt;- use this: best validation accuracy
+│   └── last.pt      &lt;- last epoch, not necessarily best
+├── results.csv      &lt;- metrics per epoch as numbers
+├── results.png      &lt;- metric charts over time
+├── confusion_matrix.png
+├── PR_curve.png
+└── val_batch0_pred.jpg  &lt;- sample validation predictions</pre></div>
+<h3>Key Metrics</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Metric</th><th>Meaning</th><th>How to read it</th></tr></thead><tbody><tr><td><code>mAP50</code></td><td>Mean Average Precision at 50% IoU.</td><td>Headline accuracy. For a simple single-class detector, expect roughly 0.85-0.97. Below 0.70 usually means data or labels need work.</td></tr><tr><td>Precision</td><td>Of all predicted boxes, how many were correct?</td><td>High precision means few false positives. The model is not hallucinating objects.</td></tr><tr><td>Recall</td><td>Of all real objects, how many did the model find?</td><td>High recall means few missed objects.</td></tr><tr><td>Box loss</td><td>How wrong the predicted box coordinates are.</td><td>Should decrease over time. Spikes can indicate noisy labels or unstable training.</td></tr><tr><td>Class loss</td><td>How wrong the predicted class label is.</td><td>For one-class projects this should become low quickly.</td></tr></tbody></table></div>
+<p>IoU means Intersection over Union: how much the predicted box overlaps the true box as a fraction. An IoU of 0.5 means the overlap is good enough to count for mAP50.</p>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Precision-recall tradeoff</div><p>Lowering the confidence threshold increases recall but decreases precision. You catch more real objects but accept more false positives. Raising the threshold does the opposite. The <code>conf=0.5</code> setting in your inference code is where you choose this tradeoff for your application.</p></div></div>
+<h3>Healthy vs. Unhealthy Curves</h3>
+<div class="diagram curve-diagram" aria-label="Training curve examples"><div><strong>Healthy</strong><span>train loss and val loss both decrease</span></div><div><strong>Overfit</strong><span>train loss decreases while val loss stops or rises</span></div><div><strong>Underfit</strong><span>both losses stay high and barely move</span></div></div>
+<p>If your results are weak, do not guess at model code first. Open <code>val_batch0_pred.jpg</code>, inspect predictions, fix labeling problems, add 50-100 more varied images, and train again.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-results">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-training" data-lesson-link="projA-training"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.6 Training</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-local-inference" data-lesson-link="projA-local-inference"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.8 Local Inference &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-local-inference" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.8 Running Inference Locally</div>
+<h1>PA.8 Running Inference Locally</h1>
+<div class="lesson-meta"><span>Run locally</span><span>Webcam</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Now move <code>best.pt</code> from Colab to your local VS Code project and run it on a live webcam. This proves your trained model works outside the cloud notebook.</p>
+<div class="steps">
+<div class="step"><div>In Colab, open the Files panel on the left.</div></div>
+<div class="step"><div>Navigate to <code>runs/detect/my_detector/weights/</code>.</div></div>
+<div class="step"><div>Right-click <code>best.pt</code> and download it.</div></div>
+<div class="step"><div>Move <code>best.pt</code> into your local <code>my-detector</code> folder.</div></div>
+</div>
+<h3>Create <code>detect_webcam.py</code></h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="detect_webcam.py"><figcaption><span>detect_webcam.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import cv2
+from ultralytics import YOLO
+
+# Load your trained model
+model = YOLO(&quot;best.pt&quot;)
+
+# Open webcam (0 = default webcam)
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print(&quot;Error: Could not open webcam&quot;)
+    exit()
+
+print(&quot;Press Q to quit&quot;)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Run detection
+    results = model(frame, imgsz=416, conf=0.5, verbose=False)
+
+    # Draw results on the frame
+    annotated = results[0].plot()
+
+    # Show FPS
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    cv2.putText(annotated, f&quot;Model: yolo26n (your data)&quot;,
+                (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,0), 2)
+
+    cv2.imshow(&quot;My Detector&quot;, annotated)
+
+    if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+        break
+
+cap.release()
+cv2.destroyAllWindows()</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line or setting</th><th>Meaning</th></tr></thead><tbody><tr><td><code>results[0].plot()</code></td><td>Ultralytics draws all boxes, class names, and confidence scores on the frame.</td></tr><tr><td><code>conf=0.5</code></td><td>Minimum confidence required before a detection is shown.</td></tr><tr><td><code>verbose=False</code></td><td>Suppresses per-frame terminal output.</td></tr><tr><td><code>cv2.VideoCapture(0)</code></td><td>Opens the default camera. Try 1 if the wrong camera opens.</td></tr></tbody></table></div>
+<h3>Run It</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Terminal"><figcaption><span>Run webcam detector</span></figcaption><pre><code class="language-bash">python detect_webcam.py</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Tune confidence and image size</div><p>If you see too many false positives, increase <code>conf</code> to 0.65 or 0.70. If the model misses the real object, decrease it to 0.40. If the laptop feels slow, try <code>imgsz=320</code>; smaller images are faster but slightly less accurate.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-local-inference">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-results" data-lesson-link="projA-results"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.7 Training Results</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-model-output" data-lesson-link="projA-model-output"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.9 Model Output &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-model-output" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.9 Understanding the Model Output</div>
+<h1>PA.9 Understanding the Model Output</h1>
+<div class="lesson-meta"><span>YOLO Output</span><span>Debugging</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Project 1 does not use <code>.plot()</code>. It reads raw YOLO outputs directly so it can compute object center, object area, and motor commands. This lesson shows the exact data you will use.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="raw_output_debug.py"><figcaption><span>raw_output_debug.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import cv2
+from ultralytics import YOLO
+
+model = YOLO(&quot;best.pt&quot;)
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    results = model(frame, imgsz=416, conf=0.5, verbose=False)
+
+    # Look at the raw output - don&#x27;t use .plot() yet
+    for r in results:
+        print(f&quot;\nFrame detections: {len(r.boxes)}&quot;)
+
+        for i, box in enumerate(r.boxes):
+            # Bounding box in pixel coordinates (x1,y1,x2,y2)
+            x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+
+            # Center of the box
+            cx = (x1 + x2) / 2
+            cy = (y1 + y2) / 2
+
+            # Area of the box (proxy for distance)
+            area = (x2 - x1) * (y2 - y1)
+
+            # Confidence score
+            confidence = float(box.conf[0])
+
+            # Class index and name
+            class_id   = int(box.cls[0])
+            class_name = model.names[class_id]
+
+            print(f&quot;  Detection {i}: {class_name} ({confidence:.0%} confident)&quot;)
+            print(f&quot;    Box:    ({x1:.0f}, {y1:.0f}) to ({x2:.0f}, {y2:.0f})&quot;)
+            print(f&quot;    Center: ({cx:.0f}, {cy:.0f})&quot;)
+            print(f&quot;    Area:   {area:.0f} px²&quot;)
+
+    if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+        break
+
+cap.release()
+cv2.destroyAllWindows()</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Attribute</th><th>Type</th><th>What it contains</th></tr></thead><tbody><tr><td><code>r.boxes</code></td><td>list-like object</td><td>All detections in this frame. Empty means nothing was detected.</td></tr><tr><td><code>box.xyxy[0]</code></td><td>tensor</td><td><code>[x1, y1, x2, y2]</code> in pixel coordinates.</td></tr><tr><td><code>.cpu().numpy()</code></td><td>conversion</td><td>Moves data from GPU memory to CPU and converts it to a NumPy array for math.</td></tr><tr><td><code>box.conf[0]</code></td><td>float tensor</td><td>Confidence score from 0 to 1.</td></tr><tr><td><code>box.cls[0]</code></td><td>int tensor</td><td>Detected class index.</td></tr><tr><td><code>model.names</code></td><td>dict</td><td>Maps class index to class name, such as <code>{0: "ball"}</code>.</td></tr></tbody></table></div>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Bridge to Project 1</div><p>Look at the <code>_detect()</code> method in <code>obj_track_adv.py</code>. It does exactly this: loops through <code>r.boxes</code>, checks the class name, computes the area, and returns the bounding box coordinates. Now those attribute names should look familiar instead of mysterious.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-model-output">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-local-inference" data-lesson-link="projA-local-inference"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.8 Local Inference</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-ready" data-lesson-link="projA-ready"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.10 Preparing for Project 1 &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projA-ready" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.10 Preparing for Project 1</div>
+<h1>PA.10 Preparing for Project 1</h1>
+<div class="lesson-meta"><span>Checklist</span><span>Bridge</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">You now have the trained detector and the vocabulary needed to connect it to a robot-control loop. This checklist confirms you are ready for Project 1.</p>
+<h3>What You Now Have</h3>
+<div class="steps">
+<div class="step"><div>A trained <code>best.pt</code> file specific to your target object.</div></div>
+<div class="step"><div>Understanding of what YOLO outputs and how to read it.</div></div>
+<div class="step"><div>A working local Python environment with the required packages.</div></div>
+<div class="step"><div>Intuition for confidence thresholds, bounding boxes, centers, and areas.</div></div>
+</div>
+<h3>Rename The Weights</h3>
+<p>Rename <code>best.pt</code> to something descriptive, such as <code>ball_detector.pt</code> or <code>mug_detector.pt</code>. In Project 1, update the Tracker initialization so the first argument is your model file and the second argument exactly matches the class name you used in Roboflow.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="obj_track_adv.py"><figcaption><span>Tracker initialization for Project 1</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">tracker = Tracker(&quot;ball_detector.pt&quot;, &quot;ball&quot;)</code></pre></figure>
+<h3>Readiness Checklist</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="projA-bestpt" /><code>best.pt</code> is in the <code>my-detector</code> folder and webcam detection works.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projA-distance" />The model correctly detects the target object from at least 1 meter away.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projA-speed" />The model runs at acceptable speed. Even 5 fps is enough for Project 1.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projA-output" />You understand what <code>box.xyxy</code>, <code>box.conf</code>, and <code>box.cls</code> contain.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projA-map50" /><code>mAP50</code> on the validation set was above 0.75.</label></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not move on with a weak model</div><p>If <code>mAP50</code> is below 0.75, the tracker will behave erratically and it will be hard to tell whether the problem is the model or the control code. Add 50-100 more images with varied backgrounds and retrain. This almost always helps.</p></div></div>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Next step</div><p>You have the model. <a href="?lesson=proj1-overview" data-lesson-link="proj1-overview">Project 1</a> connects it to real motors.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-ready">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-model-output" data-lesson-link="projA-model-output"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.9 Model Output</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 1 &rarr;</span></a>
 </nav>
 </article>
@@ -2412,7 +2952,7 @@ os.chmod("/root/.kaggle/kaggle.json", 0o600)
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch7-papers" data-lesson-link="ch7-papers"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 7.3 Papers</span></a>
+<a class="lesson-nav-btn" href="?lesson=projA-ready" data-lesson-link="projA-ready"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.10 Preparing for Project 1</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.1 Setting Up VS Code &rarr;</span></a>
 </nav>
 </article>
@@ -3149,26 +3689,14 @@ LOST_TIMEOUT   = 1.0
   </main>
   <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-why-vision","label":"6.1 Why Vision Matters","title":"6.1 Why Vision Matters in Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-opencv","label":"6.2 OpenCV","title":"6.2 Tools: OpenCV","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-tensorflow","label":"6.3 TensorFlow/Keras","title":"6.3 Tools: TensorFlow/Keras","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-cnn","label":"6.4 CNNs","title":"6.4 How CNNs See","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-project","label":"6.5 Traffic Sign Project","title":"6.5 Project: Traffic Sign Classifier","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":true},{"id":"ch7-overview","label":"What's Next?","title":"What's Next?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-decision-guide","label":"7.1 Decision Guide","title":"7.1 Which ML Technique Should I Use?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-roadmap","label":"7.2 Roadmap","title":"7.2 Recommended Learning Roadmap","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-papers","label":"7.3 Papers","title":"7.3 Real Robotics ML Papers to Read","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Computer Vision for Robotics","lessonIds":["ch6-overview","ch6-why-vision","ch6-opencv","ch6-tensorflow","ch6-cnn","ch6-project"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: What's Next?","lessonIds":["ch7-overview","ch7-decision-guide","ch7-roadmap","ch7-papers"],"firstLesson":"ch7-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
   <script>
-    const project1Lessons = [
-      {"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":true},
-      {"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false},
-      {"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"★ Project 1: Object Tracker","exercise":false}
-    ];
+    const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Collecting Data","title":"PA.3 Collecting Your Data with Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling Images","title":"PA.4 Labeling Your Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Exporting Dataset","title":"PA.5 Exporting the Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
+    const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...project1Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...project1Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.findIndex((chapter) => chapter.key === "projects"),
       0,
+      {"key":"projA","title":"★ Project A: Train Your First Detector","lessonIds":["projA-overview","projA-yolo26","projA-vscode","projA-roboflow-data","projA-labeling","projA-exporting","projA-training","projA-results","projA-local-inference","projA-model-output","projA-ready"],"firstLesson":"projA-overview"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"}
     );
   </script>
