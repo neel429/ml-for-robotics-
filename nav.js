@@ -260,6 +260,24 @@
     });
   }
 
+  function wireProjectChecklists() {
+    document.querySelectorAll("[data-checklist-key]").forEach((input) => {
+      const key = `checklist_${input.dataset.checklistKey}`;
+      try {
+        input.checked = localStorage.getItem(key) === "true";
+      } catch (error) {
+        input.checked = false;
+      }
+      input.addEventListener("change", () => {
+        try {
+          localStorage.setItem(key, input.checked ? "true" : "false");
+        } catch (error) {
+          // Ignore storage failure; the checkbox still works for the current page.
+        }
+      });
+    });
+  }
+
   function wireLastLessonButton() {
     const button = document.getElementById("jumpLastBtn");
     if (!button) return;
@@ -293,6 +311,7 @@
     wireLessonLinks();
     wireGroups();
     wireCompletion();
+    wireProjectChecklists();
     wireLastLessonButton();
     updateCompletionUi();
     showLesson(getInitialLesson(), { skipHistory: true, instant: true });

@@ -1746,6 +1746,39 @@ body.lesson-app .callout.exercise,
 body.lesson-app .callout.exercise-note { background: rgba(163,113,247,0.08); border-color: rgba(163,113,247,0.3); }
 body.lesson-app .callout.download { background: rgba(210,153,34,0.1); border-color: rgba(210,153,34,0.4); }
 
+body.lesson-app .local-run-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #007acc;
+  border-radius: 999px;
+  background: rgba(0, 122, 204, 0.16);
+  color: #79c0ff;
+  padding: 2px 8px;
+  font: 800 0.68rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+body.lesson-app .project-checklist .step {
+  align-items: center;
+}
+
+body.lesson-app .project-checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+body.lesson-app .project-checklist input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.28rem;
+  flex-shrink: 0;
+  accent-color: #007acc;
+}
+
 body.lesson-app .callout .callout-icon {
   width: auto;
   height: auto;
