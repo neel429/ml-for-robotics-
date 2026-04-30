@@ -190,6 +190,22 @@
                 </div>
               </section>
       
+              <section id="kaggle-setup" class="section-card observe" data-title="Kaggle Setup">
+                <h3>Before the Project: Kaggle Setup</h3>
+                <p>Chapter 3 is the first place where you need Kaggle datasets. Set up the free account and token here, then the project notebooks will show exactly where to paste the copied token text.</p>
+                <div class="steps">
+                  <div class="step"><div><strong>Go to Kaggle and sign in.</strong><br />Open <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a> and sign in to your account.</div></div>
+                  <div class="step"><div><strong>Open Settings.</strong><br />Click your profile picture, then click <strong>Settings</strong>.</div></div>
+                  <div class="step"><div><strong>Create a token.</strong><br />Scroll to the <strong>API</strong> section and click <strong>Create New Token</strong>.</div></div>
+                  <div class="step"><div><strong>Copy the token text.</strong><br />A dialog appears showing your API credentials. Click the <strong>Copy</strong> button to copy the token text.</div></div>
+                  <div class="step"><div><strong>Paste it in Colab.</strong><br />In Colab, you will paste this into a setup cell. The project notebooks explain exactly where.</div></div>
+                </div>
+                <div class="callout tip" role="note">
+                  <div class="callout-icon">💡</div>
+                  <div><div class="callout-title">Keep the token private</div><p>Your Kaggle API token is tied to your account. Paste it only into your own Colab session and do not share notebooks while the token text is visible.</p></div>
+                </div>
+              </section>
+
               <section id="robot-failure-project" class="section-card observe" data-title="3.4 Project: Robot Arm Failure Prediction">
                 <h3>3.4 ★ Project: Robot Arm Failure Prediction</h3>
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020" target="_blank" rel="noreferrer">AI4I 2020 Predictive Maintenance Dataset</a>. It has 10,000 engineering-relevant rows and supports binary failure prediction.</p>
@@ -200,18 +216,21 @@
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
                 <div class="callout tip" role="note">
                   <div class="callout-icon">💡</div>
-                  <div><div class="callout-title">Kaggle API Setup</div><p>Create a free Kaggle account, go to Account → Create New Token, upload <code>kaggle.json</code> in Cell 1, and the dataset downloads automatically.</p></div>
+                  <div><div class="callout-title">Kaggle API Setup</div><p>Use the token text you copied from Kaggle. Cell 1 asks you to paste it once for this Colab session and writes it to the credentials location the Kaggle command expects.</p></div>
                 </div>
       
                 <h4>Cell-by-cell notebook</h4>
                 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Cell 1: Install Kaggle API &amp; set up credentials"><figcaption>Cell 1: Install Kaggle API & set up credentials</figcaption><pre><code class="language-python">!pip -q install kaggle
-      from google.colab import files
-      files.upload()  # choose kaggle.json
-      
-      !mkdir -p ~/.kaggle
-      !cp kaggle.json ~/.kaggle/
-      !chmod 600 ~/.kaggle/kaggle.json</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download private-account dataset files.</p></div></div><div class="expected"><strong>Expected output</strong>Upload widget appears, then no error after <code>chmod</code>.</div></div>
+import json
+import os
+from getpass import getpass
+
+os.makedirs("/root/.kaggle", exist_ok=True)
+token = json.loads(getpass("Paste your Kaggle API token text: ").strip())
+with open("/root/.kaggle/kaggle.json", "w") as f:
+    json.dump(token, f)
+os.chmod("/root/.kaggle/kaggle.json", 0o600)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Colab needs your Kaggle token before it can download dataset files. This cell stores the copied token text only inside the current Colab session.</p></div></div><div class="expected"><strong>Expected output</strong>A hidden prompt appears. After you paste the copied token text, the credentials are installed for this Colab session.</div></div>
                 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Cell 2: Download the dataset from Kaggle"><figcaption>Cell 2: Download the dataset from Kaggle</figcaption><pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
       !unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The command pulls the zipped CSV into Colab and extracts it into a local <code>data</code> folder.</p></div></div><div class="expected"><strong>Expected output</strong>One CSV file appears under <code>data/</code>.</div></div>
@@ -269,7 +288,7 @@
                 <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 10: Scale features"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
       X_train_scaled = scaler.fit_transform(X_train)
       X_test_scaled = scaler.transform(X_test)</code></pre></figure>
-                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why this step?</div><p>Fit the scaler on training data only. Fitting on test data leaks information from the exam into the study guide.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
+                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">Why we only fit the scaler on training data</div><p>Think of it this way: your test set is the final exam — questions the model has never seen. Your training set is the practice material the model learns from.</p><p>If you fit the scaler on the full dataset (training + test combined), the scaler learns statistics like the mean and range from the test data too. That means the model indirectly gets a sneak peek at the exam before sitting it — giving you an artificially optimistic accuracy score that won't hold up in the real world.</p><p>Always fit the scaler only on training data, then use that same scaler to transform both training and test data. The test set must stay completely unseen until the final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No printed output; scaled arrays are ready.</div></div>
                 <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 11: Train Logistic Regression"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
       log_reg.fit(X_train_scaled, y_train)
       log_pred = log_reg.predict(X_test_scaled)</code></pre></figure>

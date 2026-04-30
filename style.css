@@ -596,6 +596,11 @@ pre code {
       color: #ffffff;
     }
     .callout p:last-child { margin-bottom: 0; }
+    .progress-lines {
+      display: grid;
+      gap: 0.35rem;
+      margin: 1rem 0;
+    }
     .tip { --callout-color: var(--blue); }
     .info { --callout-color: var(--cyan); }
     .warning { --callout-color: var(--amber); }
@@ -1485,7 +1490,7 @@ body.lesson-app .content-panel {
   margin: 0;
   padding: 40px 60px 80px;
   color: var(--text-primary);
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 1.05rem;
   line-height: 1.8;
   background: var(--bg-primary);
@@ -1518,7 +1523,7 @@ body.lesson-app .lesson-kicker span {
 }
 
 body.lesson-app .content-panel h1 {
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -1526,7 +1531,7 @@ body.lesson-app .content-panel h1 {
 }
 
 body.lesson-app .content-panel h2 {
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 1.45rem;
   font-weight: 600;
   margin-top: 2.5rem;
@@ -1540,7 +1545,7 @@ html.light-mode body.lesson-app .content-panel h2 {
 }
 
 body.lesson-app .content-panel h3 {
-  font-family: "Source Serif 4", Georgia, serif;
+  font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 1.15rem;
   font-weight: 600;
   margin-top: 1.8rem;

@@ -160,11 +160,17 @@
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
                 <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Kaggle download of GTSRB"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
-      from google.colab import files
-      files.upload()
-      !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
-      !kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
-      !unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
+import json
+import os
+from getpass import getpass
+
+os.makedirs("/root/.kaggle", exist_ok=True)
+token = json.loads(getpass("Paste your Kaggle API token text: ").strip())
+with open("/root/.kaggle/kaggle.json", "w") as f:
+    json.dump(token, f)
+os.chmod("/root/.kaggle/kaggle.json", 0o600)
+!kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
+!unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
                 <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Explore dataset"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
       import pandas as pd

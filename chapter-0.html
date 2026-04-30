@@ -114,96 +114,47 @@
                     <div class="hero-tags" style="--chapter-color: var(--ch1)">
                       <span class="tag">Python</span>
                       <span class="tag">Google Colab</span>
-                      <span class="tag">Kaggle datasets</span>
+                      <span class="tag">Browser tools</span>
                       <span class="tag">Robotics sensors</span>
                     </div>
                   </div>
                   <div class="journey" aria-label="Learning journey timeline">
-                    <div class="journey-step"><div class="journey-num">0</div><div><strong>Setup</strong><span>Colab, Kaggle, how to read this guide</span></div></div>
+                    <div class="journey-step"><div class="journey-num">0</div><div><strong>Setup</strong><span>Browser tools, Colab later, how to read this guide</span></div></div>
                     <div class="journey-step"><div class="journey-num">1</div><div><strong>Python</strong><span>Variables, loops, functions, libraries</span></div></div>
                     <div class="journey-step"><div class="journey-num">2</div><div><strong>ML concepts</strong><span>Supervised, unsupervised, reinforcement</span></div></div>
-                    <div class="journey-step"><div class="journey-num">3</div><div><strong>Projects</strong><span>Failure prediction, vibration clusters, maze navigation</span></div></div>
-                    <div class="journey-step"><div class="journey-num">4</div><div><strong>Vision</strong><span>OpenCV, CNNs, traffic sign classifier</span></div></div>
+                    <div class="journey-step"><div class="journey-num">3</div><div><strong>Applied ML</strong><span>Training, evaluating, and interpreting models</span></div></div>
+                    <div class="journey-step"><div class="journey-num">4</div><div><strong>Vision</strong><span>OpenCV, CNNs, and image data</span></div></div>
                   </div>
                 </div>
               </section>
       
               <section id="build" class="section-card">
                 <h3>What You Will Build</h3>
-                <div class="grid-3">
-                  <div class="card">
-                    <div class="icon">⚙️</div>
-                    <h4>Robot Failure Predictor</h4>
-                    <p>Predict whether a machine is likely to fail from temperature, torque, speed, and wear readings.</p>
-                    <p class="mini muted"><strong>Stack:</strong> Pandas, scikit-learn, Logistic Regression, Random Forest</p>
-                  </div>
-                  <div class="card">
-                    <div class="icon">📈</div>
-                    <h4>Sensor Cluster Analyzer</h4>
-                    <p>Group vibration windows into operating modes without labels, then interpret what each group means.</p>
-                    <p class="mini muted"><strong>Stack:</strong> NumPy, FFT features, K-Means, PCA, DBSCAN</p>
-                  </div>
-                  <div class="card">
-                    <div class="icon">🚦</div>
-                    <h4>Traffic Sign Classifier</h4>
-                    <p>Train a convolutional neural network that recognizes real traffic signs for mobile robots.</p>
-                    <p class="mini muted"><strong>Stack:</strong> OpenCV, TensorFlow/Keras, CNNs, GTSRB</p>
-                  </div>
+                <p class="lead">This course builds the foundation you need to understand and use machine learning in robotics, even if you are starting with no programming background.</p>
+                <div class="grid-4">
+                  <div class="card"><h4>Python Confidence</h4><p>Write and read basic Python, use notebooks, import libraries, and understand the code you run.</p></div>
+                  <div class="card"><h4>Data Thinking</h4><p>Look at tables, sensor readings, labels, plots, and train/test splits the way an engineer would.</p></div>
+                  <div class="card"><h4>ML Intuition</h4><p>Know when a problem is supervised, unsupervised, reinforcement learning, or computer vision.</p></div>
+                  <div class="card"><h4>Robotics Context</h4><p>Connect models to mechanical systems, sensors, failures, vibration patterns, navigation, and images.</p></div>
                 </div>
+                <p>Later chapters turn those skills into applied notebook projects. Chapter 0 is only here to orient you: what tools you will use, how the course is organized, and how to read it without getting lost.</p>
               </section>
       
               <section id="tools" class="section-card">
                 <h3>Tools You Need: Zero Installation</h3>
-                <p>Everything runs in the browser with Google Colab. Colab gives you a free notebook where text, code, charts, and results live together. Kaggle gives you free access to real datasets.</p>
+                <p>For the Python fundamentals chapters you can run code directly in the browser on this page. For the machine learning and computer vision projects in later chapters you will use Google Colab, which gives you a free Python environment with no installation required.</p>
                 <div class="steps">
                   <div class="step"><div><strong>Open Colab.</strong><br />Go to <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">colab.research.google.com</a>, sign in, and choose <strong>New Notebook</strong>.</div></div>
                   <div class="step"><div><strong>Create your first cell.</strong><br />Click the gray code cell and type <code>print("Hello, Robot!")</code>.</div></div>
                   <div class="step"><div><strong>Run a cell.</strong><br />Press <code>Shift+Enter</code>. The output appears directly underneath the cell.</div></div>
-                  <div class="step"><div><strong>Create a free Kaggle account.</strong><br />Go to <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a>. We use Kaggle because it hosts clean public datasets.</div></div>
-                  <div class="step"><div><strong>Get your Kaggle API key.</strong><br />Kaggle account menu → Settings → API → Create New Token. It downloads <code>kaggle.json</code>.</div></div>
                 </div>
-                <h4>Upload your Kaggle key to Colab</h4>
-                <p>Every time you open a Colab notebook, it starts fresh like a brand new computer. That means you have to upload your <code>kaggle.json</code> key once per session before running any Kaggle download. Here is exactly how.</p>
-                <div class="steps">
-                  <div class="step"><div><strong>Open the project notebook.</strong><br />Click the <strong>Open in Colab</strong> button in any project lesson. A new browser tab opens with the notebook.</div></div>
-                  <div class="step"><div><strong>Find the first code cell.</strong><br />The very first cell in every project notebook is labelled <strong>Setup: Upload Kaggle Key</strong>. It looks like this:
-                    <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="setup_upload_kaggle_key.py">
-                      <figcaption>Setup: Upload Kaggle Key</figcaption>
-<pre><code class="language-python">from google.colab import files
-files.upload()    # a file picker dialog will open in your browser</code></pre>
-                    </figure>
-                  </div></div>
-                  <div class="step"><div><strong>Run the cell.</strong><br />Press <code>Shift+Enter</code> or click the play button to the left of the cell. A file picker dialog opens directly in your browser tab.</div></div>
-                  <div class="step"><div><strong>Choose your kaggle.json file.</strong><br />Navigate to wherever you saved <code>kaggle.json</code>, usually your Downloads folder. Select it and click <strong>Open</strong>. You will see a green confirmation message like <code>kaggle.json(application/json) - X bytes, last modified: ...</code> once it uploads successfully.</div></div>
-                  <div class="step"><div><strong>Run the next cell immediately.</strong><br />The second cell moves your key to the location Kaggle expects:
-                    <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="install_kaggle_key.py">
-                      <figcaption>Install Kaggle key for this Colab session</figcaption>
-<pre><code class="language-python">import os
-os.makedirs('/root/.kaggle', exist_ok=True)
-os.rename('kaggle.json', '/root/.kaggle/kaggle.json')
-os.chmod('/root/.kaggle/kaggle.json', 600)</code></pre>
-                    </figure>
-                    After this cell runs, your key is installed. Every <code>!kaggle</code> command in the rest of the notebook will work for this session.
-                  </div></div>
-                </div>
-                <div class="callout warning" role="alert">
-                  <div class="callout-icon">⚠️</div>
-                  <div><div class="callout-title">Colab sessions reset</div><p>Colab sessions reset when you close the tab or after 90 minutes of inactivity. You will need to upload <code>kaggle.json</code> again each time you reopen the notebook. This is normal.</p></div>
-                </div>
-                <div class="callout tip" role="note">
-                  <div class="callout-icon">💡</div>
-                  <div><div class="callout-title">Keep the key private</div><p>Never paste the contents of <code>kaggle.json</code> directly into a code cell or share your notebook publicly while the key is present. The key is tied to your Kaggle account.</p></div>
-                </div>
+                <p>Later in the course you will create a free Kaggle account to access datasets — that setup is explained at the start of the relevant chapter.</p>
                 <div class="diagram" aria-label="Colab cell workflow diagram">
                   <div class="flow-row">
                     <div class="flow-node">Open Colab</div><div class="arrow">→</div>
                     <div class="flow-node">Write code cell</div><div class="arrow">→</div>
                     <div class="flow-node">Shift+Enter runs it</div>
                   </div>
-                </div>
-                <div class="callout tip" role="note">
-                  <div class="callout-icon">💡</div>
-                  <div><div class="callout-title">Kaggle key safety</div><p>Your <code>kaggle.json</code> key belongs to your account. Upload it only inside your own Colab notebook and do not paste it into public code.</p></div>
                 </div>
               </section>
       
@@ -217,7 +168,7 @@ os.chmod('/root/.kaggle/kaggle.json', 600)</code></pre>
                 </ul>
                 <div class="callout info" role="note">
                   <div class="callout-icon">ℹ</div>
-                  <div><div class="callout-title">Your progress is saved in this browser</div><p>When you click <strong>Mark as Complete</strong>, your progress is saved in your browser's local storage, the same place websites store your preferences.</p><ul><li>✓ Your progress persists when you close and reopen this tab.</li><li>✓ No account or login needed.</li><li>✗ Progress does not carry over to a different browser or device.</li><li>✗ Clearing your browser history or cookies will reset your progress.</li></ul><p>If you want to track progress across devices, keep a personal checklist in Notion, Google Docs, or even a piece of paper.</p></div>
+                  <div><div class="callout-title">Your progress is saved in this browser</div><p>When you click <strong>Mark as Complete</strong>, your progress is saved in your browser's local storage, the same place websites store your preferences.</p><div class="progress-lines"><div>✓ Your progress persists when you close and reopen this tab.</div><div>✓ No account or login needed.</div><div>✗ Progress does not carry over to a different browser or device.</div><div>✗ Clearing your browser history or cookies will reset your progress.</div></div><p>If you want to track progress across devices, keep a personal checklist in Notion, Google Docs, or even a piece of paper.</p></div>
                 </div>
               </section>
       

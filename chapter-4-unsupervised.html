@@ -126,11 +126,17 @@
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
                 <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 1: Kaggle download"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
-      from google.colab import files
-      files.upload()
-      !mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
-      !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
-      !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
+import json
+import os
+from getpass import getpass
+
+os.makedirs("/root/.kaggle", exist_ok=True)
+token = json.loads(getpass("Paste your Kaggle API token text: ").strip())
+with open("/root/.kaggle/kaggle.json", "w") as f:
+    json.dump(token, f)
+os.chmod("/root/.kaggle/kaggle.json", 0o600)
+!kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
+!unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
                 <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
                 <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 2: Load and inspect"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
       import pandas as pd
