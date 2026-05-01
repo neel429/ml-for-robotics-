@@ -2025,6 +2025,253 @@ body.lesson-app .project-checklist input[type="checkbox"] {
   accent-color: #007acc;
 }
 
+body.lesson-app .pc-hardware-table td:first-child {
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+body.lesson-app .pc-hardware-table td:nth-child(2) {
+  width: 110px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+}
+
+body.lesson-app .pc-system-diagram {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) 78px minmax(170px, 1.1fr) 78px minmax(180px, 1.15fr);
+  grid-auto-rows: minmax(88px, auto);
+  gap: 12px;
+  align-items: center;
+  min-width: 820px;
+}
+
+body.lesson-app .pc-node {
+  min-height: 82px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 55%, #30363d);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-accent) 10%, transparent);
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+body.lesson-app .pc-node span {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font: 700 0.72rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+body.lesson-app .pc-arrow {
+  color: var(--chapter-accent);
+  text-align: center;
+  font: 800 0.72rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+body.lesson-app .pc-arrow.right::after {
+  content: " ->";
+}
+
+body.lesson-app .pc-arrow.up::before {
+  content: "^ ";
+}
+
+body.lesson-app .pc-timing-diagram {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 1rem 0;
+}
+
+body.lesson-app .pc-timing-card {
+  padding: 16px;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+body.lesson-app .pc-timing-card h4 {
+  margin-top: 0;
+}
+
+body.lesson-app .pc-wave-row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+body.lesson-app .pc-wave-row > span {
+  color: var(--text-muted);
+  font: 700 0.74rem "JetBrains Mono", monospace;
+}
+
+body.lesson-app .pc-wave {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(18px, 1fr));
+  gap: 3px;
+  height: 38px;
+  align-items: end;
+  padding: 4px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+}
+
+body.lesson-app .pc-wave i,
+body.lesson-app .pc-wave b {
+  display: block;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 65%, #30363d);
+  background: color-mix(in srgb, var(--chapter-accent) 22%, transparent);
+}
+
+body.lesson-app .pc-wave i {
+  height: 9px;
+}
+
+body.lesson-app .pc-wave b {
+  height: 30px;
+}
+
+body.lesson-app .pc-wave.shifted-right {
+  padding-left: 16px;
+}
+
+body.lesson-app .pc-wave.shifted-left {
+  padding-right: 16px;
+}
+
+body.lesson-app .pc-formula-card {
+  margin: 1rem 0 1.5rem;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 55%, #30363d);
+  border-left: 5px solid var(--chapter-accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-accent) 9%, transparent);
+}
+
+body.lesson-app .pc-formula-card strong {
+  display: block;
+  margin: 6px 0;
+  font: 800 1.05rem "JetBrains Mono", monospace;
+  color: var(--text-primary);
+}
+
+body.lesson-app .pc-formula-card p {
+  margin-bottom: 0;
+}
+
+body.lesson-app .pc-formula-label {
+  color: var(--chapter-accent);
+  font: 800 0.75rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+body.lesson-app .pc-path-diagram {
+  display: grid;
+  place-items: center;
+}
+
+body.lesson-app .pc-square-path {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  border: 4px solid var(--chapter-accent);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+body.lesson-app .pc-path-start,
+body.lesson-app .pc-path-side {
+  position: absolute;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  border: 1px solid #30363d;
+  color: var(--text-primary);
+  font: 800 0.72rem "JetBrains Mono", monospace;
+}
+
+body.lesson-app .pc-path-start {
+  left: -10px;
+  bottom: -14px;
+}
+
+body.lesson-app .pc-path-side.top {
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+body.lesson-app .pc-path-side.right {
+  right: -34px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+body.lesson-app .pc-path-side.bottom {
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+body.lesson-app .pc-path-side.left {
+  left: -34px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+body.lesson-app .pc-troubleshooting-table {
+  display: grid;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+body.lesson-app .pc-trouble-row {
+  margin: 0;
+}
+
+body.lesson-app .pc-trouble-row summary {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.9fr) minmax(220px, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+body.lesson-app .pc-trouble-row summary span:first-child {
+  color: var(--text-primary);
+}
+
+body.lesson-app .pc-trouble-row summary span:last-child {
+  color: var(--text-muted);
+  font: 700 0.8rem "JetBrains Mono", monospace;
+}
+
+@media (max-width: 760px) {
+  body.lesson-app .pc-hardware-table td:first-child {
+    white-space: normal;
+  }
+
+  body.lesson-app .pc-timing-diagram {
+    grid-template-columns: 1fr;
+  }
+
+  body.lesson-app .pc-trouble-row summary {
+    grid-template-columns: 1fr;
+  }
+}
+
 body.lesson-app .callout .callout-icon {
   width: auto;
   height: auto;

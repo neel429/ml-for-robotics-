@@ -134,10 +134,26 @@
 <a class="lesson-link" href="?lesson=projB-project1" data-lesson-link="projB-project1"><span>PB.7 Connect to Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
+<div class="lesson-group" data-chapter="projC" style="--chapter-accent:#ef4444">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>* Project C: Precise Movement with Encoders</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link is-exercise" href="?lesson=projC-overview" data-lesson-link="projC-overview"><span>* PC.0 What You Are Building</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-hardware" data-lesson-link="projC-hardware"><span>PC.1 Understanding the Hardware</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-encoders" data-lesson-link="projC-encoders"><span>PC.2 How Encoder Motors Work</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-wiring" data-lesson-link="projC-wiring"><span>PC.3 Wiring the System</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span>PC.4 Blink and Serial</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-reading-pulses" data-lesson-link="projC-reading-pulses"><span>PC.5 Reading Encoder Pulses</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-distance" data-lesson-link="projC-distance"><span>PC.6 Ticks to Distance</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-drive-distance" data-lesson-link="projC-drive-distance"><span>PC.7 Drive a Precise Distance</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-turning" data-lesson-link="projC-turning"><span>PC.8 Turn Exactly 90 Degrees</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-path" data-lesson-link="projC-path"><span>PC.9 Running a Path</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span>PC.10 Troubleshooting and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
 <div class="lesson-group" data-chapter="proj1" style="--chapter-accent:#f97316">
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 1: Object Tracker</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
-<div class="project-prereq-note">Complete Projects A and B first &mdash; they produce the <code>best.pt</code> file and phone stream used here.</div>
+<div class="project-prereq-note">Complete Projects A, B, and C first &mdash; they produce the <code>best.pt</code> file, phone stream, and encoder foundation used here.</div>
 <a class="lesson-link is-exercise" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span>★ P1.0 What We Are Building</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span>P1.1 Setting Up VS Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span>P1.2 Installing Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -255,6 +271,14 @@
 <p>Stream phone video over WiFi and run your trained YOLO26n detector on every frame.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projB">0 / 8 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=projB-overview" data-lesson-link="projB-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="projC" style="--chapter-accent:#ef4444">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Project C</span><span>11 lessons</span></div>
+<h2>Precise Movement with Encoders</h2>
+<p>Build the hardware control foundation: encoder ticks, exact distance driving, 90-degree turns, and programmed paths.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projC">0 / 11 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=projC-overview" data-lesson-link="projC-overview">Start</a>
 </article>
 <article class="chapter-card" data-chapter-card="proj1" style="--chapter-accent:#f97316">
 <div class="chapter-card-strip"></div>
@@ -3044,7 +3068,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">You now have the trained detector and the vocabulary needed to connect it to a robot-control loop. This checklist confirms you are ready for Project 1.</p>
+<p class="lead">You now have the trained detector and the vocabulary needed to connect it to a robot-control loop. This checklist confirms you are ready for the remaining robot projects.</p>
 <h3>What You Now Have</h3>
 <div class="steps">
 <div class="step"><div>A trained <code>best.pt</code> file specific to your target object.</div></div>
@@ -3064,7 +3088,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="step"><label><input type="checkbox" data-checklist-key="projA-map50" /><code>mAP50</code> on the validation set was above 0.75.</label></div>
 </div>
 <div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not move on with a weak model</div><p>If <code>mAP50</code> is below 0.75, the tracker will behave erratically and it will be hard to tell whether the problem is the model or the control code. Add 50-100 more images with varied backgrounds and retrain. This almost always helps.</p></div></div>
-<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Next step</div><p>You have the model. <a href="?lesson=projB-overview" data-lesson-link="projB-overview">Project B</a> connects it to a live phone camera stream before Project 1 adds motor control.</p></div></div>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Next step</div><p>You have the model. <a href="?lesson=projB-overview" data-lesson-link="projB-overview">Project B</a> connects it to a live phone camera stream, then Project C builds the encoder movement foundation before Project 1 combines everything.</p></div></div>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-ready">Mark as Complete</button></div>
@@ -3414,7 +3438,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 </div>
 <p>The phone stream handling is identical. The detection call is identical. Project 1 just adds what happens after the detection: instead of drawing a box and stopping, it computes a control response and sends it to a motor controller.</p>
 <p>You are not learning something new in Project 1. You are adding to something you already understand.</p>
-<h3>Final Checklist Before Moving To Project 1</h3>
+<h3>Final Checklist Before Moving To Project C</h3>
 <div class="steps project-checklist">
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-browser-stream" />Phone stream opens in the browser without timing out.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-script-runs" /><code>detect_stream.py</code> runs without errors.</label></div>
@@ -3423,15 +3447,806 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-jpeg-markers" />You understand what <code>0xff 0xd8</code> and <code>0xff 0xd9</code> are and why the code searches for them.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-mobile-stream" />You can explain the difference between <code>read_frame</code> in this project and <code>MobileVideoStream</code> in Project 1.</label></div>
 </div>
-<p>When all boxes are checked you are ready for Project 1.</p>
+<p>When all boxes are checked you are ready for Project C, where the robot hardware starts moving with encoder feedback.</p>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-project1">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projB-code" data-lesson-link="projB-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.6 Stream Code</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-overview" data-lesson-link="projC-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project C &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="projC-overview" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.0 What You Are Building</div>
+<h1>PC.0 What You Are Building</h1>
+<div class="lesson-meta"><span>Hardware</span><span>Arduino</span><span>Encoder control</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Most beginner robot tutorials control motors with a simple on/off command: turn the motor on, wait two seconds, turn it off. The robot moves roughly forward for roughly two seconds. How far it actually traveled depends on the battery level, floor surface, motor temperature, wheel slip, and many other small effects. You never really know.</p>
+<p>Encoder motors solve this problem. An encoder is a sensor built into the motor assembly that counts how many times the motor shaft has rotated. Every rotation is divided into a fixed number of pulses. By counting these pulses, the Arduino can estimate how far each wheel has traveled regardless of the motor speed or battery level.</p>
+<p>This is called <strong>closed-loop control</strong>. The motor does not just receive a command and run blindly. It receives a command, then the Arduino continuously checks whether the motor has done what was requested. Open-loop is guessing. Closed-loop is measuring.</p>
+
+<h3>Hardware List</h3>
+<p>Students need every item below before starting. Keep the motor battery separate from USB power, and do not connect the battery until the wiring lesson tells you to.</p>
+<div class="table-wrap">
+<table class="data-table pc-hardware-table">
+<thead><tr><th>Item</th><th>Quantity</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Arduino UNO R4 WiFi</td><td>1</td><td>The microcontroller brain that runs the sketch and reads encoder pulses.</td></tr>
+<tr><td>Motor shield, R3 compatible</td><td>1</td><td>Sits on top of the Arduino and routes control signals to the driver.</td></tr>
+<tr><td>MOSFET motor driver module</td><td>1</td><td>For example L298N or TB6612FNG. This board handles motor current.</td></tr>
+<tr><td>DC encoder motors with gearbox</td><td>2</td><td>Must provide A/B quadrature encoder outputs.</td></tr>
+<tr><td>Robot chassis with wheels</td><td>1</td><td>Use a 2WD differential-drive chassis.</td></tr>
+<tr><td>Li-Po or 7.4V battery pack</td><td>1</td><td>Powers the motors separately from the Arduino USB connection.</td></tr>
+<tr><td>USB-A to USB-C cable</td><td>1</td><td>Programs the Arduino from the laptop and powers the logic during testing.</td></tr>
+<tr><td>Jumper wires, male to male</td><td>20+</td><td>Used for encoder VCC, GND, A, B, and control wiring.</td></tr>
+<tr><td>Small screwdriver</td><td>1</td><td>Needed for terminal block connections on the motor driver.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>System Diagram</h3>
+<div class="diagram pc-system-diagram" aria-label="Project C hardware data and power flow">
+<div class="pc-node battery">Battery<br /><span>7.4V motor power</span></div>
+<div class="pc-arrow right">power</div>
+<div class="pc-node driver">MOSFET Motor Driver<br /><span>high-current switching</span></div>
+<div class="pc-arrow right">motor output</div>
+<div class="pc-node motor">Left Motor + Encoder<br /><span>wheel motion</span></div>
+<div class="pc-node shield">Motor Shield<br /><span>signal routing</span></div>
+<div class="pc-arrow up">control</div>
+<div class="pc-node arduino">Arduino UNO R4 WiFi<br /><span>counts ticks, runs control</span></div>
+<div class="pc-arrow up">encoder pulses</div>
+<div class="pc-node right-motor">Right Motor + Encoder<br /><span>wheel motion</span></div>
+<div class="pc-node usb">USB to Laptop<br /><span>programming + serial monitor</span></div>
+<div class="pc-arrow right">upload sketch</div>
+<div class="pc-node arduino-repeat">Arduino UNO R4 WiFi<br /><span>same board</span></div>
+</div>
+
+<h3>What You Will Learn</h3>
+<div class="grid-2">
+<div class="card"><h4>Encoder feedback</h4><p>What a quadrature encoder is, why it produces pulses, and how those pulses become a wheel-distance measurement.</p></div>
+<div class="card"><h4>Interrupts</h4><p>How hardware interrupts count fast encoder pulses without relying on the main loop to poll pins.</p></div>
+<div class="card"><h4>Distance math</h4><p>How to convert wheel diameter and ticks per revolution into centimeters per tick.</p></div>
+<div class="card"><h4>Reusable motion functions</h4><p>How to write <code>driveDistance()</code> and <code>turnDegrees()</code> so the robot can run a repeatable path.</p></div>
+</div>
+
+<div class="callout robotics" role="note"><div class="callout-icon">HW</div><div><div class="callout-title">Why this comes before Project 1</div><p>The telemetry the ESP sends back in Project 1 is encoder data. Understanding encoders here means you understand what the robot is measuring later, even when Project 1 moves the control loop into firmware and sends data back over UDP.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-project1" data-lesson-link="projB-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.7 Connect to Project 1</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-hardware" data-lesson-link="projC-hardware"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.1 Hardware &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-hardware" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.1 Understanding the Hardware</div>
+<h1>PC.1 Understanding the Hardware</h1>
+<div class="lesson-meta"><span>Hardware tour</span><span>Motors</span><span>Driver boards</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<h3>The Arduino UNO R4 WiFi</h3>
+<p>The Arduino UNO R4 WiFi is a microcontroller board. A microcontroller is a small computer designed to run one program repeatedly and interact directly with hardware. It reads sensors, controls pins, prints serial data, and drives external electronics. Unlike your laptop, it does not run a general operating system. It runs one sketch from power-on until power-off.</p>
+<div class="grid-3">
+<div class="card"><h4>Digital pins</h4><p>Pins 0 to 13 can be set <code>HIGH</code> or <code>LOW</code>, or read as inputs. In this project, pins 2 and 3 are used for encoder interrupts.</p></div>
+<div class="card"><h4>Analog pins</h4><p>A0 to A5 read voltages between 0V and 5V as numbers. They are not the focus here, but they are useful for later sensors.</p></div>
+<div class="card"><h4>USB port</h4><p>USB programs the board and opens the Serial Monitor. Serial output is how you inspect encoder counts and debug motion.</p></div>
+</div>
+<p>The R4 WiFi version also includes a WiFi module and LED matrix. WiFi is not used in Project C, but it matters in Project 1 when the robot receives commands and streams telemetry.</p>
+
+<h3>The Motor Shield</h3>
+<p>A motor shield plugs directly on top of the Arduino and lines up with the Arduino pins. It gives you convenient screw terminals and routing points so the wiring is less fragile. In this project, treat the shield as a signal router: it passes the Arduino's low-power direction and PWM signals to the motor driver.</p>
+<p>The shield alone may not be enough for geared encoder motors. Many basic shields use driver chips that can deliver only a few hundred milliamps per motor. A geared motor under load can draw far more than that. That is why the separate MOSFET driver does the heavy current switching.</p>
+
+<h3>The MOSFET Motor Driver</h3>
+<p>A MOSFET is a transistor used as a fast electronic switch. A motor driver places MOSFETs into an H-bridge, which can push current through a motor in either direction. That is what allows a DC motor to spin forward and backward.</p>
+<div class="table-wrap">
+<table class="data-table">
+<thead><tr><th>Driver feature</th><th>Why it matters</th></tr></thead>
+<tbody>
+<tr><td>Separate motor power input</td><td>The battery supplies motor current without forcing that noisy current through the Arduino.</td></tr>
+<tr><td>Direction inputs</td><td>The Arduino chooses forward or reverse by setting input pins high or low.</td></tr>
+<tr><td>PWM input</td><td>The Arduino controls motor power by rapidly pulsing the signal. Wider pulses mean more average power.</td></tr>
+<tr><td>STBY or enable pin</td><td>Some drivers stay disabled unless this pin is connected to 5V or controlled by the Arduino.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Use a driver sized for your motors</div><p>Undersized drivers overheat, brown out, or behave inconsistently. If a motor stalls at 1.5A, the driver must tolerate that current long enough for testing. Check the motor stall current and the driver continuous and peak ratings.</p></div></div>
+
+<h3>The Encoder Motors</h3>
+<p>An encoder motor is a DC geared motor with a sensor board attached to the back. The motor itself still has two power wires. The encoder adds power and signal wires so the Arduino can measure rotation.</p>
+<div class="table-wrap">
+<table class="data-table">
+<thead><tr><th>Wire group</th><th>Typical wires</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>Motor power</td><td>Motor + and motor -</td><td>Connect to the motor driver output. Reversing these two wires reverses motor direction.</td></tr>
+<tr><td>Encoder power</td><td>VCC and GND</td><td>Power the Hall sensor or optical encoder board, usually from Arduino 5V and GND.</td></tr>
+<tr><td>Encoder signals</td><td>Channel A and channel B</td><td>Pulse outputs used to count motion and detect direction.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Encoder resolution</div><p>The encoder is usually on the high-speed motor shaft before the gearbox. If the encoder produces 11 pulses per motor revolution and the gearbox ratio is 30:1, one full wheel rotation produces about <code>11 x 30 = 330</code> pulses. This is the encoder resolution for one wheel revolution.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-hardware">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-overview" data-lesson-link="projC-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.0 Overview</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-encoders" data-lesson-link="projC-encoders"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.2 Encoders &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-encoders" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.2 How Encoder Motors Work</div>
+<h1>PC.2 How Encoder Motors Work</h1>
+<div class="lesson-meta"><span>Quadrature</span><span>Interrupts</span><span>Tick counting</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<h3>Quadrature Encoding</h3>
+<p>The two encoder channels do not only count motion. They also encode direction. Channel A produces a pulse wave. Channel B produces the same kind of wave, but shifted one quarter cycle out of phase. When the motor spins forward, channel A changes before channel B. When the motor spins backward, channel B changes before channel A.</p>
+<div class="pc-timing-diagram" aria-label="Quadrature encoder timing diagram">
+<div class="pc-timing-card">
+<h4>Forward rotation</h4>
+<div class="pc-wave-row"><span>Channel A</span><div class="pc-wave"><i></i><b></b><i></i><b></b><i></i><b></b><i></i></div></div>
+<div class="pc-wave-row"><span>Channel B</span><div class="pc-wave shifted-right"><i></i><i></i><b></b><i></i><b></b><i></i><b></b></div></div>
+<p class="mini muted">B lags A by one quarter cycle, so A leads.</p>
+</div>
+<div class="pc-timing-card">
+<h4>Backward rotation</h4>
+<div class="pc-wave-row"><span>Channel A</span><div class="pc-wave"><i></i><b></b><i></i><b></b><i></i><b></b><i></i></div></div>
+<div class="pc-wave-row"><span>Channel B</span><div class="pc-wave shifted-left"><b></b><i></i><b></b><i></i><b></b><i></i><i></i></div></div>
+<p class="mini muted">B leads A by one quarter cycle, so direction is reversed.</p>
+</div>
+</div>
+<p>For a full quadrature decoder, the Arduino checks the relationship between A and B on each transition. For this project, you will use a simpler reliable approach: attach an interrupt to channel A, and count up or down based on the direction command you sent to the motor.</p>
+
+<h3>Hardware Interrupts</h3>
+<p>A common beginner mistake is reading encoder pulses inside <code>loop()</code> using <code>digitalRead()</code>. That can work slowly by hand, but motors produce pulses quickly. The main loop might be busy printing to Serial, checking a target distance, or updating motor power. If the loop is busy when a pulse arrives, that pulse is missed.</p>
+<p>Hardware interrupts solve this. When a pin interrupt fires, the Arduino pauses the current code, runs a tiny function called an ISR, and then resumes. The ISR should be extremely short because it can interrupt anything else the sketch is doing.</p>
+<div class="grid-2">
+<div class="card"><h4>Good ISR behavior</h4><ul><li>Increment or decrement one counter.</li><li>Use variables declared as <code>volatile</code>.</li><li>Return immediately.</li></ul></div>
+<div class="card"><h4>Bad ISR behavior</h4><ul><li>Do not use <code>Serial.print()</code>.</li><li>Do not call <code>delay()</code>.</li><li>Do not run slow calculations.</li></ul></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Keep ISRs short</div><p>The ISR should only update the tick counter. Everything else belongs in the main loop, where delays, printing, and calculations are safe.</p></div></div>
+
+<h3>Tick Counters</h3>
+<p>A tick counter is just a number. Every time the left encoder pulse arrives, <code>ticksLeft</code> changes. Every time the right encoder pulse arrives, <code>ticksRight</code> changes. Later, those numbers are converted into centimeters.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="encoder_counter_shape.ino"><figcaption><span>Minimal encoder counter shape</span></figcaption><pre><code class="language-cpp">volatile long ticksLeft = 0;
+volatile long ticksRight = 0;
+
+void leftEncoderISR() {
+  ticksLeft++;
+}
+
+void rightEncoderISR() {
+  ticksRight++;
+}</code></pre></figure>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-encoders">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-hardware" data-lesson-link="projC-hardware"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.1 Hardware</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-wiring" data-lesson-link="projC-wiring"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.3 Wiring &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-wiring" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.3 Wiring the System</div>
+<h1>PC.3 Wiring the System</h1>
+<div class="lesson-meta"><span>Wiring</span><span>Power safety</span><span>Common ground</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Wiring this system correctly is the most important step. A wiring error can prevent the code from working or damage hardware. Work through one connection group at a time, then visually check it before moving on.</p>
+
+<h3>Connection Group 1: Power</h3>
+<p>The system has two power circuits. Logic power runs the Arduino, shield logic, and encoder boards. Motor power runs the motor driver and motors. Keeping them separate prevents motor current spikes from resetting the Arduino.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Connection</th><th>Destination</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Battery positive (+)</td><td>MOSFET driver <code>VM</code> or <code>VMotor</code></td><td>Supplies motor voltage.</td></tr>
+<tr><td>Battery negative (-)</td><td>MOSFET driver <code>GND</code></td><td>Returns motor current to the battery.</td></tr>
+<tr><td>MOSFET driver <code>GND</code></td><td>Arduino <code>GND</code></td><td>Creates the shared voltage reference needed for control signals.</td></tr>
+</tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The ground must be shared</div><p>The Arduino and motor driver must share a common ground even though they have separate power supplies. Without a shared ground, the driver cannot correctly interpret Arduino control signals.</p></div></div>
+
+<h3>Connection Group 2: Motor Shield to Motor Driver</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Motor shield point</th><th>MOSFET driver input</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>M1 terminal A</td><td><code>AIN1</code></td><td>Left motor direction input 1.</td></tr>
+<tr><td>M1 terminal B</td><td><code>AIN2</code></td><td>Left motor direction input 2.</td></tr>
+<tr><td>M2 terminal A</td><td><code>BIN1</code></td><td>Right motor direction input 1.</td></tr>
+<tr><td>M2 terminal B</td><td><code>BIN2</code></td><td>Right motor direction input 2.</td></tr>
+<tr><td>Motor shield 5V</td><td><code>VCC</code></td><td>Driver logic power.</td></tr>
+<tr><td>Motor shield GND</td><td><code>GND</code></td><td>Shared signal reference.</td></tr>
+</tbody></table></div>
+<p>If your driver has a <code>STBY</code> or enable pin, connect it to 5V for the first tests. A floating standby pin usually disables the driver.</p>
+
+<h3>Connection Group 3: Motor Driver to Motors</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Driver output</th><th>Motor wire</th></tr></thead><tbody>
+<tr><td><code>AO1</code></td><td>Left motor red wire or motor positive.</td></tr>
+<tr><td><code>AO2</code></td><td>Left motor black wire or motor negative.</td></tr>
+<tr><td><code>BO1</code></td><td>Right motor red wire or motor positive.</td></tr>
+<tr><td><code>BO2</code></td><td>Right motor black wire or motor negative.</td></tr>
+</tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Motor polarity can be fixed later</div><p>If a motor runs backward when you expect forward, swap that motor's two power wires at the driver terminal. Do this for one motor at a time so you know exactly what changed.</p></div></div>
+
+<h3>Connection Group 4: Encoders to Arduino</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Encoder wire</th><th>Arduino connection</th><th>Role</th></tr></thead><tbody>
+<tr><td>Left encoder VCC</td><td>Arduino 5V</td><td>Sensor power.</td></tr>
+<tr><td>Left encoder GND</td><td>Arduino GND</td><td>Sensor ground.</td></tr>
+<tr><td>Left encoder A</td><td>Digital pin 2</td><td>Hardware interrupt input.</td></tr>
+<tr><td>Left encoder B</td><td>Digital pin 4</td><td>Optional direction detection.</td></tr>
+<tr><td>Right encoder VCC</td><td>Arduino 5V</td><td>Sensor power.</td></tr>
+<tr><td>Right encoder GND</td><td>Arduino GND</td><td>Sensor ground.</td></tr>
+<tr><td>Right encoder A</td><td>Digital pin 3</td><td>Hardware interrupt input.</td></tr>
+<tr><td>Right encoder B</td><td>Digital pin 5</td><td>Optional direction detection.</td></tr>
+</tbody></table></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Five-wire and six-wire encoders</div><p>Some encoder modules include an index channel labeled <code>C</code> or <code>Z</code>. Leave it unconnected for this project. You only need VCC, GND, channel A, and optionally channel B.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-wiring">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-encoders" data-lesson-link="projC-encoders"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.2 Encoders</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.4 First Sketch &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-first-sketch" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.4 Blink and Serial</div>
+<h1>PC.4 Your First Arduino Sketch: Blink and Serial</h1>
+<div class="lesson-meta"><span>Arduino IDE</span><span>Serial Monitor</span><span>Board test</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Before writing motor or encoder code, verify that the Arduino IDE can detect your board, compile a sketch, upload it, and open the Serial Monitor. If this step fails, encoder debugging will be confusing later.</p>
+
+<h3>Step 1: Install the Arduino IDE</h3>
+<div class="steps">
+<div class="step"><div>Go to <a href="https://www.arduino.cc/en/software" target="_blank" rel="noreferrer">arduino.cc/en/software</a> and download Arduino IDE 2.</div></div>
+<div class="step"><div>Install it normally for your operating system.</div></div>
+<div class="step"><div>Open the IDE once so it can finish its first-run setup.</div></div>
+</div>
+
+<h3>Step 2: Install the UNO R4 Board Package</h3>
+<div class="steps">
+<div class="step"><div>Open <strong>File</strong>, then <strong>Preferences</strong>.</div></div>
+<div class="step"><div>In <strong>Additional boards manager URLs</strong>, paste <code>https://downloads.arduino.cc/packages/package_index.json</code>.</div></div>
+<div class="step"><div>Open <strong>Tools</strong>, then <strong>Board</strong>, then <strong>Boards Manager</strong>.</div></div>
+<div class="step"><div>Search for <strong>Arduino UNO R4</strong> and install <strong>Arduino UNO R4 Boards</strong> by Arduino.</div></div>
+</div>
+
+<h3>Step 3: Select the Board and Port</h3>
+<p>Connect the Arduino to your laptop with the USB cable. In the board selector dropdown, choose <strong>Arduino UNO R4 WiFi</strong>, then select the port that appeared when you plugged in the board. On Windows it looks like <code>COM3</code> or <code>COM7</code>. On macOS it often looks like <code>/dev/cu.usbmodem...</code>. On Linux it often looks like <code>/dev/ttyACM0</code>.</p>
+
+<h3>Step 4: Upload Blink</h3>
+<p>Open <strong>File</strong>, then <strong>Examples</strong>, then <strong>01.Basics</strong>, then <strong>Blink</strong>. Click the upload button. The onboard LED should blink once per second after upload.</p>
+<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">If upload fails</div><p>Check the selected port, try a different USB cable, and close any program that might have the serial port open. Many charging cables do not carry data.</p></div></div>
+
+<h3>Step 5: Open the Serial Monitor</h3>
+<p>Replace Blink with the sketch below. Upload it, open the Serial Monitor, and set the baud rate dropdown to <code>115200</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="serial_test.ino"><figcaption><span>serial_test.ino</span></figcaption><pre><code class="language-cpp">void setup() {
+  Serial.begin(115200);
+  delay(1000);
+  Serial.println("Arduino UNO R4 WiFi is ready.");
+  Serial.println("Serial communication working.");
+}
+
+void loop() {
+  Serial.print("Uptime (ms): ");
+  Serial.println(millis());
+  delay(1000);
+}</code></pre></figure>
+<p>You should see the uptime printing once per second. Serial communication is how you will watch encoder counts, confirm target ticks, and debug motor behavior in every remaining sketch.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-first-sketch">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-wiring" data-lesson-link="projC-wiring"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.3 Wiring</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-reading-pulses" data-lesson-link="projC-reading-pulses"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.5 Encoder Pulses &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-reading-pulses" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.5 Reading Encoder Pulses</div>
+<h1>PC.5 Reading Encoder Pulses</h1>
+<div class="lesson-meta"><span>Interrupts</span><span>Encoder test</span><span>No motor motion</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">This sketch does not move the motors. It only reads and prints encoder counts while you rotate the wheels by hand. That isolates encoder wiring before motor control adds more variables.</p>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="encoder_test.ino"><figcaption><span>encoder_test.ino</span></figcaption><pre><code class="language-cpp">// Encoder pin definitions
+#define ENC_LEFT_A   2   // hardware interrupt pin
+#define ENC_RIGHT_A  3   // hardware interrupt pin
+
+// Tick counters are volatile because they are modified inside ISRs.
+volatile long ticksLeft  = 0;
+volatile long ticksRight = 0;
+
+void leftEncoderISR() {
+  ticksLeft++;
+}
+
+void rightEncoderISR() {
+  ticksRight++;
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(ENC_LEFT_A, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_A, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
+
+  Serial.println("Encoder test ready. Rotate wheels by hand.");
+  Serial.println("Left ticks | Right ticks");
+}
+
+void loop() {
+  Serial.print(ticksLeft);
+  Serial.print("          | ");
+  Serial.println(ticksRight);
+  delay(200);
+}</code></pre></figure>
+
+<h3>What To Do</h3>
+<div class="steps">
+<div class="step"><div>Upload the sketch.</div></div>
+<div class="step"><div>Open the Serial Monitor at <code>115200</code> baud.</div></div>
+<div class="step"><div>Rotate the left wheel by hand one full revolution and write down the count increase.</div></div>
+<div class="step"><div>Rotate the right wheel by hand one full revolution and write down the count increase.</div></div>
+</div>
+
+<div class="grid-2">
+<div class="definition-card"><span class="def-term">Left encoder ticks per wheel revolution</span><p>Write your measured value here: <code>______</code></p></div>
+<div class="definition-card"><span class="def-term">Right encoder ticks per wheel revolution</span><p>Write your measured value here: <code>______</code></p></div>
+</div>
+<p>These numbers go into the next sketches. Measure them from your actual motors. Do not assume the datasheet value is exact until you verify it.</p>
+
+<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">If the count does not change</div><p>The encoder signal wire is disconnected, connected to the wrong pin, or the encoder is not powered. Check VCC, GND, and the channel A wire for that motor.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">If the count jumps randomly</div><p>You may be seeing electrical noise. Add a 100 ohm resistor in series with the signal wire and a 100 nF capacitor from signal to GND near the Arduino input pin.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-reading-pulses">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.4 Blink and Serial</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-distance" data-lesson-link="projC-distance"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.6 Distance Math &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-distance" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.6 Converting Ticks to Distance</div>
+<h1>PC.6 Converting Ticks to Distance</h1>
+<div class="lesson-meta"><span>Robot math</span><span>Wheel diameter</span><span>Calibration</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Once you know ticks per wheel revolution, distance becomes a geometry problem. One wheel revolution moves the robot forward by one wheel circumference. The encoder divides that circumference into ticks.</p>
+
+<div class="pc-formula-card">
+<span class="pc-formula-label">Distance per tick</span>
+<strong>cm per tick = (wheel diameter x &pi;) / ticks per revolution</strong>
+<p>Use centimeters for wheel diameter so the result is centimeters per tick.</p>
+</div>
+
+<h3>Example</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Value</th><th>Example</th></tr></thead><tbody>
+<tr><td>Wheel diameter</td><td><code>65 mm = 6.5 cm</code></td></tr>
+<tr><td>Ticks per revolution</td><td><code>330</code></td></tr>
+<tr><td>Distance per tick</td><td><code>(6.5 x 3.14159) / 330 = 0.0619 cm per tick</code></td></tr>
+<tr><td>Ticks for 30 cm</td><td><code>30 / 0.0619 = 484 ticks</code></td></tr>
+</tbody></table></div>
+
+<h3>Measure Your Wheel</h3>
+<div class="steps">
+<div class="step"><div>Use a ruler or calipers to measure the outer diameter of one wheel in millimeters.</div></div>
+<div class="step"><div>Convert millimeters to centimeters by dividing by 10.</div></div>
+<div class="step"><div>Use the encoder tick count you measured in PC.5.</div></div>
+<div class="step"><div>Calculate <code>CM_PER_TICK</code> and copy it into the next sketch.</div></div>
+</div>
+<div class="grid-3">
+<div class="definition-card"><span class="def-term">Wheel diameter</span><p><code>______ cm</code></p></div>
+<div class="definition-card"><span class="def-term">Ticks per revolution</span><p><code>______ ticks</code></p></div>
+<div class="definition-card"><span class="def-term">CM_PER_TICK</span><p><code>(______ x 3.14159) / ______ = ______</code></p></div>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Why measure instead of trusting a datasheet?</div><p>Budget gearbox ratios are often approximate. A nominal 30:1 gearbox might be 29.8:1. On one movement the error is small; over many movements it accumulates. Measuring your actual wheel and encoder count reduces that error.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-distance">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-reading-pulses" data-lesson-link="projC-reading-pulses"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.5 Encoder Pulses</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-drive-distance" data-lesson-link="projC-drive-distance"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.7 Drive Distance &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-drive-distance" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.7 Driving Forward a Precise Distance</div>
+<h1>PC.7 Driving Forward a Precise Distance</h1>
+<div class="lesson-meta"><span>Motor control</span><span>Closed loop</span><span>Safety timeout</span><span>24 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">This is the first sketch that moves the robot. Before uploading, prop the robot on a book or box so the wheels spin freely. Verify direction before letting the robot drive on the floor.</p>
+<p>You must fill in the values measured earlier: <code>TICKS_PER_REV</code>, <code>WHEEL_DIAM_CM</code>, and the motor pin numbers for your shield or driver setup.</p>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="drive_distance.ino"><figcaption><span>drive_distance.ino</span></figcaption><pre><code class="language-cpp">#include &lt;Arduino.h&gt;
+#include &lt;math.h&gt;
+
+// Measured values - replace with your own.
+const float WHEEL_DIAM_CM = 6.5;
+const long TICKS_PER_REV = 330;
+
+const float CM_PER_TICK = (WHEEL_DIAM_CM * 3.14159) / TICKS_PER_REV;
+
+// Motor shield pin definitions - adjust for your shield.
+#define LEFT_DIR_PIN    12
+#define LEFT_PWM_PIN    3
+#define RIGHT_DIR_PIN   13
+#define RIGHT_PWM_PIN   11
+
+// Encoder pins.
+#define ENC_LEFT_A   2
+#define ENC_RIGHT_A  3
+
+volatile long ticksLeft = 0;
+volatile long ticksRight = 0;
+
+void leftEncoderISR() {
+  ticksLeft++;
+}
+
+void rightEncoderISR() {
+  ticksRight++;
+}
+
+void setMotors(int leftSpeed, int rightSpeed) {
+  leftSpeed = constrain(leftSpeed, -255, 255);
+  rightSpeed = constrain(rightSpeed, -255, 255);
+
+  digitalWrite(LEFT_DIR_PIN, leftSpeed &gt;= 0 ? HIGH : LOW);
+  analogWrite(LEFT_PWM_PIN, abs(leftSpeed));
+
+  digitalWrite(RIGHT_DIR_PIN, rightSpeed &gt;= 0 ? HIGH : LOW);
+  analogWrite(RIGHT_PWM_PIN, abs(rightSpeed));
+}
+
+void stopMotors() {
+  analogWrite(LEFT_PWM_PIN, 0);
+  analogWrite(RIGHT_PWM_PIN, 0);
+}
+
+void resetEncoders() {
+  noInterrupts();
+  ticksLeft = 0;
+  ticksRight = 0;
+  interrupts();
+}
+
+long readLeftTicks() {
+  noInterrupts();
+  long value = ticksLeft;
+  interrupts();
+  return value;
+}
+
+long readRightTicks() {
+  noInterrupts();
+  long value = ticksRight;
+  interrupts();
+  return value;
+}
+
+void driveDistance(float targetCm, int speed) {
+  long targetTicks = (long)(fabs(targetCm) / CM_PER_TICK + 0.5);
+  int direction = (targetCm &gt;= 0) ? 1 : -1;
+  unsigned long startedAt = millis();
+
+  resetEncoders();
+
+  Serial.print("Driving ");
+  Serial.print(targetCm);
+  Serial.print(" cm - target ticks: ");
+  Serial.println(targetTicks);
+
+  while (true) {
+    long left = readLeftTicks();
+    long right = readRightTicks();
+
+    bool leftDone = left &gt;= targetTicks;
+    bool rightDone = right &gt;= targetTicks;
+    if (leftDone &amp;&amp; rightDone) {
+      break;
+    }
+
+    long remaining = targetTicks - max(left, right);
+    int commandSpeed = speed;
+    if (remaining &lt; 50) {
+      commandSpeed = max(80, speed / 3);
+    }
+
+    setMotors(leftDone ? 0 : direction * commandSpeed,
+              rightDone ? 0 : direction * commandSpeed);
+
+    if (millis() - startedAt &gt; 10000) {
+      Serial.println("TIMEOUT - check encoder wiring");
+      break;
+    }
+  }
+
+  stopMotors();
+
+  Serial.print("Done. Left ticks: ");
+  Serial.print(readLeftTicks());
+  Serial.print("  Right ticks: ");
+  Serial.println(readRightTicks());
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(LEFT_DIR_PIN, OUTPUT);
+  pinMode(RIGHT_DIR_PIN, OUTPUT);
+  pinMode(LEFT_PWM_PIN, OUTPUT);
+  pinMode(RIGHT_PWM_PIN, OUTPUT);
+
+  pinMode(ENC_LEFT_A, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_A, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
+
+  stopMotors();
+  delay(2000);
+  Serial.println("Starting movement sequence...");
+}
+
+void loop() {
+  driveDistance(30.0, 180);
+  delay(1000);
+  driveDistance(-30.0, 180);
+  delay(1000);
+
+  while (true) {}
+}</code></pre></figure>
+
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Check pin conflicts</div><p>Some shields use pin 3 for PWM, while this lesson also uses pin 3 for the right encoder interrupt. If your hardware conflicts, move the right encoder signal to a free interrupt-capable pin for your board and update <code>ENC_RIGHT_A</code>.</p></div></div>
+
+<h3>Before Uploading</h3>
+<div class="steps">
+<div class="step"><div>Lift the robot so the wheels do not touch the floor.</div></div>
+<div class="step"><div>Upload the sketch and watch both wheels during the forward movement.</div></div>
+<div class="step"><div>Both wheels should spin in the same forward direction. If one spins backward, swap that motor's two power wires.</div></div>
+<div class="step"><div>Only after direction is correct, place the robot on the floor and test the 30 cm movement.</div></div>
+</div>
+
+<h3>Anatomy of <code>driveDistance()</code></h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Code idea</th><th>Why it matters</th></tr></thead><tbody>
+<tr><td><code>targetTicks = (long)(fabs(targetCm) / CM_PER_TICK + 0.5)</code></td><td>Converts centimeters into encoder ticks and rounds to the nearest whole tick. The absolute value means reverse motion still uses a positive target count.</td></tr>
+<tr><td><code>noInterrupts()</code> and <code>interrupts()</code></td><td>Protect shared tick variables while reading or resetting them so the ISR cannot change a value halfway through the operation.</td></tr>
+<tr><td><code>leftDone &amp;&amp; rightDone</code></td><td>The motion stops only after both wheel counters have reached the target tick count.</td></tr>
+<tr><td>Slow-down zone</td><td>Reducing power during the final 50 ticks helps prevent overshoot from mechanical momentum.</td></tr>
+<tr><td>Elapsed-time timeout</td><td>The robot stops if encoder counts never reach the target, which protects you from an infinite loop caused by bad wiring.</td></tr>
+</tbody></table></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-drive-distance">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-distance" data-lesson-link="projC-distance"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.6 Distance Math</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-turning" data-lesson-link="projC-turning"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.8 Turning &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-turning" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.8 Turning Exactly 90 Degrees</div>
+<h1>PC.8 Turning Exactly 90 Degrees</h1>
+<div class="lesson-meta"><span>Differential drive</span><span>Turn geometry</span><span>Calibration</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">A differential-drive robot turns in place by spinning one wheel forward and the other backward. The robot rotates around its center point, and each wheel travels along a circular arc.</p>
+
+<div class="pc-formula-card">
+<span class="pc-formula-label">Turn arc distance</span>
+<strong>arc cm = (wheelbase x &pi; x turn angle) / 360</strong>
+<p>For a 90-degree turn, this simplifies to <code>(wheelbase x 3.14159) / 4</code>.</p>
+</div>
+
+<h3>Measure Your Wheelbase</h3>
+<p>Measure the distance between the center of the left wheel contact patch and the center of the right wheel contact patch. This is the wheelbase or track width.</p>
+<div class="grid-2">
+<div class="definition-card"><span class="def-term">Measured wheelbase</span><p><code>______ cm</code></p></div>
+<div class="definition-card"><span class="def-term">90-degree arc distance</span><p><code>(______ x 3.14159) / 4 = ______ cm</code></p></div>
+</div>
+
+<h3>Add the Turn Function</h3>
+<p>Add this constant and function to your <code>drive_distance.ino</code> sketch. The function uses the same encoder counters and motor helpers you already wrote.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="turn_degrees_addition.ino"><figcaption><span>turn_degrees_addition.ino</span></figcaption><pre><code class="language-cpp">const float WHEELBASE_CM = 14.0;  // measure your chassis
+
+void turnDegrees(float degrees, int speed) {
+  float arcCm = (WHEELBASE_CM * 3.14159 * fabs(degrees)) / 360.0;
+  long targetTicks = (long)(arcCm / CM_PER_TICK + 0.5);
+  unsigned long startedAt = millis();
+
+  resetEncoders();
+
+  int leftDirection = (degrees &gt; 0) ? 1 : -1;
+  int rightDirection = -leftDirection;
+
+  Serial.print("Turning ");
+  Serial.print(degrees);
+  Serial.print(" degrees - arc: ");
+  Serial.print(arcCm);
+  Serial.print(" cm - target ticks: ");
+  Serial.println(targetTicks);
+
+  while (true) {
+    long left = readLeftTicks();
+    long right = readRightTicks();
+
+    bool leftDone = left &gt;= targetTicks;
+    bool rightDone = right &gt;= targetTicks;
+    if (leftDone &amp;&amp; rightDone) {
+      break;
+    }
+
+    setMotors(leftDone ? 0 : leftDirection * speed,
+              rightDone ? 0 : rightDirection * speed);
+
+    if (millis() - startedAt &gt; 5000) {
+      Serial.println("TIMEOUT - turn did not complete");
+      break;
+    }
+  }
+
+  stopMotors();
+
+  Serial.print("Turn done. Left: ");
+  Serial.print(readLeftTicks());
+  Serial.print("  Right: ");
+  Serial.println(readRightTicks());
+}</code></pre></figure>
+
+<h3>Test a Single Turn</h3>
+<p>Replace your current <code>loop()</code> with a single turn test. Start with lower speed so the robot is easier to observe.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="turn_test_loop.ino"><figcaption><span>turn_test_loop.ino</span></figcaption><pre><code class="language-cpp">void loop() {
+  delay(1000);
+  turnDegrees(90.0, 150);
+  delay(1000);
+  turnDegrees(-90.0, 150);
+
+  while (true) {}
+}</code></pre></figure>
+
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Calibrating the wheelbase value</div><p>The 90-degree turn is usually the hardest movement to make exact. Floor surface, battery voltage, wheel slip, and chassis weight all affect the turn. If the robot consistently turns too far, adjust <code>WHEELBASE_CM</code> down in 0.5 cm increments. If it consistently turns too little, adjust <code>WHEELBASE_CM</code> up.</p></div></div>
+<div class="definition-card"><span class="def-term">Calibrated wheelbase value</span><p>After testing, write your final value here: <code>______ cm</code></p></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-turning">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-drive-distance" data-lesson-link="projC-drive-distance"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.7 Drive Distance</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-path" data-lesson-link="projC-path"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.9 Running a Path &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-path" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.9 Putting It Together: Running a Path</div>
+<h1>PC.9 Putting It Together: Running a Path</h1>
+<div class="lesson-meta"><span>Path sequence</span><span>Dead reckoning</span><span>Square test</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Now combine <code>driveDistance()</code> and <code>turnDegrees()</code> into a programmed path. The robot will draw a square: drive 30 cm, turn 90 degrees, repeat four times, and return near the start position.</p>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="drive_square_loop.ino"><figcaption><span>drive_square_loop.ino</span></figcaption><pre><code class="language-cpp">void loop() {
+  Serial.println("Drawing a square...");
+
+  for (int i = 0; i &lt; 4; i++) {
+    Serial.print("Side ");
+    Serial.println(i + 1);
+
+    driveDistance(30.0, 180);
+    delay(500);
+    turnDegrees(90.0, 150);
+    delay(500);
+  }
+
+  Serial.println("Square complete. Stopped.");
+  while (true) {}
+}</code></pre></figure>
+
+<h3>What To Observe</h3>
+<div class="steps">
+<div class="step"><div>Place tape on the floor to mark the start position and starting heading.</div></div>
+<div class="step"><div>Run the square once and let the robot stop by itself.</div></div>
+<div class="step"><div>Measure how far the final position is from the start position.</div></div>
+<div class="step"><div>Measure the final heading error. The robot should face the same direction it started.</div></div>
+</div>
+<p>A robot that returns within about 2 cm and 5 degrees of the start position is well calibrated for the purposes of Project 1.</p>
+
+<div class="diagram pc-path-diagram" aria-label="Robot square path">
+<div class="pc-square-path">
+<span class="pc-path-start">Start</span>
+<span class="pc-path-side top">30 cm</span>
+<span class="pc-path-side right">90 deg</span>
+<span class="pc-path-side bottom">30 cm</span>
+<span class="pc-path-side left">90 deg</span>
+</div>
+</div>
+
+<div class="callout robotics" role="note"><div class="callout-icon">DR</div><div><div class="callout-title">Dead reckoning</div><p>This exercise is called dead reckoning: navigating by tracking motion from a known starting point without an external position reference. Real autonomous vehicles combine wheel encoders with GPS, IMUs, cameras, and SLAM because dead-reckoning errors accumulate over time.</p></div></div>
+
+<h3>How To Tune the Square</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Observation</th><th>Likely adjustment</th></tr></thead><tbody>
+<tr><td>Each side is too long or too short.</td><td>Recheck wheel diameter, ticks per revolution, and <code>CM_PER_TICK</code>.</td></tr>
+<tr><td>Turns are always too wide or too narrow.</td><td>Adjust <code>WHEELBASE_CM</code> in small increments.</td></tr>
+<tr><td>Robot curves during straight segments.</td><td>Reduce the PWM command on the faster side or add a drift correction coefficient.</td></tr>
+<tr><td>First square is good but repeated squares drift.</td><td>This is normal dead-reckoning error. The robot needs external sensing to correct long-term drift.</td></tr>
+</tbody></table></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-path">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-turning" data-lesson-link="projC-turning"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.8 Turning</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.10 Troubleshooting &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-troubleshooting" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.10 Troubleshooting and Tuning</div>
+<h1>PC.10 Troubleshooting and Tuning</h1>
+<div class="lesson-meta"><span>Debugging</span><span>Tuning</span><span>Project 1 bridge</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Hardware bugs usually look mysterious until you separate them into power, wiring, signal, and calibration problems. Use this section as a checklist before changing code.</p>
+
+<h3>Expandable Troubleshooting Table</h3>
+<div class="pc-troubleshooting-table">
+<details class="solution pc-trouble-row" open><summary><span>Motors do not spin at all</span><span>Likely cause: STBY pin floating</span></summary><div><p>Connect the driver's <code>STBY</code> or enable pin to 5V, then verify the motor battery is connected to <code>VM</code> and driver ground.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>One motor spins, the other does not</span><span>Likely cause: wrong pin mapping</span></summary><div><p>Check that your direction and PWM pin definitions match your actual shield or driver. Then swap only one variable at a time while testing.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Robot drifts left or right during straight drive</span><span>Likely cause: motors have different speeds</span></summary><div><p>Reduce PWM on the faster motor or add a drift correction coefficient. Mechanical differences between cheap gearmotors are normal.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Encoder counts do not change</span><span>Likely cause: wrong interrupt pin or no encoder power</span></summary><div><p>Check that encoder channel A is on the pin used in the sketch, then verify encoder VCC and GND. Test with PC.5 before running motor code.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Counts jump erratically</span><span>Likely cause: electrical noise</span></summary><div><p>Add a 100 ohm series resistor on the encoder signal wire and a 100 nF capacitor from signal to GND near the Arduino pin. Keep motor power wires away from encoder signal wires.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Robot overshoots the target distance</span><span>Likely cause: slow-down zone too late</span></summary><div><p>Increase the slow-down threshold from 50 ticks to 80 or 100 ticks, or lower the main drive speed. Heavier robots need more braking distance.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Turn angle is always off by the same amount</span><span>Likely cause: wheelbase value wrong</span></summary><div><p>Adjust <code>WHEELBASE_CM</code> in 0.5 cm increments until a commanded 90-degree turn produces an actual 90-degree turn.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Turn direction is reversed</span><span>Likely cause: one side motor polarity reversed</span></summary><div><p>Swap that motor's two power wires at the driver terminal, then rerun the lifted-wheel direction test before driving on the floor.</p></div></details>
+<details class="solution pc-trouble-row"><summary><span>Serial Monitor shows unreadable text</span><span>Likely cause: wrong baud rate</span></summary><div><p>Set the Serial Monitor dropdown to <code>115200</code>, matching <code>Serial.begin(115200)</code> in the sketch.</p></div></details>
+</div>
+
+<h3>Connecting This To Project 1</h3>
+<p>When you reach Project 1, the encoder data you learned to read here is the same kind of data the telemetry class receives from the robot controller. The tick counts produced by the ISR in this project become streaming telemetry in the full tracker.</p>
+<div class="grid-2">
+<div class="card"><h4>Project C</h4><p>The Arduino reads ticks and controls motors locally. You print encoder counts to Serial and stop motion when counts reach a target.</p></div>
+<div class="card"><h4>Project 1</h4><p>Motor control happens inside firmware, and tick counts are sent back to Python so the tracker can display telemetry and later support closed-loop speed control.</p></div>
+</div>
+<p>The <code>driveDistance()</code> function is a simplified form of closed-loop control. Project 1's PID controllers are the professional version of the same idea: measure the error, compute a correction, apply the correction, and repeat.</p>
+
+<h3>Final Checklist</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-ide" />Arduino IDE is installed and UNO R4 WiFi is detected on the correct port.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-blink" />Blink sketch uploaded successfully and the onboard LED blinks.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-encoder-test" /><code>encoder_test.ino</code> runs and counts increase when wheels rotate.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-ticks" /><code>TICKS_PER_REV</code> is measured and written down for both motors.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-wheel-diameter" /><code>WHEEL_DIAM_CM</code> is measured with a ruler or calipers.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-cm-per-tick" /><code>CM_PER_TICK</code> is calculated and filled into the drive sketch.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-drive-30" />Robot drives forward 30 cm with less than 2 cm error.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-turn-90" />Robot turns 90 degrees with less than 10 degrees error.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-square" /><code>WHEELBASE_CM</code> is calibrated so the square path closes within 2 cm.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projC-interrupts" />You can explain what a hardware interrupt is and why it is needed.</label></div>
+</div>
+<p>When all boxes are checked, you are ready for Project 1.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-troubleshooting">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-path" data-lesson-link="projC-path"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.9 Running a Path</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 1 &rarr;</span></a>
 </nav>
 </article>
+
 <article class="lesson-content exercise-lesson" data-lesson="proj1-overview" data-chapter="proj1" data-chapter-title="★ Project 1: Object Tracker" style="--chapter-accent:#f97316">
 <div class="lesson-kicker">★ Project 1: Object Tracker <span>&rsaquo;</span> P1.0 What We Are Building</div>
 <h1>P1.0 What We Are Building</h1>
@@ -3460,11 +4275,11 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <div class="step"><div>How YOLO detects objects in real time and what the output looks like.</div></div>
 <div class="step"><div>How to structure a real robotics codebase across multiple classes.</div></div>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Hardware note</div><p>This lesson covers the software only. The ESP microcontroller, motor drivers, and physical robot are introduced in a separate hardware chapter. You can follow P1.0 through P1.12 and run the code in simulation mode without any hardware connected.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Hardware note</div><p>Project C introduced encoder motors and precise movement. Project 1 focuses on the software control loop, so you can still follow P1.0 through P1.12 in simulation mode if no hardware is connected.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projB-project1" data-lesson-link="projB-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.7 Connect to Project 1</span></a>
+<a class="lesson-nav-btn" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.10 Troubleshooting</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.1 Setting Up VS Code &rarr;</span></a>
 </nav>
 </article>
@@ -4182,6 +4997,15 @@ LOST_TIMEOUT   = 1.0
                 <h2>Student <span>Projects</span></h2>
                 <p class="lead">The original project page remains available as an applied robotics build after the curriculum.</p>
               </header>
+              <a class="card" href="index.html?lesson=projC-overview" data-lesson-link="projC-overview" style="display:block;text-decoration:none;border-color:#ef4444;margin-bottom:1rem">
+                <div class="project-label">Project C &mdash; Hardware Control</div>
+                <h3>Precise Movement with Encoder Motors</h3>
+                <p class="muted">A detailed Arduino hardware project covering encoder wiring, interrupts, ticks-to-distance math, exact 30 cm drives, 90-degree turns, square paths, troubleshooting, and calibration.</p>
+                <div class="chip-row" style="--chapter-color: #ef4444">
+                  <span class="chip">Arduino UNO R4</span><span class="chip">Encoder Motors</span><span class="chip">Interrupts</span><span class="chip">Motor Driver</span><span class="chip">Closed Loop</span>
+                </div>
+                <strong>Open Project C lessons &rarr;</strong>
+              </a>
               <a class="card" href="project.html" style="display:block;text-decoration:none;border-color:var(--cyan)">
                 <div class="project-label">Project 01 — Autonomous Robotics</div>
                 <h3>Ball-Following Robot with YOLO + PID Control</h3>
@@ -4203,14 +5027,16 @@ LOST_TIMEOUT   = 1.0
   <script>
     const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
+    const projectCLessons = [{"id":"projC-overview","label":"PC.0 What You Are Building","title":"PC.0 What You Are Building","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":true},{"id":"projC-hardware","label":"PC.1 Hardware","title":"PC.1 Understanding the Hardware","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-encoders","label":"PC.2 Encoder Motors","title":"PC.2 How Encoder Motors Work","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-wiring","label":"PC.3 Wiring","title":"PC.3 Wiring the System","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-first-sketch","label":"PC.4 Blink and Serial","title":"PC.4 Your First Arduino Sketch: Blink and Serial","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-reading-pulses","label":"PC.5 Encoder Pulses","title":"PC.5 Reading Encoder Pulses","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-distance","label":"PC.6 Ticks to Distance","title":"PC.6 Converting Ticks to Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-drive-distance","label":"PC.7 Drive Distance","title":"PC.7 Driving Forward a Precise Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-turning","label":"PC.8 Turn 90 Degrees","title":"PC.8 Turning Exactly 90 Degrees","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-path","label":"PC.9 Running a Path","title":"PC.9 Putting It Together: Running a Path","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-troubleshooting","label":"PC.10 Troubleshooting","title":"PC.10 Troubleshooting and Tuning","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false}];
     const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...project1Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...project1Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.findIndex((chapter) => chapter.key === "projects"),
       0,
       {"key":"projA","title":"★ Project A: Train Your First Detector","lessonIds":["projA-overview","projA-yolo26","projA-vscode","projA-roboflow-data","projA-labeling","projA-exporting","projA-training","projA-results","projA-local-inference","projA-model-output","projA-ready"],"firstLesson":"projA-overview"},
       {"key":"projB","title":"* Project B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
+      {"key":"projC","title":"* Project C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"}
     );
   </script>
