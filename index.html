@@ -3250,16 +3250,32 @@ def open_stream(url):
 
 def read_frame(stream_response):
     buf = b&quot;&quot;
-    for chunk in stream_response.iter_content(1024):
+    for chunk in stream_response.iter_content(4096):
+        if not chunk:
+            continue
+
         buf += chunk
         start = buf.find(b&quot;\xff\xd8&quot;)
-        end   = buf.find(b&quot;\xff\xd9&quot;)
-        if start != -1 and end != -1:
-            jpg = buf[start:end + 2]
-            buf = buf[end + 2:]
-            frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
-            if frame is not None:
-                return frame
+        if start == -1:
+            # Keep one byte in case the JPEG marker is split across chunks.
+            buf = buf[-1:]
+            continue
+
+        end = buf.find(b&quot;\xff\xd9&quot;, start + 2)
+        if end == -1:
+            # Keep the partial JPEG and wait for more bytes.
+            buf = buf[start:]
+            continue
+
+        jpg = buf[start:end + 2]
+        buf = buf[end + 2:]
+
+        if len(jpg) &lt;= 2:
+            continue
+
+        frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+        if frame is not None:
+            return frame
     return None
 
 def main():
@@ -3353,15 +3369,16 @@ iPhone:  STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;</code></pre></fi
 <div class="steps">
 <div class="step"><div>Read a chunk of bytes from the stream into a buffer.</div></div>
 <div class="step"><div>Search the buffer for the start marker <code>0xFF 0xD8</code>.</div></div>
-<div class="step"><div>Search the buffer for the end marker <code>0xFF 0xD9</code>.</div></div>
+<div class="step"><div>Search the buffer for the end marker <code>0xFF 0xD9</code>, but only after the start marker.</div></div>
 <div class="step"><div>When both are found, everything between them is one complete JPEG.</div></div>
 <div class="step"><div>Decode that JPEG into an image array using OpenCV.</div></div>
 <div class="step"><div>Return the image and clear the processed bytes from the buffer.</div></div>
 </div>
-<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="jpeg_marker_extraction.py"><figcaption><span>JPEG marker extraction</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">start = buf.find(b&quot;\\xff\\xd8&quot;)    # find the JPEG start marker
-end   = buf.find(b&quot;\\xff\\xd9&quot;)    # find the JPEG end marker
-jpg   = buf[start:end + 2]       # slice out the complete JPEG
-frame = cv2.imdecode(...)        # decode bytes into an image array</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="jpeg_marker_extraction.py"><figcaption><span>JPEG marker extraction</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">start = buf.find(b&quot;\\xff\\xd8&quot;)          # find the JPEG start marker
+end = buf.find(b&quot;\\xff\\xd9&quot;, start + 2) # find the next end marker
+jpg = buf[start:end + 2]              # slice out the complete JPEG
+frame = cv2.imdecode(...)             # decode bytes into an image array</code></pre></figure>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not decode an empty JPEG</div><p>The end marker must be searched <em>after</em> the start marker. If the code finds an old end marker first, the slice can be empty and OpenCV raises <code>(-215:Assertion failed) !buf.empty()</code> inside <code>cv2.imdecode</code>.</p></div></div>
 <p>This exact pattern is used in the <code>MobileVideoStream</code> class in Project 1's <code>obj_track_adv.py</code>. Now you know exactly why it is there.</p>
 <h3>Why cv2.imdecode Instead Of cv2.VideoCapture</h3>
 <p>In Project A you used <code>cv2.VideoCapture(0)</code> to open a webcam. <code>VideoCapture</code> handles USB and some network cameras using built-in drivers. However it does not reliably handle MJPEG streams from phone apps. <code>imdecode</code> works on raw bytes directly, which gives us full control over how frames are read and handles connection drops and reconnects cleanly.</p>
