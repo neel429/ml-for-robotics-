@@ -3671,7 +3671,7 @@ void rightEncoderISR() {
 <tr><td>Right encoder A</td><td>Arduino pin 3</td><td>Hardware interrupt input.</td></tr>
 <tr><td>Right encoder B</td><td>Arduino pin 5</td><td>Optional direction detection.</td></tr>
 </tbody></table></div>
-<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Channel B is optional in these sketches</div><p>The Project C sketches count channel A only. Channel B is useful later for full quadrature direction detection, but you can leave it disconnected while following the simplified interrupt-counting sketches.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Channel B is used for direction testing</div><p>PC.5 reads channel B inside the channel A interrupt so you can verify forward and backward direction. Later motion sketches still use a simplified channel-A count for distance control.</p></div></div>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-wiring">Mark as Complete</button></div>
@@ -3747,46 +3747,65 @@ void loop() {
 
 <figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="encoder_test.ino"><figcaption><span>encoder_test.ino</span></figcaption><pre><code class="language-cpp">// Encoder pin definitions
 #define ENC_LEFT_A   2   // hardware interrupt pin
+#define ENC_LEFT_B   4
 #define ENC_RIGHT_A  3   // hardware interrupt pin
+#define ENC_RIGHT_B  5
 
 // Tick counters are volatile because they are modified inside ISRs.
 volatile long ticksLeft  = 0;
 volatile long ticksRight = 0;
 
 void leftEncoderISR() {
-  ticksLeft++;
+  // Read channel B at the moment channel A fires.
+  // If B is HIGH when A rises, wheel is spinning forward.
+  // If B is LOW when A rises, wheel is spinning backward.
+  if (digitalRead(ENC_LEFT_B) == HIGH) {
+    ticksLeft++;
+  } else {
+    ticksLeft--;
+  }
 }
 
 void rightEncoderISR() {
-  ticksRight++;
+  if (digitalRead(ENC_RIGHT_B) == HIGH) {
+    ticksRight++;
+  } else {
+    ticksRight--;
+  }
 }
 
 void setup() {
   Serial.begin(115200);
 
-  pinMode(ENC_LEFT_A, INPUT_PULLUP);
+  pinMode(ENC_LEFT_A,  INPUT_PULLUP);
+  pinMode(ENC_LEFT_B,  INPUT_PULLUP);
   pinMode(ENC_RIGHT_A, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_B, INPUT_PULLUP);
 
   attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
   attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
 
   Serial.println("Encoder test ready. Rotate wheels by hand.");
-  Serial.println("Left ticks | Right ticks");
 }
 
 void loop() {
+  Serial.print("Left: ");
   Serial.print(ticksLeft);
-  Serial.print("          | ");
-  Serial.println(ticksRight);
+  Serial.print(ticksLeft &gt; 0 ? "  (forward)" : ticksLeft &lt; 0 ? "  (backward)" : "");
+  Serial.print("    Right: ");
+  Serial.print(ticksRight);
+  Serial.println(ticksRight &gt; 0 ? "  (forward)" : ticksRight &lt; 0 ? "  (backward)" : "");
   delay(200);
 }</code></pre></figure>
+
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">How the ISR detects direction</div><p>Channel A fires a pulse on every tick regardless of direction. Channel B fires the same pulses but shifted 90 degrees in phase. When the motor spins forward, B is already HIGH by the time A rises. When the motor spins backward, B is still LOW when A rises. Reading B inside the channel A interrupt gives direction with the same two encoder signal wires.</p></div></div>
 
 <h3>What To Do</h3>
 <div class="steps">
 <div class="step"><div>Upload the sketch.</div></div>
 <div class="step"><div>Open the Serial Monitor at <code>115200</code> baud.</div></div>
-<div class="step"><div>Rotate the left wheel by hand one full revolution and write down the count increase.</div></div>
-<div class="step"><div>Rotate the right wheel by hand one full revolution and write down the count increase.</div></div>
+<div class="step"><div>Rotate the left wheel forward by hand. The count should increase. Rotate it backward. The count should decrease back toward zero.</div></div>
+<div class="step"><div>Repeat the same test on the right wheel. If forward rotation decreases the count, swap the channel A and B wire connections for that encoder. The labels A and B on the motor are arbitrary; what matters is which channel leads the other.</div></div>
 </div>
 
 <div class="grid-2">
