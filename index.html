@@ -3474,14 +3474,13 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <thead><tr><th>Item</th><th>Quantity</th><th>Notes</th></tr></thead>
 <tbody>
 <tr><td>Arduino UNO R4 WiFi</td><td>1</td><td>The microcontroller brain that runs the sketch and reads encoder pulses.</td></tr>
-<tr><td>Motor shield, R3 compatible</td><td>1</td><td>Sits on top of the Arduino and routes control signals to the driver.</td></tr>
-<tr><td>MOSFET motor driver module</td><td>1</td><td>For example L298N or TB6612FNG. This board handles motor current.</td></tr>
+<tr><td>Custom motor shield</td><td>1</td><td>Samar Singh design with the TB6612FNG motor driver integrated directly on the shield.</td></tr>
 <tr><td>DC encoder motors with gearbox</td><td>2</td><td>Must provide A/B quadrature encoder outputs.</td></tr>
 <tr><td>Robot chassis with wheels</td><td>1</td><td>Use a 2WD differential-drive chassis.</td></tr>
-<tr><td>Li-Po or 7.4V battery pack</td><td>1</td><td>Powers the motors separately from the Arduino USB connection.</td></tr>
-<tr><td>USB-A to USB-C cable</td><td>1</td><td>Programs the Arduino from the laptop and powers the logic during testing.</td></tr>
-<tr><td>Jumper wires, male to male</td><td>20+</td><td>Used for encoder VCC, GND, A, B, and control wiring.</td></tr>
-<tr><td>Small screwdriver</td><td>1</td><td>Needed for terminal block connections on the motor driver.</td></tr>
+<tr><td>Li-Po or 7.4V battery pack</td><td>1</td><td>Powers the motors through the shield battery terminal.</td></tr>
+<tr><td>USB-A to USB-C cable</td><td>1</td><td>Programming and Serial Monitor connection.</td></tr>
+<tr><td>Jumper wires, male to male</td><td>10+</td><td>Encoder signal wires only if you are not using matching JST encoder connectors.</td></tr>
+<tr><td>Small screwdriver</td><td>1</td><td>Used for the motor and battery terminal blocks.</td></tr>
 </tbody>
 </table>
 </div>
@@ -3490,10 +3489,10 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <div class="diagram pc-system-diagram" aria-label="Project C hardware data and power flow">
 <div class="pc-node battery">Battery<br /><span>7.4V motor power</span></div>
 <div class="pc-arrow right">power</div>
-<div class="pc-node driver">MOSFET Motor Driver<br /><span>high-current switching</span></div>
+<div class="pc-node driver">Custom Motor Shield<br /><span>TB6612FNG + regulator</span></div>
 <div class="pc-arrow right">motor output</div>
 <div class="pc-node motor">Left Motor + Encoder<br /><span>wheel motion</span></div>
-<div class="pc-node shield">Motor Shield<br /><span>signal routing</span></div>
+<div class="pc-node shield">Shield Headers<br /><span>plugs onto Arduino</span></div>
 <div class="pc-arrow up">control</div>
 <div class="pc-node arduino">Arduino UNO R4 WiFi<br /><span>counts ticks, runs control</span></div>
 <div class="pc-arrow up">encoder pulses</div>
@@ -3524,7 +3523,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <article class="lesson-content" data-lesson="projC-hardware" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
 <div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.1 Understanding the Hardware</div>
 <h1>PC.1 Understanding the Hardware</h1>
-<div class="lesson-meta"><span>Hardware tour</span><span>Motors</span><span>Driver boards</span><span>14 min</span></div>
+<div class="lesson-meta"><span>Hardware tour</span><span>Motors</span><span>Custom shield</span><span>14 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
@@ -3537,24 +3536,23 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 </div>
 <p>The R4 WiFi version also includes a WiFi module and LED matrix. WiFi is not used in Project C, but it matters in Project 1 when the robot receives commands and streams telemetry.</p>
 
-<h3>The Motor Shield</h3>
-<p>A motor shield plugs directly on top of the Arduino and lines up with the Arduino pins. It gives you convenient screw terminals and routing points so the wiring is less fragile. In this project, treat the shield as a signal router: it passes the Arduino's low-power direction and PWM signals to the motor driver.</p>
-<p>The shield alone may not be enough for geared encoder motors. Many basic shields use driver chips that can deliver only a few hundred milliamps per motor. A geared motor under load can draw far more than that. That is why the separate MOSFET driver does the heavy current switching.</p>
-
-<h3>The MOSFET Motor Driver</h3>
-<p>A MOSFET is a transistor used as a fast electronic switch. A motor driver places MOSFETs into an H-bridge, which can push current through a motor in either direction. That is what allows a DC motor to spin forward and backward.</p>
+<h3>This Shield Is an All-In-One Board</h3>
+<p>The motor shield you are using is a custom board designed specifically for this course. Unlike generic motor shields that only route signals, this board has the TB6612FNG motor driver chip already integrated directly on it. You do not need a separate motor driver module. The shield plugs directly onto the Arduino UNO R4 WiFi.</p>
 <div class="table-wrap">
 <table class="data-table">
-<thead><tr><th>Driver feature</th><th>Why it matters</th></tr></thead>
+<thead><tr><th>Shield feature</th><th>What it gives you</th></tr></thead>
 <tbody>
-<tr><td>Separate motor power input</td><td>The battery supplies motor current without forcing that noisy current through the Arduino.</td></tr>
-<tr><td>Direction inputs</td><td>The Arduino chooses forward or reverse by setting input pins high or low.</td></tr>
-<tr><td>PWM input</td><td>The Arduino controls motor power by rapidly pulsing the signal. Wider pulses mean more average power.</td></tr>
-<tr><td>STBY or enable pin</td><td>Some drivers stay disabled unless this pin is connected to 5V or controlled by the Arduino.</td></tr>
+<tr><td>DC Motors #1 and #2</td><td>Two green screw-terminal outputs on the right side of the board for the left and right DC motors.</td></tr>
+<tr><td>Servo connectors</td><td>Two connectors labeled Servos, A0 and A1, for future servo experiments.</td></tr>
+<tr><td>Battery terminal</td><td>A green screw terminal labeled Battery for the motor battery input.</td></tr>
+<tr><td>Onboard voltage regulator</td><td>Regulates battery power for the shield and, when selected, the Arduino.</td></tr>
+<tr><td>Power selection jumper</td><td><code>UNO PWR</code> or <code>BATT PWR</code> selects whether the Arduino is powered from USB or from the battery through the regulator.</td></tr>
 </tbody>
 </table>
 </div>
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Use a driver sized for your motors</div><p>Undersized drivers overheat, brown out, or behave inconsistently. If a motor stalls at 1.5A, the driver must tolerate that current long enough for testing. Check the motor stall current and the driver continuous and peak ratings.</p></div></div>
+<h3>TB6612FNG vs L298N</h3>
+<p>The TB6612FNG uses MOSFETs internally rather than bipolar transistors. It handles up to 1.2A continuous per channel, runs cool, and has very low voltage drop across the driver so your motors receive close to the full battery voltage.</p>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Why this chip is better</div><p>The L298N found on many cheap shields can lose up to 2V across the driver, which noticeably reduces motor torque. The TB6612FNG wastes less voltage as heat, so the same battery gives stronger motor output.</p></div></div>
 
 <h3>The Encoder Motors</h3>
 <p>An encoder motor is a DC geared motor with a sensor board attached to the back. The motor itself still has two power wires. The encoder adds power and signal wires so the Arduino can measure rotation.</p>
@@ -3562,7 +3560,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <table class="data-table">
 <thead><tr><th>Wire group</th><th>Typical wires</th><th>Purpose</th></tr></thead>
 <tbody>
-<tr><td>Motor power</td><td>Motor + and motor -</td><td>Connect to the motor driver output. Reversing these two wires reverses motor direction.</td></tr>
+<tr><td>Motor power</td><td>Motor + and motor -</td><td>Connect directly to the shield's DC motor output terminals. Reversing these two wires reverses motor direction.</td></tr>
 <tr><td>Encoder power</td><td>VCC and GND</td><td>Power the Hall sensor or optical encoder board, usually from Arduino 5V and GND.</td></tr>
 <tr><td>Encoder signals</td><td>Channel A and channel B</td><td>Pulse outputs used to count motion and detect direction.</td></tr>
 </tbody>
@@ -3636,53 +3634,44 @@ void rightEncoderISR() {
 <article class="lesson-content" data-lesson="projC-wiring" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
 <div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.3 Wiring the System</div>
 <h1>PC.3 Wiring the System</h1>
-<div class="lesson-meta"><span>Wiring</span><span>Power safety</span><span>Common ground</span><span>18 min</span></div>
+<div class="lesson-meta"><span>Wiring</span><span>Power safety</span><span>Power jumper</span><span>18 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
 <p class="lead">Wiring this system correctly is the most important step. A wiring error can prevent the code from working or damage hardware. Work through one connection group at a time, then visually check it before moving on.</p>
 
 <h3>Connection Group 1: Power</h3>
-<p>The system has two power circuits. Logic power runs the Arduino, shield logic, and encoder boards. Motor power runs the motor driver and motors. Keeping them separate prevents motor current spikes from resetting the Arduino.</p>
+<p>Plug the shield onto the Arduino UNO R4 WiFi. Align the pins carefully: every pin must seat fully. The shield covers the entire Arduino board.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Connection</th><th>Destination</th><th>Purpose</th></tr></thead><tbody>
-<tr><td>Battery positive (+)</td><td>MOSFET driver <code>VM</code> or <code>VMotor</code></td><td>Supplies motor voltage.</td></tr>
-<tr><td>Battery negative (-)</td><td>MOSFET driver <code>GND</code></td><td>Returns motor current to the battery.</td></tr>
-<tr><td>MOSFET driver <code>GND</code></td><td>Arduino <code>GND</code></td><td>Creates the shared voltage reference needed for control signals.</td></tr>
+<tr><td>Battery positive (+)</td><td>Battery terminal <code>+</code> on the shield</td><td>Supplies motor power through the integrated TB6612FNG driver.</td></tr>
+<tr><td>Battery negative (-)</td><td>Battery terminal <code>-</code> on the shield</td><td>Completes the battery circuit through the shield.</td></tr>
+<tr><td>Power jumper</td><td><code>BATT PWR</code> for battery operation, <code>UNO PWR</code> for USB-only bench testing</td><td>Selects whether the Arduino is powered by the battery regulator or by USB.</td></tr>
 </tbody></table></div>
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The ground must be shared</div><p>The Arduino and motor driver must share a common ground even though they have separate power supplies. Without a shared ground, the driver cannot correctly interpret Arduino control signals.</p></div></div>
+<p>Use <code>BATT PWR</code> when running on battery. Use <code>UNO PWR</code> when running from USB only. Motors will not have enough power from USB alone; USB is only for uploading and Serial Monitor testing without motor load.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Use one power jumper at a time</div><p>Never have both <code>BATT PWR</code> and <code>UNO PWR</code> jumpers set at the same time unless you know your battery voltage is within the Arduino's input range. When in doubt, use one jumper at a time.</p></div></div>
 
-<h3>Connection Group 2: Motor Shield to Motor Driver</h3>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Motor shield point</th><th>MOSFET driver input</th><th>Meaning</th></tr></thead><tbody>
-<tr><td>M1 terminal A</td><td><code>AIN1</code></td><td>Left motor direction input 1.</td></tr>
-<tr><td>M1 terminal B</td><td><code>AIN2</code></td><td>Left motor direction input 2.</td></tr>
-<tr><td>M2 terminal A</td><td><code>BIN1</code></td><td>Right motor direction input 1.</td></tr>
-<tr><td>M2 terminal B</td><td><code>BIN2</code></td><td>Right motor direction input 2.</td></tr>
-<tr><td>Motor shield 5V</td><td><code>VCC</code></td><td>Driver logic power.</td></tr>
-<tr><td>Motor shield GND</td><td><code>GND</code></td><td>Shared signal reference.</td></tr>
+<h3>Connection Group 2: Motors to Shield</h3>
+<p>Connect your motor wires directly to the green screw terminals on the right side of the shield.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Motor</th><th>Shield terminal</th><th>Direction correction</th></tr></thead><tbody>
+<tr><td>Left motor</td><td><code>DC Motors #1</code> terminals, <code>+</code> and <code>-</code></td><td>Swap the two wires on this terminal block if the left motor runs backward.</td></tr>
+<tr><td>Right motor</td><td><code>DC Motors #2</code> terminals, <code>+</code> and <code>-</code></td><td>Swap the two wires on this terminal block if the right motor runs backward.</td></tr>
 </tbody></table></div>
-<p>If your driver has a <code>STBY</code> or enable pin, connect it to 5V for the first tests. A floating standby pin usually disables the driver.</p>
+<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">No external driver wiring</div><p>This shield has the TB6612FNG integrated on the board. There is no separate driver module to wire between the shield and the motors.</p></div></div>
 
-<h3>Connection Group 3: Motor Driver to Motors</h3>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Driver output</th><th>Motor wire</th></tr></thead><tbody>
-<tr><td><code>AO1</code></td><td>Left motor red wire or motor positive.</td></tr>
-<tr><td><code>AO2</code></td><td>Left motor black wire or motor negative.</td></tr>
-<tr><td><code>BO1</code></td><td>Right motor red wire or motor positive.</td></tr>
-<tr><td><code>BO2</code></td><td>Right motor black wire or motor negative.</td></tr>
-</tbody></table></div>
-<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Motor polarity can be fixed later</div><p>If a motor runs backward when you expect forward, swap that motor's two power wires at the driver terminal. Do this for one motor at a time so you know exactly what changed.</p></div></div>
-
-<h3>Connection Group 4: Encoders to Arduino</h3>
+<h3>Connection Group 3: Encoders</h3>
+<p>Your encoder motors have six wires: two for motor power, already connected above, and four for the encoder. If your motors have JST encoder connectors that match the white JST sockets on the shield, plug them in directly.</p>
+<p>If wiring manually, use the shield passthrough headers and the table below.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Encoder wire</th><th>Arduino connection</th><th>Role</th></tr></thead><tbody>
-<tr><td>Left encoder VCC</td><td>Arduino 5V</td><td>Sensor power.</td></tr>
+<tr><td>Left encoder VCC</td><td>Arduino 5V via shield passthrough header</td><td>Sensor power.</td></tr>
 <tr><td>Left encoder GND</td><td>Arduino GND</td><td>Sensor ground.</td></tr>
-<tr><td>Left encoder A</td><td>Digital pin 2</td><td>Hardware interrupt input.</td></tr>
-<tr><td>Left encoder B</td><td>Digital pin 4</td><td>Optional direction detection.</td></tr>
+<tr><td>Left encoder A</td><td>Arduino pin 2</td><td>Hardware interrupt input.</td></tr>
+<tr><td>Left encoder B</td><td>Arduino pin 4</td><td>Optional direction detection.</td></tr>
 <tr><td>Right encoder VCC</td><td>Arduino 5V</td><td>Sensor power.</td></tr>
 <tr><td>Right encoder GND</td><td>Arduino GND</td><td>Sensor ground.</td></tr>
-<tr><td>Right encoder A</td><td>Digital pin 3</td><td>Hardware interrupt input.</td></tr>
-<tr><td>Right encoder B</td><td>Digital pin 5</td><td>Optional direction detection.</td></tr>
+<tr><td>Right encoder A</td><td>Arduino pin 3</td><td>Hardware interrupt input.</td></tr>
+<tr><td>Right encoder B</td><td>Arduino pin 5</td><td>Optional direction detection.</td></tr>
 </tbody></table></div>
-<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Five-wire and six-wire encoders</div><p>Some encoder modules include an index channel labeled <code>C</code> or <code>Z</code>. Leave it unconnected for this project. You only need VCC, GND, channel A, and optionally channel B.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Channel B is optional in these sketches</div><p>The Project C sketches count channel A only. Channel B is useful later for full quadrature direction detection, but you can leave it disconnected while following the simplified interrupt-counting sketches.</p></div></div>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-wiring">Mark as Complete</button></div>
@@ -3870,7 +3859,7 @@ void loop() {
 <div class="lesson-body">
 
 <p class="lead">This is the first sketch that moves the robot. Before uploading, prop the robot on a book or box so the wheels spin freely. Verify direction before letting the robot drive on the floor.</p>
-<p>You must fill in the values measured earlier: <code>TICKS_PER_REV</code>, <code>WHEEL_DIAM_CM</code>, and the motor pin numbers for your shield or driver setup.</p>
+<p>You must fill in the values measured earlier: <code>TICKS_PER_REV</code> and <code>WHEEL_DIAM_CM</code>. The motor pins below match the custom Samar Singh shield used in this course.</p>
 
 <figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="drive_distance.ino"><figcaption><span>drive_distance.ino</span></figcaption><pre><code class="language-cpp">#include &lt;Arduino.h&gt;
 #include &lt;math.h&gt;
@@ -3881,11 +3870,14 @@ const long TICKS_PER_REV = 330;
 
 const float CM_PER_TICK = (WHEEL_DIAM_CM * 3.14159) / TICKS_PER_REV;
 
-// Motor shield pin definitions - adjust for your shield.
-#define LEFT_DIR_PIN    12
-#define LEFT_PWM_PIN    3
-#define RIGHT_DIR_PIN   13
-#define RIGHT_PWM_PIN   11
+// Pin definitions - matches the custom Samar Singh shield.
+// Motor #1 = Left, Motor #2 = Right.
+#define LEFT_IN1_PIN    4
+#define LEFT_IN2_PIN    5
+#define LEFT_EN_PIN     6
+#define RIGHT_IN1_PIN   12
+#define RIGHT_IN2_PIN   13
+#define RIGHT_EN_PIN    11
 
 // Encoder pins.
 #define ENC_LEFT_A   2
@@ -3906,16 +3898,34 @@ void setMotors(int leftSpeed, int rightSpeed) {
   leftSpeed = constrain(leftSpeed, -255, 255);
   rightSpeed = constrain(rightSpeed, -255, 255);
 
-  digitalWrite(LEFT_DIR_PIN, leftSpeed &gt;= 0 ? HIGH : LOW);
-  analogWrite(LEFT_PWM_PIN, abs(leftSpeed));
+  if (leftSpeed &gt;= 0) {
+    digitalWrite(LEFT_IN1_PIN, HIGH);
+    digitalWrite(LEFT_IN2_PIN, LOW);
+  } else {
+    digitalWrite(LEFT_IN1_PIN, LOW);
+    digitalWrite(LEFT_IN2_PIN, HIGH);
+  }
+  analogWrite(LEFT_EN_PIN, abs(leftSpeed));
 
-  digitalWrite(RIGHT_DIR_PIN, rightSpeed &gt;= 0 ? HIGH : LOW);
-  analogWrite(RIGHT_PWM_PIN, abs(rightSpeed));
+  if (rightSpeed &gt;= 0) {
+    digitalWrite(RIGHT_IN1_PIN, HIGH);
+    digitalWrite(RIGHT_IN2_PIN, LOW);
+  } else {
+    digitalWrite(RIGHT_IN1_PIN, LOW);
+    digitalWrite(RIGHT_IN2_PIN, HIGH);
+  }
+  analogWrite(RIGHT_EN_PIN, abs(rightSpeed));
 }
 
 void stopMotors() {
-  analogWrite(LEFT_PWM_PIN, 0);
-  analogWrite(RIGHT_PWM_PIN, 0);
+  analogWrite(LEFT_EN_PIN, 0);
+  analogWrite(RIGHT_EN_PIN, 0);
+
+  // Set IN pins LOW for a clean stop with no braking.
+  digitalWrite(LEFT_IN1_PIN, LOW);
+  digitalWrite(LEFT_IN2_PIN, LOW);
+  digitalWrite(RIGHT_IN1_PIN, LOW);
+  digitalWrite(RIGHT_IN2_PIN, LOW);
 }
 
 void resetEncoders() {
@@ -3987,10 +3997,12 @@ void driveDistance(float targetCm, int speed) {
 void setup() {
   Serial.begin(115200);
 
-  pinMode(LEFT_DIR_PIN, OUTPUT);
-  pinMode(RIGHT_DIR_PIN, OUTPUT);
-  pinMode(LEFT_PWM_PIN, OUTPUT);
-  pinMode(RIGHT_PWM_PIN, OUTPUT);
+  pinMode(LEFT_IN1_PIN, OUTPUT);
+  pinMode(LEFT_IN2_PIN, OUTPUT);
+  pinMode(LEFT_EN_PIN, OUTPUT);
+  pinMode(RIGHT_IN1_PIN, OUTPUT);
+  pinMode(RIGHT_IN2_PIN, OUTPUT);
+  pinMode(RIGHT_EN_PIN, OUTPUT);
 
   pinMode(ENC_LEFT_A, INPUT_PULLUP);
   pinMode(ENC_RIGHT_A, INPUT_PULLUP);
@@ -4012,7 +4024,7 @@ void loop() {
   while (true) {}
 }</code></pre></figure>
 
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Check pin conflicts</div><p>Some shields use pin 3 for PWM, while this lesson also uses pin 3 for the right encoder interrupt. If your hardware conflicts, move the right encoder signal to a free interrupt-capable pin for your board and update <code>ENC_RIGHT_A</code>.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Pin note for this shield</div><p>Pin 3 was previously used for right PWM in generic shield examples. On the custom shield, motor speed uses <code>LEFT_EN_PIN</code> on pin 6 and <code>RIGHT_EN_PIN</code> on pin 11, so pin 3 remains available for the right encoder interrupt. On the UNO R4, all digital pins support <code>analogWrite()</code>, so pin 6 works for left motor speed.</p></div></div>
 
 <h3>Before Uploading</h3>
 <div class="steps">
@@ -4025,6 +4037,7 @@ void loop() {
 <h3>Anatomy of <code>driveDistance()</code></h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Code idea</th><th>Why it matters</th></tr></thead><tbody>
 <tr><td><code>targetTicks = (long)(fabs(targetCm) / CM_PER_TICK + 0.5)</code></td><td>Converts centimeters into encoder ticks and rounds to the nearest whole tick. The absolute value means reverse motion still uses a positive target count.</td></tr>
+<tr><td><code>IN1</code>, <code>IN2</code>, and <code>EN</code> pins</td><td>The TB6612FNG uses two direction pins per motor and one PWM enable pin for speed. This is different from generic <code>DIR</code> plus <code>PWM</code> examples.</td></tr>
 <tr><td><code>noInterrupts()</code> and <code>interrupts()</code></td><td>Protect shared tick variables while reading or resetting them so the ISR cannot change a value halfway through the operation.</td></tr>
 <tr><td><code>leftDone &amp;&amp; rightDone</code></td><td>The motion stops only after both wheel counters have reached the target tick count.</td></tr>
 <tr><td>Slow-down zone</td><td>Reducing power during the final 50 ticks helps prevent overshoot from mechanical momentum.</td></tr>
@@ -4205,7 +4218,7 @@ void turnDegrees(float degrees, int speed) {
 
 <h3>Expandable Troubleshooting Table</h3>
 <div class="pc-troubleshooting-table">
-<details class="solution pc-trouble-row" open><summary><span>Motors do not spin at all</span><span>Likely cause: STBY pin floating</span></summary><div><p>Connect the driver's <code>STBY</code> or enable pin to 5V, then verify the motor battery is connected to <code>VM</code> and driver ground.</p></div></details>
+<details class="solution pc-trouble-row" open><summary><span>Motors do not spin at all</span><span>Likely cause: no battery power or wrong jumper</span></summary><div><p>Verify the battery is connected to the shield Battery terminal with correct polarity. For motor testing, set the jumper to <code>BATT PWR</code>. USB alone is only for uploading and Serial Monitor testing.</p></div></details>
 <details class="solution pc-trouble-row"><summary><span>One motor spins, the other does not</span><span>Likely cause: wrong pin mapping</span></summary><div><p>Check that your direction and PWM pin definitions match your actual shield or driver. Then swap only one variable at a time while testing.</p></div></details>
 <details class="solution pc-trouble-row"><summary><span>Robot drifts left or right during straight drive</span><span>Likely cause: motors have different speeds</span></summary><div><p>Reduce PWM on the faster motor or add a drift correction coefficient. Mechanical differences between cheap gearmotors are normal.</p></div></details>
 <details class="solution pc-trouble-row"><summary><span>Encoder counts do not change</span><span>Likely cause: wrong interrupt pin or no encoder power</span></summary><div><p>Check that encoder channel A is on the pin used in the sketch, then verify encoder VCC and GND. Test with PC.5 before running motor code.</p></div></details>
@@ -5002,7 +5015,7 @@ LOST_TIMEOUT   = 1.0
                 <h3>Precise Movement with Encoder Motors</h3>
                 <p class="muted">A detailed Arduino hardware project covering encoder wiring, interrupts, ticks-to-distance math, exact 30 cm drives, 90-degree turns, square paths, troubleshooting, and calibration.</p>
                 <div class="chip-row" style="--chapter-color: #ef4444">
-                  <span class="chip">Arduino UNO R4</span><span class="chip">Encoder Motors</span><span class="chip">Interrupts</span><span class="chip">Motor Driver</span><span class="chip">Closed Loop</span>
+                  <span class="chip">Arduino UNO R4</span><span class="chip">Encoder Motors</span><span class="chip">Interrupts</span><span class="chip">TB6612FNG Shield</span><span class="chip">Closed Loop</span>
                 </div>
                 <strong>Open Project C lessons &rarr;</strong>
               </a>
