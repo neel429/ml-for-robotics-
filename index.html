@@ -121,10 +121,23 @@
 <a class="lesson-link" href="?lesson=projA-ready" data-lesson-link="projA-ready"><span>PA.10 Preparing for Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
+<div class="lesson-group" data-chapter="projB" style="--chapter-accent:#8b5cf6">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>* Project B: Your Phone as a Robot Camera</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link is-exercise" href="?lesson=projB-overview" data-lesson-link="projB-overview"><span>* PB.0 Why a Phone and Not a Webcam</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-android" data-lesson-link="projB-android"><span>PB.1 Android Setup: IP Webcam</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-iphone" data-lesson-link="projB-iphone"><span>PB.2 iPhone Setup</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-phone-ip" data-lesson-link="projB-phone-ip"><span>PB.3 Phone IP Address</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-browser-test" data-lesson-link="projB-browser-test"><span>PB.4 Browser Test</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-detect-stream" data-lesson-link="projB-detect-stream"><span>PB.5 Stream Detection</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-code" data-lesson-link="projB-code"><span>PB.6 Stream Code</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projB-project1" data-lesson-link="projB-project1"><span>PB.7 Connect to Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
 <div class="lesson-group" data-chapter="proj1" style="--chapter-accent:#f97316">
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 1: Object Tracker</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
-<div class="project-prereq-note">Complete Project A first &mdash; it produces the <code>best.pt</code> file used here.</div>
+<div class="project-prereq-note">Complete Projects A and B first &mdash; they produce the <code>best.pt</code> file and phone stream used here.</div>
 <a class="lesson-link is-exercise" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span>★ P1.0 What We Are Building</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span>P1.1 Setting Up VS Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span>P1.2 Installing Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -234,6 +247,14 @@
 <p>Collect Roboflow data, label boxes, train YOLO26n in Colab, and run your own detector locally.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projA">0 / 11 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=projA-overview" data-lesson-link="projA-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="projB" style="--chapter-accent:#8b5cf6">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Project B</span><span>8 lessons</span></div>
+<h2>Your Phone as a Robot Camera</h2>
+<p>Stream phone video over WiFi and run your trained YOLO26n detector on every frame.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projB">0 / 8 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=projB-overview" data-lesson-link="projB-overview">Start</a>
 </article>
 <article class="chapter-card" data-chapter-card="proj1" style="--chapter-accent:#f97316">
 <div class="chapter-card-strip"></div>
@@ -2524,13 +2545,13 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>Go to <a href="https://roboflow.com/" target="_blank" rel="noreferrer">roboflow.com</a>. Click <strong>Get Started</strong> in the top right corner.</p>
 <p>Sign up with your Google account or an email address. Roboflow is free for public projects. You do not need to enter a credit card.</p>
 <p>After signing up you will be asked to choose between two plans.</p>
-<figure class="lesson-image-card"><img src="tier_type.png" alt="Roboflow public plan selection screen" loading="lazy" /><figcaption>attach tier_type.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="tier_type.png" alt="Roboflow public plan selection screen" loading="lazy" /><figcaption>Choose the Public Plan to keep the project free.</figcaption></figure>
 <p>Choose the <strong>Public Plan</strong> by clicking <strong>Continue with Public</strong>. The public plan is completely free and has everything needed for this course. The only difference from the paid plan is your dataset will be publicly visible on Roboflow Universe, which is fine for a learning project.</p>
 <h3>Step 2 — Skip the invite screen</h3>
 <p>Roboflow will ask if you want to invite collaborators to your workspace. You are working alone. Click <strong>Skip</strong> or continue without adding anyone.</p>
 <h3>Step 3 — Create a new project</h3>
 <p>You will land on a screen asking you to create a project.</p>
-<figure class="lesson-image-card"><img src="project_type.png" alt="Roboflow create project screen" loading="lazy" /><figcaption>attach new_project.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="project_type.png" alt="Roboflow create project screen" loading="lazy" /><figcaption>Create a public Object Detection project and enter your class label.</figcaption></figure>
 <div class="steps">
 <div class="step"><div><strong>Project Name:</strong> use a name describing what you are detecting. Examples: <code>tennis-ball-detector</code>, <code>orange-cone-tracker</code>, <code>red-mug-detector</code>. Use lowercase and hyphens, no spaces.</div></div>
 <div class="step"><div><strong>Project Type:</strong> leave this as the default <strong>Object Detection</strong>. Do not change it. Object detection is what YOLO does: it finds objects and draws boxes around them with their coordinates.</div></div>
@@ -2543,7 +2564,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>Roboflow Rapid is a newer prompt-based tool that skips manual labeling. It is convenient but it is a black box: you would not learn what is actually happening. The Traditional Model Builder shows every step, which is what this course requires.</p>
 <h3>Step 5 — The upload screen</h3>
 <p>You should now see the main upload page with a drag-and-drop zone.</p>
-<figure class="lesson-image-card"><img src="upload_data.png" alt="Roboflow upload data screen" loading="lazy" /><figcaption>attach uplaod_data.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="upload_data.png" alt="Roboflow upload data screen" loading="lazy" /><figcaption>The upload screen is where images, videos, and folders are added.</figcaption></figure>
 <p>This is where your images go. Keep this tab open in your browser and proceed to collect images in the next step.</p>
 <h3>Step 6 — Collecting your images before uploading</h3>
 <p>Before uploading anything you need images. Here is exactly how to collect good ones.</p>
@@ -2568,13 +2589,13 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>For video extraction: record a 30-second video walking around the object from different angles and distances. Roboflow will extract one frame per second automatically, giving you 30 images from one recording. Do this in 5 different locations for 150 images total.</p>
 <h3>Step 7 — Upload your images to Roboflow</h3>
 <p>Return to the Roboflow upload tab in your browser. Drag and drop your image files or your video files directly into the upload area. You can upload everything at once.</p>
-<figure class="lesson-image-card"><img src="just_image.png" alt="Roboflow upload screen with an image selected" loading="lazy" /><figcaption>attach just_image.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="just_image.png" alt="Roboflow upload screen with an image selected" loading="lazy" /><figcaption>Uploaded images appear in the upload batch before saving.</figcaption></figure>
 <p>If you upload a video, Roboflow asks how many frames per second to extract.</p>
-<figure class="lesson-image-card"><img src="fps_selections.png" alt="Roboflow video frame rate selection dialog" loading="lazy" /><figcaption>attach fps_selections.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="fps_selections.png" alt="Roboflow video frame rate selection dialog" loading="lazy" /><figcaption>For video uploads, choose a frame rate that produces enough varied images.</figcaption></figure>
 <p>For a 30-second walkthrough video choose as many frames per second as gives you around 80 images from one recording. For a longer video lower the rate to avoid too many nearly identical frames.</p>
 <p>Click <strong>Choose Frame Rate</strong> to confirm. Roboflow processes the video and saves each extracted frame as a separate image in your project.</p>
 <p>After uploading you will see all your images in a grid. Roboflow flags any images it cannot read.</p>
-<figure class="lesson-image-card"><img src="grid.png" alt="Roboflow upload grid with extracted frames" loading="lazy" /><figcaption>attach grid.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="grid.png" alt="Roboflow upload grid with extracted frames" loading="lazy" /><figcaption>After processing, Roboflow shows extracted frames in a grid.</figcaption></figure>
 <p>Images marked <strong>Not Annotated</strong> in yellow have no labels yet. That is expected: you will label them in the next lesson.</p>
 <p>Press <strong>Save and Continue</strong>. You will then see the annotation part.</p>
 <h3>Step 9 — Save and continue</h3>
@@ -2608,7 +2629,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <h3>Step 2 — Use Auto-Label to annotate the entire batch</h3>
 <p>Instead of opening images one by one, we will label everything at once using Roboflow's AI Auto-Label feature.</p>
 <p>Click <strong>Auto-Label</strong> at the top of the Unassigned column. A panel opens on the right side of the screen.</p>
-<figure class="lesson-image-card"><img src="auto_label.png" alt="Roboflow auto-label panel" loading="lazy" /><figcaption>AUTO_LABEL.PNG — the auto-label panel open in Roboflow</figcaption></figure>
+<figure class="lesson-image-card"><img src="auto_label.png" alt="Roboflow auto-label panel" loading="lazy" /><figcaption>Use Auto-Label Entire Batch to label the uploaded images at once.</figcaption></figure>
 <p>Click <strong>Auto-label entire batch</strong> to apply to all your uploaded images at once rather than one at a time.</p>
 <p>You will see two fields to fill in:</p>
 <div class="steps">
@@ -2618,7 +2639,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>Good description example for a ball: <strong>A miniaturized basketball, small and orange with black lines, typically sitting on a flat surface.</strong></p>
 <p>Good description example for a cone: <strong>A bright orange traffic cone, roughly triangular, about 30cm tall.</strong></p>
 <p>The more specific your description the better the AI performs. Mention color, shape, size, and any distinctive markings.</p>
-<figure class="lesson-image-card"><img src="ball.png" alt="Roboflow class name and description fields filled in" loading="lazy" /><figcaption>ball.png — the class name and description fields filled in with an example</figcaption></figure>
+<figure class="lesson-image-card"><img src="ball.png" alt="Roboflow class name and description fields filled in" loading="lazy" /><figcaption>Fill in the class name and a specific object description before generating test results.</figcaption></figure>
 <p>Once you have filled in both fields, click <strong>Generate Test Results</strong>. Roboflow runs the AI on a small sample of your images so you can preview the quality before committing.</p>
 <p>Review the test results. If the boxes look correct on the preview images, click <strong>Auto-Label</strong> to run on your full batch.</p>
 <div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">About Auto-Label credits</div><p>Auto-labeling uses Roboflow's AI credits. A free account comes with 20 credits. Labeling one batch of 150 images uses 1 credit. You have more than enough for this project.</p></div></div>
@@ -2627,7 +2648,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>Auto-label is not perfect. Some images will have boxes in the wrong place, boxes that are too loose, or images where the object was missed entirely. You now go through and fix these manually.</p>
 <p>In the Annotating column, look for images flagged with warnings or that look incorrect in the thumbnail. Click any image to open it in the annotation editor.</p>
 <p>The annotation editor looks like this:</p>
-<figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor with a bounding box" loading="lazy" /><figcaption>screenshot of the Roboflow annotation tool with an image loaded and a bounding box visible on the object</figcaption></figure>
+<figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor with a bounding box" loading="lazy" /><figcaption>The annotation editor shows the image, class list, and bounding box controls.</figcaption></figure>
 <div class="steps">
 <div class="step"><div>If the box is in the right place and tight around the object: leave it as is and move to the next image.</div></div>
 <div class="step"><div>If the box is wrong, click the box to select it and press Delete to remove it. Then draw a new one manually as described in Step 4.</div></div>
@@ -2639,7 +2660,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>For any image where the AI missed the object or drew the wrong box, draw the correct box yourself.</p>
 <p>Press the <strong>B</strong> key to activate the Bounding Box tool. You can also click the rectangle icon in the right toolbar.</p>
 <p>Click and drag across your object from one corner to the opposite corner. Release the mouse. A popup appears asking for the class name. Type your class name and press Enter.</p>
-<figure class="lesson-image-card"><img src="BB.png" alt="Bounding box drawn around the object in Roboflow" loading="lazy" /><figcaption>BB.png — a bounding box being drawn around the object in the annotation editor</figcaption></figure>
+<figure class="lesson-image-card"><img src="BB.png" alt="Bounding box drawn around the object in Roboflow" loading="lazy" /><figcaption>Draw the bounding box tightly around the object.</figcaption></figure>
 <p>The box appears highlighted on the image.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody><tr><td><code>B</code></td><td>Activate bounding box tool</td></tr><tr><td>Right arrow</td><td>Next image</td></tr><tr><td>Left arrow</td><td>Previous image</td></tr><tr><td>Delete</td><td>Remove selected box</td></tr><tr><td><code>Ctrl+Z</code></td><td>Undo last action</td></tr><tr><td>Escape</td><td>Deselect current tool</td></tr></tbody></table></div>
 <h4>Labeling rules for manual boxes</h4>
@@ -2650,7 +2671,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 </div>
 <h3>Step 5 — Add images to the dataset and approve all</h3>
 <p>After reviewing and fixing an image, click the checkmark button in the top right of the annotation editor.</p>
-<figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor approve control" loading="lazy" /><figcaption>screenshot of the "Add 1 Image" popup with the TRAIN/VALID/TEST dropdown and the confirm button</figcaption></figure>
+<figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor approve control" loading="lazy" /><figcaption>Use the approve control after the label is correct.</figcaption></figure>
 <p>A popup appears. The dropdown labeled <strong>TRAIN</strong>, <strong>VALID</strong>, or <strong>TEST</strong> determines which split this image goes into. Leave it on whatever Roboflow assigned automatically. Click <strong>Add 1 Image</strong> to confirm. The image moves from Annotating to Dataset.</p>
 <p>Once you have gone through all images, return to the main Annotate view. Click <strong>Approve All</strong> to move all reviewed images to the Dataset column in one action.</p>
 <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Approve All when auto-label quality is high</div><p>If you have a large number of images and most of the auto-labels look correct, you can click <strong>Approve All</strong> from the Annotating column without opening each image individually. Then spot-check 10 to 15 images at random to confirm quality. This is the workflow professional data teams use when auto-label accuracy is high.</p></div></div>
@@ -2682,7 +2703,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p class="lead">This lesson teaches augmentation, dataset versioning, and how to get the dataset into Colab in the format YOLO26 expects. This lesson produces the download snippet used in PA.6.</p>
 <h3>Step 0 — Verify your train / valid / test split before doing anything</h3>
 <p>Before generating a version, check that your images are divided correctly across the three splits. Click <strong>Dataset</strong> in the left sidebar. At the top of the page you will see three numbers showing how many images are in Train, Valid, and Test.</p>
-<figure class="lesson-image-card"><img src="preprocess.png" alt="Roboflow split counts for training, validation, and testing" loading="lazy" /><figcaption>screenshot of the Dataset tab showing the three split counts</figcaption></figure>
+<figure class="lesson-image-card"><img src="preprocess.png" alt="Roboflow split counts for training, validation, and testing" loading="lazy" /><figcaption>Check that the train, validation, and test split counts are reasonable.</figcaption></figure>
 <div class="grid-3">
 <div class="definition-card"><span class="def-term">TRAIN</span><p>The images the model learns from directly. Target: roughly 70 percent of your total images. For 150 images: around 105 in train.</p></div>
 <div class="definition-card"><span class="def-term">VALID</span><p>The images used to check progress during training. Target: roughly 20 percent of your total images. For 150 images: around 30 in valid.</p></div>
@@ -2697,7 +2718,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>In Roboflow, a dataset version is a frozen snapshot of your images at a specific point in time with a specific set of preprocessing and augmentation settings baked in. Think of it like saving a named checkpoint. You can create multiple versions of the same dataset, one with light augmentation and one with heavier augmentation, and compare how each affects training accuracy. Once a version is generated it never changes, so your experiments are reproducible.</p>
 <h3>Step 1 — Navigate to the Generate section</h3>
 <p>Click <strong>Versions</strong> in the left sidebar. You will see a page with two sections: Preprocessing and Augmentation.</p>
-<figure class="lesson-image-card"><img src="preprocess.png" alt="Roboflow Versions page preprocessing section" loading="lazy" /><figcaption>preprocess.png — the Versions/Generate page showing both the preprocessing and augmentation sections</figcaption></figure>
+<figure class="lesson-image-card"><img src="preprocess.png" alt="Roboflow Versions page preprocessing section" loading="lazy" /><figcaption>The Versions page is where preprocessing and augmentation settings are configured.</figcaption></figure>
 <h3>Step 2 — Preprocessing settings</h3>
 <p>Preprocessing modifies your images before they reach the model. Leave the default settings exactly as they are. Roboflow has already applied two sensible defaults:</p>
 <div class="steps">
@@ -2707,7 +2728,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Why 416 and not 640?</div><p>Larger input images give the model more detail to work with but cost significantly more compute time per image. 640x640 is common for production models with GPU access. We use 416x416 because it runs at acceptable speed on a CPU laptop during inference while retaining enough detail to reliably detect a single prominent object like a ball or cone in the frame. If you later find the model misses small distant objects, retraining at 640 is the first thing to try.</p></div></div>
 <h3>Step 3 — Augmentation settings</h3>
 <p>Augmentation creates modified copies of your training images. Each augmented copy is a new training example showing the object under a slightly different condition. This expands your effective dataset size and teaches the model to be robust to variation.</p>
-<figure class="lesson-image-card"><img src="augmentation.png" alt="Roboflow augmentation options" loading="lazy" /><figcaption>attach augmentation.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="augmentation.png" alt="Roboflow augmentation options" loading="lazy" /><figcaption>Choose only the augmentation options needed for this first detector.</figcaption></figure>
 <p>Enable these augmentations and set the values shown:</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Augmentation</th><th>Setting</th><th>Why</th></tr></thead><tbody><tr><td>Flip</td><td>Horizontal: ON</td><td>Your object looks valid when mirrored. A ball on the left side of frame and a ball on the right side should both be detected.</td></tr><tr><td>Rotation</td><td>ON, between -15 and +15 degrees</td><td>Cameras are rarely perfectly level. Small tilts should not confuse the model.</td></tr><tr><td>Brightness</td><td>ON, between -25% and +25%</td><td>Your robot will operate in different lighting conditions. The model should not depend on a specific brightness level.</td></tr><tr><td>Blur</td><td>ON, up to 1.5 pixels</td><td>Images from a moving robot can be slightly blurry due to motion. Training on slightly blurred images improves detection on real video frames.</td></tr></tbody></table></div>
 <p>Do <strong>not</strong> enable these for this project: rotation beyond 15 degrees, Cutout or Mosaic, or Grayscale.</p>
@@ -2718,15 +2739,15 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <h3>Step 5 — Generate the version</h3>
 <p>Click <strong>Generate</strong> at the bottom of the page. Roboflow processes your images and augmentations. This takes 1 to 3 minutes depending on the number of images.</p>
 <p>When generation finishes you will see a summary showing the total image counts for train, valid, and test including augmented images.</p>
-<figure class="lesson-image-card"><img src="complete_roboflow.png" alt="Roboflow generated version summary" loading="lazy" /><figcaption>attach complete_roboflow.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="complete_roboflow.png" alt="Roboflow generated version summary" loading="lazy" /><figcaption>The generated version summary shows the finalized dataset version.</figcaption></figure>
 <h3>Step 6 — Export the dataset</h3>
 <p>Click the <strong>Export Dataset</strong> button on the version summary page. A dialog appears asking for the export format.</p>
-<figure class="lesson-image-card"><img src="download.png.png" alt="Roboflow download format dialog" loading="lazy" /><figcaption>attach download.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="download.png.png" alt="Roboflow download format dialog" loading="lazy" /><figcaption>Select YOLO26 and choose the download-code option.</figcaption></figure>
 <p>Select <strong>YOLOv26</strong> from the format dropdown.</p>
 <div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">What YOLOv26 export creates</div><p>The YOLOv26 format creates the structure Ultralytics expects automatically: <code>train/images</code>, <code>train/labels</code>, <code>valid/images</code>, <code>valid/labels</code>, <code>test/images</code>, <code>test/labels</code>, and <code>data.yaml</code> listing class names and folder paths. You pass <code>data.yaml</code> to the YOLO training command and it finds everything else automatically.</p></div></div>
 <h3>Step 7 — Get the download code snippet</h3>
 <p>After selecting YOLOv26, choose <strong>Get download code</strong> instead of downloading a zip file. Roboflow generates a Python code snippet.</p>
-<figure class="lesson-image-card"><img src="dataset_code.png" alt="Roboflow dataset download code dialog" loading="lazy" /><figcaption>attach dataset_code.png</figcaption></figure>
+<figure class="lesson-image-card"><img src="dataset_code.png" alt="Roboflow dataset download code dialog" loading="lazy" /><figcaption>Copy the generated Python snippet for the Colab training notebook.</figcaption></figure>
 <p>The snippet looks like this. Your values will differ:</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="roboflow_download_snippet.py"><figcaption><span>Roboflow download snippet</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
 rf = Roboflow(api_key=&quot;YOUR_API_KEY_HERE&quot;)
@@ -3043,12 +3064,354 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="step"><label><input type="checkbox" data-checklist-key="projA-map50" /><code>mAP50</code> on the validation set was above 0.75.</label></div>
 </div>
 <div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not move on with a weak model</div><p>If <code>mAP50</code> is below 0.75, the tracker will behave erratically and it will be hard to tell whether the problem is the model or the control code. Add 50-100 more images with varied backgrounds and retrain. This almost always helps.</p></div></div>
-<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Next step</div><p>You have the model. <a href="?lesson=proj1-overview" data-lesson-link="proj1-overview">Project 1</a> connects it to real motors.</p></div></div>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Next step</div><p>You have the model. <a href="?lesson=projB-overview" data-lesson-link="projB-overview">Project B</a> connects it to a live phone camera stream before Project 1 adds motor control.</p></div></div>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-ready">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projA-model-output" data-lesson-link="projA-model-output"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.9 Model Output</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-overview" data-lesson-link="projB-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project B &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content exercise-lesson" data-lesson="projB-overview" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.0 Why a Phone and Not a Webcam</div>
+<h1>PB.0 Why a Phone and Not a Webcam</h1>
+<div class="lesson-meta"><span>Project</span><span>Phone Stream</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">In Project A you ran detection on a webcam plugged into your laptop. That works for a desktop demo but it is useless for a robot. A robot moves. It cannot drag a USB cable behind it. The camera must be wireless.</p>
+<p>A phone is the perfect solution for learning. It already has a high quality camera, a battery, WiFi, and a screen. Both apps we use turn the phone into a network camera that streams live video over your local WiFi. Your laptop connects to that stream over the network exactly the way a browser loads a video: no cable, no Bluetooth, no special hardware.</p>
+<p>This is also exactly how Project 1's robot works. The <code>MobileVideoStream</code> class in <code>obj_track_adv.py</code> connects to a phone stream using the same URL format you will set up in this project. By the end of Project B you will understand every line of that class.</p>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Same architecture, smaller scale</div><p>Professional mobile robots use the same concept at a higher level. A drone streams its camera feed over WiFi or 4G to a ground station running detection algorithms. An autonomous vehicle streams from multiple cameras to an onboard computer. The architecture is identical to what you are building here: the difference is bandwidth and latency.</p></div></div>
+<h3>What You Need</h3>
+<div class="steps">
+<div class="step"><div>The <code>best.pt</code> file from Project A.</div></div>
+<div class="step"><div>Your phone and laptop on the same WiFi network.</div></div>
+<div class="step"><div>Android phone: IP Webcam app, free from the Play Store.</div></div>
+<div class="step"><div>iPhone: Simple IP Camera app, free from the App Store.</div></div>
+<div class="step"><div>The <code>my-detector</code> VS Code folder from Project A with the virtual environment active.</div></div>
+</div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projA-ready" data-lesson-link="projA-ready"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.10 Preparing for Project 1</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-android" data-lesson-link="projB-android"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.1 Android Setup &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-android" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.1 Android Setup: IP Webcam</div>
+<h1>PB.1 Android Setup: IP Webcam</h1>
+<div class="lesson-meta"><span>Android</span><span>MJPEG</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<div class="steps">
+<div class="step"><div><strong>Install IP Webcam.</strong><br />Open the Play Store on your Android phone. Search for <strong>IP Webcam</strong> by Pavel Khlebovich. Install it. It is free with no required account.</div></div>
+<div class="step"><div><strong>Open the app.</strong><br />Open IP Webcam. You will see a long list of settings. Leave everything at the default for now. Scroll all the way to the bottom of the settings list.</div></div>
+<div class="step"><div><strong>Start the server.</strong><br />Tap <strong>Start server</strong> at the very bottom of the screen. The phone screen turns into a live camera preview.</div></div>
+</div>
+<p>At the bottom of the preview screen you will see two URLs printed in white text. They look like this:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>Example Android URLs</span></figcaption><pre><code class="language-bash">http://192.168.1.47:8080
+http://10.0.0.3:8080</code></pre></figure>
+<p>These are the addresses your laptop uses to connect to the stream. Write down both of them. You will test which one works in PB.4.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Why two URLs?</div><p>Your phone may have two network interfaces active at once: your home WiFi and a mobile hotspot or VPN. Each interface gets a different IP address. Only one of those addresses is on the same network as your laptop. You will test both to find the right one in PB.4.</p></div></div>
+<h3>Keep The App Open</h3>
+<p>Do not close IP Webcam or let the phone screen turn off while testing. The stream only works while the app is running in the foreground. Go to your phone settings and set screen timeout to <strong>Never</strong> or the longest available option while you are working on this project.</p>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Keep the phone charging</div><p>Keep your phone plugged into a charger while running IP Webcam. Streaming video over WiFi drains the battery significantly faster than normal use.</p></div></div>
+<h3>Stream URL Format For Android</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>Android / IP Webcam stream URL</span></figcaption><pre><code class="language-bash">http://PHONE_IP:8080/video</code></pre></figure>
+<p>The <code>/video</code> path returns a continuous MJPEG stream: a sequence of JPEG images sent one after another over a single HTTP connection.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-android">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-overview" data-lesson-link="projB-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.0 Phone Camera</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-iphone" data-lesson-link="projB-iphone"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.2 iPhone Setup &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-iphone" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.2 iPhone Setup: Simple IP Camera</div>
+<h1>PB.2 iPhone Setup: Simple IP Camera</h1>
+<div class="lesson-meta"><span>iPhone</span><span>MJPEG</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<div class="steps">
+<div class="step"><div><strong>Install Simple IP Camera.</strong><br />Open the App Store on your iPhone. Search for <strong>Simple IP Camera</strong> by Rune Funch. Install it. It is free.</div></div>
+<div class="step"><div><strong>Open the app and start streaming.</strong><br />Open Simple IP Camera. Tap the large <strong>Start</strong> button on the main screen.</div></div>
+<div class="step"><div><strong>Write down the stream URL.</strong><br />The app begins streaming immediately and shows you the stream URL at the top of the screen. It looks like <code>http://192.168.1.52:8080/live</code>.</div></div>
+</div>
+<p>This is what you paste into Python.</p>
+<h3>Keep The App Open</h3>
+<p>Same requirement as Android: keep the app running in the foreground and plug your phone in to prevent the screen from locking.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Simple IP Camera vs IP Webcam</div><p>Simple IP Camera uses the same MJPEG format as IP Webcam on Android. The stream URL path is slightly different, <code>/live</code> instead of <code>/video</code>, but the Python code handles it identically. The only change between Android and iPhone is the URL you paste into the script.</p></div></div>
+<h3>Stream URL Format For iPhone</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>iPhone / Simple IP Camera stream URL</span></figcaption><pre><code class="language-bash">http://PHONE_IP:8080/live</code></pre></figure>
+<h3>Confirm The Same Network</h3>
+<p>On your iPhone go to Settings, tap WiFi, and check that you are connected to the same network name as your laptop.</p>
+<p>If your laptop is on ethernet and your phone is on WiFi they are usually on the same network. This is fine.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Mobile data will not work</div><p>If your phone is on mobile data, 4G, or 5G and not on WiFi, the stream will not work. Connect your phone to the same WiFi as your laptop before continuing.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-iphone">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-android" data-lesson-link="projB-android"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.1 Android Setup</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-phone-ip" data-lesson-link="projB-phone-ip"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.3 Phone IP &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-phone-ip" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.3 Finding Your Phone's IP Address</div>
+<h1>PB.3 Finding Your Phone's IP Address</h1>
+<div class="lesson-meta"><span>Networking</span><span>IP Address</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Both apps display the IP address on screen when the stream is running. If you need to find it manually, use the steps below.</p>
+<div class="grid-2">
+<div class="card"><h4>Android</h4><p>Go to Settings, tap Connections or Network, tap WiFi. Tap the network name you are connected to. Scroll down to find <strong>IP address</strong>. It looks like <code>192.168.x.x</code> or <code>10.x.x.x</code>.</p></div>
+<div class="card"><h4>iPhone</h4><p>Go to Settings, tap WiFi. Tap the small <strong>i</strong> icon next to the network name you are connected to. The IP address is shown under the IPv4 Address section.</p></div>
+</div>
+<h3>What The IP Address Means</h3>
+<p>An IP address is a unique number assigned to your phone on the local network. It tells your laptop exactly where to send requests when it wants to fetch the video stream. It looks like four numbers separated by dots: <code>192.168.1.47</code>.</p>
+<p>The first two or three groups of numbers will match between your phone and laptop if they are on the same network.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Device</th><th>IP address</th><th>Meaning</th></tr></thead><tbody><tr><td>Laptop</td><td><code>192.168.1.10</code></td><td>Same <code>192.168.1</code> prefix.</td></tr><tr><td>Phone</td><td><code>192.168.1.47</code></td><td>Same network: should work.</td></tr><tr><td>Phone</td><td><code>172.20.10.3</code></td><td>Different prefix: usually a different network, will not work.</td></tr></tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">IP addresses can change</div><p>IP addresses on a home or university WiFi network are not permanent. Your phone gets a new address each time it reconnects to WiFi. If your Python script suddenly cannot connect, check that the IP address in your script still matches the one shown in the app.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-phone-ip">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-iphone" data-lesson-link="projB-iphone"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.2 iPhone Setup</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-browser-test" data-lesson-link="projB-browser-test"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.4 Browser Test &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-browser-test" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.4 Testing the Stream in a Browser</div>
+<h1>PB.4 Testing the Stream in a Browser</h1>
+<div class="lesson-meta"><span>Debugging</span><span>Browser Test</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Before writing any Python, confirm the stream works using your browser. This takes 30 seconds and immediately tells you if the network connection is working.</p>
+<div class="steps">
+<div class="step"><div><strong>Open your laptop browser.</strong><br />Open Chrome, Firefox, or Safari on your laptop.</div></div>
+<div class="step"><div><strong>Type the stream URL in the address bar.</strong><br />For Android use <code>http://PHONE_IP:8080/video</code>. For iPhone use <code>http://PHONE_IP:8080/live</code>. Replace <code>PHONE_IP</code> with the address shown in your app.</div></div>
+<div class="step"><div><strong>Press Enter.</strong><br />If the connection works, your browser will show a live video feed from your phone camera with a small delay of roughly half a second.</div></div>
+</div>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>Browser test examples</span></figcaption><pre><code class="language-bash">http://192.168.1.47:8080/video
+http://192.168.1.52:8080/live</code></pre></figure>
+<p>If you see a live video, your stream is working. Move to PB.5. If the page does not load or times out, work through the troubleshooting table.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>What you see</th><th>What to try</th></tr></thead><tbody><tr><td>Page times out immediately</td><td>Phone and laptop are on different networks. Connect the phone to the same WiFi as the laptop.</td></tr><tr><td>Connection refused</td><td>Wrong port. Confirm the URL matches exactly what the app shows on screen.</td></tr><tr><td>Page loads but no video</td><td>Try the other URL if Android showed two. Force-close and reopen the app.</td></tr><tr><td>Video loads very slowly</td><td>Move phone and laptop closer to the WiFi router. Streaming needs a decent connection.</td></tr><tr><td>Works in browser, fails in Python</td><td>Firewall on laptop may be blocking the connection. Temporarily disable the laptop firewall for testing.</td></tr></tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Browser test first</div><p>The browser test is the most important debugging step in this entire project. If the stream does not work in a browser it will not work in Python. Fix the network connection before touching any code.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-browser-test">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-phone-ip" data-lesson-link="projB-phone-ip"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.3 Phone IP</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-detect-stream" data-lesson-link="projB-detect-stream"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.5 Stream Detection &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-detect-stream" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.5 Running Detection on the Stream</div>
+<h1>PB.5 Running Detection on the Stream</h1>
+<div class="lesson-meta"><span>Run locally</span><span>YOLO26n</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">The stream works in your browser. Now open VS Code, activate your virtual environment from Project A, and create a new file called <code>detect_stream.py</code> in your <code>my-detector</code> folder.</p>
+<p>Paste the following code:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="detect_stream.py"><figcaption><span>detect_stream.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import cv2
+import numpy as np
+import requests
+import time
+from ultralytics import YOLO
+
+# -- CONFIGURATION ----------------------------------------------------
+# Paste your phone stream URL here
+# Android (IP Webcam):      &quot;http://192.168.x.x:8080/video&quot;
+# iPhone (Simple IP Camera): &quot;http://192.168.x.x:8080/live&quot;
+STREAM_URL = &quot;http://YOUR_PHONE_IP:8080/video&quot;
+
+# Path to your trained model from Project A
+MODEL_PATH = &quot;best.pt&quot;
+
+# Only show detections above this confidence level (0.0 to 1.0)
+CONFIDENCE = 0.5
+# --------------------------------------------------------------------
+
+def open_stream(url):
+    print(f&quot;Connecting to stream: {url}&quot;)
+    response = requests.get(url, stream=True, timeout=10)
+    if response.status_code != 200:
+        raise ConnectionError(f&quot;Could not connect. Status: {response.status_code}&quot;)
+    print(&quot;Stream connected.&quot;)
+    return response
+
+def read_frame(stream_response):
+    buf = b&quot;&quot;
+    for chunk in stream_response.iter_content(1024):
+        buf += chunk
+        start = buf.find(b&quot;\xff\xd8&quot;)
+        end   = buf.find(b&quot;\xff\xd9&quot;)
+        if start != -1 and end != -1:
+            jpg = buf[start:end + 2]
+            buf = buf[end + 2:]
+            frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            if frame is not None:
+                return frame
+    return None
+
+def main():
+    # Load the trained model
+    print(&quot;Loading model...&quot;)
+    model = YOLO(MODEL_PATH)
+    print(&quot;Model loaded.&quot;)
+
+    # Connect to the phone stream
+    stream = open_stream(STREAM_URL)
+
+    print(&quot;Press Q to quit.&quot;)
+    fps_timer = time.time()
+    frame_count = 0
+
+    while True:
+        frame = read_frame(stream)
+        if frame is None:
+            continue
+
+        # Run detection on the frame
+        results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
+
+        # Draw boxes on the frame
+        annotated = results[0].plot()
+
+        # Calculate and display FPS
+        frame_count += 1
+        elapsed = time.time() - fps_timer
+        if elapsed &gt;= 1.0:
+            fps = frame_count / elapsed
+            frame_count = 0
+            fps_timer = time.time()
+            cv2.putText(annotated, f&quot;FPS: {fps:.1f}&quot;, (10, 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
+        cv2.imshow(&quot;Phone Stream - YOLO26n Detection&quot;, annotated)
+
+        if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+            break
+
+    stream.close()
+    cv2.destroyAllWindows()
+    print(&quot;Stopped.&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></figure>
+<h3>Step 1 — Edit The STREAM_URL Line</h3>
+<p>Change <code>YOUR_PHONE_IP</code> to the IP address shown in your phone app.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>STREAM_URL examples</span></figcaption><pre><code class="language-bash">Android: STREAM_URL = &quot;http://192.168.1.47:8080/video&quot;
+iPhone:  STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;</code></pre></figure>
+<h3>Step 2 — Make Sure best.pt Is In The Same Folder</h3>
+<p>Your trained model file from Project A must be in the <code>my-detector</code> folder alongside <code>detect_stream.py</code>. If you named it something else like <code>ball_detector.pt</code>, update the <code>MODEL_PATH</code> line accordingly.</p>
+<h3>Step 3 — Run The Script</h3>
+<p>In the VS Code terminal with the virtual environment active:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>Run detect_stream.py</span></figcaption><pre><code class="language-bash">python detect_stream.py</code></pre></figure>
+<h3>What You Should See</h3>
+<p>A window opens showing your phone camera feed live. When you hold your trained object in front of the phone camera, a bounding box appears around it with the class name and confidence score. The FPS counter in the top left shows how fast the detection is running.</p>
+<div class="grid-2">
+<div class="definition-card"><span class="def-term">CPU expected FPS</span><p>4 to 12 fps depending on your laptop. This is usable for object tracking.</p></div>
+<div class="definition-card"><span class="def-term">GPU expected FPS</span><p>20 to 40 fps. This feels much smoother, but is not required.</p></div>
+</div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-detect-stream">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-browser-test" data-lesson-link="projB-browser-test"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.4 Browser Test</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-code" data-lesson-link="projB-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.6 Stream Code &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-code" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.6 Understanding the Stream Code</div>
+<h1>PB.6 Understanding the Stream Code</h1>
+<div class="lesson-meta"><span>Code Walkthrough</span><span>MJPEG</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">This lesson explains every meaningful section of <code>detect_stream.py</code> so there are no black boxes. This understanding is required for Project 1 where the same concepts appear in a more complex form.</p>
+<h3>The Configuration Block</h3>
+<p><code>STREAM_URL</code>, <code>MODEL_PATH</code>, and <code>CONFIDENCE</code> are defined at the top of the file as constants rather than buried inside functions. This is deliberate. Any value you might want to change when testing or deploying belongs at the top of the file where it is easy to find. This pattern appears throughout Project 1's code.</p>
+<h3>The open_stream Function</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="open_stream_snippet.py"><figcaption><span>requests.get with streaming</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">requests.get(url, stream=True, timeout=10)</code></pre></figure>
+<p><code>requests.get</code> is the same function used to load a webpage, but with <code>stream=True</code> it does not download the full response at once. Instead it keeps the HTTP connection open and lets you read data piece by piece. This is how MJPEG streaming works: the server never closes the connection, it just keeps sending JPEG frames one after another.</p>
+<p><code>timeout=10</code> means: if the phone does not respond within 10 seconds, raise an error instead of hanging forever. Without a timeout, a failed connection would freeze your script with no feedback.</p>
+<h3>The read_frame Function</h3>
+<p>MJPEG is not a video format. It is a stream of individual JPEG images sent back to back over a single HTTP connection. To extract frames from this stream you need to find where each JPEG starts and ends.</p>
+<div class="grid-2">
+<div class="definition-card"><span class="def-term">JPEG start marker</span><p>Every JPEG file starts with <code>0xFF 0xD8</code>.</p></div>
+<div class="definition-card"><span class="def-term">JPEG end marker</span><p>Every JPEG file ends with <code>0xFF 0xD9</code>.</p></div>
+</div>
+<div class="steps">
+<div class="step"><div>Read a chunk of bytes from the stream into a buffer.</div></div>
+<div class="step"><div>Search the buffer for the start marker <code>0xFF 0xD8</code>.</div></div>
+<div class="step"><div>Search the buffer for the end marker <code>0xFF 0xD9</code>.</div></div>
+<div class="step"><div>When both are found, everything between them is one complete JPEG.</div></div>
+<div class="step"><div>Decode that JPEG into an image array using OpenCV.</div></div>
+<div class="step"><div>Return the image and clear the processed bytes from the buffer.</div></div>
+</div>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="jpeg_marker_extraction.py"><figcaption><span>JPEG marker extraction</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">start = buf.find(b&quot;\\xff\\xd8&quot;)    # find the JPEG start marker
+end   = buf.find(b&quot;\\xff\\xd9&quot;)    # find the JPEG end marker
+jpg   = buf[start:end + 2]       # slice out the complete JPEG
+frame = cv2.imdecode(...)        # decode bytes into an image array</code></pre></figure>
+<p>This exact pattern is used in the <code>MobileVideoStream</code> class in Project 1's <code>obj_track_adv.py</code>. Now you know exactly why it is there.</p>
+<h3>Why cv2.imdecode Instead Of cv2.VideoCapture</h3>
+<p>In Project A you used <code>cv2.VideoCapture(0)</code> to open a webcam. <code>VideoCapture</code> handles USB and some network cameras using built-in drivers. However it does not reliably handle MJPEG streams from phone apps. <code>imdecode</code> works on raw bytes directly, which gives us full control over how frames are read and handles connection drops and reconnects cleanly.</p>
+<h3>The Detection Line</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="detection_line.py"><figcaption><span>YOLO inference line</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)</code></pre></figure>
+<p>This is identical to what you wrote in Project A's <code>detect_webcam.py</code>. The only difference is the source of the frame: instead of coming from <code>VideoCapture</code>, it comes from the phone stream via <code>read_frame</code>. The model does not know or care where the frame came from. It receives a NumPy array of pixels and returns detections.</p>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Separate model from data source</div><p>Keep your model separate from your data source. The same model file runs on a webcam, a phone stream, a saved video file, or a single image with no changes.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-code">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-detect-stream" data-lesson-link="projB-detect-stream"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.5 Stream Detection</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-project1" data-lesson-link="projB-project1"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.7 Connect to Project 1 &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projB-project1" data-chapter="projB" data-chapter-title="* Project B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
+<div class="lesson-kicker">* Project B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.7 Connecting the Dots to Project 1</div>
+<h1>PB.7 Connecting the Dots to Project 1</h1>
+<div class="lesson-meta"><span>Bridge</span><span>Checklist</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Look at the <code>MobileVideoStream</code> class in <code>obj_track_adv.py</code> from Project 1. Open the file in VS Code and read through it now. You will recognize every concept.</p>
+<div class="steps">
+<div class="step"><div><strong>The <code>__init__</code> method:</strong> creates the stream URL and starts a background thread. You now know why a background thread exists: to keep frames flowing without blocking the main detection loop.</div></div>
+<div class="step"><div><strong>The <code>_run</code> method:</strong> contains the MJPEG parsing loop. The <code>buf.find()</code> calls for <code>0xff 0xd8</code> and <code>0xff 0xd9</code> are exactly the same as <code>read_frame</code> in your <code>detect_stream.py</code>. The difference is that <code>MobileVideoStream</code> runs this loop in a background thread and stores the latest frame in <code>self.frame</code>, while your simple script reads frames one at a time in the main loop.</div></div>
+<div class="step"><div><strong>The <code>read</code> method:</strong> returns the latest frame and a frame ID number. The main loop checks whether the frame ID has changed since the last iteration. If it has not, the loop skips processing because there is no point running the model on a frame it has already analyzed.</div></div>
+<div class="step"><div><strong>The backoff reconnect logic:</strong> if the stream drops, the thread waits 1 second, then 2, then 4, up to 8 seconds before retrying. Your simple script has no reconnect logic, which is fine for testing, but a robot that must run for hours needs this.</div></div>
+</div>
+<h3>What Is Different In Project 1?</h3>
+<div class="diagram" aria-label="Project B compared with Project 1">
+<div class="flow-row"><div class="flow-node">Project B<br /><span class="mini muted">phone stream → detect → draw boxes → show on screen</span></div><div class="arrow">→</div><div class="flow-node">Project 1<br /><span class="mini muted">phone stream → detect → PID → state machine → motors + HUD</span></div></div>
+</div>
+<p>The phone stream handling is identical. The detection call is identical. Project 1 just adds what happens after the detection: instead of drawing a box and stopping, it computes a control response and sends it to a motor controller.</p>
+<p>You are not learning something new in Project 1. You are adding to something you already understand.</p>
+<h3>Final Checklist Before Moving To Project 1</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-browser-stream" />Phone stream opens in the browser without timing out.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-script-runs" /><code>detect_stream.py</code> runs without errors.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-live-feed" />The detection window shows your phone camera feed live.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-object-detected" />Your trained object is detected with a bounding box when held in front of the camera.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-jpeg-markers" />You understand what <code>0xff 0xd8</code> and <code>0xff 0xd9</code> are and why the code searches for them.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-mobile-stream" />You can explain the difference between <code>read_frame</code> in this project and <code>MobileVideoStream</code> in Project 1.</label></div>
+</div>
+<p>When all boxes are checked you are ready for Project 1.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-project1">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projB-code" data-lesson-link="projB-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.6 Stream Code</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 1 &rarr;</span></a>
 </nav>
 </article>
@@ -3084,7 +3447,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projA-ready" data-lesson-link="projA-ready"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.10 Preparing for Project 1</span></a>
+<a class="lesson-nav-btn" href="?lesson=projB-project1" data-lesson-link="projB-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.7 Connect to Project 1</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.1 Setting Up VS Code &rarr;</span></a>
 </nav>
 </article>
@@ -3822,13 +4185,15 @@ LOST_TIMEOUT   = 1.0
   <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-why-vision","label":"6.1 Why Vision Matters","title":"6.1 Why Vision Matters in Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-opencv","label":"6.2 OpenCV","title":"6.2 Tools: OpenCV","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-tensorflow","label":"6.3 TensorFlow/Keras","title":"6.3 Tools: TensorFlow/Keras","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-cnn","label":"6.4 CNNs","title":"6.4 How CNNs See","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-project","label":"6.5 Traffic Sign Project","title":"6.5 Project: Traffic Sign Classifier","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":true},{"id":"ch7-overview","label":"What's Next?","title":"What's Next?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-decision-guide","label":"7.1 Decision Guide","title":"7.1 Which ML Technique Should I Use?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-roadmap","label":"7.2 Roadmap","title":"7.2 Recommended Learning Roadmap","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-papers","label":"7.3 Papers","title":"7.3 Real Robotics ML Papers to Read","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Computer Vision for Robotics","lessonIds":["ch6-overview","ch6-why-vision","ch6-opencv","ch6-tensorflow","ch6-cnn","ch6-project"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: What's Next?","lessonIds":["ch7-overview","ch7-decision-guide","ch7-roadmap","ch7-papers"],"firstLesson":"ch7-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
   <script>
     const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
+    const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
     const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...project1Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...project1Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.findIndex((chapter) => chapter.key === "projects"),
       0,
       {"key":"projA","title":"★ Project A: Train Your First Detector","lessonIds":["projA-overview","projA-yolo26","projA-vscode","projA-roboflow-data","projA-labeling","projA-exporting","projA-training","projA-results","projA-local-inference","projA-model-output","projA-ready"],"firstLesson":"projA-overview"},
+      {"key":"projB","title":"* Project B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"}
     );
   </script>
