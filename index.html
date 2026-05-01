@@ -111,9 +111,9 @@
 <a class="lesson-link is-exercise" href="?lesson=projA-overview" data-lesson-link="projA-overview"><span>★ PA.0 What is Object Detection?</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projA-yolo26" data-lesson-link="projA-yolo26"><span>PA.1 Introducing YOLO26</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projA-vscode" data-lesson-link="projA-vscode"><span>PA.2 VS Code & Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span>PA.3 Collecting Data</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span>PA.4 Labeling Images</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span>PA.5 Exporting Dataset</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span>PA.3 Roboflow Project</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span>PA.4 Labeling in Roboflow</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span>PA.5 Generate & Export</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projA-training" data-lesson-link="projA-training"><span>PA.6 Training in Colab</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projA-results" data-lesson-link="projA-results"><span>PA.7 Training Results</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projA-local-inference" data-lesson-link="projA-local-inference"><span>PA.8 Local Inference</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -2508,113 +2508,245 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-vscode">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projA-yolo26" data-lesson-link="projA-yolo26"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.1 YOLO26</span></a>
-<a class="lesson-nav-btn next" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.3 Collecting Data &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.3 Roboflow Project &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="projA-roboflow-data" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
-<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.3 Collecting Your Data with Roboflow</div>
-<h1>PA.3 Collecting Your Data with Roboflow</h1>
-<div class="lesson-meta"><span>Data Collection</span><span>Roboflow</span><span>12 min</span></div>
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.3 Creating Your Roboflow Project and Uploading Images</div>
+<h1>PA.3 Creating Your Roboflow Project and Uploading Images</h1>
+<div class="lesson-meta"><span>Roboflow</span><span>Upload Images</span><span>18 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Data quality matters more than model architecture in this project. A small, clean, varied dataset usually beats a larger dataset full of repeated backgrounds and sloppy labels.</p>
+<p class="lead">Roboflow is a web platform that handles the three hardest parts of building a custom vision model: organizing your image data, drawing and managing labels, and exporting the dataset in the exact folder structure and file format your training code expects. You do not write any code in this lesson. Everything happens in a browser.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Why not just use a folder of images?</div><p>YOLO training expects a very specific folder structure: a train folder, a valid folder, a test folder, each containing an images subfolder and a labels subfolder, plus a <code>data.yaml</code> file listing your class names. Getting this right manually is tedious and error-prone. Roboflow builds that entire structure automatically and also gives you augmentation, version control, and a three-line download snippet that works directly in your Colab notebook.</p></div></div>
+<h3>Step 1 — Create a free Roboflow account</h3>
+<p>Go to <a href="https://roboflow.com/" target="_blank" rel="noreferrer">roboflow.com</a>. Click <strong>Get Started</strong> in the top right corner.</p>
+<p>Sign up with your Google account or an email address. Roboflow is free for public projects. You do not need to enter a credit card.</p>
+<p>After signing up you will be asked to choose between two plans.</p>
+<figure class="lesson-image-card"><img src="tier_type.png" alt="Roboflow public plan selection screen" loading="lazy" /><figcaption>attach tier_type.png</figcaption></figure>
+<p>Choose the <strong>Public Plan</strong> by clicking <strong>Continue with Public</strong>. The public plan is completely free and has everything needed for this course. The only difference from the paid plan is your dataset will be publicly visible on Roboflow Universe, which is fine for a learning project.</p>
+<h3>Step 2 — Skip the invite screen</h3>
+<p>Roboflow will ask if you want to invite collaborators to your workspace. You are working alone. Click <strong>Skip</strong> or continue without adding anyone.</p>
+<h3>Step 3 — Create a new project</h3>
+<p>You will land on a screen asking you to create a project.</p>
+<figure class="lesson-image-card"><img src="project_type.png" alt="Roboflow create project screen" loading="lazy" /><figcaption>attach new_project.png</figcaption></figure>
 <div class="steps">
-<div class="step"><div><strong>Create a free Roboflow account.</strong><br />Go to <a href="https://roboflow.com/" target="_blank" rel="noreferrer">roboflow.com</a> and sign up. The free tier is enough for this project.</div></div>
-<div class="step"><div><strong>Create a new project.</strong><br />Choose <strong>Object Detection</strong>, name it after your target object, and set the annotation group to a lowercase class name with no spaces, such as <code>ball</code>.</div></div>
-<div class="step"><div><strong>Pick one object.</strong><br />Start with one target class. A single-class detector is easier to train, easier to debug, and ideal for Project 1.</div></div>
+<div class="step"><div><strong>Project Name:</strong> use a name describing what you are detecting. Examples: <code>tennis-ball-detector</code>, <code>orange-cone-tracker</code>, <code>red-mug-detector</code>. Use lowercase and hyphens, no spaces.</div></div>
+<div class="step"><div><strong>Project Type:</strong> leave this as the default <strong>Object Detection</strong>. Do not change it. Object detection is what YOLO does: it finds objects and draws boxes around them with their coordinates.</div></div>
+<div class="step"><div><strong>What will your model identify:</strong> type one single word in lowercase, such as <code>ball</code>, <code>cone</code>, or <code>mug</code>. This exact word is what the model outputs when it detects your object. It must exactly match the <code>TARGET_OBJECT</code> variable in Project 1's code. One typo here means the tracker never responds to the detection.</div></div>
 </div>
+<p>Click <strong>Create Public Project</strong> to continue.</p>
+<h3>Step 4 — Choose the Traditional Model Builder</h3>
+<p><strong>If you do not see this section then skip this.</strong></p>
+<p>After creating the project Roboflow shows two options. Choose <strong>Use Traditional Model Builder Instead</strong>.</p>
+<p>Roboflow Rapid is a newer prompt-based tool that skips manual labeling. It is convenient but it is a black box: you would not learn what is actually happening. The Traditional Model Builder shows every step, which is what this course requires.</p>
+<h3>Step 5 — The upload screen</h3>
+<p>You should now see the main upload page with a drag-and-drop zone.</p>
+<figure class="lesson-image-card"><img src="upload_data.png" alt="Roboflow upload data screen" loading="lazy" /><figcaption>attach uplaod_data.png</figcaption></figure>
+<p>This is where your images go. Keep this tab open in your browser and proceed to collect images in the next step.</p>
+<h3>Step 6 — Collecting your images before uploading</h3>
+<p>Before uploading anything you need images. Here is exactly how to collect good ones.</p>
+<h4>What object to use</h4>
 <div class="grid-2">
-<div class="card"><h4>Good first targets</h4><p>A brightly colored ball, a mug, a water bottle, a small toy, or a colored cone. Distinct shape and color help the model learn faster.</p></div>
-<div class="card"><h4>Avoid at first</h4><p>Human faces, multiple similar objects, cloth, paper, or anything that changes shape significantly. These add complexity before you need it.</p></div>
+<div class="card"><h4>Best choices</h4><p>A tennis ball, orange ball, any brightly colored ball, a colored traffic cone or marker, or a specific mug, bottle, or toy you own.</p></div>
+<div class="card"><h4>Avoid first</h4><p>Your hand or face, multiple similar-looking objects, or anything that changes shape dramatically like cloth or paper.</p></div>
 </div>
-<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Why a ball works so well</div><p>The ball is the classic robot-tracking target because it looks similar from every angle and often has a color that separates it from the background. That means the model needs fewer images to learn the object reliably.</p></div></div>
-<h3>Capture A Varied Dataset</h3>
-<p>Collect at least <strong>150 images</strong>. If you can collect 300, do it. The model needs variation because the robot will not see the object from one perfect angle in one perfect room.</p>
+<div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Why a ball works well</div><p>A ball is the classic choice for a reason. It looks roughly the same from every angle because it is spherical. A distinctive color separates it from most backgrounds. These two properties mean the model learns faster and needs fewer images than a complex multi-sided object.</p></div></div>
+<h4>How many images to capture</h4>
+<p>Target <strong>150 images minimum</strong>. 200 to 300 gives noticeably better results. This sounds like a lot but it takes about 10 minutes with a phone.</p>
+<h4>How to capture them</h4>
 <div class="steps">
-<div class="step"><div><strong>Distances:</strong> close, medium, and far.</div></div>
-<div class="step"><div><strong>Angles:</strong> straight on, from the left, from the right, and from above.</div></div>
-<div class="step"><div><strong>Backgrounds:</strong> different rooms, floors, desks, and surfaces.</div></div>
-<div class="step"><div><strong>Lighting:</strong> bright room, dim room, window light, and shadows.</div></div>
-<div class="step"><div><strong>Partial occlusion:</strong> hide part of the object behind something in a few images.</div></div>
+<div class="step"><div><strong>Distances:</strong> take shots from 0.3m away, 1m away, 2m away, and 3m away. The tracker needs to work at all these distances.</div></div>
+<div class="step"><div><strong>Angles:</strong> straight on, from the left, from the right, from above, and from slightly below. Objects look different from different angles.</div></div>
+<div class="step"><div><strong>Backgrounds:</strong> use at least 4 different locations: kitchen floor, carpet, concrete, grass, table. This is the most important variation.</div></div>
+<div class="step"><div><strong>Lighting:</strong> bright room with windows, dimmer room, artificial light, and slight shadow across the object. Real robots work in varied lighting.</div></div>
+<div class="step"><div><strong>Partial views:</strong> place the object half behind another object in some shots. The model needs to recognize the object even when partially blocked.</div></div>
 </div>
-<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not collect one-background data</div><p>The biggest beginner mistake is collecting every image in one location with one background. The model learns the background as part of the object, then fails in a new room. Vary backgrounds deliberately.</p></div></div>
-<p>Upload images by dragging them into your Roboflow project, or use the Roboflow mobile app to capture directly into the project.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Vary your backgrounds deliberately</div><p>The single biggest beginner mistake is collecting all images in one location with one background color. The model will learn the background pattern instead of the object. It will detect perfectly in that room and fail completely everywhere else. Vary your backgrounds deliberately even if it feels unnecessary.</p></div></div>
+<p>Use your phone camera. Take photos manually or record a short video and extract frames. Roboflow accepts both.</p>
+<p>For video extraction: record a 30-second video walking around the object from different angles and distances. Roboflow will extract one frame per second automatically, giving you 30 images from one recording. Do this in 5 different locations for 150 images total.</p>
+<h3>Step 7 — Upload your images to Roboflow</h3>
+<p>Return to the Roboflow upload tab in your browser. Drag and drop your image files or your video files directly into the upload area. You can upload everything at once.</p>
+<figure class="lesson-image-card"><img src="just_image.png" alt="Roboflow upload screen with an image selected" loading="lazy" /><figcaption>attach just_image.png</figcaption></figure>
+<p>If you upload a video, Roboflow asks how many frames per second to extract.</p>
+<figure class="lesson-image-card"><img src="fps_selections.png" alt="Roboflow video frame rate selection dialog" loading="lazy" /><figcaption>attach fps_selections.png</figcaption></figure>
+<p>For a 30-second walkthrough video choose as many frames per second as gives you around 80 images from one recording. For a longer video lower the rate to avoid too many nearly identical frames.</p>
+<p>Click <strong>Choose Frame Rate</strong> to confirm. Roboflow processes the video and saves each extracted frame as a separate image in your project.</p>
+<p>After uploading you will see all your images in a grid. Roboflow flags any images it cannot read.</p>
+<figure class="lesson-image-card"><img src="grid.png" alt="Roboflow upload grid with extracted frames" loading="lazy" /><figcaption>attach grid.png</figcaption></figure>
+<p>Images marked <strong>Not Annotated</strong> in yellow have no labels yet. That is expected: you will label them in the next lesson.</p>
+<p>Press <strong>Save and Continue</strong>. You will then see the annotation part.</p>
+<h3>Step 9 — Save and continue</h3>
+<p>Click <strong>Save and Continue</strong> in the upper right corner. Roboflow uploads and processes all your images. Depending on how many you uploaded this takes 30 seconds to 2 minutes.</p>
+<p>When it finishes you will see the Annotate section of your project with your images ready to label. This is where the next lesson begins.</p>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-roboflow-data">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projA-vscode" data-lesson-link="projA-vscode"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.2 Setup</span></a>
-<a class="lesson-nav-btn next" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.4 Labeling Images &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.4 Labeling in Roboflow &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="projA-labeling" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
-<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.4 Labeling Your Images</div>
-<h1>PA.4 Labeling Your Images</h1>
-<div class="lesson-meta"><span>Annotation</span><span>Bounding Boxes</span><span>14 min</span></div>
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.4 Labeling Your Images in Roboflow</div>
+<h1>PA.4 Labeling Your Images in Roboflow</h1>
+<div class="lesson-meta"><span>Roboflow</span><span>Auto-Label</span><span>20 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Labeling means drawing a tight rectangle around every visible instance of your object. This is the most repetitive part of the project, and it sets the ceiling for model quality.</p>
-<div class="steps">
-<div class="step"><div>Open your Roboflow project and click <strong>Annotate</strong>.</div></div>
-<div class="step"><div>Open the first image, press <strong>B</strong>, or choose the box tool.</div></div>
-<div class="step"><div>Click and drag a rectangle tightly around the object.</div></div>
-<div class="step"><div>Type your class name. After the first label, Roboflow autocompletes it.</div></div>
-<div class="step"><div>Press Enter, then use the right arrow key to move to the next image.</div></div>
+<p class="lead">A label is a rectangle you draw around your object in each image. This rectangle tells the model exactly where the object is and what it is called. The model learns by comparing its own predicted boxes to your labeled boxes during training. If your labels are sloppy the model learns sloppiness. If they are tight and consistent the model learns to detect accurately.</p>
+<p>There are two ways to label in Roboflow. The old way is to draw every box yourself by hand. The new way, which we will use, is to let Roboflow's AI label the entire batch automatically, then manually fix only the images it got wrong. This is 5 to 10 times faster and produces the same quality result.</p>
+<h3>Step 1 — Open the annotation section</h3>
+<p>In your Roboflow project click <strong>Annotate</strong> in the left sidebar. You will see three columns: <strong>Unassigned</strong>, <strong>Annotating</strong>, and <strong>Dataset</strong>.</p>
+<div class="grid-3">
+<div class="definition-card"><span class="def-term">Unassigned</span><p>Images just uploaded with no labels yet.</p></div>
+<div class="definition-card"><span class="def-term">Annotating</span><p>Images currently being worked on.</p></div>
+<div class="definition-card"><span class="def-term">Dataset</span><p>Fully labeled images ready for training.</p></div>
 </div>
-<h3>Good Labeling Rules</h3>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Rule</th><th>Why it matters</th></tr></thead><tbody><tr><td>Draw the box tightly around the object.</td><td>Loose boxes include background pixels, which teaches the detector that background belongs to the object.</td></tr><tr><td>Label every instance in the image.</td><td>If you miss one, the model can be punished for detecting a real object you forgot to label.</td></tr><tr><td>Skip objects that are less than 20% visible.</td><td>Heavily occluded targets provide weak signal and inconsistent labels hurt more than they help.</td></tr><tr><td>Keep box tightness consistent.</td><td>Inconsistent labels create noise that reduces final accuracy.</td></tr></tbody></table></div>
-<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Labeling time estimate</div><p>Labeling 150 images takes roughly 30-45 minutes if your object appears once per image. It is repetitive, but there is no shortcut: label quality is the ceiling on model quality.</p></div></div>
-<h3>Using Auto-Label Carefully</h3>
-<p>Roboflow has AI auto-labeling. For the first 50 images, label manually. Then try auto-label and correct its mistakes for the rest. This hybrid pattern is what professionals use: automate the boring part, then inspect every result.</p>
+<p>All your uploaded images should appear in the Unassigned column.</p>
+<h3>Step 2 — Use Auto-Label to annotate the entire batch</h3>
+<p>Instead of opening images one by one, we will label everything at once using Roboflow's AI Auto-Label feature.</p>
+<p>Click <strong>Auto-Label</strong> at the top of the Unassigned column. A panel opens on the right side of the screen.</p>
+<figure class="lesson-image-card"><img src="auto_label.png" alt="Roboflow auto-label panel" loading="lazy" /><figcaption>AUTO_LABEL.PNG — the auto-label panel open in Roboflow</figcaption></figure>
+<p>Click <strong>Auto-label entire batch</strong> to apply to all your uploaded images at once rather than one at a time.</p>
+<p>You will see two fields to fill in:</p>
+<div class="steps">
+<div class="step"><div><strong>Class Name:</strong> type the exact class name you used when creating the project. For example: <code>ball</code>.</div></div>
+<div class="step"><div><strong>Description:</strong> write a short plain-English description of what your object looks like. Be specific. This description is what the AI uses to find your object in each image.</div></div>
+</div>
+<p>Good description example for a ball: <strong>A miniaturized basketball, small and orange with black lines, typically sitting on a flat surface.</strong></p>
+<p>Good description example for a cone: <strong>A bright orange traffic cone, roughly triangular, about 30cm tall.</strong></p>
+<p>The more specific your description the better the AI performs. Mention color, shape, size, and any distinctive markings.</p>
+<figure class="lesson-image-card"><img src="ball.png" alt="Roboflow class name and description fields filled in" loading="lazy" /><figcaption>ball.png — the class name and description fields filled in with an example</figcaption></figure>
+<p>Once you have filled in both fields, click <strong>Generate Test Results</strong>. Roboflow runs the AI on a small sample of your images so you can preview the quality before committing.</p>
+<p>Review the test results. If the boxes look correct on the preview images, click <strong>Auto-Label</strong> to run on your full batch.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">About Auto-Label credits</div><p>Auto-labeling uses Roboflow's AI credits. A free account comes with 20 credits. Labeling one batch of 150 images uses 1 credit. You have more than enough for this project.</p></div></div>
+<p>After auto-labeling finishes, the images move from Unassigned to the Annotating column. Roboflow has now drawn bounding boxes on every image it was confident about.</p>
+<h3>Step 3 — Review and fix images the AI got wrong</h3>
+<p>Auto-label is not perfect. Some images will have boxes in the wrong place, boxes that are too loose, or images where the object was missed entirely. You now go through and fix these manually.</p>
+<p>In the Annotating column, look for images flagged with warnings or that look incorrect in the thumbnail. Click any image to open it in the annotation editor.</p>
+<p>The annotation editor looks like this:</p>
+<figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor with a bounding box" loading="lazy" /><figcaption>screenshot of the Roboflow annotation tool with an image loaded and a bounding box visible on the object</figcaption></figure>
+<div class="steps">
+<div class="step"><div>If the box is in the right place and tight around the object: leave it as is and move to the next image.</div></div>
+<div class="step"><div>If the box is wrong, click the box to select it and press Delete to remove it. Then draw a new one manually as described in Step 4.</div></div>
+<div class="step"><div>If the object is in the image but no box was drawn, the AI missed it. Draw the box manually as described in Step 4.</div></div>
+</div>
+<p>Press the right arrow key to move to the next image. Press the left arrow key to go back.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Fix the obvious errors first</div><p>You do not need to fix every single image perfectly. Aim to correct obvious errors: boxes on the wrong object or no box at all where one should be. Small imperfections in box tightness on a few images will not meaningfully hurt your model.</p></div></div>
+<h3>Step 4 — How to draw a manual bounding box</h3>
+<p>For any image where the AI missed the object or drew the wrong box, draw the correct box yourself.</p>
+<p>Press the <strong>B</strong> key to activate the Bounding Box tool. You can also click the rectangle icon in the right toolbar.</p>
+<p>Click and drag across your object from one corner to the opposite corner. Release the mouse. A popup appears asking for the class name. Type your class name and press Enter.</p>
+<figure class="lesson-image-card"><img src="BB.png" alt="Bounding box drawn around the object in Roboflow" loading="lazy" /><figcaption>BB.png — a bounding box being drawn around the object in the annotation editor</figcaption></figure>
+<p>The box appears highlighted on the image.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Shortcut</th><th>Action</th></tr></thead><tbody><tr><td><code>B</code></td><td>Activate bounding box tool</td></tr><tr><td>Right arrow</td><td>Next image</td></tr><tr><td>Left arrow</td><td>Previous image</td></tr><tr><td>Delete</td><td>Remove selected box</td></tr><tr><td><code>Ctrl+Z</code></td><td>Undo last action</td></tr><tr><td>Escape</td><td>Deselect current tool</td></tr></tbody></table></div>
+<h4>Labeling rules for manual boxes</h4>
+<div class="steps">
+<div class="step"><div><strong>Draw tight.</strong> The box edge should touch the outer boundary of the object on all four sides. Loose boxes include background pixels which confuse the model about where the object ends.</div></div>
+<div class="step"><div><strong>Label every instance.</strong> If your object appears twice in one image draw two boxes. Missing an instance penalizes the model during training for detecting something you left unlabeled.</div></div>
+<div class="step"><div><strong>Skip heavily occluded instances.</strong> If less than 20 percent of the object is visible skip it. A barely visible instance adds noise without useful signal.</div></div>
+</div>
+<h3>Step 5 — Add images to the dataset and approve all</h3>
+<p>After reviewing and fixing an image, click the checkmark button in the top right of the annotation editor.</p>
+<figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor approve control" loading="lazy" /><figcaption>screenshot of the "Add 1 Image" popup with the TRAIN/VALID/TEST dropdown and the confirm button</figcaption></figure>
+<p>A popup appears. The dropdown labeled <strong>TRAIN</strong>, <strong>VALID</strong>, or <strong>TEST</strong> determines which split this image goes into. Leave it on whatever Roboflow assigned automatically. Click <strong>Add 1 Image</strong> to confirm. The image moves from Annotating to Dataset.</p>
+<p>Once you have gone through all images, return to the main Annotate view. Click <strong>Approve All</strong> to move all reviewed images to the Dataset column in one action.</p>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Approve All when auto-label quality is high</div><p>If you have a large number of images and most of the auto-labels look correct, you can click <strong>Approve All</strong> from the Annotating column without opening each image individually. Then spot-check 10 to 15 images at random to confirm quality. This is the workflow professional data teams use when auto-label accuracy is high.</p></div></div>
+<h3>What You Now Have</h3>
+<p>All your images are in the Dataset column with bounding box labels. The AI did most of the work. You corrected the mistakes. You are ready to generate a dataset version with augmentation, which is covered in the next lesson.</p>
+<h3>Labeling Rules</h3>
+<div class="steps">
+<div class="step"><div><strong>Rule 1: Draw the box tightly around the object.</strong><br />The box edge should touch the outer boundary of the object on all four sides. Do not leave empty space between the object and the box edge. Why: loose boxes include background pixels as part of the object. The model learns that background is part of what it is looking for and performance drops in new environments.</div></div>
+<div class="step"><div><strong>Rule 2: Consistent tightness throughout the entire dataset.</strong><br />If you draw tight boxes on the first 50 images and loose boxes on the next 100, the model receives conflicting information about where the object boundary is. Why: inconsistent labels are noise. Noise lowers the ceiling on final model accuracy regardless of how many images you have.</div></div>
+<div class="step"><div><strong>Rule 3: Skip instances that are less than 20 percent visible.</strong><br />If the object is heavily obscured by another object or cropped by the image edge, skip it. Why: a barely visible instance provides very little useful signal and the model may learn to look for objects that are mostly hidden, which is not useful for your use case.</div></div>
+<div class="step"><div><strong>Rule 4: One class only for this project.</strong><br />Do not add a second label class even if you have a second interesting object in your images. Adding a second class doubles the labeling work and training time. Master single-class detection first.</div></div>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Time estimate</div><p>Labeling 150 images where your object appears once per image takes roughly 30 to 45 minutes at a steady pace. If you use Label Assist for the second half after 50 manual labels, the total time drops to about 20 minutes. There is no shortcut to this step and label quality is the single largest factor in your final model accuracy. A model trained on 150 clean images consistently outperforms a model trained on 500 sloppy images.</p></div></div>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-labeling">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.3 Collecting Data</span></a>
-<a class="lesson-nav-btn next" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.5 Exporting Dataset &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=projA-roboflow-data" data-lesson-link="projA-roboflow-data"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.3 Roboflow Project</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.5 Generate & Export &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="projA-exporting" data-chapter="projA" data-chapter-title="★ Project A: Train Your First Detector" style="--chapter-accent:#10b981">
-<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.5 Exporting the Dataset</div>
-<h1>PA.5 Exporting the Dataset</h1>
-<div class="lesson-meta"><span>Dataset Prep</span><span>YOLO Format</span><span>10 min</span></div>
+<div class="lesson-kicker">★ Project A: Train Your First Detector <span>&rsaquo;</span> PA.5 Generating and Exporting Your Dataset</div>
+<h1>PA.5 Generating and Exporting Your Dataset</h1>
+<div class="lesson-meta"><span>Roboflow</span><span>Augmentation</span><span>16 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Before training, Roboflow packages your images into the folder layout YOLO expects. This lesson also introduces train, validation, and test splits.</p>
-<h3>Train / Validation / Test Split</h3>
+<p class="lead">This lesson teaches augmentation, dataset versioning, and how to get the dataset into Colab in the format YOLO26 expects. This lesson produces the download snippet used in PA.6.</p>
+<h3>Step 0 — Verify your train / valid / test split before doing anything</h3>
+<p>Before generating a version, check that your images are divided correctly across the three splits. Click <strong>Dataset</strong> in the left sidebar. At the top of the page you will see three numbers showing how many images are in Train, Valid, and Test.</p>
+<figure class="lesson-image-card"><img src="preprocess.png" alt="Roboflow split counts for training, validation, and testing" loading="lazy" /><figcaption>screenshot of the Dataset tab showing the three split counts</figcaption></figure>
 <div class="grid-3">
-<div class="definition-card"><span class="def-term">Training set</span><p>The practice problems the model learns from.</p></div>
-<div class="definition-card"><span class="def-term">Validation set</span><p>The practice exam checked during training to tune progress.</p></div>
-<div class="definition-card"><span class="def-term">Test set</span><p>The final exam, used only at the end to estimate real performance.</p></div>
+<div class="definition-card"><span class="def-term">TRAIN</span><p>The images the model learns from directly. Target: roughly 70 percent of your total images. For 150 images: around 105 in train.</p></div>
+<div class="definition-card"><span class="def-term">VALID</span><p>The images used to check progress during training. Target: roughly 20 percent of your total images. For 150 images: around 30 in valid.</p></div>
+<div class="definition-card"><span class="def-term">TEST</span><p>The images looked at only once after training is finished to get an honest estimate of real-world accuracy. Target: roughly 10 percent. For 150 images: around 15 in test.</p></div>
 </div>
-<div class="diagram split-diagram" aria-label="Dataset split example"><div class="split-bar"><span style="flex:80">120 train</span><span style="flex:15">22 val</span><span style="flex:5">8 test</span></div><p class="muted">150 images becomes roughly 80% train, 15% validation, and 5% test.</p></div>
-<h3>Augmentation</h3>
-<p>Augmentation creates extra training variation by transforming existing images. It teaches the model to ignore harmless changes like mild rotation or lighting differences.</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Augmentation</th><th>Why use it</th></tr></thead><tbody><tr><td>Horizontal flip</td><td>The object should still be recognized when mirrored.</td></tr><tr><td>Rotation ±15°</td><td>Handles camera tilt and imperfect robot mounting.</td></tr><tr><td>Brightness ±25%</td><td>Handles different lighting conditions.</td></tr><tr><td>Blur up to 1.5px</td><td>Handles slight focus or motion blur.</td></tr></tbody></table></div>
-<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Avoid extreme augmentation</div><p>Do not enable too many augmentations on a small dataset. If transformations become unrealistic, the model learns impossible scenarios instead of useful robustness.</p></div></div>
-<h3>Export In YOLOv8 Format</h3>
+<h4>Ideal Split Table</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Total images</th><th>Train</th><th>Valid</th><th>Test</th></tr></thead><tbody><tr><td>100</td><td>70</td><td>20</td><td>10</td></tr><tr><td>150</td><td>105</td><td>30</td><td>15</td></tr><tr><td>200</td><td>140</td><td>40</td><td>20</td></tr><tr><td>300</td><td>210</td><td>60</td><td>30</td></tr></tbody></table></div>
+<p>If your numbers look roughly right, continue to Step 1.</p>
+<p>If your split is badly unbalanced, for example 140 train and 5 valid, go back to the Dataset tab, select some images manually, and reassign them using the split dropdown before generating a version.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Keep validation large enough</div><p>A valid set that is too small gives you unreliable accuracy readings during training. You may see the validation curve jump around wildly rather than showing a clear trend. Aim for at least 20 images in valid no matter how small your total dataset is.</p></div></div>
+<h3>What is dataset versioning?</h3>
+<p>In Roboflow, a dataset version is a frozen snapshot of your images at a specific point in time with a specific set of preprocessing and augmentation settings baked in. Think of it like saving a named checkpoint. You can create multiple versions of the same dataset, one with light augmentation and one with heavier augmentation, and compare how each affects training accuracy. Once a version is generated it never changes, so your experiments are reproducible.</p>
+<h3>Step 1 — Navigate to the Generate section</h3>
+<p>Click <strong>Versions</strong> in the left sidebar. You will see a page with two sections: Preprocessing and Augmentation.</p>
+<figure class="lesson-image-card"><img src="preprocess.png" alt="Roboflow Versions page preprocessing section" loading="lazy" /><figcaption>preprocess.png — the Versions/Generate page showing both the preprocessing and augmentation sections</figcaption></figure>
+<h3>Step 2 — Preprocessing settings</h3>
+<p>Preprocessing modifies your images before they reach the model. Leave the default settings exactly as they are. Roboflow has already applied two sensible defaults:</p>
 <div class="steps">
-<div class="step"><div>Click <strong>Generate</strong> to create a dataset version.</div></div>
-<div class="step"><div>Click <strong>Export Dataset</strong>.</div></div>
-<div class="step"><div>Choose <strong>YOLOv8</strong>. This format also works for YOLO26.</div></div>
-<div class="step"><div>Choose <strong>Get download code</strong>. Roboflow gives you a Python snippet.</div></div>
+<div class="step"><div><strong>Auto-Orient:</strong> corrects rotation metadata from phone cameras. Without this fix the model sees sideways images during training.</div></div>
+<div class="step"><div><strong>Resize to 416x416:</strong> every image is resized to this square before training begins. Roboflow automatically adjusts all your bounding box coordinates to match the new dimensions so your labels remain accurate after resizing.</div></div>
 </div>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Why 416 and not 640?</div><p>Larger input images give the model more detail to work with but cost significantly more compute time per image. 640x640 is common for production models with GPU access. We use 416x416 because it runs at acceptable speed on a CPU laptop during inference while retaining enough detail to reliably detect a single prominent object like a ball or cone in the frame. If you later find the model misses small distant objects, retraining at 640 is the first thing to try.</p></div></div>
+<h3>Step 3 — Augmentation settings</h3>
+<p>Augmentation creates modified copies of your training images. Each augmented copy is a new training example showing the object under a slightly different condition. This expands your effective dataset size and teaches the model to be robust to variation.</p>
+<figure class="lesson-image-card"><img src="augmentation.png" alt="Roboflow augmentation options" loading="lazy" /><figcaption>attach augmentation.png</figcaption></figure>
+<p>Enable these augmentations and set the values shown:</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Augmentation</th><th>Setting</th><th>Why</th></tr></thead><tbody><tr><td>Flip</td><td>Horizontal: ON</td><td>Your object looks valid when mirrored. A ball on the left side of frame and a ball on the right side should both be detected.</td></tr><tr><td>Rotation</td><td>ON, between -15 and +15 degrees</td><td>Cameras are rarely perfectly level. Small tilts should not confuse the model.</td></tr><tr><td>Brightness</td><td>ON, between -25% and +25%</td><td>Your robot will operate in different lighting conditions. The model should not depend on a specific brightness level.</td></tr><tr><td>Blur</td><td>ON, up to 1.5 pixels</td><td>Images from a moving robot can be slightly blurry due to motion. Training on slightly blurred images improves detection on real video frames.</td></tr></tbody></table></div>
+<p>Do <strong>not</strong> enable these for this project: rotation beyond 15 degrees, Cutout or Mosaic, or Grayscale.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">More augmentation is not always better</div><p>Each augmentation type multiplies your dataset but also adds visual variation that the model must learn to ignore. On a small dataset of 150 images, extreme augmentation can confuse the model more than it helps. Start with the four settings above and add more only if your validation accuracy is low.</p></div></div>
+<h3>Step 4 — Set the augmentation multiplier</h3>
+<p>Roboflow shows a multiplier that controls how many augmented copies to generate per original image. Set this to <strong>3x</strong>.</p>
+<p>With 150 original training images and 3x augmentation you get approximately 450 training images. This is a good size for a single-class detector on a simple object.</p>
+<h3>Step 5 — Generate the version</h3>
+<p>Click <strong>Generate</strong> at the bottom of the page. Roboflow processes your images and augmentations. This takes 1 to 3 minutes depending on the number of images.</p>
+<p>When generation finishes you will see a summary showing the total image counts for train, valid, and test including augmented images.</p>
+<figure class="lesson-image-card"><img src="complete_roboflow.png" alt="Roboflow generated version summary" loading="lazy" /><figcaption>attach complete_roboflow.png</figcaption></figure>
+<h3>Step 6 — Export the dataset</h3>
+<p>Click the <strong>Export Dataset</strong> button on the version summary page. A dialog appears asking for the export format.</p>
+<figure class="lesson-image-card"><img src="download.png.png" alt="Roboflow download format dialog" loading="lazy" /><figcaption>attach download.png</figcaption></figure>
+<p>Select <strong>YOLOv26</strong> from the format dropdown.</p>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">What YOLOv26 export creates</div><p>The YOLOv26 format creates the structure Ultralytics expects automatically: <code>train/images</code>, <code>train/labels</code>, <code>valid/images</code>, <code>valid/labels</code>, <code>test/images</code>, <code>test/labels</code>, and <code>data.yaml</code> listing class names and folder paths. You pass <code>data.yaml</code> to the YOLO training command and it finds everything else automatically.</p></div></div>
+<h3>Step 7 — Get the download code snippet</h3>
+<p>After selecting YOLOv26, choose <strong>Get download code</strong> instead of downloading a zip file. Roboflow generates a Python code snippet.</p>
+<figure class="lesson-image-card"><img src="dataset_code.png" alt="Roboflow dataset download code dialog" loading="lazy" /><figcaption>attach dataset_code.png</figcaption></figure>
+<p>The snippet looks like this. Your values will differ:</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="roboflow_download_snippet.py"><figcaption><span>Roboflow download snippet</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
-
-rf = Roboflow(api_key=&quot;YOUR_KEY_HERE&quot;)
-project = rf.workspace(&quot;YOUR_WORKSPACE&quot;).project(&quot;YOUR_PROJECT&quot;)
+rf = Roboflow(api_key=&quot;YOUR_API_KEY_HERE&quot;)
+project = rf.workspace(&quot;your-workspace-name&quot;).project(&quot;your-project-name&quot;)
 version = project.version(1)
 dataset = version.download(&quot;yolov8&quot;)</code></pre></figure>
-<p>Save this snippet. You will paste your own version into the Colab notebook in the next lesson.</p>
-<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Why YOLOv8 format works for YOLO26</div><p>YOLO26 uses the same dataset layout as YOLOv8: image folders plus matching <code>.txt</code> label files. Ultralytics kept this format consistent across model generations.</p></div></div>
+<p>Copy this snippet. You will paste it into your Colab training notebook in lesson PA.6. Do not share your <code>api_key</code> publicly: it is tied to your Roboflow account and allows anyone with it to read and modify your projects.</p>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Save the snippet locally</div><p>Save this snippet in a text file in your project folder right now. Colab sessions reset when you close them. Having the snippet saved locally means you can re-download your dataset in under 10 seconds whenever you start a new Colab session, without going back through the Roboflow interface.</p></div></div>
+<h3>What You Now Have</h3>
+<div class="steps">
+<div class="step"><div>A Roboflow project with 150+ labeled images.</div></div>
+<div class="step"><div>A dataset version with augmentation applied.</div></div>
+<div class="step"><div>A Python download snippet ready for Colab.</div></div>
+</div>
+<p>The next lesson uses this snippet to download the dataset into Colab, runs the training command, and produces your <code>best.pt</code> model file.</p>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-exporting">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.4 Labeling Images</span></a>
+<a class="lesson-nav-btn" href="?lesson=projA-labeling" data-lesson-link="projA-labeling"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.4 Labeling in Roboflow</span></a>
 <a class="lesson-nav-btn next" href="?lesson=projA-training" data-lesson-link="projA-training"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.6 Training in Colab &rarr;</span></a>
 </nav>
 </article>
@@ -2720,7 +2852,7 @@ print(f&quot;Best weights saved at: {weights[0]}&quot;)</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projA-training">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.5 Exporting Dataset</span></a>
+<a class="lesson-nav-btn" href="?lesson=projA-exporting" data-lesson-link="projA-exporting"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PA.5 Generate & Export</span></a>
 <a class="lesson-nav-btn next" href="?lesson=projA-results" data-lesson-link="projA-results"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PA.7 Training Results &rarr;</span></a>
 </nav>
 </article>
@@ -3689,7 +3821,7 @@ LOST_TIMEOUT   = 1.0
   </main>
   <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-why-vision","label":"6.1 Why Vision Matters","title":"6.1 Why Vision Matters in Robotics","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-opencv","label":"6.2 OpenCV","title":"6.2 Tools: OpenCV","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-tensorflow","label":"6.3 TensorFlow/Keras","title":"6.3 Tools: TensorFlow/Keras","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-cnn","label":"6.4 CNNs","title":"6.4 How CNNs See","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":false},{"id":"ch6-project","label":"6.5 Traffic Sign Project","title":"6.5 Project: Traffic Sign Classifier","chapter":"ch6","chapterTitle":"Chapter 6: Computer Vision for Robotics","exercise":true},{"id":"ch7-overview","label":"What's Next?","title":"What's Next?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-decision-guide","label":"7.1 Decision Guide","title":"7.1 Which ML Technique Should I Use?","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-roadmap","label":"7.2 Roadmap","title":"7.2 Recommended Learning Roadmap","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"ch7-papers","label":"7.3 Papers","title":"7.3 Real Robotics ML Papers to Read","chapter":"ch7","chapterTitle":"Chapter 7: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Computer Vision for Robotics","lessonIds":["ch6-overview","ch6-why-vision","ch6-opencv","ch6-tensorflow","ch6-cnn","ch6-project"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: What's Next?","lessonIds":["ch7-overview","ch7-decision-guide","ch7-roadmap","ch7-papers"],"firstLesson":"ch7-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
   <script>
-    const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Collecting Data","title":"PA.3 Collecting Your Data with Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling Images","title":"PA.4 Labeling Your Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Exporting Dataset","title":"PA.5 Exporting the Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
+    const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
     const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
     window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...project1Lessons);

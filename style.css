@@ -1774,6 +1774,28 @@ body.lesson-app .colab-run-badge {
   white-space: nowrap;
 }
 
+body.lesson-app .lesson-image-card {
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  background: #0d1117;
+}
+
+body.lesson-app .lesson-image-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+body.lesson-app .lesson-image-card figcaption {
+  padding: 0.65rem 0.85rem;
+  border-top: 1px solid #30363d;
+  color: #8b949e;
+  background: #161b22;
+  font: 700 0.78rem "JetBrains Mono", monospace;
+}
+
 body.lesson-app .prereq-chip {
   display: inline-flex;
   align-items: center;
@@ -1948,6 +1970,19 @@ html[data-theme="light"] body.lesson-app .confidence-scale span,
 html[data-theme="light"] body.lesson-app .confidence-scale strong {
   background: rgba(255, 255, 255, 0.92);
   color: #064e3b;
+}
+
+html.light-mode body.lesson-app .lesson-image-card,
+html[data-theme="light"] body.lesson-app .lesson-image-card {
+  border-color: #d0d7de;
+  background: #f6f8fa;
+}
+
+html.light-mode body.lesson-app .lesson-image-card figcaption,
+html[data-theme="light"] body.lesson-app .lesson-image-card figcaption {
+  border-top-color: #d0d7de;
+  background: #eaeef2;
+  color: #57606a;
 }
 
 html.light-mode body.lesson-app .folder-tree pre,
