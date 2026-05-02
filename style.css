@@ -2298,16 +2298,27 @@ body.lesson-app .pd-return-path {
 
 body.lesson-app .pd-ip-check {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 0;
   margin: 1rem 0;
 }
 
 body.lesson-app .pd-ip-check > div {
   padding: 14px;
   border: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
-  border-radius: 8px;
   background: color-mix(in srgb, var(--chapter-accent) 8%, transparent);
+}
+
+body.lesson-app .pd-ip-check > div:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+body.lesson-app .pd-ip-check > div + div {
+  border-top: 0;
+}
+
+body.lesson-app .pd-ip-check > div:last-child {
+  border-radius: 0 0 8px 8px;
 }
 
 body.lesson-app .pd-ip-check strong,
@@ -2446,7 +2457,6 @@ body.lesson-app .pd-bridge-list {
   }
 
   body.lesson-app .pd-protocol-grid,
-  body.lesson-app .pd-ip-check,
   body.lesson-app .pd-loop-grid,
   body.lesson-app .pd-bridge-list {
     grid-template-columns: 1fr;

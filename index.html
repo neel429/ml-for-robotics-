@@ -4404,13 +4404,7 @@ void turnDegrees(float degrees, int speed) {
 <p class="lead">The Arduino UNO R4 WiFi has a separate WiFi module, the ESP-S3 chip, that handles wireless communication. Your sketch talks to that module through the <code>WiFiS3</code> and <code>WiFiUDP</code> libraries.</p>
 <p>The Arduino does not automatically know where your laptop is. It needs a WiFi network name, a WiFi password, and your laptop's IP address so it knows where to send telemetry.</p>
 
-<h3>Install the WiFiS3 Library</h3>
-<div class="steps">
-<div class="step"><div>Open Arduino IDE.</div></div>
-<div class="step"><div>Open <strong>Tools</strong>, then <strong>Manage Libraries</strong>.</div></div>
-<div class="step"><div>Search for <code>WiFiS3</code>.</div></div>
-<div class="step"><div>Install <strong>WiFiS3 by Arduino</strong>. This is the correct library for the UNO R4 WiFi module.</div></div>
-</div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">WiFiS3 is already installed</div><p>The <code>WiFiS3</code> and <code>WiFiUDP</code> libraries are bundled inside the Arduino UNO R4 board package you installed in Project C. They are not listed in the Library Manager because they are not separate libraries; they come with the board itself.</p><p>You do not need to install anything. The lines <code>#include &lt;WiFiS3.h&gt;</code> and <code>#include &lt;WiFiUDP.h&gt;</code> will work immediately in any sketch. If Arduino IDE underlines them as errors, it means the wrong board is selected. Check that <strong>Arduino UNO R4 WiFi</strong> is selected in the board dropdown at the top of the IDE.</p></div></div>
 
 <h3>Finding the Arduino IP Address</h3>
 <p>When the Arduino connects to your WiFi network, the router assigns it an IP address automatically using DHCP. The Project D sketch prints that address to the Serial Monitor when it starts.</p>
