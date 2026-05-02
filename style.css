@@ -2258,6 +2258,180 @@ body.lesson-app .pc-trouble-row summary span:last-child {
   font: 700 0.8rem "JetBrains Mono", monospace;
 }
 
+body.lesson-app .pd-protocol-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 1rem 0 1.5rem;
+}
+
+body.lesson-app .pd-protocol-card {
+  border-color: color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+}
+
+body.lesson-app .pd-protocol-label,
+body.lesson-app .pd-frame-label {
+  color: var(--chapter-accent);
+  font: 800 0.76rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+body.lesson-app .pd-port-table td:first-child {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+body.lesson-app .pd-overview-diagram .flow-row {
+  min-width: 720px;
+}
+
+body.lesson-app .pd-return-path {
+  margin-top: 1rem;
+  padding: 10px 12px;
+  border: 1px dashed color-mix(in srgb, var(--chapter-accent) 60%, #30363d);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font: 700 0.82rem "JetBrains Mono", monospace;
+  text-align: center;
+}
+
+body.lesson-app .pd-ip-check {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 1rem 0;
+}
+
+body.lesson-app .pd-ip-check > div {
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-accent) 8%, transparent);
+}
+
+body.lesson-app .pd-ip-check strong,
+body.lesson-app .pd-ip-check code,
+body.lesson-app .pd-ip-check span {
+  display: block;
+}
+
+body.lesson-app .pd-ip-check strong {
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+body.lesson-app .pd-anatomy-list {
+  display: grid;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+body.lesson-app .pd-anatomy-list details.solution {
+  margin: 0;
+}
+
+body.lesson-app .pd-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+body.lesson-app .pd-controls-grid div {
+  display: grid;
+  gap: 8px;
+  place-items: center;
+  min-height: 86px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-accent) 8%, transparent);
+}
+
+body.lesson-app .pd-controls-grid kbd {
+  min-width: 44px;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 65%, #30363d);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font: 800 1rem "JetBrains Mono", monospace;
+  text-align: center;
+}
+
+body.lesson-app .pd-controls-grid span {
+  color: var(--text-muted);
+  font: 700 0.72rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+body.lesson-app .pd-loop-frames {
+  display: grid;
+  gap: 16px;
+  margin: 1rem 0 1.5rem;
+}
+
+body.lesson-app .pd-loop-card {
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+body.lesson-app .pd-loop-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 120px minmax(220px, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+body.lesson-app .pd-loop-node {
+  display: grid;
+  gap: 7px;
+  min-height: 190px;
+  padding: 14px;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-accent) 7%, transparent);
+}
+
+body.lesson-app .pd-loop-node strong {
+  color: var(--text-primary);
+}
+
+body.lesson-app .pd-loop-node span {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+body.lesson-app .pd-packet-arrow {
+  position: relative;
+  color: var(--chapter-accent);
+  text-align: center;
+  font: 800 0.72rem "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+body.lesson-app .pd-packet-arrow::after {
+  content: "->";
+  display: block;
+  margin-top: 8px;
+  font-size: 1.4rem;
+}
+
+body.lesson-app .pd-bridge-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 1rem 0 1.5rem;
+}
+
 @media (max-width: 760px) {
   body.lesson-app .pc-hardware-table td:first-child {
     white-space: normal;
@@ -2269,6 +2443,21 @@ body.lesson-app .pc-trouble-row summary span:last-child {
 
   body.lesson-app .pc-trouble-row summary {
     grid-template-columns: 1fr;
+  }
+
+  body.lesson-app .pd-protocol-grid,
+  body.lesson-app .pd-ip-check,
+  body.lesson-app .pd-loop-grid,
+  body.lesson-app .pd-bridge-list {
+    grid-template-columns: 1fr;
+  }
+
+  body.lesson-app .pd-controls-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.lesson-app .pd-packet-arrow::after {
+    content: "v";
   }
 }
 

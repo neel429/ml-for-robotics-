@@ -150,10 +150,23 @@
 <a class="lesson-link" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span>PC.10 Troubleshooting and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
+<div class="lesson-group" data-chapter="projD" style="--chapter-accent:#0ea5e9">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>* Project D: Talk to Your Robot Over WiFi</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link is-exercise" href="?lesson=projD-udp" data-lesson-link="projD-udp"><span>* PD.0 What Is UDP?</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-wifi" data-lesson-link="projD-wifi"><span>PD.1 UNO R4 WiFi</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-arduino" data-lesson-link="projD-arduino"><span>PD.2 Arduino Sketch</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-python" data-lesson-link="projD-python"><span>PD.3 Python UDP Script</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-keyboard" data-lesson-link="projD-keyboard"><span>PD.4 WASD Keyboard Control</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-telemetry" data-lesson-link="projD-telemetry"><span>PD.5 Encoder Telemetry</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-loop" data-lesson-link="projD-loop"><span>PD.6 Full Communication Loop</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span>PD.7 Connect to Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
 <div class="lesson-group" data-chapter="proj1" style="--chapter-accent:#f97316">
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 1: Object Tracker</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
-<div class="project-prereq-note">Complete Projects A, B, and C first &mdash; they produce the <code>best.pt</code> file, phone stream, and encoder foundation used here.</div>
+<div class="project-prereq-note">Complete Projects A, B, C, and D first &mdash; they produce the <code>best.pt</code> file, phone stream, encoder foundation, and UDP control loop used here.</div>
 <a class="lesson-link is-exercise" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span>★ P1.0 What We Are Building</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span>P1.1 Setting Up VS Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span>P1.2 Installing Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -279,6 +292,14 @@
 <p>Build the hardware control foundation: encoder ticks, exact distance driving, 90-degree turns, and programmed paths.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projC">0 / 11 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=projC-overview" data-lesson-link="projC-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="projD" style="--chapter-accent:#0ea5e9">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Project D</span><span>8 lessons</span></div>
+<h2>Talk to Your Robot Over WiFi</h2>
+<p>Send UDP motor commands from Python, receive live encoder telemetry, and drive the robot from the keyboard.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projD">0 / 8 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=projD-udp" data-lesson-link="projD-udp">Start</a>
 </article>
 <article class="chapter-card" data-chapter-card="proj1" style="--chapter-accent:#f97316">
 <div class="chapter-card-strip"></div>
@@ -4303,6 +4324,749 @@ void turnDegrees(float degrees, int speed) {
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-troubleshooting">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projC-path" data-lesson-link="projC-path"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.9 Running a Path</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-udp" data-lesson-link="projD-udp"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project D &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content exercise-lesson" data-lesson="projD-udp" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.0 What Is UDP and Why Does a Robot Use It</div>
+<h1>PD.0 What Is UDP and Why Does a Robot Use It?</h1>
+<div class="lesson-meta"><span>Networking</span><span>Robot control</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Your laptop and your Arduino are two separate computers on the same WiFi network. For them to exchange information, they need a communication protocol: a set of rules for how data is packaged, addressed, sent, received, and interpreted.</p>
+<p>In this project, the laptop sends wheel-speed commands to the Arduino. The Arduino drives the motors and sends encoder tick counts back. There is no machine learning and no camera processing here. This is pure embedded networking, and it is the exact foundation used later by Project 1's <code>Commander</code> and <code>Telemetry</code> classes.</p>
+
+<h3>TCP vs UDP</h3>
+<div class="pd-protocol-grid">
+<article class="card pd-protocol-card">
+<div class="pd-protocol-label">TCP</div>
+<h4>Transmission Control Protocol</h4>
+<p>TCP guarantees that packets arrive and arrive in order. If a packet is lost, the sender waits and retransmits it. This is what you want for web pages, file downloads, email, and anything where missing data would corrupt the result.</p>
+<p>The tradeoff is latency. Waiting for retransmits takes time, and that delay can be worse than a missing packet in real-time control.</p>
+</article>
+<article class="card pd-protocol-card">
+<div class="pd-protocol-label">UDP</div>
+<h4>User Datagram Protocol</h4>
+<p>UDP sends packets and does not wait for confirmation. If a packet is lost, it is simply gone. There is no retransmit and no ordering guarantee.</p>
+<p>The benefit is speed. UDP is used for video streaming, online games, DNS lookups, and real-time robot control where fresh information matters more than perfect delivery.</p>
+</article>
+</div>
+
+<div class="callout robotics" role="note"><div class="callout-icon">RC</div><div><div class="callout-title">Why robots use UDP for motor commands</div><p>For motor commands, a dropped packet is far better than a delayed one. If your laptop sends <code>left: 100, right: 80</code> and the packet is lost, the robot keeps doing what it was last told for one extra control cycle, roughly 30 ms. That is acceptable. If TCP waits for a retransmit, the robot can freeze for hundreds of milliseconds while the network sorts itself out. At 1.5 m/s, a 100 ms freeze is 15 cm of motion with no correction.</p></div></div>
+
+<h3>What Is A Port?</h3>
+<p>An IP address identifies a device on the network. A port identifies a specific program running on that device. Think of the IP address as the building address and the port as the apartment number.</p>
+<p>Your Arduino listens for motor commands on one port and sends telemetry to another. Your Python script sends to the Arduino command port and listens on the telemetry port.</p>
+<div class="table-wrap"><table class="data-table pd-port-table"><thead><tr><th>Role</th><th>Address / Port</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Arduino command listener</td><td><code>5001</code></td><td>The Arduino waits here for packets like <code>MOTOR,150,150</code>.</td></tr>
+<tr><td>Arduino telemetry sender</td><td><code>5002</code></td><td>The Arduino sends encoder packets back toward the laptop.</td></tr>
+<tr><td>Python command sender</td><td><code>ARDUINO_IP:5001</code></td><td>The laptop sends each motor command to the Arduino's IP address.</td></tr>
+<tr><td>Python telemetry listener</td><td><code>0.0.0.0:5002</code></td><td>The laptop accepts telemetry packets on any local network interface.</td></tr>
+</tbody></table></div>
+
+<div class="callout info" role="note"><div class="callout-icon">IP</div><div><div class="callout-title">The numbers are arbitrary, but the match is not</div><p>Ports <code>5001</code> and <code>5002</code> are just convenient choices. What matters is that the Arduino sketch and Python script agree on the same values.</p></div></div>
+
+<h3>What You Will Build</h3>
+<div class="diagram pd-overview-diagram" aria-label="Project D wireless robot control overview">
+<div class="flow-row">
+<div class="flow-node">Laptop Python<br /><span class="mini muted">keyboard + UDP sockets</span></div><div class="arrow">&rarr;</div>
+<div class="flow-node">WiFi Router<br /><span class="mini muted">local network</span></div><div class="arrow">&rarr;</div>
+<div class="flow-node">Arduino UNO R4 WiFi<br /><span class="mini muted">motors + encoders</span></div>
+</div>
+<div class="pd-return-path">Encoder telemetry travels back from Arduino to Python on port <code>5002</code>.</div>
+</div>
+
+<h3>Prerequisites</h3>
+<div class="steps">
+<div class="step"><div>Project C is complete and working: motors move, encoders count, and direction detection works.</div></div>
+<div class="step"><div>The robot is physically assembled with the custom shield, motors, encoders, wheels, and battery connected.</div></div>
+<div class="step"><div>Your laptop and Arduino are on the same WiFi network.</div></div>
+<div class="step"><div>Arduino IDE is installed with the UNO R4 board package.</div></div>
+</div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-udp">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.10 Troubleshooting</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-wifi" data-lesson-link="projD-wifi"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.1 UNO R4 WiFi &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-wifi" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.1 How WiFi Works on the UNO R4</div>
+<h1>PD.1 How WiFi Works on the UNO R4</h1>
+<div class="lesson-meta"><span>Arduino</span><span>WiFi setup</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">The Arduino UNO R4 WiFi has a separate WiFi module, the ESP-S3 chip, that handles wireless communication. Your sketch talks to that module through the <code>WiFiS3</code> and <code>WiFiUDP</code> libraries.</p>
+<p>The Arduino does not automatically know where your laptop is. It needs a WiFi network name, a WiFi password, and your laptop's IP address so it knows where to send telemetry.</p>
+
+<h3>Install the WiFiS3 Library</h3>
+<div class="steps">
+<div class="step"><div>Open Arduino IDE.</div></div>
+<div class="step"><div>Open <strong>Tools</strong>, then <strong>Manage Libraries</strong>.</div></div>
+<div class="step"><div>Search for <code>WiFiS3</code>.</div></div>
+<div class="step"><div>Install <strong>WiFiS3 by Arduino</strong>. This is the correct library for the UNO R4 WiFi module.</div></div>
+</div>
+
+<h3>Finding the Arduino IP Address</h3>
+<p>When the Arduino connects to your WiFi network, the router assigns it an IP address automatically using DHCP. The Project D sketch prints that address to the Serial Monitor when it starts.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The Arduino IP can change</div><p>The Arduino may get a new IP address each time it reconnects to WiFi unless your router has a reserved address for it. If the Python script suddenly cannot reach the robot, open Serial Monitor and check that <code>ARDUINO_IP</code> in Python still matches what the Arduino printed.</p></div></div>
+
+<h3>Finding Your Laptop IP Address</h3>
+<p>The Arduino also needs your laptop's IP address for the return path. That value goes into <code>LAPTOP_IP</code> in the Arduino sketch.</p>
+<div class="grid-3">
+<div class="card"><h4>Windows</h4><p>Open Command Prompt and run <code>ipconfig</code>. Find <strong>IPv4 Address</strong> under your WiFi adapter. It usually looks like <code>192.168.x.x</code>.</p></div>
+<div class="card"><h4>macOS</h4><p>Open Terminal and run <code>ipconfig getifaddr en0</code> for WiFi. The command prints your laptop's local IP address.</p></div>
+<div class="card"><h4>Linux</h4><p>Open Terminal and run <code>ip addr show</code>. Find the <code>inet</code> address under your WiFi interface.</p></div>
+</div>
+
+<h3>Same Network Check</h3>
+<p>Both addresses should start with the same network prefix. If the Arduino prints <code>192.168.1.42</code>, your laptop should usually be something like <code>192.168.1.15</code>. If one device is on <code>192.168.1.x</code> and the other is on <code>10.0.0.x</code>, they may not be reachable from each other.</p>
+<div class="pd-ip-check">
+<div><strong>Arduino</strong><code>192.168.1.42</code></div>
+<div><strong>Laptop</strong><code>192.168.1.15</code></div>
+<div><strong>Result</strong><span>Same prefix, likely reachable</span></div>
+</div>
+
+<div class="callout tip" role="note"><div class="callout-icon">OK</div><div><div class="callout-title">Use a normal local WiFi network</div><p>School, guest, or public networks sometimes block device-to-device traffic. If UDP packets do not arrive even though both devices are connected, test with a phone hotspot or a home router.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-wifi">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-udp" data-lesson-link="projD-udp"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.0 UDP</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-arduino" data-lesson-link="projD-arduino"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.2 Arduino Sketch &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-arduino" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.2 The Arduino Sketch: Connect, Listen, Drive</div>
+<h1>PD.2 The Arduino Sketch: Connect, Listen, Drive</h1>
+<div class="lesson-meta"><span>Arduino</span><span>UDP firmware</span><span>28 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">This sketch maintains a WiFi connection, listens for UDP motor command packets from the laptop, drives the motors through the custom Project C shield, and sends encoder telemetry back every 50 ms.</p>
+<p>Upload this after you have confirmed Project C motor and encoder wiring. Leave the robot wheels lifted off the table for the first test.</p>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiS3.h&gt;
+#include &lt;WiFiUDP.h&gt;
+
+// CONFIGURATION - fill in your own values.
+const char* WIFI_SSID     = "YOUR_NETWORK_NAME";
+const char* WIFI_PASSWORD = "YOUR_NETWORK_PASSWORD";
+const char* LAPTOP_IP     = "192.168.x.x";   // your laptop's IP
+const int   CMD_PORT      = 5001;            // Arduino listens here
+const int   TELEM_PORT    = 5002;            // Arduino sends here
+
+// Motor pins - matches the custom shield from Project C.
+#define LEFT_IN1_PIN    4
+#define LEFT_IN2_PIN    5
+#define LEFT_EN_PIN     6
+#define RIGHT_IN1_PIN   12
+#define RIGHT_IN2_PIN   13
+#define RIGHT_EN_PIN    11
+
+// Encoder pins.
+#define ENC_LEFT_A      2
+#define ENC_LEFT_B      A0
+#define ENC_RIGHT_A     3
+#define ENC_RIGHT_B     8
+
+// Encoder counters.
+volatile long ticksLeft  = 0;
+volatile long ticksRight = 0;
+
+void leftEncoderISR() {
+  if (digitalRead(ENC_LEFT_B) == HIGH) ticksLeft++;
+  else ticksLeft--;
+}
+
+void rightEncoderISR() {
+  if (digitalRead(ENC_RIGHT_B) == HIGH) ticksRight++;
+  else ticksRight--;
+}
+
+// WiFi and UDP objects.
+WiFiUDP udp;
+char packetBuffer[64];
+
+// Safety timeout - stop motors if no command received for this long.
+unsigned long lastCmdTime = 0;
+const unsigned long CMD_TIMEOUT_MS = 500;
+
+// Telemetry timer.
+unsigned long lastTelemTime = 0;
+const unsigned long TELEM_INTERVAL_MS = 50;
+
+void setMotors(int leftSpeed, int rightSpeed) {
+  leftSpeed  = constrain(leftSpeed, -255, 255);
+  rightSpeed = constrain(rightSpeed, -255, 255);
+
+  digitalWrite(LEFT_IN1_PIN, leftSpeed &gt;= 0 ? HIGH : LOW);
+  digitalWrite(LEFT_IN2_PIN, leftSpeed &gt;= 0 ? LOW : HIGH);
+  analogWrite(LEFT_EN_PIN, abs(leftSpeed));
+
+  digitalWrite(RIGHT_IN1_PIN, rightSpeed &gt;= 0 ? HIGH : LOW);
+  digitalWrite(RIGHT_IN2_PIN, rightSpeed &gt;= 0 ? LOW : HIGH);
+  analogWrite(RIGHT_EN_PIN, abs(rightSpeed));
+}
+
+void stopMotors() {
+  analogWrite(LEFT_EN_PIN, 0);
+  analogWrite(RIGHT_EN_PIN, 0);
+  digitalWrite(LEFT_IN1_PIN, LOW);
+  digitalWrite(LEFT_IN2_PIN, LOW);
+  digitalWrite(RIGHT_IN1_PIN, LOW);
+  digitalWrite(RIGHT_IN2_PIN, LOW);
+}
+
+void parseCommand(char* packet) {
+  // Expected format: "MOTOR,leftSpeed,rightSpeed"
+  // Example:         "MOTOR,150,-150"
+  // Stop command:    "STOP"
+
+  if (strncmp(packet, "STOP", 4) == 0) {
+    stopMotors();
+    return;
+  }
+
+  if (strncmp(packet, "MOTOR,", 6) == 0) {
+    int leftSpeed = 0;
+    int rightSpeed = 0;
+    sscanf(packet, "MOTOR,%d,%d", &amp;leftSpeed, &amp;rightSpeed);
+    setMotors(leftSpeed, rightSpeed);
+    lastCmdTime = millis();
+  }
+}
+
+void sendTelemetry() {
+  char buf[64];
+
+  noInterrupts();
+  long l = ticksLeft;
+  long r = ticksRight;
+  interrupts();
+
+  // Format: "ENC,leftTicks,rightTicks"
+  snprintf(buf, sizeof(buf), "ENC,%ld,%ld", l, r);
+
+  udp.beginPacket(LAPTOP_IP, TELEM_PORT);
+  udp.write((uint8_t*)buf, strlen(buf));
+  udp.endPacket();
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  pinMode(LEFT_IN1_PIN, OUTPUT);
+  pinMode(LEFT_IN2_PIN, OUTPUT);
+  pinMode(LEFT_EN_PIN, OUTPUT);
+  pinMode(RIGHT_IN1_PIN, OUTPUT);
+  pinMode(RIGHT_IN2_PIN, OUTPUT);
+  pinMode(RIGHT_EN_PIN, OUTPUT);
+  stopMotors();
+
+  pinMode(ENC_LEFT_A, INPUT_PULLUP);
+  pinMode(ENC_LEFT_B, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_A, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_B, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
+
+  Serial.print("Connecting to WiFi: ");
+  Serial.println(WIFI_SSID);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.println("WiFi connected.");
+  Serial.print("Arduino IP address: ");
+  Serial.println(WiFi.localIP());  // paste this into your Python script
+
+  udp.begin(CMD_PORT);
+  Serial.print("Listening for commands on port ");
+  Serial.println(CMD_PORT);
+  Serial.println("Ready.");
+}
+
+void loop() {
+  int packetSize = udp.parsePacket();
+  if (packetSize &gt; 0) {
+    int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
+    packetBuffer[len] = '\0';
+    parseCommand(packetBuffer);
+  }
+
+  if (millis() - lastCmdTime &gt; CMD_TIMEOUT_MS) {
+    stopMotors();
+  }
+
+  if (millis() - lastTelemTime &gt;= TELEM_INTERVAL_MS) {
+    sendTelemetry();
+    lastTelemTime = millis();
+  }
+}</code></pre></figure>
+
+<h3>Upload Steps</h3>
+<div class="steps">
+<div class="step"><div>Fill in <code>WIFI_SSID</code> and <code>WIFI_PASSWORD</code> with your network credentials.</div></div>
+<div class="step"><div>Fill in <code>LAPTOP_IP</code> with your laptop IP address from PD.1.</div></div>
+<div class="step"><div>Upload the sketch to the UNO R4 WiFi.</div></div>
+<div class="step"><div>Open Serial Monitor at <code>115200</code> baud.</div></div>
+<div class="step"><div>Wait for <code>Arduino IP address: 192.168.x.x</code> to print.</div></div>
+<div class="step"><div>Copy that Arduino IP address. You need it in the Python script in PD.3.</div></div>
+</div>
+
+<h3>Anatomy Table</h3>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>WiFi.begin(WIFI_SSID, WIFI_PASSWORD)</code></summary><div><p>Starts the WiFi connection process. The loop below it polls <code>WiFi.status()</code> every 500 ms until the connection succeeds.</p></div></details>
+<details class="solution"><summary><code>WiFi.localIP()</code></summary><div><p>Returns the IP address assigned by the router. Print this value to Serial Monitor and copy it into <code>ARDUINO_IP</code> in Python.</p></div></details>
+<details class="solution"><summary><code>udp.begin(CMD_PORT)</code></summary><div><p>Opens a UDP socket and tells the Arduino to listen for packets on port <code>5001</code>.</p></div></details>
+<details class="solution"><summary><code>udp.parsePacket()</code></summary><div><p>Checks whether a new packet arrived. It returns the packet size if one is waiting, or <code>0</code> if nothing has arrived. This is non-blocking, so the main loop keeps running.</p></div></details>
+<details class="solution"><summary><code>strncmp(packet, "MOTOR,", 6)</code></summary><div><p>Compares the first six characters of the received string to <code>MOTOR,</code>. This identifies motor packets quickly before parsing the numbers.</p></div></details>
+<details class="solution"><summary><code>sscanf(packet, "MOTOR,%d,%d", ...)</code></summary><div><p>Parses two integers from the command string. If the packet is <code>MOTOR,150,-100</code>, the left speed becomes <code>150</code> and the right speed becomes <code>-100</code>.</p></div></details>
+<details class="solution"><summary><code>CMD_TIMEOUT_MS</code></summary><div><p>Stops the motors if no command arrives for 500 ms. This prevents the robot from driving away if the laptop script crashes or WiFi drops mid-run.</p></div></details>
+<details class="solution"><summary><code>constrain(leftSpeed, -255, 255)</code></summary><div><p>Clamps received values into the valid PWM range. This protects the robot from malformed packets containing out-of-range numbers.</p></div></details>
+</div>
+
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">First test with wheels lifted</div><p>Wireless command bugs can make a robot move unexpectedly. Keep the wheels off the floor until PD.3 proves that <code>STOP</code> and the safety timeout both work.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-arduino">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-wifi" data-lesson-link="projD-wifi"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.1 UNO R4 WiFi</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-python" data-lesson-link="projD-python"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.3 Python Script &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-python" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.3 The Python Script: Send Commands, Read Telemetry</div>
+<h1>PD.3 The Python Script: Send Commands, Read Telemetry</h1>
+<div class="lesson-meta"><span>Python</span><span>UDP sockets</span><span>24 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">The Arduino is now listening for UDP packets. This Python script sends a short forward command sequence, reads encoder telemetry, then reverses and stops.</p>
+<p>Create a new file called <code>robot_control.py</code> in your <code>my-detector</code> folder or the same folder where you keep the Project 1 files.</p>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_control.py"><figcaption><span>robot_control.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
+import time
+
+# CONFIGURATION - fill in your own values.
+ARDUINO_IP = "192.168.x.x"  # IP printed by Arduino on Serial Monitor
+CMD_PORT = 5001            # must match Arduino sketch
+TELEM_PORT = 5002          # must match Arduino sketch
+
+# Create UDP socket for sending commands.
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Create UDP socket for receiving telemetry.
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind(("", TELEM_PORT))
+telem_sock.settimeout(0.1)
+
+def send_command(left, right):
+    msg = f"MOTOR,{int(left)},{int(right)}"
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+def send_stop():
+    cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
+
+def read_telemetry():
+    try:
+        data, _ = telem_sock.recvfrom(128)
+        parts = data.decode().strip().split(",")
+        if parts[0] == "ENC" and len(parts) == 3:
+            return int(parts[1]), int(parts[2])
+    except socket.timeout:
+        pass
+    return None, None
+
+print(f"Connecting to Arduino at {ARDUINO_IP}")
+print("Sending test sequence: forward 2 seconds, stop, backward 2 seconds.")
+
+try:
+    print("Forward...")
+    start = time.time()
+    while time.time() - start &lt; 2.0:
+        send_command(150, 150)
+        left_ticks, right_ticks = read_telemetry()
+        if left_ticks is not None:
+            print(f"  Ticks - L: {left_ticks:+6d}  R: {right_ticks:+6d}")
+        time.sleep(0.05)
+
+    send_stop()
+    print("Stopped.")
+    time.sleep(0.5)
+
+    print("Backward...")
+    start = time.time()
+    while time.time() - start &lt; 2.0:
+        send_command(-150, -150)
+        left_ticks, right_ticks = read_telemetry()
+        if left_ticks is not None:
+            print(f"  Ticks - L: {left_ticks:+6d}  R: {right_ticks:+6d}")
+        time.sleep(0.05)
+
+    send_stop()
+    print("Done.")
+
+except KeyboardInterrupt:
+    send_stop()
+    print("Interrupted - motors stopped.")
+
+finally:
+    cmd_sock.close()
+    telem_sock.close()</code></pre></figure>
+
+<h3>Run It</h3>
+<div class="code-card" data-runnable="false"><pre><code class="language-bash">python robot_control.py</code></pre></div>
+
+<h3>What To Expect</h3>
+<p>The robot drives forward for two seconds while encoder tick counts print in the terminal. Then it stops, drives backward for two seconds, and stops again. If you press <code>Ctrl+C</code>, the script sends <code>STOP</code> before exiting.</p>
+
+<h3>Anatomy Table</h3>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>socket.AF_INET, socket.SOCK_DGRAM</code></summary><div><p><code>AF_INET</code> means IPv4 networking. <code>SOCK_DGRAM</code> means UDP. These are the same socket constants used in Project 1's <code>Commander</code> and <code>Telemetry</code> classes.</p></div></details>
+<details class="solution"><summary><code>cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))</code></summary><div><p>Encodes the Python string into bytes and sends it as a UDP packet to the Arduino command port. UDP is connectionless, so there is no prior connection step.</p></div></details>
+<details class="solution"><summary><code>telem_sock.bind(("", TELEM_PORT))</code></summary><div><p>Tells the operating system that this socket wants packets arriving on <code>TELEM_PORT</code>. The empty string means accept packets on any local network interface.</p></div></details>
+<details class="solution"><summary><code>telem_sock.settimeout(0.1)</code></summary><div><p>Makes <code>recvfrom</code> return after 100 ms if no packet arrived. Without a timeout, the script could freeze while waiting for telemetry.</p></div></details>
+</div>
+
+<div class="callout tip" role="note"><div class="callout-icon">T</div><div><div class="callout-title">Telemetry proves the full round trip</div><p>If the robot moves but tick values never print, laptop-to-Arduino commands work, but Arduino-to-laptop telemetry does not. Check <code>LAPTOP_IP</code>, <code>TELEM_PORT</code>, and firewall settings.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-python">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-arduino" data-lesson-link="projD-arduino"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.2 Arduino Sketch</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-keyboard" data-lesson-link="projD-keyboard"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.4 Keyboard Control &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-keyboard" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.4 Keyboard Control: Drive with WASD</div>
+<h1>PD.4 Keyboard Control: Drive with WASD</h1>
+<div class="lesson-meta"><span>Python</span><span>Interactive control</span><span>26 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">The PD.3 script runs a fixed sequence. Now replace that sequence with live keyboard control so you can drive the robot interactively from your laptop.</p>
+<p>This script sends a command about 33 times per second. The Arduino safety timeout will stop the robot if these commands stop arriving.</p>
+
+<h3>Install Keyboard Input Support</h3>
+<div class="code-card" data-runnable="false"><pre><code class="language-bash">pip install pynput</code></pre></div>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>robot_keyboard.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
+import time
+
+from pynput import keyboard
+
+ARDUINO_IP = "192.168.x.x"
+CMD_PORT = 5001
+TELEM_PORT = 5002
+
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind(("", TELEM_PORT))
+telem_sock.settimeout(0.05)
+
+keys_pressed = set()
+
+def send_command(left, right):
+    msg = f"MOTOR,{int(left)},{int(right)}"
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+def send_stop():
+    cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
+
+def on_press(key):
+    try:
+        keys_pressed.add(key.char)
+    except AttributeError:
+        pass
+
+def on_release(key):
+    try:
+        keys_pressed.discard(key.char)
+    except AttributeError:
+        pass
+    if key == keyboard.Key.esc:
+        return False
+
+listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+listener.start()
+
+print("Robot keyboard control")
+print("  W = forward    S = backward")
+print("  A = turn left  D = turn right")
+print("  ESC = quit")
+print()
+
+SPEED = 180
+TURN = 150
+
+try:
+    while listener.running:
+        left = 0
+        right = 0
+
+        if "w" in keys_pressed:
+            left, right = SPEED, SPEED
+        elif "s" in keys_pressed:
+            left, right = -SPEED, -SPEED
+
+        if "a" in keys_pressed:
+            left -= TURN
+            right += TURN
+        if "d" in keys_pressed:
+            left += TURN
+            right -= TURN
+
+        send_command(left, right)
+
+        try:
+            data, _ = telem_sock.recvfrom(128)
+            parts = data.decode().strip().split(",")
+            if parts[0] == "ENC" and len(parts) == 3:
+                l, r = int(parts[1]), int(parts[2])
+                print(
+                    f"Keys: {keys_pressed} | L: {left:+4d} R: {right:+4d} "
+                    f"| Ticks L: {l:+6d} R: {r:+6d}",
+                    end="\r",
+                )
+        except socket.timeout:
+            pass
+
+        time.sleep(0.03)
+
+except KeyboardInterrupt:
+    pass
+finally:
+    send_stop()
+    cmd_sock.close()
+    telem_sock.close()
+    print("\nStopped.")</code></pre></figure>
+
+<h3>Run It</h3>
+<div class="code-card" data-runnable="false"><pre><code class="language-bash">python robot_keyboard.py</code></pre></div>
+
+<h3>Controls</h3>
+<div class="pd-controls-grid">
+<div><kbd>W</kbd><span>forward</span></div>
+<div><kbd>S</kbd><span>backward</span></div>
+<div><kbd>A</kbd><span>turn left</span></div>
+<div><kbd>D</kbd><span>turn right</span></div>
+<div><kbd>Esc</kbd><span>quit and stop</span></div>
+</div>
+
+<div class="callout tip" role="note"><div class="callout-icon">W</div><div><div class="callout-title">Multiple keys combine</div><p>You can hold multiple keys at once. Holding <code>W</code> and <code>D</code> drives forward while turning right because the forward speed and steering correction are added together. This is the same idea used later when the full tracker blends forward motion with steering corrections.</p></div></div>
+
+<h3>How The Steering Math Works</h3>
+<p>The code starts each loop with <code>left = 0</code> and <code>right = 0</code>. Forward and backward keys set the base speed. Left and right keys then add a turn correction by increasing one side and decreasing the other.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Key state</th><th>Left command</th><th>Right command</th><th>Robot behavior</th></tr></thead><tbody>
+<tr><td><code>W</code></td><td><code>+180</code></td><td><code>+180</code></td><td>Drive forward.</td></tr>
+<tr><td><code>S</code></td><td><code>-180</code></td><td><code>-180</code></td><td>Drive backward.</td></tr>
+<tr><td><code>A</code></td><td><code>-150</code></td><td><code>+150</code></td><td>Turn left in place.</td></tr>
+<tr><td><code>D</code></td><td><code>+150</code></td><td><code>-150</code></td><td>Turn right in place.</td></tr>
+<tr><td><code>W + D</code></td><td><code>+330</code></td><td><code>+30</code></td><td>Forward arc to the right. The Arduino clamps values to the valid PWM range.</td></tr>
+</tbody></table></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-keyboard">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-python" data-lesson-link="projD-python"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.3 Python Script</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-telemetry" data-lesson-link="projD-telemetry"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.5 Telemetry &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-telemetry" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.5 Receiving Encoder Telemetry in Python</div>
+<h1>PD.5 Receiving Encoder Telemetry in Python</h1>
+<div class="lesson-meta"><span>Telemetry</span><span>CSV logging</span><span>22 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">The telemetry printed by <code>robot_keyboard.py</code> is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will log that data to a CSV file so you can inspect it after the robot moves.</p>
+<p>Run <code>robot_keyboard.py</code> and drive the robot forward in a straight line for about 50 cm. Both left and right tick counts should increase at roughly the same rate. If one grows much faster, your motors have different speeds at the same PWM value. That is normal hardware variation.</p>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="log_telemetry.py"><figcaption><span>log_telemetry.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
+import csv
+import time
+
+TELEM_PORT = 5002
+
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind(("", TELEM_PORT))
+telem_sock.settimeout(1.0)
+
+print("Logging telemetry. Press Ctrl+C to stop.")
+print("Make sure robot_keyboard.py is running in another terminal.")
+
+rows = []
+start_time = time.time()
+
+try:
+    while True:
+        try:
+            data, _ = telem_sock.recvfrom(128)
+            parts = data.decode().strip().split(",")
+            if parts[0] == "ENC" and len(parts) == 3:
+                t = time.time() - start_time
+                l, r = int(parts[1]), int(parts[2])
+                rows.append([f"{t:.3f}", l, r])
+                print(f"t={t:.2f}s  L={l:+6d}  R={r:+6d}", end="\r")
+        except socket.timeout:
+            pass
+except KeyboardInterrupt:
+    pass
+
+with open("telemetry_log.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["time_s", "left_ticks", "right_ticks"])
+    writer.writerows(rows)
+
+print(f"\nSaved {len(rows)} rows to telemetry_log.csv")
+telem_sock.close()</code></pre></figure>
+
+<h3>Logging Procedure</h3>
+<div class="steps">
+<div class="step"><div>Open one terminal and run <code>python robot_keyboard.py</code>.</div></div>
+<div class="step"><div>Open a second terminal in the same folder and run <code>python log_telemetry.py</code>.</div></div>
+<div class="step"><div>Drive the robot around for about 30 seconds.</div></div>
+<div class="step"><div>Stop both scripts with <code>Ctrl+C</code> or <code>Esc</code>.</div></div>
+<div class="step"><div>Open <code>telemetry_log.csv</code> in Excel, Google Sheets, or another plotting tool.</div></div>
+<div class="step"><div>Plot <code>left_ticks</code> and <code>right_ticks</code> against <code>time_s</code>.</div></div>
+</div>
+
+<h3>How To Read The Plot</h3>
+<div class="grid-3">
+<div class="card"><h4>Straight driving</h4><p>The left and right tick lines should climb at similar rates. Small differences are normal.</p></div>
+<div class="card"><h4>Turning</h4><p>The two lines diverge. One side may increase while the other decreases during a turn in place.</p></div>
+<div class="card"><h4>Stopped robot</h4><p>The tick lines should flatten. If they keep changing, the wheels are still moving or the encoder signal is noisy.</p></div>
+</div>
+
+<div class="callout info" role="note"><div class="callout-icon">CSV</div><div><div class="callout-title">Why logging matters</div><p>This is exactly what a robotics engineer does when debugging motor control. Logging raw sensor data to CSV and plotting it reveals behavior that is invisible in terminal print output. You will use this technique again in Project 1 when tuning PID gains.</p></div></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-telemetry">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-keyboard" data-lesson-link="projD-keyboard"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.4 Keyboard Control</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-loop" data-lesson-link="projD-loop"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.6 Full Loop &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-loop" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.6 Understanding the Full Communication Loop</div>
+<h1>PD.6 Understanding the Full Communication Loop</h1>
+<div class="lesson-meta"><span>Architecture</span><span>Timing</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">The project now has a complete two-way communication loop. Python sends motor commands to the Arduino. The Arduino drives the motors and sends encoder telemetry back. These two paths are independent.</p>
+
+<div class="pd-loop-frames">
+<article class="pd-loop-card">
+<div class="pd-frame-label">Frame 1: Command path</div>
+<div class="pd-loop-grid">
+<div class="pd-loop-node"><strong>Python script</strong><span>creates <code>MOTOR,150,150</code></span><span>encodes to bytes</span><span><code>sendto(ARDUINO_IP, 5001)</code></span></div>
+<div class="pd-packet-arrow"><span>UDP packet over WiFi</span></div>
+<div class="pd-loop-node"><strong>Arduino UNO R4</strong><span><code>udp.parsePacket()</code> detects arrival</span><span><code>udp.read()</code> copies bytes</span><span><code>parseCommand()</code> extracts speeds</span><span><code>setMotors(150, 150)</code></span></div>
+</div>
+</article>
+<article class="pd-loop-card">
+<div class="pd-frame-label">Frame 2: Telemetry path</div>
+<div class="pd-loop-grid">
+<div class="pd-loop-node"><strong>Arduino UNO R4</strong><span>encoder ISRs count ticks</span><span>every 50 ms: <code>ENC,847,851</code></span><span><code>udp.beginPacket(LAPTOP_IP, 5002)</code></span><span><code>udp.endPacket()</code></span></div>
+<div class="pd-packet-arrow"><span>UDP packet over WiFi</span></div>
+<div class="pd-loop-node"><strong>Python script</strong><span><code>recvfrom(128)</code> receives bytes</span><span><code>decode()</code> converts to string</span><span><code>split(",")</code> extracts values</span><span>prints or logs the ticks</span></div>
+</div>
+</article>
+</div>
+
+<div class="callout info" role="note"><div class="callout-icon">Hz</div><div><div class="callout-title">The timing is deliberately decoupled</div><p>The command rate is approximately 33 Hz, one command every 30 ms from the Python loop. The telemetry rate is 20 Hz, one packet every 50 ms from the Arduino loop. The command sender does not wait for telemetry, and the telemetry sender does not wait for commands. This decoupled timing is intentional and matches the design used in Project 1.</p></div></div>
+
+<h3>Why This Architecture Works</h3>
+<div class="grid-3">
+<div class="card"><h4>Python is the brain</h4><p>The laptop handles keyboard input now and will later handle vision, object detection, PID control, and state logic.</p></div>
+<div class="card"><h4>Arduino is the body</h4><p>The microcontroller owns the hardware pins, motor driver, encoder interrupts, and safety timeout.</p></div>
+<div class="card"><h4>UDP is the link</h4><p>Short text packets carry commands one way and telemetry the other way without blocking the control loop.</p></div>
+</div>
+
+<h3>Packet Formats</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Packet</th><th>Direction</th><th>Example</th><th>Parser</th></tr></thead><tbody>
+<tr><td><code>MOTOR,left,right</code></td><td>Laptop to Arduino</td><td><code>MOTOR,180,120</code></td><td>Arduino <code>sscanf</code></td></tr>
+<tr><td><code>STOP</code></td><td>Laptop to Arduino</td><td><code>STOP</code></td><td>Arduino <code>strncmp</code></td></tr>
+<tr><td><code>ENC,leftTicks,rightTicks</code></td><td>Arduino to laptop</td><td><code>ENC,847,851</code></td><td>Python <code>split(",")</code></td></tr>
+</tbody></table></div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-loop">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-telemetry" data-lesson-link="projD-telemetry"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.5 Telemetry</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.7 Project 1 Bridge &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projD-project1" data-chapter="projD" data-chapter-title="* Project D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Project D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.7 Connecting the Dots to Project 1</div>
+<h1>PD.7 Connecting the Dots to Project 1</h1>
+<div class="lesson-meta"><span>Project 1 bridge</span><span>Review</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">Open <code>obj_track_adv.py</code> in VS Code and find the <code>Commander</code> and <code>Telemetry</code> classes. Project D was designed so those classes look familiar instead of mysterious.</p>
+
+<h3>The Commander Class</h3>
+<div class="pd-bridge-list">
+<div class="card"><h4><code>Commander.__init__</code></h4><p>Uses <code>socket.AF_INET</code> and <code>socket.SOCK_DGRAM</code>, identical to <code>cmd_sock</code> in PD.3. There is no <code>bind()</code> call because Commander only sends commands.</p></div>
+<div class="card"><h4><code>Commander.motors</code></h4><p>Builds a string like <code>MOTOR,left,right,light</code>. This is the same format as your Project D motor command, extended with one extra LED field.</p></div>
+<div class="card"><h4><code>Commander.stop</code></h4><p>Sends a stop packet, just like <code>send_stop()</code> in Project D. Project 1 extends it with LED state.</p></div>
+</div>
+
+<h3>The Telemetry Class</h3>
+<div class="pd-bridge-list">
+<div class="card"><h4><code>Telemetry.__init__</code></h4><p>Creates a UDP socket, calls <code>bind(("", port))</code>, and sets a timeout. That is the same receive setup used in <code>robot_control.py</code> and <code>robot_keyboard.py</code>.</p></div>
+<div class="card"><h4>Background thread</h4><p>Project 1 uses <code>threading.Thread(target=self._run)</code> so telemetry keeps arriving without blocking the main detection loop. This is the same reason Project B used a background stream thread.</p></div>
+<div class="card"><h4><code>Telemetry._run</code></h4><p>Uses <code>data.decode().strip().split(",")</code>, the same parsing pattern from PD.3. Project 1 validates more fields because it sends more information.</p></div>
+</div>
+
+<h3>What Changes In Project 1?</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Part</th><th>Project D</th><th>Project 1</th></tr></thead><tbody>
+<tr><td>Motor command</td><td><code>MOTOR,left,right</code></td><td><code>MOTOR,left,right,light</code></td></tr>
+<tr><td>Stop command</td><td><code>STOP</code></td><td><code>STOP,OFF</code></td></tr>
+<tr><td>Telemetry packet</td><td><code>ENC,leftTicks,rightTicks</code></td><td><code>ENC,leftTicks,rightTicks,leftCmd,rightCmd</code></td></tr>
+<tr><td>Command source</td><td>Keyboard keys</td><td>YOLO detection plus PID controllers</td></tr>
+<tr><td>Architecture</td><td>Python sends, Arduino drives, Arduino reports</td><td>The same architecture with vision and state logic added</td></tr>
+</tbody></table></div>
+
+<div class="callout robotics" role="note"><div class="callout-icon">RC</div><div><div class="callout-title">Closing the chapter</div><p>You have built a wirelessly controlled robot with real-time sensor feedback. The laptop is the brain, the Arduino is the body, and UDP carries signals between them in both directions at robotics control-loop speed. Project 1 adds camera input and PID logic on top of the same communication foundation.</p></div></div>
+
+<h3>Final Checklist</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-arduino-wifi" />Arduino connects to WiFi and prints its IP address in Serial Monitor.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-control-script" /><code>robot_control.py</code> runs and the robot drives forward, stops, then drives backward.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-encoder-terminal" />Encoder ticks print in the terminal and increase or decrease correctly.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-keyboard-wasd" /><code>robot_keyboard.py</code> allows live WASD driving.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-csv-log" /><code>telemetry_log.csv</code> was generated and opened successfully.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-bind-sendto" />You can explain the difference between <code>bind()</code> and <code>sendto()</code>.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-timeout" />You can explain what <code>CMD_TIMEOUT_MS</code> does and why it matters.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-project1-classes" />You have read <code>Commander</code> and <code>Telemetry</code> in <code>obj_track_adv.py</code> and recognized the Project D patterns.</label></div>
+</div>
+<p>When all boxes are checked, you are ready for Project 1.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-project1">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-loop" data-lesson-link="projD-loop"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.6 Full Loop</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 1 &rarr;</span></a>
 </nav>
 </article>
@@ -4335,11 +5099,11 @@ void turnDegrees(float degrees, int speed) {
 <div class="step"><div>How YOLO detects objects in real time and what the output looks like.</div></div>
 <div class="step"><div>How to structure a real robotics codebase across multiple classes.</div></div>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Hardware note</div><p>Project C introduced encoder motors and precise movement. Project 1 focuses on the software control loop, so you can still follow P1.0 through P1.12 in simulation mode if no hardware is connected.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Hardware note</div><p>Project C introduced encoder motors and precise movement. Project D introduced the UDP command and telemetry loop. Project 1 combines that hardware foundation with camera input and PID control, and you can still follow P1.0 through P1.12 in simulation mode if no hardware is connected.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.10 Troubleshooting</span></a>
+<a class="lesson-nav-btn" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.7 Project 1 Bridge</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.1 Setting Up VS Code &rarr;</span></a>
 </nav>
 </article>
@@ -5066,6 +5830,15 @@ LOST_TIMEOUT   = 1.0
                 </div>
                 <strong>Open Project C lessons &rarr;</strong>
               </a>
+              <a class="card" href="index.html?lesson=projD-udp" data-lesson-link="projD-udp" style="display:block;text-decoration:none;border-color:#0ea5e9;margin-bottom:1rem">
+                <div class="project-label">Project D &mdash; Wireless Robot Control</div>
+                <h3>Talk to Your Robot Over WiFi</h3>
+                <p class="muted">A detailed networking project covering UDP, UNO R4 WiFi setup, Arduino command firmware, Python sockets, WASD driving, encoder telemetry, CSV logging, and the exact Commander/Telemetry bridge to Project 1.</p>
+                <div class="chip-row" style="--chapter-color: #0ea5e9">
+                  <span class="chip">UNO R4 WiFi</span><span class="chip">UDP</span><span class="chip">Python Sockets</span><span class="chip">WASD Control</span><span class="chip">Telemetry</span>
+                </div>
+                <strong>Open Project D lessons &rarr;</strong>
+              </a>
               <a class="card" href="project.html" style="display:block;text-decoration:none;border-color:var(--cyan)">
                 <div class="project-label">Project 01 — Autonomous Robotics</div>
                 <h3>Ball-Following Robot with YOLO + PID Control</h3>
@@ -5088,15 +5861,17 @@ LOST_TIMEOUT   = 1.0
     const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
     const projectCLessons = [{"id":"projC-overview","label":"PC.0 What You Are Building","title":"PC.0 What You Are Building","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":true},{"id":"projC-hardware","label":"PC.1 Hardware","title":"PC.1 Understanding the Hardware","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-encoders","label":"PC.2 Encoder Motors","title":"PC.2 How Encoder Motors Work","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-wiring","label":"PC.3 Wiring","title":"PC.3 Wiring the System","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-first-sketch","label":"PC.4 Blink and Serial","title":"PC.4 Your First Arduino Sketch: Blink and Serial","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-reading-pulses","label":"PC.5 Encoder Pulses","title":"PC.5 Reading Encoder Pulses","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-distance","label":"PC.6 Ticks to Distance","title":"PC.6 Converting Ticks to Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-drive-distance","label":"PC.7 Drive Distance","title":"PC.7 Driving Forward a Precise Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-turning","label":"PC.8 Turn 90 Degrees","title":"PC.8 Turning Exactly 90 Degrees","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-path","label":"PC.9 Running a Path","title":"PC.9 Putting It Together: Running a Path","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-troubleshooting","label":"PC.10 Troubleshooting","title":"PC.10 Troubleshooting and Tuning","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false}];
+    const projectDLessons = [{"id":"projD-udp","label":"PD.0 What Is UDP","title":"PD.0 What Is UDP and Why Does a Robot Use It","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":true},{"id":"projD-wifi","label":"PD.1 UNO R4 WiFi","title":"PD.1 How WiFi Works on the UNO R4","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-arduino","label":"PD.2 Arduino Sketch","title":"PD.2 The Arduino Sketch: Connect, Listen, Drive","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-python","label":"PD.3 Python UDP Script","title":"PD.3 The Python Script: Send Commands, Read Telemetry","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-keyboard","label":"PD.4 Keyboard Control","title":"PD.4 Keyboard Control: Drive with WASD","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-telemetry","label":"PD.5 Encoder Telemetry","title":"PD.5 Receiving Encoder Telemetry in Python","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-loop","label":"PD.6 Full Communication Loop","title":"PD.6 Understanding the Full Communication Loop","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-project1","label":"PD.7 Connect to Project 1","title":"PD.7 Connecting the Dots to Project 1","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false}];
     const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...project1Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.findIndex((chapter) => chapter.key === "projects"),
       0,
       {"key":"projA","title":"★ Project A: Train Your First Detector","lessonIds":["projA-overview","projA-yolo26","projA-vscode","projA-roboflow-data","projA-labeling","projA-exporting","projA-training","projA-results","projA-local-inference","projA-model-output","projA-ready"],"firstLesson":"projA-overview"},
       {"key":"projB","title":"* Project B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
       {"key":"projC","title":"* Project C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
+      {"key":"projD","title":"* Project D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"}
     );
   </script>
