@@ -5415,6 +5415,93 @@ print("All dependencies present.")</code></pre></figure>
 <div class="lesson-body">
 <p class="lead">In Project C's <code>driveDistance()</code> function, the robot stopped when encoder ticks reached a target. That is closed-loop in the sense that it checks the measured result, but it only makes one decision: keep going or stop.</p>
 <p>A PID controller makes a continuous adjustment. Every few milliseconds it measures the current error, computes a correction, applies it, and measures again. It never stops adjusting until the error is zero.</p>
+<h3>Project C Code You Already Wrote</h3>
+<p>You have already written closed-loop control. In Project C, <code>driveDistance()</code> measured encoder ticks, compared them to a target, and changed motor behavior when the robot got close.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="driveDistance_project_c.ino"><figcaption><span>Project C driveDistance()</span><span class="local-run-badge">Reference</span></figcaption><pre><code class="language-cpp">void driveDistance(float targetCm, int speed) {
+  long targetTicks = abs(targetCm) / CM_PER_TICK;
+  resetEncoders();
+  setMotors(speed, speed);
+
+  while (ticksLeft &lt; targetTicks &amp;&amp; ticksRight &lt; targetTicks) {
+    long remaining = targetTicks - max(ticksLeft, ticksRight);
+    if (remaining &lt; 50) {
+      int slowSpeed = max(80, speed / 3);
+      setMotors(slowSpeed, slowSpeed);
+    }
+  }
+
+  stopMotors();
+}</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>Control idea</th></tr></thead><tbody>
+<tr><td><code>targetTicks</code></td><td>The desired result, converted from centimeters into encoder ticks.</td></tr>
+<tr><td><code>ticksLeft</code>, <code>ticksRight</code></td><td>The measured result from the hardware.</td></tr>
+<tr><td><code>remaining</code></td><td>The error: how far the robot still needs to travel.</td></tr>
+<tr><td><code>if (remaining &lt; 50)</code></td><td>A threshold decision: when the error is small, slow down.</td></tr>
+<tr><td><code>stopMotors()</code></td><td>The final action when the measured value reaches the target.</td></tr>
+</tbody></table></div>
+<div class="definition-card"><span class="def-term">Project C approach</span><p><code>if remaining &lt; 50 ticks: slow down</code><br /><code>if remaining == 0: stop</code></p></div>
+<div class="definition-card"><span class="def-term">Project 1 PID approach</span><p><code>correction = Kp * error + Ki * integral + Kd * derivative</code><br /><code>motor_output = base + correction</code></p></div>
+<p>The Project C version had two output levels: full speed or slow speed. The PID version produces a continuous output, so a large error creates a large correction and a small error creates a small correction.</p>
+<h3>The Project 1 PID Class</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="pid_class_full.py"><figcaption><span>Project 1 PID class</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class PID:
+    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.max_integral = max_integral
+        self.output_limits = output_limits
+        self._integral = 0.0
+        self._prev_error = 0.0
+        self._prev_time = None
+
+    def update(self, error):
+        now = time.time()
+        dt = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
+        self._prev_time = now
+
+        self._integral = np.clip(
+            self._integral + error * dt,
+            -self.max_integral,
+            self.max_integral,
+        )
+        derivative = (error - self._prev_error) / dt
+        self._prev_error = error
+
+        output = self.kp * error + self.ki * self._integral + self.kd * derivative
+        if self.output_limits:
+            output = np.clip(output, *self.output_limits)
+        return output
+
+    def reset(self):
+        self._integral = 0.0
+        self._prev_error = 0.0
+        self._prev_time = None</code></pre></figure>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>self.kp</code>, <code>self.ki</code>, <code>self.kd</code></summary><div><p>These are the three tuning knobs. Project C used one threshold, <code>50</code> ticks. Project 1 separates the response into current error, accumulated error, and rate of change.</p></div></details>
+<details class="solution"><summary><code>dt</code>: time since the previous update</summary><div><p>The integral and derivative terms only make sense when time is measured. The first call assumes <code>0.02</code> seconds, about 50 Hz. The <code>max(..., 1e-4)</code> guard prevents division by zero if two updates happen almost instantly.</p></div></details>
+<details class="solution"><summary><code>self._integral + error * dt</code></summary><div><p>This accumulates error over time. <code>np.clip()</code> prevents windup, the PID version of a robot continuing to push harder after it has been blocked for too long.</p></div></details>
+<details class="solution"><summary><code>derivative = (error - self._prev_error) / dt</code></summary><div><p>This measures whether the error is shrinking or growing. Project C could slow down near the target, but it could not tell whether the robot was already correcting quickly enough.</p></div></details>
+<details class="solution"><summary><code>output = kp * error + ki * integral + kd * derivative</code></summary><div><p>This is the PID equation translated into code. The result is one continuous correction value, not a binary full-speed-or-slow-speed decision.</p></div></details>
+<details class="solution"><summary><code>reset()</code></summary><div><p>Project C called <code>resetEncoders()</code> at the start of a movement. Project 1 calls <code>reset()</code> when tracking fully stops, so stale integral and derivative memory do not affect a new tracking session.</p></div></details>
+</div>
+<h3>Why There Are Two PIDs</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="pid_instances.py"><figcaption><span>Two independent controllers</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">self.pid_turn = PID(
+    BODY_TURN_KP,
+    BODY_TURN_KI,
+    BODY_TURN_KD,
+    output_limits=(-MAX_TURN, MAX_TURN),
+)
+self.pid_dist = PID(
+    DIST_KP,
+    DIST_KI,
+    DIST_KD,
+    max_integral=MAX_DIST_INTEGRAL,
+    output_limits=(-MAX_SPEED, MAX_SPEED),
+)</code></pre></figure>
+<p><code>pid_turn</code> controls steering. Its error is how far the ball is from the center of the frame, and its output is added to one motor while being subtracted from the other.</p>
+<p><code>pid_dist</code> controls distance. Its error is how far the bounding-box area is from <code>TARGET_AREA</code>, and its output becomes the forward or reverse base speed.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="pid_outputs_combined.py"><figcaption><span>Combining turn and distance outputs</span><span class="local-run-badge">Control logic</span></figcaption><pre><code class="language-python">tgt_left = base_speed + turn_cmd
+tgt_right = base_speed - turn_cmd</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Concept</th><th>Project C</th><th>Project 1 PID</th></tr></thead><tbody>
 <tr><td>What is measured</td><td>encoder ticks</td><td>bounding box area</td></tr>
 <tr><td>What is the target</td><td><code>targetTicks</code></td><td><code>TARGET_AREA</code></td></tr>
@@ -5447,6 +5534,78 @@ print("All dependencies present.")</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">The <code>MobileVideoStream</code> class is <code>detect_stream.py</code> from Project B rewritten as a class with a background thread. Open both files side by side before reading further.</p>
+<h3>Project B Code: Sequential Frame Reading</h3>
+<p>In Project B, the stream reader could wait for a frame because the script only needed to detect, draw, and display. Project 1 cannot wait like that because the robot must keep sending motor corrections.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="detect_stream_project_b.py"><figcaption><span>Project B detect_stream.py core loop</span><span class="local-run-badge">Reference</span></figcaption><pre><code class="language-python">def read_frame(stream_response):
+    buf = b""
+    for chunk in stream_response.iter_content(1024):
+        buf += chunk
+        start = buf.find(b"\xff\xd8")
+        end = buf.find(b"\xff\xd9")
+        if start != -1 and end != -1:
+            jpg = buf[start:end + 2]
+            buf = buf[end + 2:]
+            frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            if frame is not None:
+                return frame
+    return None
+
+while True:
+    frame = read_frame(stream)       # wait for a frame
+    results = model(frame, ...)      # then detect
+    annotated = results[0].plot()    # then draw
+    cv2.imshow("Detection", annotated)</code></pre></figure>
+<h3>Project 1 Code: Threaded Frame Reading</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="mobile_video_stream_full.py"><figcaption><span>Project 1 MobileVideoStream</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class MobileVideoStream:
+    def __init__(self, url):
+        self.url = url
+        self.frame = None
+        self.fid = 0
+        self.connected = False
+        self.running = True
+        self._lock = threading.Lock()
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                response = requests.get(self.url, stream=True, timeout=10)
+                self.connected = True
+                backoff = 1.0
+                buf = b""
+
+                for chunk in response.iter_content(1024):
+                    buf += chunk
+                    start = buf.find(b"\xff\xd8")
+                    end = buf.find(b"\xff\xd9")
+
+                    if start != -1 and end != -1:
+                        jpg = buf[start:end + 2]
+                        buf = buf[end + 2:]
+                        img = cv2.imdecode(
+                            np.frombuffer(jpg, np.uint8),
+                            cv2.IMREAD_COLOR,
+                        )
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid += 1
+
+                    if not self.running:
+                        break
+
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Concept</th><th>Project B <code>detect_stream.py</code></th><th>Project 1 <code>MobileVideoStream</code></th></tr></thead><tbody>
 <tr><td>Open HTTP connection</td><td><code>requests.get(url, stream=True)</code></td><td>Same line, same parameters.</td></tr>
 <tr><td>Read bytes</td><td><code>response.iter_content(1024)</code></td><td>Same line.</td></tr>
@@ -5456,9 +5615,21 @@ print("All dependencies present.")</code></pre></figure>
 <tr><td>Why thread?</td><td>Not needed for a simple stream demo.</td><td>The main loop also runs YOLO, PID, UDP, telemetry, and HUD drawing.</td></tr>
 <tr><td>Reconnect on failure?</td><td>No.</td><td>Yes, with exponential backoff.</td></tr>
 </tbody></table></div>
+<h3>Transformation Notes</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Project B line</th><th>Project 1 line</th><th>Why it changed</th></tr></thead><tbody>
+<tr><td><code>read_frame()</code></td><td><code>_run()</code> inside a class</td><td>The reader now stores state: latest frame, frame ID, connection status, and running flag.</td></tr>
+<tr><td>Main loop waits at <code>read_frame()</code></td><td><code>threading.Thread(...).start()</code></td><td>The camera reader runs in parallel so YOLO, PID, UDP, and HUD work do not pause while the next JPEG arrives.</td></tr>
+<tr><td>No reconnect logic</td><td><code>try</code>, <code>except</code>, and <code>backoff</code></td><td>A physical robot must survive WiFi drops without restarting the whole Python program.</td></tr>
+<tr><td>No duplicate-frame marker</td><td><code>self.fid += 1</code></td><td>The main loop can skip YOLO inference when it sees the same frame ID twice.</td></tr>
+<tr><td>No shared-data protection</td><td><code>with self._lock</code></td><td>The background thread writes frames while the main loop reads them, so both sides need a lock.</td></tr>
+</tbody></table></div>
 <h3>The Only New Concepts</h3>
 <p><strong>Threading:</strong> Project B read frames one at a time in the main loop because there was nothing else to do between frames. Project 1's main loop runs detection, PID computations, UDP sends, and telemetry reads. If it also waited for the next JPEG from the phone, the robot control loop would be as slow as the network. The background thread decouples camera speed from detection speed, so the latest available frame is always ready.</p>
 <p><strong>The lock:</strong> <code>self._lock</code> prevents the background thread from writing <code>self.frame</code> at the exact same moment the main loop is reading it. Without the lock, the main loop could read a half-written frame with corrupted pixels.</p>
+<p><strong>The frame ID:</strong> The main loop may run faster than the phone camera. If the camera delivers 15 fps and the main loop checks at 30 Hz, every frame may be seen twice. <code>fid</code> lets the main loop detect duplicates and skip expensive repeated YOLO inference.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="skip_duplicate_frames.py"><figcaption><span>Skipping duplicate frames</span><span class="local-run-badge">Main loop</span></figcaption><pre><code class="language-python">if fid == last_fid:
+    time.sleep(0.005)
+    continue</code></pre></figure>
 <div class="callout info" role="note"><div class="callout-icon">PB</div><div><div class="callout-title">Project B is the reference</div><p>If this class feels unfamiliar, go back to PB.6 and compare the stream parsing lines. Most of the code is the same; Project 1 just packages it for a larger control loop.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-camera">Mark as Complete</button></div>
@@ -5474,14 +5645,52 @@ print("All dependencies present.")</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">The <code>Commander</code> class is <code>cmd_sock</code> from Project D wrapped in a class. Open <code>robot_control.py</code> from Project D beside <code>obj_track_adv.py</code>.</p>
+<h3>Project D Code: Two Simple Functions</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="project_d_command_functions.py"><figcaption><span>Project D robot_control.py sender</span><span class="local-run-badge">Reference</span></figcaption><pre><code class="language-python">cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+def send_command(left, right):
+    msg = f"MOTOR,{int(left)},{int(right)}"
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+def send_stop():
+    cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))</code></pre></figure>
+<h3>Project 1 Code: The Same Sender as a Class</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="commander_class_full.py"><figcaption><span>Project 1 Commander</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class Commander:
+    def __init__(self, ip, port):
+        self.ip = ip
+        self.port = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light="off"):
+        msg = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b"STOP,OFF", (self.ip, self.port))</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Project D <code>robot_control.py</code></th><th>Project 1 <code>Commander</code></th></tr></thead><tbody>
 <tr><td><code>cmd_sock = socket.socket(...)</code></td><td><code>self._sock = socket.socket(...)</code></td></tr>
 <tr><td><code>cmd_sock.sendto(msg.encode(), ...)</code></td><td><code>self._sock.sendto(msg.encode(), ...)</code></td></tr>
 <tr><td><code>msg = f"MOTOR,{left},{right}"</code></td><td><code>msg = f"MOTOR,{left},{right},{light}"</code></td></tr>
 </tbody></table></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Project D</th><th>Project 1</th><th>Why it changed</th></tr></thead><tbody>
+<tr><td><code>ARDUINO_IP</code> global</td><td><code>self.ip</code> from <code>__init__()</code></td><td>The sender can be reused with any robot IP.</td></tr>
+<tr><td><code>CMD_PORT</code> global</td><td><code>self.port</code> from <code>__init__()</code></td><td>The UDP port travels with the object instead of living as a loose global.</td></tr>
+<tr><td><code>send_command(left, right)</code></td><td><code>motors(left, right, light)</code></td><td>The command now carries motor speeds plus visible robot state.</td></tr>
+<tr><td><code>b"STOP"</code></td><td><code>b"STOP,OFF"</code></td><td>The same stop packet also tells the LED to turn off.</td></tr>
+</tbody></table></div>
 <p>The only difference is the added LED state field. When Project 1 sends <code>MOTOR,150,100,TRACKING</code>, the Arduino sketch must parse the third field and set the RGB LED.</p>
+<div class="definition-card"><span class="def-term">The third field</span><p><code>MOTOR,leftSpeed,rightSpeed,LED_STATE</code>. The tracker passes the current state name so the robot can show <code>TRACKING</code>, <code>SEARCHING</code>, <code>ACQUIRING</code>, or <code>OFF</code> on the physical LED.</p></div>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="commander_state_led.py"><figcaption><span>State travels with the motor command</span><span class="local-run-badge">Main loop</span></figcaption><pre><code class="language-python">commander.motors(-left_speed, right_speed, debug["state"])</code></pre></figure>
 <h3>Arduino Sketch Update: RGB LED State</h3>
 <p>Update the Project D <code>robot_udp</code> sketch so it accepts the three-field command and controls the WS2812B LED on pin <code>A3</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="project_d_parseCommand.ino"><figcaption><span>Project D parseCommand()</span><span class="local-run-badge">Before</span></figcaption><pre><code class="language-cpp">void parseCommand(char* packet) {
+  if (strncmp(packet, "MOTOR,", 6) == 0) {
+    int leftSpeed = 0;
+    int rightSpeed = 0;
+    sscanf(packet, "MOTOR,%d,%d", &amp;leftSpeed, &amp;rightSpeed);
+    setMotors(leftSpeed, rightSpeed);
+  }
+}</code></pre></figure>
 <figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="robot_udp_led_update.ino"><figcaption><span>LED and parseCommand update</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;FastLED.h&gt;
 
 #define LED_PIN  A3
@@ -5551,6 +5760,60 @@ void parseCommand(char* packet) {
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">The <code>Telemetry</code> class is <code>telem_sock</code> from Project D wrapped in a class with a background thread. The reason for the thread is identical to <code>MobileVideoStream</code>: the main loop cannot block waiting for a UDP packet.</p>
+<h3>Project D Code: Blocking Telemetry Read</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="project_d_telemetry_blocking.py"><figcaption><span>Project D robot_control.py telemetry</span><span class="local-run-badge">Reference</span></figcaption><pre><code class="language-python">telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind(("", TELEM_PORT))
+telem_sock.settimeout(0.1)
+
+def read_telemetry():
+    try:
+        data, _ = telem_sock.recvfrom(128)
+        parts = data.decode().strip().split(",")
+        if parts[0] == "ENC" and len(parts) == 3:
+            return int(parts[1]), int(parts[2])
+    except socket.timeout:
+        pass
+    return None, None</code></pre></figure>
+<h3>Project 1 Code: Threaded Telemetry</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="telemetry_class_threaded.py"><figcaption><span>Project 1 Telemetry</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class Telemetry:
+    def __init__(self, port):
+        self.left_ticks = 0
+        self.right_ticks = 0
+        self.cmd_left = 0
+        self.cmd_right = 0
+        self.running = True
+        self._lock = threading.Lock()
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind(("", port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(128)
+                parts = data.decode().strip().split(",")
+                if parts[0] == "ENC" and len(parts) == 5:
+                    with self._lock:
+                        self.left_ticks = int(parts[1])
+                        self.right_ticks = int(parts[2])
+                        self.cmd_left = int(parts[3])
+                        self.cmd_right = int(parts[4])
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return {
+                "left_ticks": self.left_ticks,
+                "right_ticks": self.right_ticks,
+                "cmd_left": self.cmd_left,
+                "cmd_right": self.cmd_right,
+            }
+
+    def stop(self):
+        self.running = False
+        self._sock.close()</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Project D <code>robot_control.py</code></th><th>Project 1 <code>Telemetry</code></th></tr></thead><tbody>
 <tr><td><code>telem_sock.bind(("", TELEM_PORT))</code></td><td><code>self._sock.bind(("", port))</code></td></tr>
 <tr><td><code>telem_sock.settimeout(0.1)</code></td><td><code>self._sock.settimeout(1.0)</code></td></tr>
@@ -5558,10 +5821,24 @@ void parseCommand(char* packet) {
 <tr><td><code>parts[0] == "ENC"</code></td><td>Same packet-type check.</td></tr>
 <tr><td><code>int(parts[1]), int(parts[2])</code></td><td>Same ticks, extended to five fields total.</td></tr>
 </tbody></table></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Project D</th><th>Project 1</th><th>Why it changed</th></tr></thead><tbody>
+<tr><td><code>telem_sock</code> global</td><td><code>self._sock</code> inside a class</td><td>The socket and latest values are bundled together.</td></tr>
+<tr><td><code>read_telemetry()</code> called from the loop</td><td><code>_run()</code> runs in a background thread</td><td>The main loop never waits for <code>recvfrom()</code>.</td></tr>
+<tr><td><code>len(parts) == 3</code></td><td><code>len(parts) == 5</code></td><td>Project 1 adds last commanded left and right motor values.</td></tr>
+<tr><td>No lock needed</td><td><code>threading.Lock()</code></td><td>The telemetry thread writes while the HUD reads.</td></tr>
+</tbody></table></div>
 <h3>Project 1 Telemetry Packet</h3>
 <p>Project D sent <code>ENC,leftTicks,rightTicks</code>. Project 1 sends five fields so the HUD can show both measured ticks and the last commanded wheel speeds:</p>
 <div class="definition-card"><span class="def-term">Telemetry packet</span><p><code>ENC,leftTicks,rightTicks,cmdLeft,cmdRight</code></p></div>
 <h3>Arduino Sketch Update</h3>
+<p>Project D's Arduino telemetry sent only encoder ticks:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="project_d_sendTelemetry.ino"><figcaption><span>Project D sendTelemetry()</span><span class="local-run-badge">Before</span></figcaption><pre><code class="language-cpp">void sendTelemetry() {
+  char buf[64];
+  snprintf(buf, sizeof(buf), "ENC,%ld,%ld", ticksLeft, ticksRight);
+  udp.beginPacket(LAPTOP_IP, TELEM_PORT);
+  udp.write((uint8_t*)buf, strlen(buf));
+  udp.endPacket();
+}</code></pre></figure>
 <p>Add these globals near the other motor and encoder globals:</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="robot_udp_globals.ino"><figcaption><span>Track last commanded speeds</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">int lastCmdLeft = 0;
 int lastCmdRight = 0;</code></pre></figure>
@@ -5606,6 +5883,63 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <tr><td>Reward: +1 for goal</td><td>No reward; behavior is rule-based and predictable</td></tr>
 </tbody></table></div>
 <p>The learned FrozenLake policy handles uncertainty through training. The Project 1 state machine is hand-designed because early physical robot testing needs behavior that is predictable and debuggable.</p>
+<h3>The Four Robot States</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="robot_state.py"><figcaption><span>RobotState constants</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class RobotState:
+    STOPPED = "STOPPED"
+    SEARCHING = "SEARCHING"
+    ACQUIRING = "ACQUIRING"
+    TRACKING = "TRACKING"</code></pre></figure>
+<div class="grid-3">
+<div class="card"><h4>STOPPED</h4><p>No reliable target is visible. Motor output is zero and both PIDs are reset.</p></div>
+<div class="card"><h4>SEARCHING</h4><p>The target disappeared recently. The robot spins slowly in the last known target direction.</p></div>
+<div class="card"><h4>ACQUIRING</h4><p>The target just appeared. Speed ramps up gradually while the detection proves it is stable.</p></div>
+<div class="card"><h4>TRACKING</h4><p>The target has been confirmed for enough frames. The robot uses full PID authority.</p></div>
+</div>
+<h3>The Full <code>_update_state()</code> Method</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="update_state_full.py"><figcaption><span>State transition logic</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def _update_state(self, bbox_found):
+    if bbox_found:
+        self.last_seen_t = time.time()
+
+        if self.state in (RobotState.STOPPED, RobotState.SEARCHING):
+            self.state = RobotState.ACQUIRING
+            self.acquire_count = 0
+            self.speed_limit = 0.4
+
+        elif self.state == RobotState.ACQUIRING:
+            self.acquire_count += 1
+            self.speed_limit = 0.4 + 0.6 * self.acquire_count / ACQUIRE_FRAMES
+            if self.acquire_count &gt;= ACQUIRE_FRAMES:
+                self.state = RobotState.TRACKING
+                self.speed_limit = 1.0
+
+        elif self.state == RobotState.TRACKING:
+            self.speed_limit = 1.0
+
+    else:
+        elapsed = time.time() - self.last_seen_t
+        if elapsed &lt; LOST_TIMEOUT:
+            self.state = RobotState.SEARCHING
+            self.speed_limit = 0.3
+        else:
+            self.state = RobotState.STOPPED
+            self.speed_limit = 0.0
+            self.smoothed_angle = 0.0
+            self.pid_turn.reset()
+            self.pid_dist.reset()</code></pre></figure>
+<h3>Line-by-line Decisions</h3>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>self.last_seen_t = time.time()</code></summary><div><p>This stores the timestamp of the most recent successful detection. When the ball disappears, the robot subtracts this time from the current time to decide whether it should search or stop.</p></div></details>
+<details class="solution"><summary><code>STOPPED</code> or <code>SEARCHING</code> becomes <code>ACQUIRING</code></summary><div><p>Both states mean the robot was not actively tracking. A new bounding box does not immediately earn full speed; it starts in <code>ACQUIRING</code> with <code>speed_limit = 0.4</code>.</p></div></details>
+<details class="solution"><summary><code>self.acquire_count += 1</code></summary><div><p>While the robot remains in <code>ACQUIRING</code>, each visible frame increments this counter. The count resets when the robot first enters <code>ACQUIRING</code> from <code>STOPPED</code> or <code>SEARCHING</code>.</p></div></details>
+<details class="solution"><summary><code>0.4 + 0.6 * acquire_count / ACQUIRE_FRAMES</code></summary><div><p>This is a linear speed ramp from 40 percent to 100 percent. With <code>ACQUIRE_FRAMES = 5</code>, the first visible acquiring frame uses 52 percent, the second uses 64 percent, and the fifth reaches 100 percent.</p></div></details>
+<details class="solution"><summary><code>elapsed &lt; LOST_TIMEOUT</code></summary><div><p>A brief missing detection sends the robot to <code>SEARCHING</code>, not <code>STOPPED</code>. This handles one-frame YOLO misses and small camera glitches without killing the run.</p></div></details>
+<details class="solution"><summary><code>self.pid_turn.reset()</code> and <code>self.pid_dist.reset()</code></summary><div><p>The PIDs reset only when the target has been lost long enough to stop. They are not reset on every brief search, because that would erase useful accumulated correction and cause a lurch when the ball reappears.</p></div></details>
+</div>
+<h3>Searching Spin</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="searching_spin.py"><figcaption><span>Spin toward the last known target direction</span><span class="local-run-badge">control()</span></figcaption><pre><code class="language-python">elif self.state == RobotState.SEARCHING:
+    tgt_left = 10 * self.last_turn_dir * self.speed_limit
+    tgt_right = -10 * self.last_turn_dir * self.speed_limit</code></pre></figure>
+<p><code>last_turn_dir</code> remembers which side the target was on before it disappeared. If the ball was last seen on the right, the robot searches right first because that is the most likely direction to reacquire it.</p>
 <h3>Transitions</h3>
 <div class="pd-anatomy-list">
 <details class="solution" open><summary><code>STOPPED -> ACQUIRING</code>: ball appears</summary><div><p>Trigger: YOLO returns a bounding box in <code>_detect()</code>, so <code>bbox_found</code> is true while the robot is stopped or searching.</p><p>Code pattern: <code>if self.state in (RobotState.STOPPED, RobotState.SEARCHING)</code>.</p><p>Action: set <code>speed_limit</code> to 0.4 and reset <code>acquire_count</code>.</p></div></details>
@@ -5628,6 +5962,101 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">This lesson follows one frame from camera input to motor command. The goal is to see how all components interact in the order they run.</p>
+<h3>The Full <code>control()</code> Method</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="control_method_full.py"><figcaption><span>Tracker.control()</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def control(self, frame):
+    h, w = frame.shape[:2]
+    bbox = self._detect(frame)
+    self._update_state(bbox is not None)
+
+    if bbox is not None:
+        x1, y1, x2, y2 = bbox
+        cx = (x1 + x2) / 2
+        area = (x2 - x1) * (y2 - y1)
+        tgt_left, tgt_right, dist_error, turn_cmd, base_speed = \
+            self._motor_outputs_for_ball(cx, area, w)
+
+    elif self.state == RobotState.SEARCHING:
+        tgt_left = 10 * self.last_turn_dir * self.speed_limit
+        tgt_right = -10 * self.last_turn_dir * self.speed_limit
+        dist_error = turn_cmd = base_speed = 0.0
+        area = 0
+        cx = w / 2
+
+    else:
+        tgt_left = tgt_right = 0
+        dist_error = turn_cmd = base_speed = 0.0
+        area = 0
+        cx = w / 2
+
+    self.cur_left = ramp(self.cur_left, tgt_left, MAX_ACCEL)
+    self.cur_right = ramp(self.cur_right, tgt_right, MAX_ACCEL)
+
+    debug = {
+        "state": self.state,
+        "bbox": bbox,
+        "cx": cx,
+        "area": area,
+        "dist_error": dist_error,
+        "turn_cmd": turn_cmd,
+        "base_speed": base_speed,
+        "smoothed_angle": self.smoothed_angle,
+        "speed_limit": self.speed_limit,
+    }
+    return round(self.cur_left), round(self.cur_right), debug</code></pre></figure>
+<h3>Where Each Line Came From</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>Origin</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>bbox = self._detect(frame)</code></td><td>Project A</td><td>Runs YOLO and returns the best bounding box, using the same <code>xyxy</code> box format you inspected earlier.</td></tr>
+<tr><td><code>self._update_state(...)</code></td><td>P1.8</td><td>Converts detection presence into <code>STOPPED</code>, <code>SEARCHING</code>, <code>ACQUIRING</code>, or <code>TRACKING</code>.</td></tr>
+<tr><td><code>cx = (x1 + x2) / 2</code></td><td>Project A</td><td>Finds the horizontal center of the detected object. This becomes the steering error.</td></tr>
+<tr><td><code>area = (x2 - x1) * (y2 - y1)</code></td><td>Project A</td><td>Estimates distance from bounding-box size. Larger area means the target is closer.</td></tr>
+<tr><td><code>_motor_outputs_for_ball(...)</code></td><td>P1.4</td><td>Runs the turn and distance PID logic and returns target wheel speeds.</td></tr>
+<tr><td><code>ramp(...)</code></td><td>Project C concept</td><td>Limits how fast motor commands are allowed to change, like a continuous version of slowing near a target.</td></tr>
+<tr><td><code>debug = {...}</code></td><td>P1.10</td><td>Packages internal control values for the HUD without recomputing them.</td></tr>
+</tbody></table></div>
+<h3>The Ramp Function</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="ramp_function.py"><figcaption><span>Motor acceleration limiter</span><span class="local-run-badge">Control helper</span></figcaption><pre><code class="language-python">def ramp(current, target, max_step):
+    diff = target - current
+    if abs(diff) &lt;= max_step:
+        return target
+    return current + max_step * np.sign(diff)</code></pre></figure>
+<p>With <code>MAX_ACCEL = 2</code>, a motor command can change by only 2 PWM units per control cycle. At about 33 Hz, going from 0 to 255 would take roughly <code>255 / 2 / 33 = 3.9</code> seconds, which is intentionally gentle for first testing.</p>
+<h3>The Full <code>_motor_outputs_for_ball()</code> Method</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="motor_outputs_full.py"><figcaption><span>Converting one bounding box into two wheel speeds</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def _motor_outputs_for_ball(self, cx, area, frame_width):
+    raw_angle_error = (cx - frame_width / 2) / frame_width
+
+    if abs(raw_angle_error) &lt; ANGLE_DEAD_ZONE:
+        raw_angle_error = 0.0
+    if raw_angle_error != 0.0:
+        self.last_turn_dir = np.sign(raw_angle_error)
+
+    self.smoothed_angle = raw_angle_error
+    turn_cmd = self.pid_turn.update(self.smoothed_angle)
+
+    dist_error = (area - TARGET_AREA) / TARGET_AREA
+    if abs(dist_error) &lt; AREA_DEAD_ZONE:
+        dist_error = 0.0
+    self.pid_dist.update(dist_error)
+
+    base_speed = 10
+    tgt_left = base_speed + turn_cmd
+    tgt_right = base_speed - turn_cmd
+
+    max_raw = max(abs(tgt_left), abs(tgt_right))
+    if max_raw &gt; MAX_SPEED:
+        scale = MAX_SPEED / max_raw
+        tgt_left *= scale
+        tgt_right *= scale
+
+    return tgt_left, tgt_right, dist_error, turn_cmd, base_speed</code></pre></figure>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>raw_angle_error = (cx - frame_width / 2) / frame_width</code></summary><div><p>This converts pixel position into normalized error. On a 640 px frame, <code>cx = 320</code> gives <code>0</code>, <code>cx = 480</code> gives <code>+0.25</code>, and <code>cx = 160</code> gives <code>-0.25</code>.</p></div></details>
+<details class="solution"><summary><code>ANGLE_DEAD_ZONE</code></summary><div><p>The dead zone prevents tiny left-right corrections caused by detection jitter. The default can be kept at zero while tuning, then raised slightly if the robot twitches when the target is centered.</p></div></details>
+<details class="solution"><summary><code>self.last_turn_dir = np.sign(raw_angle_error)</code></summary><div><p>This stores the last side where the ball was seen. The <code>SEARCHING</code> state uses it to spin in the likely direction.</p></div></details>
+<details class="solution"><summary><code>turn_cmd = self.pid_turn.update(...)</code></summary><div><p>The steering PID returns a correction between <code>-MAX_TURN</code> and <code>+MAX_TURN</code>. Positive values make the left motor faster and the right motor slower.</p></div></details>
+<details class="solution"><summary><code>dist_error = (area - TARGET_AREA) / TARGET_AREA</code></summary><div><p>This normalizes distance error. <code>0</code> means the target is at the calibrated distance, positive means too close, and negative means too far.</p></div></details>
+<details class="solution"><summary><code>tgt_left = base_speed + turn_cmd</code></summary><div><p>This is differential steering. Adding the turn command to one side and subtracting it from the other curves the robot while the base speed keeps it moving forward.</p></div></details>
+<details class="solution"><summary><code>scale = MAX_SPEED / max_raw</code></summary><div><p>If either side exceeds the speed limit, both sides are scaled down together. Scaling preserves the turn ratio better than clipping one side independently.</p></div></details>
+</div>
 <h3>Frame-by-frame Walkthrough</h3>
 <div class="steps">
 <div class="step"><div><strong>Step 1: Get a frame.</strong> <code>frame, fid = video.read()</code> returns the latest frame from <code>MobileVideoStream</code>'s background thread. If <code>fid</code> equals <code>last_fid</code>, no new frame has arrived, so the loop skips this iteration and avoids wasting YOLO inference on duplicate frames.</div></div>
@@ -5661,6 +6090,55 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">The HUD has no new robotics concepts. It is a live dashboard that draws each piece of internal data onto the camera frame so you can debug without staring at terminal logs.</p>
+<h3>The Full <code>draw_overlay()</code> Function</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="draw_overlay_full.py"><figcaption><span>HUD drawing function</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y):
+    h, w = frame.shape[:2]
+    state_color = Tracker.STATE_COLORS.get(debug["state"], (255, 255, 255))
+
+    cv2.line(frame, (w // 2, 0), (w // 2, h), (0, 255, 0), 1)
+
+    smooth_x = int(w / 2 + debug["smoothed_angle"] * w)
+    cv2.line(frame, (smooth_x, 0), (smooth_x, h), (0, 255, 255), 2)
+
+    if debug["bbox"] is not None:
+        x1, y1, x2, y2 = debug["bbox"]
+        x1, y1, x2, y2 = (
+            int(x1 * scale_x),
+            int(y1 * scale_y),
+            int(x2 * scale_x),
+            int(y2 * scale_y),
+        )
+
+        if abs(debug["dist_error"]) &lt; AREA_DEAD_ZONE:
+            box_color = (0, 255, 0)
+        elif debug["dist_error"] &gt; 0:
+            box_color = (0, 0, 255)
+        else:
+            box_color = (255, 100, 0)
+
+        cv2.rectangle(frame, (x1, y1), (x2, y2), box_color, 2)
+
+    lines = [
+        (f"STATE:  {debug['state']}", state_color),
+        (f"SMOOTH: {debug['smoothed_angle']:+.3f}", (0, 255, 255)),
+        (f"AREA:   {int(debug['area'])} / {TARGET_AREA}", (255, 255, 255)),
+        (f"SPD LIM:{debug['speed_limit']:.0%}", (255, 255, 255)),
+        (f"L:{int(left_speed):+4d} R:{int(right_speed):+4d}", (0, 255, 0)),
+        (
+            f"ENC L:{telem['left_ticks']:+4d} R:{telem['right_ticks']:+4d}",
+            (255, 165, 0),
+        ),
+    ]
+    for i, (text, color) in enumerate(lines):
+        cv2.putText(
+            frame,
+            text,
+            (10, 25 + i * 25),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.65,
+            color,
+            1,
+        )</code></pre></figure>
 <h3>Visual Elements and Data Sources</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>HUD element</th><th>Data source</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Bounding box color: green</td><td><code>abs(dist_error) &lt; AREA_DEAD_ZONE</code></td><td>The ball is at the calibrated distance.</td></tr>
@@ -5671,6 +6149,16 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <tr><td>Motor command text</td><td><code>left_speed</code>, <code>right_speed</code></td><td>Shows what Python is asking the robot to do.</td></tr>
 <tr><td>Encoder text</td><td><code>telemetry.read()</code></td><td>Shows what the robot reports back over UDP.</td></tr>
 </tbody></table></div>
+<h3>How to Read the HUD While Testing</h3>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>STATE</code></summary><div><p>This is the robot's current behavior mode. If it stays <code>STOPPED</code> while the target is visible, detection failed or <code>TARGET_OBJECT</code> does not match the model class name.</p></div></details>
+<details class="solution"><summary><code>SMOOTH</code></summary><div><p>This is the normalized horizontal error after smoothing. It should move toward <code>0.000</code> as the target becomes centered. If it never approaches zero, increase or retune the turn PID.</p></div></details>
+<details class="solution"><summary><code>AREA</code></summary><div><p>This compares the current bounding-box area against <code>TARGET_AREA</code>. Current greater than target means too close, current less than target means too far, and close to equal means correct distance.</p></div></details>
+<details class="solution"><summary><code>SPD LIM</code></summary><div><p>This is the state-machine speed multiplier: <code>0%</code> for stopped, about <code>30%</code> while searching, <code>40%</code> to <code>100%</code> while acquiring, and <code>100%</code> while tracking.</p></div></details>
+<details class="solution"><summary><code>L</code> and <code>R</code></summary><div><p>These are the motor commands Python is sending. Opposite signs usually mean turning or searching. Similar signs usually mean driving while steering.</p></div></details>
+<details class="solution"><summary><code>ENC</code></summary><div><p>These are encoder ticks reported by the Arduino. If motor commands are nonzero but encoder ticks stay at zero, check encoder wiring and interrupt pins.</p></div></details>
+<details class="solution"><summary><code>scale_x</code> and <code>scale_y</code></summary><div><p>The display frame is resized to a fixed size. These scale factors convert bounding-box coordinates from the original camera frame into the resized display frame so the rectangle lands in the correct place.</p></div></details>
+</div>
 <h3>Why the smooth line matters</h3>
 <p>YOLO detections can flicker slightly from frame to frame even when the ball is still. The cyan line uses <code>smoothed_angle</code>, not raw angle error, so it tracks the trend without twitching on every small detection change. This is one reason the robot looks calmer than the raw camera measurements.</p>
 <div class="callout info" role="note"><div class="callout-icon">HUD</div><div><div class="callout-title">HUD and hardware feedback match</div><p>The state text colors match the RGB LED states from P1.6. When you cannot see the laptop screen, the robot LED gives the same high-level state feedback.</p></div></div>
@@ -5688,6 +6176,84 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">The <code>main()</code> function is the integration point. Every line traces back to a project you already completed.</p>
+<h3>The Complete <code>main()</code> Function</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="main_function_annotated.py"><figcaption><span>Project 1 main loop</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def main():
+    mobile_ip = "10.18.204.215"
+    stream_url = f"http://{mobile_ip}:8080/video"
+
+    video = MobileVideoStream(stream_url)
+    commander = Commander(ESP_IP, UDP_CMD_PORT)
+    telemetry = Telemetry(UDP_TELEM_PORT)
+
+    print("Waiting for camera", end="", flush=True)
+    for _ in range(30):
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(".", end="", flush=True)
+    print()
+
+    if not video.connected:
+        print("Could not connect to camera")
+        return
+
+    tracker = Tracker("best.pt", TARGET_OBJECT)
+    commander.stop()
+    time.sleep(0.5)
+
+    last_fid = -1
+    last_cmd_time = 0.0
+    CMD_INTERVAL = 0.03
+    fps_count = 0
+    fps_timer = time.time()
+
+    while True:
+        frame, fid = video.read()
+        if frame is None or fid == last_fid:
+            time.sleep(0.005)
+            continue
+
+        last_fid = fid
+        fps_count += 1
+
+        if fps_count &gt;= 30:
+            fps = fps_count / (time.time() - fps_timer)
+            print(f"FPS: {fps:.1f}")
+            fps_count = 0
+            fps_timer = time.time()
+
+        left_speed, right_speed, debug = tracker.control(frame)
+
+        orig_h, orig_w = frame.shape[:2]
+        frame = cv2.resize(frame, (640, 480))
+
+        now = time.time()
+        if now - last_cmd_time &gt;= CMD_INTERVAL:
+            commander.motors(-left_speed, right_speed, debug["state"])
+            last_cmd_time = now
+
+        draw_overlay(
+            frame,
+            debug,
+            left_speed,
+            right_speed,
+            telemetry.read(),
+            640 / orig_w,
+            480 / orig_h,
+        )
+        cv2.imshow("Object Tracker", frame)
+
+        key = cv2.waitKey(1) &amp; 0xFF
+        if key == ord("q"):
+            break
+        elif key == ord("r"):
+            tracker.reset()
+
+    commander.stop()
+    time.sleep(0.2)
+    video.stop()
+    telemetry.stop()
+    cv2.destroyAllWindows()</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Line in <code>main()</code></th><th>Origin</th></tr></thead><tbody>
 <tr><td><code>video = MobileVideoStream(url)</code></td><td>Project B stream concept.</td></tr>
 <tr><td><code>commander = Commander(ESP_IP, ...)</code></td><td>Project D command socket concept.</td></tr>
@@ -5700,6 +6266,16 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <tr><td><code>draw_overlay(...)</code></td><td>Project 1 HUD drawing.</td></tr>
 <tr><td><code>cv2.imshow(...)</code></td><td>Project A and B display pattern.</td></tr>
 </tbody></table></div>
+<h3>Non-obvious Lines</h3>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary>Waiting for the camera</summary><div><p>The <code>for _ in range(30)</code> loop checks for a connection every 0.5 seconds for up to 15 seconds. Phone camera apps often need a few seconds before the stream is ready.</p></div></details>
+<details class="solution"><summary><code>commander.stop()</code> before the loop</summary><div><p>This sends a fresh stop packet before tracking begins. If a previous run crashed while motors were moving, startup still begins from a known safe command state.</p></div></details>
+<details class="solution"><summary><code>CMD_INTERVAL = 0.03</code></summary><div><p>This limits outgoing motor commands to about 33 Hz. Sending faster than that does not improve robot control and can flood the Arduino UDP receive buffer.</p></div></details>
+<details class="solution"><summary><code>if frame is None or fid == last_fid</code></summary><div><p>This skips empty reads and duplicate frames. The loop does not waste YOLO inference on the same image twice.</p></div></details>
+<details class="solution"><summary><code>commander.motors(-left_speed, right_speed, debug["state"])</code></summary><div><p>The negative sign is chassis-specific motor orientation. Verify it with the Project D keyboard test. The third argument sends the current state to the Arduino LED code from P1.6.</p></div></details>
+<details class="solution"><summary><code>telemetry.read()</code> inside <code>draw_overlay()</code></summary><div><p>Project 1 displays encoder ticks but does not yet use them for closed-loop wheel control. The telemetry data is for HUD diagnosis in this project.</p></div></details>
+<details class="solution"><summary>Shutdown order</summary><div><p>The program sends <code>commander.stop()</code> before stopping video and telemetry threads. Motor power is cut before communication objects are torn down.</p></div></details>
+</div>
 <h3>Decoupled Timing</h3>
 <p>The camera may run at 10 to 20 fps. The command sender runs up to about 33 Hz using <code>CMD_INTERVAL = 0.03</code>. These are deliberately decoupled. The motor command rate stays stable even if the phone camera stream is slower or briefly repeats a frame.</p>
 <div class="callout info" role="note"><div class="callout-icon">Hz</div><div><div class="callout-title">Why duplicate frames are skipped</div><p>If <code>fid == last_fid</code>, the detection loop is running faster than the camera. Skipping that iteration prevents duplicate YOLO inference on the same image and keeps CPU time available for fresh frames.</p></div></div>
