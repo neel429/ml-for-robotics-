@@ -3283,6 +3283,219 @@ html.light-mode body.lesson-app .dashboard-stats {
   border-color: #d0d7de;
 }
 
+body.lesson-app .p2-threshold-panels,
+body.lesson-app .p2-morph-panels,
+body.lesson-app .p2-steering-scenarios {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+body.lesson-app .p2-threshold-panels > div,
+body.lesson-app .p2-morph-panels > div,
+body.lesson-app .p2-steering-scenarios > div {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 150px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+body.lesson-app .p2-threshold-panels small,
+body.lesson-app .p2-morph-panels small,
+body.lesson-app .p2-steering-scenarios small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+body.lesson-app .p2-gradient,
+body.lesson-app .p2-binary,
+body.lesson-app .p2-noisy-line,
+body.lesson-app .p2-open-line,
+body.lesson-app .p2-closed-line,
+body.lesson-app .p2-lane {
+  display: block;
+  height: 76px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+body.lesson-app .p2-gradient {
+  background: linear-gradient(90deg, #d7d7d7 0 38%, #3f3f46 38% 58%, #d7d7d7 58% 100%);
+}
+
+body.lesson-app .p2-binary-normal {
+  background: linear-gradient(90deg, #fff 0 38%, #080808 38% 58%, #fff 58% 100%);
+}
+
+body.lesson-app .p2-binary-inv {
+  background: linear-gradient(90deg, #080808 0 38%, #fff 38% 58%, #080808 58% 100%);
+}
+
+body.lesson-app .p2-noisy-line {
+  background:
+    radial-gradient(circle at 18% 26%, #fff 0 4px, transparent 5px),
+    radial-gradient(circle at 78% 38%, #fff 0 5px, transparent 6px),
+    linear-gradient(90deg, transparent 0 42%, #fff 42% 47%, transparent 47% 55%, #fff 55% 60%, transparent 60% 100%),
+    #080808;
+}
+
+body.lesson-app .p2-open-line {
+  background: linear-gradient(90deg, transparent 0 43%, #fff 43% 47%, transparent 47% 55%, #fff 55% 59%, transparent 59% 100%), #080808;
+}
+
+body.lesson-app .p2-closed-line {
+  background: linear-gradient(90deg, transparent 0 43%, #fff 43% 59%, transparent 59% 100%), #080808;
+}
+
+body.lesson-app .p2-roi-diagram .p2-frame,
+body.lesson-app .p2-scan-frame {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.20) 0 12%, rgba(250, 204, 21, 0.09) 12% 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 42px);
+}
+
+body.lesson-app .p2-ignored,
+body.lesson-app .p2-roi {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+body.lesson-app .p2-ignored {
+  top: 0;
+  height: 12%;
+}
+
+body.lesson-app .p2-roi {
+  top: 12%;
+  bottom: 0;
+  color: var(--white);
+}
+
+body.lesson-app .p2-roi-line {
+  position: absolute;
+  top: 12%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #f97316;
+  color: #f97316;
+  font: 700 0.72rem "JetBrains Mono", monospace;
+  padding-left: 0.4rem;
+}
+
+body.lesson-app .p2-scan-frame {
+  background: #0a0a0a;
+}
+
+body.lesson-app .p2-track {
+  position: absolute;
+  left: 45%;
+  top: 8%;
+  width: 22%;
+  height: 96%;
+  transform: rotate(15deg);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.22);
+}
+
+body.lesson-app .p2-scan-row,
+body.lesson-app .p2-scan-dot {
+  position: absolute;
+  display: block;
+}
+
+body.lesson-app .p2-scan-row {
+  left: 7%;
+  right: 7%;
+  height: 2px;
+  background: rgba(250, 204, 21, 0.72);
+}
+
+body.lesson-app .p2-scan-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #ff4dff;
+  border: 2px solid #fff;
+}
+
+body.lesson-app .p2-scan-row.r1 { top: 90%; }
+body.lesson-app .p2-scan-row.r2 { top: 75%; }
+body.lesson-app .p2-scan-row.r3 { top: 60%; }
+body.lesson-app .p2-scan-row.r4 { top: 45%; }
+body.lesson-app .p2-scan-row.r5 { top: 30%; }
+body.lesson-app .p2-scan-dot.d1 { left: 55%; top: calc(90% - 6px); }
+body.lesson-app .p2-scan-dot.d2 { left: 53%; top: calc(75% - 6px); }
+body.lesson-app .p2-scan-dot.d3 { left: 51%; top: calc(60% - 6px); }
+body.lesson-app .p2-scan-dot.d4 { left: 49%; top: calc(45% - 6px); }
+body.lesson-app .p2-scan-dot.d5 { left: 47%; top: calc(30% - 6px); }
+
+body.lesson-app .p2-lane {
+  position: relative;
+  background: #101820;
+}
+
+body.lesson-app .p2-lane::before,
+body.lesson-app .p2-lane::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff4dff;
+  border: 2px solid #fff;
+  z-index: 2;
+}
+
+body.lesson-app .p2-lane::before {
+  left: 45%;
+  bottom: 12px;
+}
+
+body.lesson-app .p2-lane::after {
+  left: 45%;
+  top: 12px;
+}
+
+body.lesson-app .p2-lane.straight {
+  background: linear-gradient(90deg, transparent 0 47%, #fff 47% 53%, transparent 53% 100%), #101820;
+}
+
+body.lesson-app .p2-lane.gentle {
+  background: linear-gradient(118deg, transparent 0 46%, #fff 46% 52%, transparent 52% 100%), #101820;
+}
+
+body.lesson-app .p2-lane.gentle::after { left: 58%; }
+
+body.lesson-app .p2-lane.sharp {
+  background: linear-gradient(132deg, transparent 0 45%, #fff 45% 53%, transparent 53% 100%), #101820;
+}
+
+body.lesson-app .p2-lane.sharp::after { left: 70%; }
+
+html.light-mode body.lesson-app .p2-threshold-panels > div,
+html.light-mode body.lesson-app .p2-morph-panels > div,
+html.light-mode body.lesson-app .p2-steering-scenarios > div {
+  background: #f8fbff;
+  border-color: #d0d7de;
+}
+
 @media (max-width: 900px) {
   body.lesson-app .lesson-topbar {
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -3319,6 +3532,9 @@ html.light-mode body.lesson-app .dashboard-stats {
   body.lesson-app .grid-2,
   body.lesson-app .grid-3,
   body.lesson-app .grid-4,
+  body.lesson-app .p2-threshold-panels,
+  body.lesson-app .p2-morph-panels,
+  body.lesson-app .p2-steering-scenarios,
   body.lesson-app .why-output {
     grid-template-columns: 1fr;
   }
