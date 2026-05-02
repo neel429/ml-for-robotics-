@@ -141,13 +141,14 @@
 <a class="lesson-link" href="?lesson=projC-hardware" data-lesson-link="projC-hardware"><span>PC.1 Understanding the Hardware</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projC-encoders" data-lesson-link="projC-encoders"><span>PC.2 How Encoder Motors Work</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projC-wiring" data-lesson-link="projC-wiring"><span>PC.3 Wiring the System</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span>PC.4 Blink and Serial</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-reading-pulses" data-lesson-link="projC-reading-pulses"><span>PC.5 Reading Encoder Pulses</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-distance" data-lesson-link="projC-distance"><span>PC.6 Ticks to Distance</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-drive-distance" data-lesson-link="projC-drive-distance"><span>PC.7 Drive a Precise Distance</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-turning" data-lesson-link="projC-turning"><span>PC.8 Turn Exactly 90 Degrees</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-path" data-lesson-link="projC-path"><span>PC.9 Running a Path</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span>PC.10 Troubleshooting and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-arduino-basics" data-lesson-link="projC-arduino-basics"><span>PC.4 Arduino Programming Basics</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span>PC.5 Blink and Serial</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-reading-pulses" data-lesson-link="projC-reading-pulses"><span>PC.6 Reading Encoder Pulses</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-distance" data-lesson-link="projC-distance"><span>PC.7 Ticks to Distance</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-drive-distance" data-lesson-link="projC-drive-distance"><span>PC.8 Drive a Precise Distance</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-turning" data-lesson-link="projC-turning"><span>PC.9 Turn Exactly 90 Degrees</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-path" data-lesson-link="projC-path"><span>PC.10 Running a Path</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projC-troubleshooting" data-lesson-link="projC-troubleshooting"><span>PC.11 Troubleshooting and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
 <div class="lesson-group" data-chapter="projD" style="--chapter-accent:#0ea5e9">
@@ -287,10 +288,10 @@
 </article>
 <article class="chapter-card" data-chapter-card="projC" style="--chapter-accent:#ef4444">
 <div class="chapter-card-strip"></div>
-<div class="chapter-card-top"><span>Project C</span><span>11 lessons</span></div>
+<div class="chapter-card-top"><span>Project C</span><span>12 lessons</span></div>
 <h2>Precise Movement with Encoders</h2>
 <p>Build the hardware control foundation: encoder ticks, exact distance driving, 90-degree turns, and programmed paths.</p>
-<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projC">0 / 11 complete</small></div>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projC">0 / 12 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=projC-overview" data-lesson-link="projC-overview">Start</a>
 </article>
 <article class="chapter-card" data-chapter-card="projD" style="--chapter-accent:#0ea5e9">
@@ -3699,7 +3700,7 @@ void rightEncoderISR() {
 <tr><td>VCC</td><td><code>5V</code></td></tr>
 <tr><td>GND</td><td><code>GND</code></td></tr>
 </tbody></table></div>
-<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">RGB LED library note</div><p>A WS2812B or similar addressable LED requires the FastLED or NeoPixel library. Installation is covered in the first sketch that uses it. You do not need that library for the encoder test or drive sketches in PC.5 through PC.9.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">RGB LED library note</div><p>A WS2812B or similar addressable LED requires the FastLED or NeoPixel library. Installation is covered in the first sketch that uses it. You do not need that library for the encoder test or drive sketches in PC.6 through PC.10.</p></div></div>
 
 <h3>Connection Group 5: Battery Power</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Wire</th><th>Where to connect</th></tr></thead><tbody>
@@ -3716,7 +3717,203 @@ void rightEncoderISR() {
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-wiring">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projC-encoders" data-lesson-link="projC-encoders"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.2 Encoders</span></a>
-<a class="lesson-nav-btn next" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.4 First Sketch &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-arduino-basics" data-lesson-link="projC-arduino-basics"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.4 Arduino Basics &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="projC-arduino-basics" data-chapter="projC" data-chapter-title="* Project C: Precise Movement with Encoders" style="--chapter-accent:#ef4444;--chapter-color:#ef4444">
+<div class="lesson-kicker">* Project C: Precise Movement with Encoders <span>&rsaquo;</span> PC.4 Arduino Programming Basics</div>
+<h1>PC.4 Arduino Programming Basics</h1>
+<div class="lesson-meta"><span>Arduino C++</span><span>Python bridge</span><span>Hardware code</span><span>22 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+<p class="lead">You already learned variables, functions, loops, and conditionals in Python. Arduino sketches use C++, which looks different, but the logic is the same. This lesson teaches the spelling changes before the first real sketch.</p>
+<p>By the end, <code>setup()</code>, <code>loop()</code>, semicolons, typed variables, <code>pinMode()</code>, <code>digitalWrite()</code>, <code>analogWrite()</code>, <code>digitalRead()</code>, <code>Serial.print()</code>, and <code>volatile</code> will all have a clear job.</p>
+
+<h3>Python vs Arduino C++</h3>
+<p>Both languages can express the same control logic. The main difference is that Arduino C++ requires more explicit syntax.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Concept</th><th>Python</th><th>Arduino C++</th></tr></thead><tbody>
+<tr><td>Declare a variable</td><td><code>speed = 150</code></td><td><code>int speed = 150;</code></td></tr>
+<tr><td>End a statement</td><td>newline</td><td>semicolon <code>;</code></td></tr>
+<tr><td>Define a block</td><td>indentation</td><td>curly braces <code>{ }</code></td></tr>
+<tr><td>Define a function</td><td><code>def my_func():</code></td><td><code>void myFunc() { }</code></td></tr>
+<tr><td>Print something</td><td><code>print("hello")</code></td><td><code>Serial.println("hello");</code></td></tr>
+<tr><td>Comment one line</td><td><code># this is a comment</code></td><td><code>// this is a comment</code></td></tr>
+<tr><td>Comment many lines</td><td>not common</td><td><code>/* this is a comment */</code></td></tr>
+<tr><td>Infinite loop</td><td><code>while True:</code></td><td><code>void loop() { }</code></td></tr>
+</tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Two beginner mistakes to avoid</div><p>Every C++ statement ends with a semicolon. Forgetting one is the most common beginner compile error. Blocks use curly braces, not indentation. Indentation still matters for humans, but the compiler ignores it.</p></div></div>
+
+<h3>The Two Mandatory Functions</h3>
+<p>Every Arduino sketch must have <code>setup()</code> and <code>loop()</code>. <code>setup()</code> runs once when the board powers on or resets. <code>loop()</code> runs forever after <code>setup()</code> finishes.</p>
+<div class="grid-2">
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="python_equivalent.py"><figcaption><span>Python equivalent</span></figcaption><pre><code class="language-python">def setup():
+    print("Starting up")
+    # one-time initialization here
+
+def loop():
+    # repeating code here
+    pass
+
+setup()
+while True:
+    loop()</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="arduino_structure.ino"><figcaption><span>Arduino C++</span></figcaption><pre><code class="language-cpp">void setup() {
+  Serial.println("Starting up");
+  // one-time initialization here
+}
+
+void loop() {
+  // repeating code here
+}</code></pre></figure>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">What void means</div><p>The word <code>void</code> before a function name means the function returns nothing. If a function returns an integer, you write <code>int myFunction()</code>. If it returns a decimal number, you write <code>float myFunction()</code>. <code>setup()</code> and <code>loop()</code> always return <code>void</code> because Arduino calls them automatically.</p></div></div>
+
+<h3>Declaring Variables: Types Are Required</h3>
+<p>Python figures out a variable's type from its value. Arduino C++ requires you to state the type explicitly.</p>
+<div class="grid-2">
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="python_variables.py"><figcaption><span>Python</span></figcaption><pre><code class="language-python">speed = 150
+name = "ARIA"
+ready = True</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="arduino_variables.ino"><figcaption><span>Arduino C++</span></figcaption><pre><code class="language-cpp">int speed = 150;
+float distance = 2.45;
+bool ready = true;
+char letter = 'A';</code></pre></figure>
+</div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Type</th><th>What it stores</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>int</code></td><td>Whole numbers from about -32768 to 32767</td><td><code>int count = 0;</code></td></tr>
+<tr><td><code>long</code></td><td>Larger whole numbers</td><td><code>long ticks = 0;</code></td></tr>
+<tr><td><code>float</code></td><td>Decimal numbers</td><td><code>float distance = 1.5;</code></td></tr>
+<tr><td><code>bool</code></td><td>True or false</td><td><code>bool ready = true;</code></td></tr>
+<tr><td><code>char</code></td><td>A single character</td><td><code>char key = 'w';</code></td></tr>
+<tr><td><code>void</code></td><td>Nothing, used for functions</td><td><code>void setup() { }</code></td></tr>
+</tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Choosing types in this project</div><p>Use <code>int</code> for most counters and pin numbers. Use <code>long</code> for encoder tick counts because ticks can grow very large after extended operation. Use <code>float</code> for real-world measurements like distance in centimeters.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">C++ booleans are lowercase</div><p>In Python, <code>True</code> and <code>False</code> are capitalized. In Arduino C++, they are lowercase: <code>true</code> and <code>false</code>. Writing <code>True</code> in a C++ sketch causes a compile error.</p></div></div>
+
+<h3>Constants: #define and const</h3>
+<p>In Python, constants are usually written in all caps by convention. In Arduino C++, you will see two common styles.</p>
+<div class="grid-2">
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="defines.ino"><figcaption><span>#define</span></figcaption><pre><code class="language-cpp">#define MAX_SPEED 255
+#define LED_PIN   13</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="const_values.ino"><figcaption><span>const</span></figcaption><pre><code class="language-cpp">const int MAX_SPEED = 255;
+const int LED_PIN = 13;</code></pre></figure>
+</div>
+<p><code>const</code> is preferred when the value has a clear type because the compiler can catch more mistakes. <code>#define</code> is a preprocessor text substitution. In Projects C and D, <code>#define</code> is used for pin numbers and <code>const</code> is used for measured values such as wheel diameter.</p>
+
+<h3>volatile: Variables Shared With Interrupts</h3>
+<p><code>volatile</code> is specific to embedded programming. It tells the compiler that a variable can change unexpectedly, such as when an interrupt service routine updates encoder counts while the main loop is running.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="volatile_ticks.ino"><figcaption><span>Encoder counters</span></figcaption><pre><code class="language-cpp">volatile long ticksLeft = 0;
+volatile long ticksRight = 0;</code></pre></figure>
+<p>Without <code>volatile</code>, the compiler may cache a tick count and the main loop can read a stale value. At high speed, that makes encoder counts appear frozen or jump unpredictably.</p>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Use volatile for ISR-shared variables</div><p><code>volatile</code> does not make code slower in any way you would notice. Use it for any variable that an ISR writes and the main loop reads. Forgetting it is much riskier than including it.</p></div></div>
+
+<h3>The Four Hardware Functions</h3>
+<p>These four functions are the vocabulary of hardware control on Arduino. Nearly every sketch in Projects C and D uses them.</p>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>pinMode(pin, mode)</code></summary><div><p>Configures a pin as either input or output. Call it in <code>setup()</code> before using the pin. Use <code>INPUT_PULLUP</code> for encoder signal pins so the input does not float randomly.</p><pre><code class="language-cpp">pinMode(13, OUTPUT);
+pinMode(2, INPUT_PULLUP);</code></pre></div></details>
+<details class="solution"><summary><code>digitalWrite(pin, value)</code></summary><div><p>Sets an output pin to <code>HIGH</code> or <code>LOW</code>. It controls LEDs and motor direction pins such as TB6612FNG <code>IN1</code> and <code>IN2</code>.</p><pre><code class="language-cpp">digitalWrite(13, HIGH);
+digitalWrite(13, LOW);</code></pre></div></details>
+<details class="solution"><summary><code>analogWrite(pin, value)</code></summary><div><p>Outputs a PWM signal from <code>0</code> to <code>255</code>. Despite the name, it does not produce a true analog voltage. It creates a fast digital pulse that motors and LEDs respond to like proportional power.</p><pre><code class="language-cpp">analogWrite(6, 0);
+analogWrite(6, 128);
+analogWrite(6, 255);</code></pre></div></details>
+<details class="solution"><summary><code>digitalRead(pin)</code></summary><div><p>Reads an input pin and returns <code>HIGH</code> or <code>LOW</code>. Encoder code uses it inside the ISR to read channel B and determine direction.</p><pre><code class="language-cpp">int state = digitalRead(2);
+if (state == HIGH) {
+  // pin is at 5V
+}</code></pre></div></details>
+</div>
+
+<h3>Serial Communication: Arduino's Print Statement</h3>
+<p>The Arduino has no screen. The Serial Monitor in the Arduino IDE is how you see debug output over USB.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="serial_examples.ino"><figcaption><span>Serial basics</span></figcaption><pre><code class="language-cpp">Serial.begin(115200);       // in setup()
+Serial.println("hello");    // print with newline
+Serial.print("hello");      // print without newline
+Serial.println(myVariable); // print a variable</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Python</th><th>Arduino C++</th></tr></thead><tbody>
+<tr><td><code>print("Speed:", speed)</code></td><td><code>Serial.print("Speed: ");</code><br /><code>Serial.println(speed);</code></td></tr>
+<tr><td><code>print(f"L={l} R={r}")</code></td><td><code>Serial.print("L=");</code><br /><code>Serial.print(l);</code><br /><code>Serial.print(" R=");</code><br /><code>Serial.println(r);</code></td></tr>
+</tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Serial.println is your first debugging tool</div><p>When something is not working, print variable values and confirm the code reaches the line you think it reaches. Remove extra debug prints once the sketch is stable so the output stays readable.</p></div></div>
+
+<h3>Loops and Conditionals</h3>
+<p>The logic of <code>if</code>, <code>for</code>, and <code>while</code> is identical to Python. The spelling changes.</p>
+<div class="grid-2">
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="python_if.py"><figcaption><span>Python if</span></figcaption><pre><code class="language-python">if battery &lt; 10:
+    print("low")
+elif battery &lt; 25:
+    print("ok")
+else:
+    print("full")</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="arduino_if.ino"><figcaption><span>Arduino C++ if</span></figcaption><pre><code class="language-cpp">if (battery &lt; 10) {
+  Serial.println("low");
+} else if (battery &lt; 25) {
+  Serial.println("ok");
+} else {
+  Serial.println("full");
+}</code></pre></figure>
+</div>
+<div class="grid-2">
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="python_loop.py"><figcaption><span>Python loop</span></figcaption><pre><code class="language-python">for i in range(5):
+    print(i)
+
+while battery &gt; 20:
+    battery -= 1</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="arduino_loop.ino"><figcaption><span>Arduino C++ loop</span></figcaption><pre><code class="language-cpp">for (int i = 0; i &lt; 5; i++) {
+  Serial.println(i);
+}
+
+while (battery &gt; 20) {
+  battery--;
+}</code></pre></figure>
+</div>
+<p>The Arduino <code>for</code> loop has three parts separated by semicolons: the initial value, the condition to keep looping, and the update after each iteration. <code>i++</code> means <code>i = i + 1</code>. <code>i--</code> means <code>i = i - 1</code>.</p>
+
+<h3>A Complete Minimal Sketch</h3>
+<p>This sketch uses constants, variables, <code>setup()</code>, <code>loop()</code>, pin control, delay timing, an <code>if</code> statement, and Serial output.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="basics_demo.ino"><figcaption><span>basics_demo.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#define LED_PIN 13
+const int BLINK_SPEED = 500;  // milliseconds
+
+int loopCount = 0;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT);
+  Serial.println("Setup complete.");
+}
+
+void loop() {
+  loopCount++;
+
+  digitalWrite(LED_PIN, HIGH);
+  delay(BLINK_SPEED);
+
+  digitalWrite(LED_PIN, LOW);
+  delay(BLINK_SPEED);
+
+  if (loopCount % 5 == 0) {
+    Serial.print("Loop count: ");
+    Serial.println(loopCount);
+  }
+}</code></pre></figure>
+
+<h3>Anatomy Table</h3>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>#define LED_PIN 13</code></summary><div><p>Creates a named constant by text substitution. No type and no semicolon.</p></div></details>
+<details class="solution"><summary><code>const int BLINK_SPEED = 500;</code></summary><div><p>Creates a typed named constant. Prefer this for values that have a clear type.</p></div></details>
+<details class="solution"><summary><code>int loopCount = 0;</code></summary><div><p>A global variable declared outside any function. It is accessible from both <code>setup()</code> and <code>loop()</code>.</p></div></details>
+<details class="solution"><summary><code>delay(BLINK_SPEED)</code></summary><div><p>Pauses execution for 500 ms. During <code>delay()</code>, the Arduino does nothing else. Later sketches use <code>millis()</code> when they need to respond to sensors continuously.</p></div></details>
+<details class="solution"><summary><code>loopCount % 5 == 0</code></summary><div><p>The <code>%</code> operator is modulo, the remainder after division. This condition is true when <code>loopCount</code> is exactly divisible by 5.</p></div></details>
+</div>
+
+<p>Upload this sketch, open Serial Monitor at <code>115200</code>, and verify that the LED blinks and the loop count prints every five blinks. When this works, you are ready for the hardware sketches.</p>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-arduino-basics">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projC-wiring" data-lesson-link="projC-wiring"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PC.3 Wiring</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projC-first-sketch" data-lesson-link="projC-first-sketch"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PC.5 Blink and Serial &rarr;</span></a>
 </nav>
 </article>
 
