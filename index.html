@@ -6462,6 +6462,24 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="lesson-body">
 <p class="lead">Before touching the robot code, build the lane detector step by step on one still image in Colab. You should see the math work on a photo before asking a moving robot to trust it.</p>
 <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/proj2-opencv-experiments.ipynb" target="_blank" rel="noreferrer">Open Project 2 OpenCV Notebook</a>
+<div class="callout warning p2-photo-warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">How to take the right test photo</div><p>The row scanning algorithm expects the tape to look like it does from the robot's camera: a stripe running away from you into the distance, narrow at the top and slightly wider at the bottom.</p><p><strong>CORRECT photo:</strong> stand behind the robot position and hold your phone at roughly a 50-60 degree angle pointing forward-down at the tape. The tape should appear as a vertical stripe running from the bottom of the frame toward the top, like a road disappearing into the distance.</p><p><strong>WRONG photo:</strong> holding the phone straight down above the tape. This produces a horizontal blob in the center of the frame. Row scanning will miss it because it scans horizontal rows looking for a vertical stripe, and because the blob sits in the middle rows instead of the lower rows where the scan lines are.</p><figure class="p2-photo-compare" aria-label="Wrong horizontal tape photo compared with correct vertical tape photo"><div class="p2-photo-panel p2-photo-wrong"><h4>Wrong: straight down</h4><div class="p2-photo-frame"><span class="p2-photo-tape"></span><span class="p2-photo-scan s1"></span><span class="p2-photo-scan s2"></span><span class="p2-photo-scan s3"></span></div><p>Horizontal blob in the center rows.</p></div><div class="p2-photo-panel p2-photo-correct"><h4>Correct: robot camera angle</h4><div class="p2-photo-frame"><span class="p2-photo-tape"></span><span class="p2-photo-scan s1"></span><span class="p2-photo-scan s2"></span><span class="p2-photo-scan s3"></span></div><p>Vertical stripe reaches the lower scan rows.</p></div></figure><p>If you only have a horizontal photo right now, rotate it in the notebook to simulate the correct perspective. Add this line immediately after <code>cv2.imread</code>:</p><figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Optional notebook rotation"><figcaption><span>Rotate a horizontal test photo</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)</code></pre></figure><p>This is the same rotation the robot code applies in <code>main()</code>. Run it and the horizontal tape becomes a vertical stripe.</p></div></div>
+<h3>Cell 1b: Quick Photo Sanity Check</h3>
+<p>Run this immediately after loading the image. It prints a simple row histogram so you can see whether the tape is actually in the lower 60% of the frame before row scanning begins.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook Cell 1b"><figcaption><span>Where is the tape in your image?</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python"># Quick check — where is the tape in your image?
+gray_check = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+_, binary_check = cv2.threshold(gray_check, BINARY_THRESHOLD,
+                                 255, cv2.THRESH_BINARY_INV)
+
+print("Rows containing white pixels (potential tape rows):")
+for ry in range(0, frame.shape[0], int(frame.shape[0]/20)):
+    count = np.count_nonzero(binary_check[ry])
+    bar = "█" * min(count // 10, 40)
+    print(f"  {ry/frame.shape[0]:.0%} from top: {bar} ({count}px)")
+
+print()
+print("The tape should appear as a vertical band of rows")
+print("concentrated in the LOWER 60% of the image (60-100% from top)")
+print("If it appears in the middle rows only, rotate your photo first.")</code></pre></figure>
 <h3>How This Lesson Works</h3>
 <div class="steps">
 <div class="step"><div>Take one photo of your tape on the floor from roughly the robot camera angle.</div></div>
@@ -6473,6 +6491,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <h3>Notebook Cells</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Cell</th><th>What it shows</th><th>What to write down</th></tr></thead><tbody>
 <tr><td>1. Load image</td><td>Reads <code>test_frame.jpg</code>, displays it, and explains BGR versus RGB.</td><td>Confirm the photo loaded and tape is visible.</td></tr>
+<tr><td>1b. Photo sanity check</td><td>Prints which image rows contain potential tape pixels before the main pipeline runs.</td><td>Confirm the tape appears in the lower 60% of the frame, or rotate the photo first.</td></tr>
 <tr><td>2. Grayscale</td><td>Shows that the detector uses brightness, not color.</td><td>Confirm the tape still contrasts in grayscale.</td></tr>
 <tr><td>3. Blur</td><td>Compares raw grayscale to a 7x7 Gaussian blur.</td><td>Notice whether blur removes small specks.</td></tr>
 <tr><td>4. Threshold</td><td>Interactive <code>BINARY_THRESHOLD</code> tuning.</td><td>Your working threshold value.</td></tr>
@@ -6480,6 +6499,14 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <tr><td>6. Row scanning</td><td>Draws scan rows and magenta center points.</td><td>Typical number of detected points.</td></tr>
 <tr><td>7. Steering error</td><td>Computes the same combined error the PID receives in the robot script.</td><td>Whether left/right steering signs make sense.</td></tr>
 </tbody></table></div>
+<h3>Cell 6: Row Scanning Warning</h3>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Your test photo matters</div><p>The scan rows in this notebook are set up for a photo where the tape appears in the lower half of the frame, as it would when the phone is mounted on the robot pointing forward-downward. If your test photo was taken straight down or the tape is in the center of the image, the scan rows will miss it. Take your test photo from the same angle the phone will be mounted on the robot: forward-facing, angled down so the tape appears in the bottom 60% of the frame. If the dots still do not appear, add print statements to check which rows the tape actually occupies, then adjust <code>ROW_FRACS</code> to match.</p></div></div>
+<p>There is no ROI cropping in the Colab notebook. Cell 6 processes the full image, so <code>ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]</code> scans rows in the lower part of that full frame. If your tape is in the upper or middle half, those rows can miss it entirely.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook row occupancy check"><figcaption><span>Find which rows contain white pixels</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python"># Find which rows contain white pixels
+for ry in range(0, h, 20):   # check every 20 rows
+    count = np.count_nonzero(clean[ry])
+    if count &gt; 0:
+        print(f"Row {ry} ({ry/h:.0%} from top): {count} white pixels")</code></pre></figure>
 <h3>The Most Important Cell</h3>
 <figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook Cell 4"><figcaption><span>Binary threshold experiment</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">BINARY_THRESHOLD = 70  # Change this value and run again.
 

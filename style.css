@@ -3291,6 +3291,96 @@ body.lesson-app .p2-steering-scenarios {
   gap: 1rem;
 }
 
+body.lesson-app .p2-photo-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+body.lesson-app .p2-photo-panel {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+body.lesson-app .p2-photo-panel h4,
+body.lesson-app .p2-photo-panel p {
+  margin: 0;
+}
+
+body.lesson-app .p2-photo-panel h4 {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--white);
+  font-size: 0.92rem;
+}
+
+body.lesson-app .p2-photo-panel p {
+  padding: 0.75rem 0.85rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+body.lesson-app .p2-photo-frame {
+  position: relative;
+  height: 230px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    #e8e2d7;
+  background-size: 32px 32px;
+}
+
+body.lesson-app .p2-photo-tape,
+body.lesson-app .p2-photo-scan {
+  position: absolute;
+  display: block;
+}
+
+body.lesson-app .p2-photo-wrong .p2-photo-tape {
+  left: 18%;
+  right: 18%;
+  top: 47%;
+  height: 30px;
+  border-radius: 999px;
+  background: #111827;
+  transform: rotate(3deg);
+}
+
+body.lesson-app .p2-photo-correct .p2-photo-frame {
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.20) 0 10%, transparent 38%),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+    #e8e2d7;
+  background-size: auto, 34px 34px, 34px 34px, auto;
+}
+
+body.lesson-app .p2-photo-correct .p2-photo-tape {
+  left: 36%;
+  bottom: -9%;
+  width: 28%;
+  height: 112%;
+  clip-path: polygon(44% 0, 56% 0, 82% 100%, 18% 100%);
+  background: #111827;
+}
+
+body.lesson-app .p2-photo-scan {
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: rgba(250, 204, 21, 0.82);
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.38);
+}
+
+body.lesson-app .p2-photo-scan.s1 { top: 90%; }
+body.lesson-app .p2-photo-scan.s2 { top: 75%; }
+body.lesson-app .p2-photo-scan.s3 { top: 60%; }
+
 body.lesson-app .p2-threshold-panels > div,
 body.lesson-app .p2-morph-panels > div,
 body.lesson-app .p2-steering-scenarios > div {
@@ -3673,7 +3763,8 @@ body.lesson-app .p2-camera-label-floor {
 
 html.light-mode body.lesson-app .p2-threshold-panels > div,
 html.light-mode body.lesson-app .p2-morph-panels > div,
-html.light-mode body.lesson-app .p2-steering-scenarios > div {
+html.light-mode body.lesson-app .p2-steering-scenarios > div,
+html.light-mode body.lesson-app .p2-photo-panel {
   background: #f8fbff;
   border-color: #d0d7de;
 }
@@ -3714,6 +3805,7 @@ html.light-mode body.lesson-app .p2-steering-scenarios > div {
   body.lesson-app .grid-2,
   body.lesson-app .grid-3,
   body.lesson-app .grid-4,
+  body.lesson-app .p2-photo-compare,
   body.lesson-app .p2-threshold-panels,
   body.lesson-app .p2-morph-panels,
   body.lesson-app .p2-steering-scenarios,
