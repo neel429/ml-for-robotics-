@@ -347,6 +347,23 @@ _result
     });
   }
 
+  function wireDownloadButton(block) {
+    const download = block.querySelector(".download-code-btn");
+    if (!download || download.dataset.initialized === "true") return;
+    download.dataset.initialized = "true";
+    download.addEventListener("click", () => {
+      const editor = block.querySelector(".code-editor");
+      const code = editor ? editor.value : block.querySelector("code")?.textContent || "";
+      const filename = download.dataset.downloadFilename || block.dataset.filename || "code.txt";
+      const blob = new Blob([code], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  }
+
   function wireTabKey(textarea) {
     if (!textarea || textarea.dataset.tabKeyInitialized === "true") return;
     textarea.dataset.tabKeyInitialized = "true";
@@ -471,7 +488,7 @@ _result
   }
 
   function renderCodeBlock(block, details) {
-    const { code, codeClass, filename, python, runnable, colabOnly, chapter, session } = details;
+    const { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename } = details;
     block.classList.toggle("is-runnable", runnable);
     block.classList.toggle("is-colab-only", colabOnly);
     block.dataset.runnable = String(runnable);
@@ -485,6 +502,7 @@ _result
         <div class="code-actions">
           <span class="code-lang">${python ? "Python" : "Text"}</span>
           <button class="copy-btn" type="button" title="Copy code">Copy</button>
+          ${downloadFilename ? `<button class="download-code-btn" type="button" data-download-filename="${escapeHtml(downloadFilename)}" title="Download code">Download</button>` : ""}
           ${runnable ? `<button class="reset-code-btn" type="button" title="Reset this code cell to the original example">↺ Reset</button>` : ""}
           ${runnable ? `<button class="run-btn" type="button" data-chapter="${escapeHtml(chapter)}" data-session="${escapeHtml(session)}">Run</button>` : ""}
           ${colabOnly ? `<a class="colab-inline-btn" href="${colabUrl}" target="_blank" rel="noreferrer"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a><span class="colab-reason" title="This cell needs Google Colab or unsupported browser packages.">Run in Colab</span>` : ""}
@@ -498,6 +516,7 @@ _result
     `;
     block.dataset.initialized = "true";
     wireCopyButton(block);
+    wireDownloadButton(block);
     if (runnable) {
       addResetBar(block, session, chapter);
       const editor = block.querySelector(".code-editor");
@@ -519,10 +538,11 @@ _result
     const session = sessionKeyFor(el);
     const caption = el.querySelector("figcaption");
     const filename = el.dataset.filename || filenameFromCaption(caption, index);
-    const colabOnly = python && isColabOnly(code, chapter);
+    const downloadFilename = el.dataset.downloadFilename || "";
+    const colabOnly = !downloadFilename && python && isColabOnly(code, chapter);
     const declaredRunnable = el.dataset.runnable;
     const runnable = python && !colabOnly && (declaredRunnable === undefined || declaredRunnable === "true");
-    return { code, codeClass, filename, python, runnable, colabOnly, chapter, session };
+    return { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename };
   }
 
   function transformFigure(figure, index) {

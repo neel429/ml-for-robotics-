@@ -169,6 +169,7 @@
 <div class="lesson-group-body">
 <div class="project-prereq-note">Complete Projects A, B, C, and D first &mdash; they produce the <code>best.pt</code> file, phone stream, encoder foundation, and UDP control loop used here.</div>
 <a class="lesson-link is-exercise" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span>★ P1.0 What We Are Building</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj1-get-code" data-lesson-link="proj1-get-code"><span>P1.0b Get the Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span>P1.1 Setting Up VS Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span>P1.2 Installing Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-config" data-lesson-link="proj1-config"><span>P1.3 Configuration</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -188,19 +189,16 @@
 <div class="lesson-group-body">
 <div class="project-prereq-note">Complete Project 1 first &mdash; this project keeps the phone stream, UDP commands, telemetry, state machine, PID, and ramp limiting, then replaces YOLO with OpenCV lane detection.</div>
 <a class="lesson-link is-exercise" href="?lesson=proj2-classical-cv" data-lesson-link="proj2-classical-cv"><span>★ P2.0 What Is Classical Computer Vision?</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-get-code" data-lesson-link="proj2-get-code"><span>P2.0b Get the Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj2-physical-setup" data-lesson-link="proj2-physical-setup"><span>P2.1 Physical Setup</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj2-opencv-notebook" data-lesson-link="proj2-opencv-notebook"><span>P2.2 OpenCV Experiment Notebook</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-changes" data-lesson-link="proj2-changes"><span>P2.3 What Changes from Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-thresholding" data-lesson-link="proj2-thresholding"><span>P2.4 Binary Thresholding</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-roi" data-lesson-link="proj2-roi"><span>P2.5 Region of Interest</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-morphology" data-lesson-link="proj2-morphology"><span>P2.6 Morphological Cleaning</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-row-scanning" data-lesson-link="proj2-row-scanning"><span>P2.7 Row Scanning</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-two-point" data-lesson-link="proj2-two-point"><span>P2.8 Two-Point Steering</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-smoothing" data-lesson-link="proj2-smoothing"><span>P2.9 Exponential Smoothing</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-lane-follower" data-lesson-link="proj2-lane-follower"><span>P2.10 The LaneFollower Class</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-visualisation" data-lesson-link="proj2-visualisation"><span>P2.11 Visualisation and Binary Window</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span>P2.12 Running and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span>P2.13 Connecting the Dots</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-config" data-lesson-link="proj2-config"><span>P2.3 Configuration</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-detect-lane" data-lesson-link="proj2-detect-lane"><span>P2.4 The detect_lane Function</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-lane-follower" data-lesson-link="proj2-lane-follower"><span>P2.5 LaneFollower Class</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-main-loop" data-lesson-link="proj2-main-loop"><span>P2.6 The Main Loop</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-visualisation" data-lesson-link="proj2-visualisation"><span>P2.7 Visualisation</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span>P2.8 Running and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span>P2.9 Connecting the Dots</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
 <div class="lesson-group" data-chapter="projects" style="--chapter-accent:var(--cyan)">
@@ -5324,10 +5322,572 @@ telem_sock.close()</code></pre></figure>
 <div class="step"><label><input type="checkbox" data-checklist-key="proj1-preflight-stream" />You know your phone stream URL from Project B.</label></div>
 </div>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Do not skip broken prerequisites</div><p>If any box is unchecked, finish that project before continuing. Project 1 is an integration project; it will not work if its detector, camera stream, motor base, or UDP link is already broken.</p></div></div>
-</div>
+<h3>Full Code</h3><p class="lead">This is the complete file. Every lesson in this project explains one section of it. Read it top to bottom now &mdash; even if you do not understand it yet. Then come back to each lesson to understand what each part does.</p><figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="Obj_track_adv.py" data-download-filename="Obj_track_adv.py"><figcaption><span>Complete Obj_track_adv.py</span><span class="local-run-badge">Copy or download</span></figcaption><pre><code class="language-python">import cv2
+import numpy as np
+import time
+import socket
+import threading
+import requests
+from ultralytics import YOLO
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  CONFIGURATION
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Network
+ESP_IP         = &quot;192.168.137.228&quot;
+UDP_CMD_PORT   = 5001
+UDP_TELEM_PORT = 5002
+
+# Vision
+TARGET_OBJECT = &quot;ball&quot;
+TARGET_AREA   = 143_000
+
+# Turn PID
+BODY_TURN_KP = 10
+BODY_TURN_KI = 0
+BODY_TURN_KD = 3
+
+# Distance PID
+DIST_KP = 10
+DIST_KI = 0
+DIST_KD = 5
+MAX_DIST_INTEGRAL = 0.8
+
+# Motion limits
+MAX_SPEED = 30
+MIN_SPEED = 3
+MAX_TURN  = 30
+MAX_ACCEL = 2
+
+# Dead zones (normalised)
+ANGLE_DEAD_ZONE = 0.00
+AREA_DEAD_ZONE  = 0.08
+
+# Smoothing / state-machine
+SMOOTH_RATE    = 0.04
+ACQUIRE_FRAMES = 5
+LOST_TIMEOUT   = 1.0
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  CONTROLLERS
+# ──────────────────────────────────────────────────────────────────────────────
+
+class PID:
+    &quot;&quot;&quot;Proportional-Integral-Derivative controller with optional output clamping.&quot;&quot;&quot;
+
+    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.max_integral  = max_integral
+        self.output_limits = output_limits
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+    def update(self, error):
+        now = time.time()
+        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
+        self._prev_time = now
+
+        self._integral   = np.clip(self._integral + error * dt,
+                                   -self.max_integral, self.max_integral)
+        derivative       = (error - self._prev_error) / dt
+        self._prev_error = error
+
+        output = self.kp * error + self.ki * self._integral + self.kd * derivative
+        if self.output_limits:
+            output = np.clip(output, *self.output_limits)
+        return output
+
+    def reset(self):
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  NETWORKING
+# ──────────────────────────────────────────────────────────────────────────────
+
+class MobileVideoStream:
+    &quot;&quot;&quot;Continuously pulls MJPEG frames from a phone camera in a background thread.&quot;&quot;&quot;
+
+    def __init__(self, url):
+        self.url       = url
+        self.frame     = None
+        self.fid       = 0
+        self.connected = False
+        self.running   = True
+        self._lock     = threading.Lock()
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                response = requests.get(self.url, stream=True, timeout=10)
+                if response.status_code != 200:
+                    raise ConnectionError(&quot;Non-200 status&quot;)
+
+                self.connected = True
+                backoff = 1.0
+                buf = b&quot;&quot;
+
+                for chunk in response.iter_content(1024):
+                    buf += chunk
+                    start = buf.find(b&quot;\xff\xd8&quot;)
+                    end   = buf.find(b&quot;\xff\xd9&quot;)
+
+                    if start != -1 and end != -1:
+                        jpg = buf[start : end + 2]
+                        buf = buf[end + 2 :]
+                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid  += 1
+
+                    if not self.running:
+                        break
+
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False
+
+
+class Commander:
+    &quot;&quot;&quot;Sends UDP motor commands to the ESP.&quot;&quot;&quot;
+
+    def __init__(self, ip, port):
+        self.ip    = ip
+        self.port  = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light=&quot;off&quot;):
+        msg = f&quot;MOTOR,{int(left)},{int(right)},{light.upper()}&quot;
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b&quot;STOP,OFF&quot;, (self.ip, self.port))
+
+
+class Telemetry:
+    &quot;&quot;&quot;Receives encoder telemetry from the ESP over UDP.&quot;&quot;&quot;
+
+    def __init__(self, port):
+        self.left_ticks  = 0
+        self.right_ticks = 0
+        self.cmd_left    = 0
+        self.cmd_right   = 0
+        self.running     = True
+        self._lock       = threading.Lock()
+        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind((&quot;&quot;, port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(128)
+                parts   = data.decode().strip().split(&quot;,&quot;)
+                if parts[0] == &quot;ENC&quot; and len(parts) == 5:
+                    with self._lock:
+                        self.left_ticks  = int(parts[1])
+                        self.right_ticks = int(parts[2])
+                        self.cmd_left    = int(parts[3])
+                        self.cmd_right   = int(parts[4])
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return {
+                &quot;left_ticks&quot;:  self.left_ticks,
+                &quot;right_ticks&quot;: self.right_ticks,
+                &quot;cmd_left&quot;:    self.cmd_left,
+                &quot;cmd_right&quot;:   self.cmd_right,
+            }
+
+    def stop(self):
+        self.running = False
+        self._sock.close()
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  STATE MACHINE
+# ──────────────────────────────────────────────────────────────────────────────
+
+class RobotState:
+    STOPPED   = &quot;STOPPED&quot;
+    SEARCHING = &quot;SEARCHING&quot;
+    ACQUIRING = &quot;ACQUIRING&quot;
+    TRACKING  = &quot;TRACKING&quot;
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  TRACKER
+# ──────────────────────────────────────────────────────────────────────────────
+
+def ramp(current, target, max_step):
+    &quot;&quot;&quot;Limit how fast a value can change per step.&quot;&quot;&quot;
+    diff = target - current
+    if abs(diff) &lt;= max_step:
+        return target
+    return current + max_step * np.sign(diff)
+
+
+class Tracker:
+    &quot;&quot;&quot;YOLO-based ball tracker with PID control and a 4-state state machine.&quot;&quot;&quot;
+
+    STATE_COLORS = {
+        RobotState.STOPPED:   (100, 100, 100),
+        RobotState.SEARCHING: (255, 165,   0),
+        RobotState.ACQUIRING: (255, 255,   0),
+        RobotState.TRACKING:  (  0, 255,   0),
+    }
+
+    def __init__(self, model_path, target):
+        print(&quot;Loading YOLO model...&quot;)
+        self.model  = YOLO(model_path)
+        self.target = target
+
+        try:
+            self.model.to(&quot;cuda&quot;)
+            print(&quot;Using CUDA&quot;)
+        except Exception:
+            print(&quot;Using CPU&quot;)
+        self.model.fuse()
+
+        self.pid_turn = PID(BODY_TURN_KP, BODY_TURN_KI, BODY_TURN_KD,
+                            output_limits=(-MAX_TURN, MAX_TURN))
+        self.pid_dist = PID(DIST_KP, DIST_KI, DIST_KD,
+                            max_integral=MAX_DIST_INTEGRAL,
+                            output_limits=(-MAX_SPEED, MAX_SPEED))
+
+        self.state          = RobotState.STOPPED
+        self.acquire_count  = 0
+        self.last_seen_t    = 0.0
+        self.last_turn_dir  = 1.0
+        self.smoothed_angle = 0.0
+        self.speed_limit    = 1.0
+        self.cur_left       = 0.0
+        self.cur_right      = 0.0
+
+    # ── Detection ────────────────────────────────────────────────────────────
+
+    def _detect(self, frame):
+        &quot;&quot;&quot;Return the bounding box of the largest detected target, or None.&quot;&quot;&quot;
+        results   = self.model(frame, imgsz=320, verbose=False, conf=0.60)
+        best      = None
+        best_area = 0
+
+        for r in results:
+            for box in r.boxes:
+                if self.model.names[int(box.cls[0])] != self.target:
+                    continue
+                x1, y1, x2, y2 = map(int, box.xyxy[0].cpu().numpy())
+                area = (x2 - x1) * (y2 - y1)
+                if area &gt; best_area:
+                    best_area = area
+                    best      = (x1, y1, x2, y2)
+
+        return best
+
+    # ── State machine ─────────────────────────────────────────────────────────
+
+    def _update_state(self, bbox_found):
+        if bbox_found:
+            self.last_seen_t = time.time()
+
+            if self.state in (RobotState.STOPPED, RobotState.SEARCHING):
+                self.state         = RobotState.ACQUIRING
+                self.acquire_count = 0
+                self.speed_limit   = 0.4
+
+            elif self.state == RobotState.ACQUIRING:
+                self.acquire_count += 1
+                self.speed_limit    = 0.4 + 0.6 * self.acquire_count / ACQUIRE_FRAMES
+                if self.acquire_count &gt;= ACQUIRE_FRAMES:
+                    self.state       = RobotState.TRACKING
+                    self.speed_limit = 1.0
+
+            elif self.state == RobotState.TRACKING:
+                self.speed_limit = 1.0
+
+        else:
+            elapsed = time.time() - self.last_seen_t
+            if elapsed &lt; LOST_TIMEOUT:
+                self.state       = RobotState.SEARCHING
+                self.speed_limit = 0.3
+            else:
+                self.state          = RobotState.STOPPED
+                self.speed_limit    = 0.0
+                self.smoothed_angle = 0.0
+                self.pid_turn.reset()
+                self.pid_dist.reset()
+
+    # ── Control ──────────────────────────────────────────────────────────────
+
+    def _motor_outputs_for_ball(self, cx, area, frame_width):
+        &quot;&quot;&quot;Compute raw left/right targets when the ball is visible.&quot;&quot;&quot;
+        raw_angle_error = (cx - frame_width / 2) / frame_width
+
+        if abs(raw_angle_error) &lt; ANGLE_DEAD_ZONE:
+            raw_angle_error = 0.0
+        if raw_angle_error != 0.0:
+            self.last_turn_dir = np.sign(raw_angle_error)
+
+        self.smoothed_angle = raw_angle_error
+        turn_cmd = self.pid_turn.update(self.smoothed_angle)
+
+        dist_error = (area - TARGET_AREA) / TARGET_AREA
+        if abs(dist_error) &lt; AREA_DEAD_ZONE:
+            dist_error = 0.0
+        self.pid_dist.update(dist_error)
+
+        base_speed = 10
+        tgt_left   = base_speed + turn_cmd
+        tgt_right  = base_speed - turn_cmd
+
+        # Scale to MAX_SPEED without clipping
+        max_raw = max(abs(tgt_left), abs(tgt_right))
+        if max_raw &gt; MAX_SPEED:
+            scale     = MAX_SPEED / max_raw
+            tgt_left  *= scale
+            tgt_right *= scale
+
+        return tgt_left, tgt_right, dist_error, turn_cmd, base_speed
+
+    def control(self, frame):
+        &quot;&quot;&quot;Run one control cycle; returns (left_speed, right_speed, debug_dict).&quot;&quot;&quot;
+        h, w = frame.shape[:2]
+        bbox = self._detect(frame)
+        self._update_state(bbox is not None)
+
+        if bbox is not None:
+            x1, y1, x2, y2 = bbox
+            cx   = (x1 + x2) / 2
+            area = (x2 - x1) * (y2 - y1)
+            tgt_left, tgt_right, dist_error, turn_cmd, base_speed = \
+                self._motor_outputs_for_ball(cx, area, w)
+
+        elif self.state == RobotState.SEARCHING:
+            tgt_left   =  10 * self.last_turn_dir * self.speed_limit
+            tgt_right  = -10 * self.last_turn_dir * self.speed_limit
+            dist_error = turn_cmd = base_speed = 0.0
+            area = 0
+            cx   = w / 2
+
+        else:  # STOPPED
+            tgt_left = tgt_right = 0
+            dist_error = turn_cmd = base_speed = 0.0
+            area = 0
+            cx   = w / 2
+
+        self.cur_left  = ramp(self.cur_left,  tgt_left,  MAX_ACCEL)
+        self.cur_right = ramp(self.cur_right, tgt_right, MAX_ACCEL)
+
+        debug = {
+            &quot;state&quot;:          self.state,
+            &quot;bbox&quot;:           bbox,
+            &quot;smoothed_angle&quot;: self.smoothed_angle,
+            &quot;turn_cmd&quot;:       turn_cmd,
+            &quot;dist_error&quot;:     dist_error,
+            &quot;base_speed&quot;:     base_speed,
+            &quot;area&quot;:           area,
+            &quot;cx&quot;:             int(cx) if bbox is None else int((bbox[0] + bbox[2]) / 2),
+            &quot;speed_limit&quot;:    self.speed_limit,
+        }
+        return round(self.cur_left), round(self.cur_right), debug
+
+    def reset(self):
+        self.pid_turn.reset()
+        self.pid_dist.reset()
+        self.smoothed_angle = 0.0
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  VISUALISATION HELPERS
+# ──────────────────────────────────────────────────────────────────────────────
+
+def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y):
+    h, w = frame.shape[:2]
+    state_color = Tracker.STATE_COLORS.get(debug[&quot;state&quot;], (255, 255, 255))
+
+    # Centre line
+    cv2.line(frame, (w // 2, 0), (w // 2, h), (0, 255, 0), 1)
+
+    # Smoothed-angle indicator
+    smooth_x = int(w / 2 + debug[&quot;smoothed_angle&quot;] * w)
+    cv2.line(frame, (smooth_x, 0), (smooth_x, h), (0, 255, 255), 2)
+    cv2.putText(frame, &quot;SMOOTH&quot;, (smooth_x + 5, 20),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+
+    # Bounding box
+    if debug[&quot;bbox&quot;] is not None:
+        x1, y1, x2, y2 = debug[&quot;bbox&quot;]
+        x1, y1, x2, y2 = (int(x1 * scale_x), int(y1 * scale_y),
+                           int(x2 * scale_x), int(y2 * scale_y))
+
+        if abs(debug[&quot;dist_error&quot;]) &lt; AREA_DEAD_ZONE:
+            box_color = (0, 255, 0)     # green  — correct distance
+        elif debug[&quot;dist_error&quot;] &gt; 0:
+            box_color = (0, 0, 255)     # red    — too close
+        else:
+            box_color = (255, 100, 0)   # blue   — too far
+
+        cv2.rectangle(frame, (x1, y1), (x2, y2), box_color, 2)
+        cy = (y1 + y2) // 2
+        cv2.circle(frame, (int(debug[&quot;cx&quot;] * scale_x), cy), 6, (0, 0, 255), -1)
+
+    # Text HUD
+    lines = [
+        (f&quot;STATE:  {debug[&#39;state&#39;]}&quot;,                                   state_color),
+        (f&quot;SMOOTH: {debug[&#39;smoothed_angle&#39;]:+.3f}&quot;,                     (0, 255, 255)),
+        (f&quot;AREA:   {int(debug[&#39;area&#39;])} / {TARGET_AREA}&quot;,               (255, 255, 255)),
+        (f&quot;SPD LIM:{debug[&#39;speed_limit&#39;]:.0%}&quot;,                         (255, 255, 255)),
+        (f&quot;L:{int(left_speed):+4d} R:{int(right_speed):+4d}&quot;,           (0, 255, 0)),
+        (f&quot;ENC L:{telem[&#39;left_ticks&#39;]:+4d} R:{telem[&#39;right_ticks&#39;]:+4d}&quot;, (255, 165, 0)),
+    ]
+    for i, (text, color) in enumerate(lines):
+        thickness = 2 if i in (0, 4) else 1
+        cv2.putText(frame, text, (10, 25 + i * 25),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65 if i in (0, 4) else 0.55,
+                    color, thickness)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  MAIN
+# ──────────────────────────────────────────────────────────────────────────────
+
+def main():
+    mobile_ip  = &quot;10.18.204.215&quot;
+    stream_url = f&quot;http://{mobile_ip}:8080/video&quot;
+    print(f&quot;Stream: {stream_url}&quot;)
+
+    video     = MobileVideoStream(stream_url)
+    commander = Commander(ESP_IP, UDP_CMD_PORT)
+    telemetry = Telemetry(UDP_TELEM_PORT)
+
+    print(&quot;Waiting for camera&quot;, end=&quot;&quot;, flush=True)
+    for _ in range(30):
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+    print()
+
+    if not video.connected:
+        print(&quot;Could not connect to camera&quot;)
+        return
+
+    tracker = Tracker(&quot;best.pt&quot;, TARGET_OBJECT)
+    commander.stop()
+    time.sleep(0.5)
+
+    print(f&quot;\nTracking: {TARGET_OBJECT}  |  Target area: {TARGET_AREA}&quot;)
+    print(&quot;Q=Quit  R=Reset  F=Smooth faster  S=Smooth slower&quot;)
+    print(&quot;=&quot; * 60)
+
+    last_fid      = -1
+    last_cmd_time = 0.0
+    CMD_INTERVAL  = 0.03
+    fps_count     = 0
+    fps_timer     = time.time()
+
+    while True:
+        frame, fid = video.read()
+        if frame is None or fid == last_fid:
+            time.sleep(0.005)
+            continue
+
+        last_fid   = fid
+        fps_count += 1
+        if fps_count &gt;= 30:
+            fps = fps_count / (time.time() - fps_timer)
+            print(f&quot;FPS: {fps:.1f}  SMOOTH_RATE: {SMOOTH_RATE:.2f}&quot;)
+            fps_count = 0
+            fps_timer = time.time()
+
+        left_speed, right_speed, debug = tracker.control(frame)
+        print(left_speed, right_speed)
+
+        orig_h, orig_w = frame.shape[:2]
+        frame = cv2.resize(frame, (640, 480))
+        h, w  = frame.shape[:2]
+
+        # Send motor command at a fixed interval
+        now = time.time()
+        if now - last_cmd_time &gt;= CMD_INTERVAL:
+            commander.motors(-left_speed, right_speed)
+            last_cmd_time = now
+
+        draw_overlay(frame, debug, left_speed, right_speed,
+                     telemetry.read(), w / orig_w, h / orig_h)
+
+        cv2.imshow(f&quot;Object Tracker — {TARGET_OBJECT}&quot;, frame)
+
+        key = cv2.waitKey(1) &amp; 0xFF
+        if key == ord(&quot;q&quot;):
+            break
+        elif key == ord(&quot;r&quot;):
+            tracker.reset()
+            print(&quot;Reset&quot;)
+        elif key == ord(&quot;f&quot;):
+            SMOOTH_RATE = min(SMOOTH_RATE + 0.02, 0.5)
+            print(f&quot;SMOOTH_RATE → {SMOOTH_RATE:.2f}&quot;)
+        elif key == ord(&quot;s&quot;):
+            SMOOTH_RATE = max(SMOOTH_RATE - 0.02, 0.02)
+            print(f&quot;SMOOTH_RATE → {SMOOTH_RATE:.2f}&quot;)
+
+    print(&quot;\nShutting down...&quot;)
+    commander.stop()
+    time.sleep(0.2)
+    video.stop()
+    telemetry.stop()
+    cv2.destroyAllWindows()
+    print(&quot;Done&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></figure></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.7 Project 1 Bridge</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj1-get-code" data-lesson-link="proj1-get-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.0b Get the Code &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj1-get-code" data-chapter="proj1" data-chapter-title="★ Project 1: Object Tracker" style="--chapter-accent:#f97316">
+<div class="lesson-kicker">★ Project 1: Object Tracker <span>&rsaquo;</span> P1.0b Get the Code</div>
+<h1>P1.0b Get the Code</h1>
+<div class="lesson-meta"><span>Download</span><span>GitHub</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The code for this project is in the course GitHub repository. You need to download it to your laptop before anything else.</p>
+<div class="steps">
+<div class="step"><div><strong>Step 1 &mdash; Open the repository.</strong><br />Go to <a href="https://github.com/neel429/ml-for-robotics-" target="_blank" rel="noreferrer">github.com/neel429/ml-for-robotics-</a>.</div></div>
+<div class="step"><div><strong>Step 2 &mdash; Download the file.</strong><br />Navigate to the code folder and find <code>Obj_track_adv.py</code>. Click the file name to open it, then click the Download Raw File button, the down-arrow icon in the top right of the file view. Save it to your <code>my-detector</code> project folder from Project A.</div></div>
+<div class="step"><div><strong>Step 3 &mdash; Verify the file is there.</strong><br />Open VS Code and open the <code>my-detector</code> folder. You should see <code>Obj_track_adv.py</code> in the file explorer on the left.</div></div>
+<div class="step"><div><strong>Step 4 &mdash; Open it and read the configuration block.</strong><br />Open the file. The very top section is the CONFIGURATION block. Every value in this section must be filled in before running. The next lesson walks through each one.</div></div>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">CODE</div><div><div class="callout-title">Do not run the file yet</div><p>It will not work with the default placeholder values. Complete every lesson in this project first, then run it in the final lesson.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-get-code">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.0 What We Are Building</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.1 Setting Up VS Code &rarr;</span></a>
 </nav>
 </article>
@@ -5349,7 +5909,7 @@ telem_sock.close()</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-vscode">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.0 What We Are Building</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj1-get-code" data-lesson-link="proj1-get-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.0b Get the Code</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.2 Installing Dependencies &rarr;</span></a>
 </nav>
 </article>
@@ -6388,10 +6948,554 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="flow-row"><div class="flow-node">Phone camera<br /><span class="mini muted">floor image</span></div><div class="arrow">&rarr;</div><div class="flow-node">OpenCV pipeline<br /><span class="mini muted">threshold + scan rows</span></div><div class="arrow">&rarr;</div><div class="flow-node">LaneFollower<br /><span class="mini muted">two-point steering + PID</span></div><div class="arrow">&rarr;</div><div class="flow-node">Commander<br /><span class="mini muted">UDP motor commands</span></div></div>
 </div>
 <p>Everything after the vision result is familiar. The robot still receives motor commands over UDP and sends telemetry back. Only the detection module changes.</p>
-</div>
+<h3>Full Code</h3><p class="lead">This is the complete file. Every lesson in this project explains one section of it. Read it top to bottom now &mdash; even if you do not understand it yet. Then come back to each lesson to understand what each part does.</p><figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py" data-download-filename="lane_follower_adv.py"><figcaption><span>Complete lane_follower_adv.py</span><span class="local-run-badge">Copy or download</span></figcaption><pre><code class="language-python">import cv2
+import numpy as np
+import time
+import socket
+import threading
+import requests
+
+# ==================== CONFIGURATION ====================
+ESP_IP         = &quot;192.168.137.228&quot;
+UDP_CMD_PORT   = 5001
+UDP_TELEM_PORT = 5002
+
+BINARY_THRESHOLD   = 70
+ROI_HEIGHT_PERCENT = 0.88
+MORPH_KERNEL_SIZE  = 7
+MIN_LINE_AREA      = 500
+BASE_SPEED         = 100
+TARGET_AREA        = 20000
+MAX_SPEED          = 255
+MAX_TURN           = 30
+MAX_ACCEL          = 2
+MOTOR_OUTPUT_SCALE = 10
+
+SMOOTH_RATE = 0.04
+
+BODY_TURN_KP = 100
+BODY_TURN_KD = 4
+BODY_TURN_KI = 0
+
+DIST_KP = 0
+DIST_KI = 0
+DIST_KD = 0
+MAX_DIST_INTEGRAL = 0.8
+
+ANGLE_DEAD_ZONE = 0.00
+AREA_DEAD_ZONE  = 0.2
+
+ACQUIRE_FRAMES = 5
+LOST_TIMEOUT   = 1.0
+
+ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]
+
+STATE_COLORS = {
+    &quot;STOPPED&quot;:   (100, 100, 100),
+    &quot;SEARCHING&quot;: (255, 165,   0),
+    &quot;ACQUIRING&quot;: (255, 255,   0),
+    &quot;TRACKING&quot;:  (  0, 255,   0),
+}
+
+
+# ==================== CONTROLLERS ====================
+class PD:
+    def __init__(self, kp, kd, output_limits=None):
+        self.kp = kp
+        self.kd = kd
+        self.output_limits = output_limits
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+    def update(self, error):
+        now = time.time()
+        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
+        self._prev_time  = now
+        derivative       = (error - self._prev_error) / dt
+        self._prev_error = error
+        out = self.kp * error + self.kd * derivative
+        if self.output_limits:
+            out = np.clip(out, *self.output_limits)
+        return out
+
+    def reset(self):
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+
+class PID:
+    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.max_integral  = max_integral
+        self.output_limits = output_limits
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+    def update(self, error):
+        now = time.time()
+        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
+        self._prev_time = now
+        self._integral  = np.clip(
+            self._integral + error * dt, -self.max_integral, self.max_integral
+        )
+        derivative       = (error - self._prev_error) / dt
+        self._prev_error = error
+        out = self.kp * error + self.ki * self._integral + self.kd * derivative
+        if self.output_limits:
+            out = np.clip(out, *self.output_limits)
+        print(f&quot;error: {error:.3f} | derivative: {derivative:.3f} | out: {out:.3f}&quot;)
+        return out
+
+    def reset(self):
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+
+# ==================== VIDEO STREAM ====================
+class MobileVideoStream:
+    def __init__(self, url):
+        self.url       = url
+        self.frame     = None
+        self.fid       = 0
+        self._lock     = threading.Lock()
+        self.connected = False
+        self.running   = True
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                r = requests.get(self.url, stream=True, timeout=10)
+                if r.status_code != 200:
+                    raise ConnectionError()
+                self.connected = True
+                backoff = 1.0
+                buf = b&#39;&#39;
+                for chunk in r.iter_content(1024):
+                    if not self.running:
+                        break
+                    buf += chunk
+                    a, b = buf.find(b&#39;\xff\xd8&#39;), buf.find(b&#39;\xff\xd9&#39;)
+                    if a != -1 and b != -1:
+                        img = cv2.imdecode(np.frombuffer(buf[a:b+2], np.uint8), cv2.IMREAD_COLOR)
+                        buf = buf[b+2:]
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid  += 1
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False
+
+
+# ==================== COMMANDER ====================
+class Commander:
+    def __init__(self, ip, port):
+        self.ip    = ip
+        self.port  = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light=&#39;off&#39;):
+        msg = f&quot;MOTOR,{int(left)},{int(right)},{light.upper()}&quot;
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b&quot;STOP,OFF&quot;, (self.ip, self.port))
+
+
+# ==================== TELEMETRY ====================
+class Telemetry:
+    def __init__(self, port):
+        self._lock   = threading.Lock()
+        self.running = True
+        self.data    = dict(left_ticks=0, right_ticks=0, cmd_left=0, cmd_right=0)
+        self._sock   = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind((&#39;&#39;, port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                msg = self._sock.recvfrom(128)[0].decode().strip()
+                if msg.startswith(&quot;ENC,&quot;):
+                    parts = msg.split(&#39;,&#39;)
+                    if len(parts) == 5:
+                        with self._lock:
+                            self.data = dict(
+                                left_ticks  = int(parts[1]),
+                                right_ticks = int(parts[2]),
+                                cmd_left    = int(parts[3]),
+                                cmd_right   = int(parts[4]),
+                            )
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return dict(self.data)
+
+    def stop(self):
+        self.running = False
+        self._sock.close()
+
+
+# ==================== HELPERS ====================
+def ramp(current, target, max_step):
+    diff = target - current
+    if abs(diff) &lt;= max_step:
+        return target
+    return current + max_step * np.sign(diff)
+
+
+def scale_motors(left, right):
+    &quot;&quot;&quot;Scale motor commands so neither exceeds MAX_SPEED.&quot;&quot;&quot;
+    peak = max(abs(left), abs(right))
+    if peak &gt; MAX_SPEED:
+        scale = MAX_SPEED / peak
+        return left * scale, right * scale
+    return left, right
+
+
+# ==================== LANE DETECTION ====================
+def detect_lane(frame):
+    h, w  = frame.shape[:2]
+    roi_y = int(h * (1 - ROI_HEIGHT_PERCENT))
+    roi   = frame[roi_y:, :]
+
+    blur = cv2.GaussianBlur(cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY), (7, 7), 0)
+    _, binary = cv2.threshold(blur, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY_INV)
+
+    kernel = np.ones((MORPH_KERNEL_SIZE, MORPH_KERNEL_SIZE), np.uint8)
+    binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN,  kernel)
+    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
+
+    points = []
+    for frac in ROW_FRACS:
+        ry  = int(binary.shape[0] * frac)
+        xs  = np.where(binary[ry] &gt; 0)[0]
+        if len(xs) &lt; 15:
+            continue
+        runs = np.split(xs, np.where(np.diff(xs) &gt; 1)[0] + 1)
+        best = max(runs, key=len)
+        if len(best) &lt; 12:
+            continue
+        points.append((int((best[0] + best[-1]) / 2), ry + roi_y))
+
+    area = int(np.count_nonzero(binary))
+
+    if len(points) &lt; 2:
+        return None, None, None, area, roi_y, binary, points
+
+    return points[0], points[-1], points, area, roi_y, binary, points
+
+
+# ==================== STATE MACHINE ====================
+class RobotState:
+    STOPPED   = &quot;STOPPED&quot;
+    SEARCHING = &quot;SEARCHING&quot;
+    ACQUIRING = &quot;ACQUIRING&quot;
+    TRACKING  = &quot;TRACKING&quot;
+
+
+# ==================== LANE FOLLOWER ====================
+class LaneFollower:
+    def __init__(self):
+        self.smoothed_angle = 0.0
+        self.pid_turn = PID(BODY_TURN_KP, BODY_TURN_KI, BODY_TURN_KD,
+                            output_limits=(-MAX_TURN, MAX_TURN))
+        self.pid_dist = PID(DIST_KP, DIST_KI, DIST_KD,
+                            max_integral=MAX_DIST_INTEGRAL,
+                            output_limits=(-MAX_SPEED, MAX_SPEED))
+        self.state         = RobotState.STOPPED
+        self.acquire_count = 0
+        self.last_seen_t   = 0.0
+        self.last_turn_dir = 1.0
+        self.cur_left      = 0.0
+        self.cur_right     = 0.0
+        self.speed_limit   = 1.0
+
+    def _update_state(self, line_found):
+        if line_found:
+            self.last_seen_t = time.time()
+            if self.state in (RobotState.STOPPED, RobotState.SEARCHING):
+                self.state, self.acquire_count, self.speed_limit = RobotState.ACQUIRING, 0, 0.4
+            elif self.state == RobotState.ACQUIRING:
+                self.acquire_count += 1
+                self.speed_limit = 0.4 + 0.6 * self.acquire_count / ACQUIRE_FRAMES
+                if self.acquire_count &gt;= ACQUIRE_FRAMES:
+                    self.state, self.speed_limit = RobotState.TRACKING, 1.0
+            # TRACKING → no change needed
+        else:
+            elapsed = time.time() - self.last_seen_t
+            if elapsed &lt; LOST_TIMEOUT:
+                self.state, self.speed_limit = RobotState.SEARCHING, 0.3
+            else:
+                self.state, self.speed_limit = RobotState.STOPPED, 0.0
+                self.smoothed_angle = 0.0
+                self.pid_turn.reset()
+                self.pid_dist.reset()
+
+    def control(self, frame):
+        h, w = frame.shape[:2]
+        near_pt, far_pt, centers, area, roi_y, binary, points = detect_lane(frame)
+        line_found = near_pt is not None and far_pt is not None
+
+        self._update_state(line_found)
+
+        if line_found:
+            near_cx, near_cy = near_pt
+            far_cx,  _       = far_pt
+
+            position_error  = (near_cx - w / 2) / w
+            direction_error = (far_cx  - near_cx) / w
+            raw_angle_error = 0.25 * position_error + 0.75 * direction_error
+
+            if abs(raw_angle_error) &lt; ANGLE_DEAD_ZONE:
+                raw_angle_error = 0.0
+            if raw_angle_error != 0.0:
+                self.last_turn_dir = np.sign(raw_angle_error)
+
+            self.smoothed_angle = (
+                SMOOTH_RATE * self.smoothed_angle
+                + (1 - SMOOTH_RATE) * raw_angle_error
+            )
+
+            turn_cmd   = self.pid_turn.update(self.smoothed_angle)
+            dist_error = (TARGET_AREA - area) / TARGET_AREA
+            if abs(dist_error) &lt; AREA_DEAD_ZONE:
+                dist_error = 0.0
+            dist_cmd = self.pid_dist.update(dist_error)
+
+            tgt_left, tgt_right = scale_motors(
+                (BASE_SPEED + turn_cmd) * self.speed_limit,
+                (BASE_SPEED - turn_cmd) * self.speed_limit,
+            )
+            cx, cy = near_cx, near_cy
+
+        elif self.state == RobotState.SEARCHING:
+            search_turn = 8 * self.last_turn_dir * self.speed_limit
+            forward     = 5 * self.speed_limit
+            tgt_left, tgt_right = scale_motors(forward + search_turn, forward - search_turn)
+            dist_error, turn_cmd, area, cx = 0.0, 0.0, 0, w // 2
+            cy = h // 2
+
+        else:  # STOPPED
+            tgt_left = tgt_right = 0
+            dist_error, turn_cmd, area, cx = 0.0, 0.0, 0, w // 2
+            cy = h // 2
+
+        self.cur_left  = ramp(self.cur_left,  tgt_left,  MAX_ACCEL)
+        self.cur_right = ramp(self.cur_right, tgt_right, MAX_ACCEL)
+
+        debug = {
+            &#39;state&#39;:          self.state,
+            &#39;line_found&#39;:     line_found,
+            &#39;cx&#39;:             cx,
+            &#39;cy&#39;:             cy,
+            &#39;area&#39;:           area,
+            &#39;roi_y&#39;:          roi_y,
+            &#39;binary&#39;:         binary,
+            &#39;smoothed_angle&#39;: self.smoothed_angle,
+            &#39;turn_cmd&#39;:       turn_cmd,
+            &#39;dist_error&#39;:     dist_error,
+            &#39;base_speed&#39;:     BASE_SPEED if line_found else 0,
+            &#39;speed_limit&#39;:    self.speed_limit,
+            &#39;points&#39;:         points if line_found else [],
+        }
+        return round(self.cur_left), round(self.cur_right), debug
+
+
+# ==================== VISUALIZATION ====================
+def draw_debug(frame, debug, left_speed, right_speed, telem):
+    h, w = frame.shape[:2]
+
+    # ROI line
+    cv2.line(frame, (0, debug[&#39;roi_y&#39;]), (w, debug[&#39;roi_y&#39;]), (0, 165, 255), 1)
+    cv2.putText(frame, &quot;ROI&quot;, (5, debug[&#39;roi_y&#39;] - 5),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 165, 255), 1)
+
+    # Centre and smoothed-angle guide lines
+    cv2.line(frame, (w // 2, 0), (w // 2, h), (0, 255, 0), 1)
+    smooth_x = int(w / 2 + debug[&#39;smoothed_angle&#39;] * w)
+    cv2.line(frame, (smooth_x, 0), (smooth_x, h), (0, 255, 255), 2)
+    cv2.putText(frame, &quot;SMOOTH&quot;, (smooth_x + 5, 20),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+
+    # Detected lane points and centroid
+    if debug[&#39;line_found&#39;]:
+        color = ((0, 255, 0) if abs(debug[&#39;dist_error&#39;]) &lt; AREA_DEAD_ZONE
+                 else (0, 0, 255) if debug[&#39;dist_error&#39;] &lt; 0
+                 else (255, 100, 0))
+        cv2.circle(frame, (debug[&#39;cx&#39;], debug[&#39;cy&#39;]), 8, color, -1)
+        cv2.line(frame, (w // 2, debug[&#39;cy&#39;]), (debug[&#39;cx&#39;], debug[&#39;cy&#39;]), (0, 255, 255), 2)
+
+        for px, py in debug[&#39;points&#39;]:
+            cv2.circle(frame, (px, py), 5, (255, 0, 255), -1)
+        if len(debug[&#39;points&#39;]) &gt;= 2:
+            cv2.line(frame, debug[&#39;points&#39;][0], debug[&#39;points&#39;][-1], (255, 0, 0), 2)
+
+    # HUD text
+    sc = STATE_COLORS.get(debug[&#39;state&#39;], (255, 255, 255))
+    lines = [
+        (f&quot;STATE:  {debug[&#39;state&#39;]}&quot;,                       sc,            25),
+        (f&quot;SMOOTH: {debug[&#39;smoothed_angle&#39;]:+.3f}&quot;,          (0, 255, 255), 50),
+        (f&quot;AREA:   {int(debug[&#39;area&#39;])} / {TARGET_AREA}&quot;,   (255,255,255), 75),
+        (f&quot;SPD LIM:{debug[&#39;speed_limit&#39;]:.0%}&quot;,             (255,255,255), 100),
+        (f&quot;L:{int(left_speed):+4d} R:{int(right_speed):+4d}&quot;, (0,255,0),   125),
+        (f&quot;DIST:   {debug[&#39;dist_error&#39;]:+.3f}&quot;,             (255, 165, 0), 150),
+        (f&quot;ENC L:{telem[&#39;left_ticks&#39;]:+4d} R:{telem[&#39;right_ticks&#39;]:+4d}&quot;, (255,165,0), 175),
+        (f&quot;THRESH: {BINARY_THRESHOLD}&quot;,                     (200,200,200), 200),
+    ]
+    for text, color, y in lines:
+        thickness = 2 if y in (25, 125) else 1
+        cv2.putText(frame, text, (10, y), cv2.FONT_HERSHEY_SIMPLEX, 0.55 if thickness == 1 else 0.65, color, thickness)
+
+    # Binary window
+    if debug[&#39;binary&#39;] is not None:
+        bin_disp = cv2.resize(cv2.cvtColor(debug[&#39;binary&#39;], cv2.COLOR_GRAY2BGR), (640, 480))
+        cv2.putText(bin_disp, f&quot;THRESH={BINARY_THRESHOLD}&quot;, (10, 25),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 1)
+        cv2.imshow(&quot;Binary (lane detection)&quot;, bin_disp)
+
+
+# ==================== MAIN ====================
+def main():
+    global BINARY_THRESHOLD
+
+    mobile_ip = &quot;10.18.204.215&quot;
+    stream_url = f&quot;http://{mobile_ip}:8080/video&quot;
+    print(f&quot;Stream: {stream_url}&quot;)
+
+    video     = MobileVideoStream(stream_url)
+    commander = Commander(ESP_IP, UDP_CMD_PORT)
+    telemetry = Telemetry(UDP_TELEM_PORT)
+
+    print(&quot;Waiting for camera...&quot;)
+    for _ in range(30):
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+    print()
+
+    if not video.connected:
+        print(&quot;Could not connect to camera&quot;)
+        exit(1)
+
+    follower = LaneFollower()
+    commander.stop()
+    time.sleep(0.5)
+
+    print(&quot;\nLane Following Active&quot;)
+    print(
+        f&quot;BINARY_THRESHOLD: {BINARY_THRESHOLD}  &quot;
+        f&quot;ROI: {ROI_HEIGHT_PERCENT:.0%}  &quot;
+        f&quot;KERNEL: {MORPH_KERNEL_SIZE}x{MORPH_KERNEL_SIZE}  &quot;
+        f&quot;TARGET_AREA: {TARGET_AREA}&quot;
+    )
+    print(&quot;Q=Quit  R=Reset  T=Threshold up  Y=Threshold down&quot;)
+    print(&quot;=&quot; * 60 + &quot;\n&quot;)
+
+    last_fid      = -1
+    last_cmd_time = 0.0
+    CMD_INTERVAL  = 0.03
+    fps_count     = 0
+    fps_timer     = time.time()
+
+    while True:
+        frame, fid = video.read()
+        if frame is None or fid == last_fid:
+            time.sleep(0.005)
+            continue
+
+        last_fid   = fid
+        fps_count += 1
+        if fps_count &gt;= 30:
+            print(f&quot;FPS: {fps_count / (time.time() - fps_timer):.1f}&quot;)
+            fps_count = 0
+            fps_timer = time.time()
+
+        frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+        left_speed, right_speed, debug = follower.control(frame)
+        print(left_speed, right_speed)
+
+        now = time.time()
+        if now - last_cmd_time &gt;= CMD_INTERVAL:
+            commander.motors(0, 0) if (left_speed == right_speed == 0) \
+                else commander.motors(
+                    -left_speed / MOTOR_OUTPUT_SCALE,
+                    right_speed / MOTOR_OUTPUT_SCALE,
+                )
+            last_cmd_time = now
+
+        draw_debug(frame, debug, left_speed, right_speed, telemetry.read())
+        cv2.imshow(&quot;Lane Follower&quot;, frame)
+
+        key = cv2.waitKey(1) &amp; 0xFF
+        if key == ord(&#39;q&#39;):
+            break
+        elif key == ord(&#39;r&#39;):
+            follower.pid_turn.reset()
+            follower.pid_dist.reset()
+            follower.smoothed_angle = 0.0
+            print(&quot;Reset&quot;)
+        elif key == ord(&#39;t&#39;):
+            BINARY_THRESHOLD = min(BINARY_THRESHOLD + 5, 255)
+            print(f&quot;BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}&quot;)
+        elif key == ord(&#39;y&#39;):
+            BINARY_THRESHOLD = max(BINARY_THRESHOLD - 5, 0)
+            print(f&quot;BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}&quot;)
+
+    print(&quot;\nShutting down...&quot;)
+    commander.stop()
+    time.sleep(0.2)
+    video.stop()
+    telemetry.stop()
+    cv2.destroyAllWindows()
+    print(&quot;Done&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></figure></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-classical-cv">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=proj1-running" data-lesson-link="proj1-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.12 Running and Testing</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-get-code" data-lesson-link="proj2-get-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.0b Get the Code &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj2-get-code" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.0b Get the Code</div>
+<h1>P2.0b Get the Code</h1>
+<div class="lesson-meta"><span>Download</span><span>GitHub</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The code for this project is in the course GitHub repository. You need to download it to your laptop before anything else.</p>
+<div class="steps">
+<div class="step"><div><strong>Step 1 &mdash; Open the repository.</strong><br />Go to <a href="https://github.com/neel429/ml-for-robotics-" target="_blank" rel="noreferrer">github.com/neel429/ml-for-robotics-</a>.</div></div>
+<div class="step"><div><strong>Step 2 &mdash; Download the file.</strong><br />Navigate to the code folder and find <code>lane_follower_adv.py</code>. Click the file name to open it, then click the Download Raw File button, the down-arrow icon in the top right of the file view. Save it to your <code>my-detector</code> project folder from Project A.</div></div>
+<div class="step"><div><strong>Step 3 &mdash; Verify the file is there.</strong><br />Open VS Code and open the <code>my-detector</code> folder. You should see <code>lane_follower_adv.py</code> in the file explorer on the left.</div></div>
+<div class="step"><div><strong>Step 4 &mdash; Open it and read the configuration block.</strong><br />Open the file. The very top section is the CONFIGURATION block. Every value in this section must be filled in before running. The configuration lesson walks through each one.</div></div>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">CODE</div><div><div class="callout-title">Do not run the file yet</div><p>It will not work with the default placeholder values. Complete every lesson in this project first, then run it in the final lesson.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-get-code">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj2-classical-cv" data-lesson-link="proj2-classical-cv"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.0 Classical CV</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj2-physical-setup" data-lesson-link="proj2-physical-setup"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.1 Physical Setup &rarr;</span></a>
 </nav>
 </article>
@@ -6450,7 +7554,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-physical-setup">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-classical-cv" data-lesson-link="proj2-classical-cv"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.0 Classical CV</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-get-code" data-lesson-link="proj2-get-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.0b Get the Code</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj2-opencv-notebook" data-lesson-link="proj2-opencv-notebook"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.2 OpenCV Notebook &rarr;</span></a>
 </nav>
 </article>
@@ -6527,179 +7631,160 @@ print(f"White pixels: {white_pixels} ({100 * white_pixels / total_pixels:.1f}% o
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-opencv-notebook">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=proj2-physical-setup" data-lesson-link="proj2-physical-setup"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.1 Physical Setup</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-changes" data-lesson-link="proj2-changes"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.3 What Changes &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-config" data-lesson-link="proj2-config"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.3 Configuration &rarr;</span></a>
 </nav>
 </article>
-<article class="lesson-content" data-lesson="proj2-changes" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.3 What Changes from Project 1</div>
-<h1>P2.3 What Changes from Project 1</h1>
-<div class="lesson-meta"><span>Architecture</span><span>Diff reading</span><span>12 min</span></div>
+<article class="lesson-content" data-lesson="proj2-config" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.3 Configuration</div>
+<h1>P2.3 Configuration: Fill In Your Values</h1>
+<div class="lesson-meta"><span>Setup</span><span>Calibration values</span><span>18 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">Project 2 is deliberately small in architectural scope. The robot infrastructure from Project 1 stays the same. YOLO detection is removed, and a classical lane detector is inserted in its place.</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Project 1 <code>Obj_track_adv.py</code></th><th>Project 2 <code>lane_follower_adv.py</code></th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>from ultralytics import YOLO</code></td><td>No YOLO import.</td><td>The trained model is gone.</td></tr>
-<tr><td><code>class Tracker</code></td><td><code>class LaneFollower</code></td><td>The high-level controller has the same role with a different vision input.</td></tr>
-<tr><td><code>_detect(frame)</code></td><td><code>detect_lane(frame)</code></td><td>YOLO bounding boxes are replaced by OpenCV lane points.</td></tr>
-<tr><td><code>_motor_outputs_for_ball()</code></td><td><code>control()</code> uses two-point steering.</td><td>Object center becomes near and far line points.</td></tr>
-<tr><td><code>MobileVideoStream</code></td><td><code>MobileVideoStream</code></td><td>Unchanged phone camera stream.</td></tr>
-<tr><td><code>Commander</code></td><td><code>Commander</code></td><td>Unchanged UDP motor sender.</td></tr>
-<tr><td><code>Telemetry</code></td><td><code>Telemetry</code></td><td>Unchanged encoder feedback receiver.</td></tr>
-<tr><td><code>RobotState</code></td><td><code>RobotState</code></td><td>Same four states: STOPPED, SEARCHING, ACQUIRING, TRACKING.</td></tr>
-<tr><td><code>PID</code>, <code>ramp()</code></td><td><code>PID</code>, <code>ramp()</code></td><td>Same control concepts.</td></tr>
-<tr><td>Inline motor scaling</td><td><code>scale_motors()</code></td><td>Same math extracted into a helper.</td></tr>
+<p class="lead">Before the lane follower can run, the configuration block at the top of <code>lane_follower_adv.py</code> must match your robot, your phone stream, and your Colab calibration result.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>CONFIGURATION block</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python"># ==================== CONFIGURATION ====================
+ESP_IP         = &quot;192.168.137.228&quot;
+UDP_CMD_PORT   = 5001
+UDP_TELEM_PORT = 5002
+
+BINARY_THRESHOLD   = 70
+ROI_HEIGHT_PERCENT = 0.88
+MORPH_KERNEL_SIZE  = 7
+MIN_LINE_AREA      = 500
+BASE_SPEED         = 100
+TARGET_AREA        = 20000
+MAX_SPEED          = 255
+MAX_TURN           = 30
+MAX_ACCEL          = 2
+MOTOR_OUTPUT_SCALE = 10
+
+SMOOTH_RATE = 0.04
+
+BODY_TURN_KP = 100
+BODY_TURN_KD = 4
+BODY_TURN_KI = 0
+
+DIST_KP = 0
+DIST_KI = 0
+DIST_KD = 0
+MAX_DIST_INTEGRAL = 0.8
+
+ANGLE_DEAD_ZONE = 0.00
+AREA_DEAD_ZONE  = 0.2
+
+ACQUIRE_FRAMES = 5
+LOST_TIMEOUT   = 1.0
+
+ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]
+
+STATE_COLORS = {
+    &quot;STOPPED&quot;:   (100, 100, 100),
+    &quot;SEARCHING&quot;: (255, 165,   0),
+    &quot;ACQUIRING&quot;: (255, 255,   0),
+    &quot;TRACKING&quot;:  (  0, 255,   0),
+}</code></pre></figure>
+<h3>Where Each Value Comes From</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Constant</th><th>Where to get the value</th></tr></thead><tbody>
+<tr><td><code>ESP_IP</code></td><td>Serial Monitor output from Project D.</td></tr>
+<tr><td><code>UDP_CMD_PORT</code></td><td>Must match <code>CMD_PORT</code> in the <code>robot_udp</code> Arduino sketch.</td></tr>
+<tr><td><code>UDP_TELEM_PORT</code></td><td>Must match <code>TELEM_PORT</code> in the Arduino sketch.</td></tr>
+<tr><td><code>BINARY_THRESHOLD</code></td><td>From the Colab experiment notebook Cell 4 in P2.2.</td></tr>
+<tr><td><code>ROI_HEIGHT_PERCENT</code></td><td>Leave at <code>0.88</code> until the camera is mounted and tested.</td></tr>
+<tr><td><code>MORPH_KERNEL_SIZE</code></td><td>Start with the notebook value. Keep <code>7</code> unless the binary window has noise or gaps.</td></tr>
+<tr><td><code>MIN_LINE_AREA</code></td><td>Leave at <code>500</code> for the first run.</td></tr>
+<tr><td><code>BASE_SPEED</code></td><td>Start at <code>60</code> for the first run, then increase after testing.</td></tr>
+<tr><td><code>TARGET_AREA</code></td><td>Leave at <code>20000</code>; tune later in P2.8 Running and Tuning.</td></tr>
+<tr><td><code>MAX_SPEED</code>, <code>MAX_TURN</code>, <code>MAX_ACCEL</code></td><td>Motion safety limits. Keep the defaults for the first run.</td></tr>
+<tr><td><code>MOTOR_OUTPUT_SCALE</code></td><td>Leave at <code>10</code>. Lower values make the robot respond more strongly; higher values reduce response.</td></tr>
+<tr><td><code>SMOOTH_RATE</code></td><td>Leave at <code>0.04</code> unless the row-scan output jitters.</td></tr>
+<tr><td><code>BODY_TURN_KP</code></td><td>Leave at <code>100</code>; tune later in P2.8.</td></tr>
+<tr><td><code>BODY_TURN_KD</code></td><td>Leave at <code>4</code>; tune later in P2.8.</td></tr>
+<tr><td><code>BODY_TURN_KI</code></td><td>Leave at <code>0</code> for this robot.</td></tr>
+<tr><td><code>DIST_KP</code>, <code>DIST_KI</code>, <code>DIST_KD</code></td><td>Distance-control path. Leave at <code>0</code> until the lane follower works reliably.</td></tr>
+<tr><td><code>MAX_DIST_INTEGRAL</code></td><td>Safety clamp for distance PID integral. Leave the default.</td></tr>
+<tr><td><code>ANGLE_DEAD_ZONE</code>, <code>AREA_DEAD_ZONE</code></td><td>Ignore tiny control errors. Keep defaults for the first run.</td></tr>
+<tr><td><code>ACQUIRE_FRAMES</code>, <code>LOST_TIMEOUT</code></td><td>State-machine timing. Keep defaults unless detection flickers.</td></tr>
+<tr><td><code>ROW_FRACS</code></td><td>Scan-row positions. Adjust only if the visible tape does not cross the default rows.</td></tr>
+<tr><td><code>STATE_COLORS</code></td><td>HUD colors only. No tuning needed.</td></tr>
 </tbody></table></div>
-<h3>Only Three New Ideas</h3>
-<div class="grid-3">
-<div class="card"><h4><code>detect_lane()</code></h4><p>The OpenCV pipeline that turns camera pixels into lane points.</p></div>
-<div class="card"><h4>Two-point steering</h4><p>Uses a near point and a far point so the robot sees curve direction, not just current offset.</p></div>
-<div class="card"><h4>Exponential smoothing</h4><p>Filters row-scan jitter before the turn PID receives the angle error.</p></div>
+<h3>Fill In Before Running</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Value</th><th>Your value</th><th>Source</th></tr></thead><tbody>
+<tr><td><code>ESP_IP</code></td><td><code>"____________"</code></td><td>Project D Serial Monitor</td></tr>
+<tr><td><code>BINARY_THRESHOLD</code></td><td><code>____________</code></td><td>Colab Cell 4</td></tr>
+<tr><td><code>mobile_ip</code></td><td><code>"____________"</code></td><td>Project B phone camera stream</td></tr>
+</tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">BINARY_THRESHOLD matters most</div><p><code>BINARY_THRESHOLD</code> is the most important value in this file. If you have not run the Colab experiment notebook yet, stop here and complete lesson P2.2 first. Running with the wrong threshold is the most common reason the robot does not respond to the tape at all.</p></div></div>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">SWAP</div><div><div class="callout-title">The swap is surgical</div><p>Good robotics software separates sensing from control. Project 2 proves that design: the sensing algorithm changes, but the command, telemetry, state, and PID structure still works.</p></div></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-changes">Mark as Complete</button></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-config">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=proj2-opencv-notebook" data-lesson-link="proj2-opencv-notebook"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.2 OpenCV Notebook</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-thresholding" data-lesson-link="proj2-thresholding"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.4 Thresholding &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-detect-lane" data-lesson-link="proj2-detect-lane"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.4 detect_lane &rarr;</span></a>
 </nav>
 </article>
-<article class="lesson-content" data-lesson="proj2-thresholding" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.4 Binary Thresholding</div>
-<h1>P2.4 Binary Thresholding: Making the Line Visible</h1>
-<div class="lesson-meta"><span>OpenCV</span><span>Pixels</span><span>18 min</span></div>
+<article class="lesson-content" data-lesson="proj2-detect-lane" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.4 The detect_lane Function</div>
+<h1>P2.4 The detect_lane Function</h1>
+<div class="lesson-meta"><span>OpenCV</span><span>Pipeline reading</span><span>32 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">You already tuned this in Colab Cell 4. This lesson explains the exact robot-code version and why the threshold must be calibrated before the robot moves.</p>
-<div class="callout warning" role="alert"><div class="callout-icon">CAL</div><div><div class="callout-title">Use your Colab value first</div><p>Paste the <code>BINARY_THRESHOLD</code> value from P2.2 into the configuration block at the top of <code>lane_follower_adv.py</code>. If you did not run the notebook yet, do that before continuing.</p></div></div>
-<p>The camera image contains millions of color pixels. Lane detection starts by reducing that complexity to one question per pixel: is this the line, or is this the floor?</p>
-<p>Thresholding converts a grayscale image into a binary image. A pixel becomes either <code>0</code> for black or <code>255</code> for white. After this step, the algorithm can search for white pixels instead of reasoning about color.</p>
-<!-- lane_follower_adv.py:226-228 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Preprocessing section of detect_lane()</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">blur = cv2.GaussianBlur(cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY), (7, 7), 0)
-_, binary = cv2.threshold(
-    blur,
-    BINARY_THRESHOLD,
-    255,
-    cv2.THRESH_BINARY_INV,
-)</code></pre></figure>
-<h3>Step by Step</h3>
-<div class="pd-anatomy-list">
-<details class="solution" open><summary><code>cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)</code></summary><div><p>The phone image has blue, green, and red channels. A floor line is usually detected by brightness contrast, so color is collapsed to one grayscale channel from 0 to 255.</p></div></details>
-<details class="solution"><summary><code>cv2.GaussianBlur(..., (7, 7), 0)</code></summary><div><p>Blur removes tiny camera noise before thresholding. A 7 by 7 Gaussian blur replaces each pixel with a weighted average of its neighborhood, preventing isolated bright or dark specks from becoming false line pixels.</p></div></details>
-<details class="solution"><summary><code>cv2.THRESH_BINARY_INV</code></summary><div><p>Every pixel at or below <code>BINARY_THRESHOLD</code> becomes white. The inverted threshold is correct for a dark line on a light floor. If your line is white on a dark floor, use <code>cv2.THRESH_BINARY</code> instead.</p></div></details>
-</div>
-<div class="diagram p2-threshold-panels" aria-label="Binary thresholding diagram">
-<div><strong>Grayscale input</strong><span class="p2-gradient"></span><small>Floor and line are brightness values.</small></div>
-<div><strong>Without inversion</strong><span class="p2-binary p2-binary-normal"></span><small>Light floor becomes white.</small></div>
-<div><strong>With <code>THRESH_BINARY_INV</code></strong><span class="p2-binary p2-binary-inv"></span><small>Dark line becomes white, which is what the algorithm scans.</small></div>
-</div>
-<h3>Reading Your Colab Result</h3>
-<p>Cell 4 in the experiment notebook is where you find the first threshold. Change <code>BINARY_THRESHOLD</code> there and rerun until only the tape appears white. Runtime <code>T</code>/<code>Y</code> tuning is saved for P2.12 as small fine-tuning only.</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Binary window</th><th>Meaning</th><th>Action</th></tr></thead><tbody>
-<tr><td>Too much white everywhere</td><td>The floor is being included as line.</td><td>Decrease the threshold in Colab and rerun.</td></tr>
-<tr><td>No white line visible</td><td>The actual line is being excluded.</td><td>Increase the threshold in Colab and rerun.</td></tr>
-<tr><td>Only the tape line is white</td><td>The threshold is usable.</td><td>Copy the value into <code>BINARY_THRESHOLD</code>.</td></tr>
-</tbody></table></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-thresholding">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-changes" data-lesson-link="proj2-changes"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.3 What Changes</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-roi" data-lesson-link="proj2-roi"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.5 ROI &rarr;</span></a>
-</nav>
-</article>
-<article class="lesson-content" data-lesson="proj2-roi" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.5 The Region of Interest</div>
-<h1>P2.5 The Region of Interest (ROI)</h1>
-<div class="lesson-meta"><span>OpenCV</span><span>Geometry</span><span>12 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<p class="lead">The phone sees more than the track: floor, walls, furniture, shadows, and possibly the horizon. The lane detector should process only the floor area where the line can appear.</p>
-<!-- lane_follower_adv.py:222-225 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>ROI crop in detect_lane()</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">h, w = frame.shape[:2]
+<p class="lead">All four image processing steps &mdash; thresholding, ROI cropping, morphological cleaning, and row scanning &mdash; live inside a single function called <code>detect_lane()</code>. It takes one camera frame as input and returns the detected line position. Read it as one piece, not four separate ideas.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Complete detect_lane() function</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">def detect_lane(frame):
+    h, w  = frame.shape[:2]
+    roi_y = int(h * (1 - ROI_HEIGHT_PERCENT))
+    roi   = frame[roi_y:, :]
+
+    blur = cv2.GaussianBlur(cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY), (7, 7), 0)
+    _, binary = cv2.threshold(blur, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY_INV)
+
+    kernel = np.ones((MORPH_KERNEL_SIZE, MORPH_KERNEL_SIZE), np.uint8)
+    binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN,  kernel)
+    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
+
+    points = []
+    for frac in ROW_FRACS:
+        ry  = int(binary.shape[0] * frac)
+        xs  = np.where(binary[ry] &gt; 0)[0]
+        if len(xs) &lt; 15:
+            continue
+        runs = np.split(xs, np.where(np.diff(xs) &gt; 1)[0] + 1)
+        best = max(runs, key=len)
+        if len(best) &lt; 12:
+            continue
+        points.append((int((best[0] + best[-1]) / 2), ry + roi_y))
+
+    area = int(np.count_nonzero(binary))
+
+    if len(points) &lt; 2:
+        return None, None, None, area, roi_y, binary, points
+
+    return points[0], points[-1], points, area, roi_y, binary, points</code></pre></figure>
+<h3>1. ROI</h3>
+<p>The first lines define the part of the frame that the detector is allowed to inspect. The phone sees floor, walls, furniture, shadows, and possibly the robot chassis; the lane detector should process only the floor area where the line can appear.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>ROI crop</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">h, w  = frame.shape[:2]
 roi_y = int(h * (1 - ROI_HEIGHT_PERCENT))
-roi = frame[roi_y:, :]</code></pre></figure>
-<p><code>ROI_HEIGHT_PERCENT = 0.88</code> means the ROI starts 12 percent down from the top of the frame and continues to the bottom. The upper 12 percent is ignored.</p>
-<div class="diagram p2-roi-diagram" aria-label="Region of interest diagram">
-<div class="p2-frame">
-<div class="p2-ignored">IGNORED</div>
-<div class="p2-roi-line">roi_y</div>
-<div class="p2-roi">ROI - line detection happens here</div>
-</div>
-</div>
-<h3>Why Not Process the Whole Frame?</h3>
-<p>Processing fewer pixels is slightly faster, but the bigger reason is reliability. Anything above the floor area can create false detections: wall edges, table legs, sunlight, reflections, or the robot chassis.</p>
-<h3>Coordinate Conversion</h3>
-<p><code>detect_lane()</code> scans inside ROI coordinates, where <code>y = 0</code> is the top of the cropped region. The HUD draws on the full frame, so detected row coordinates must be shifted back down by <code>roi_y</code>.</p>
-<!-- lane_follower_adv.py:245-246 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Converting ROI y back to full-frame y</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">cx = int((best[0] + best[-1]) / 2)
-points.append((cx, ry + roi_y))</code></pre></figure>
-<div class="callout info" role="note"><div class="callout-icon">ROI</div><div><div class="callout-title">The orange line in the HUD</div><p><code>draw_debug()</code> draws a horizontal orange line at <code>roi_y</code>. If that line is too high or too low for your phone mount, tune <code>ROI_HEIGHT_PERCENT</code>.</p></div></div>
-<h3>Try ROI in Your Notebook</h3>
-<p>This crop was not part of the first notebook pipeline. Paste this cell into the Project 2 experiment notebook to see exactly which part of your own photo would be processed.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook ROI experiment"><figcaption><span>ROI crop experiment</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">roi_y = int(frame.shape[0] * (1 - 0.88))
-roi = frame[roi_y:, :]
+roi   = frame[roi_y:, :]</code></pre></figure>
+<p><code>ROI_HEIGHT_PERCENT = 0.88</code> means the ROI starts 12 percent down from the top of the frame and continues to the bottom. The upper 12 percent is ignored. Detected y-coordinates are shifted back into full-frame coordinates later with <code>ry + roi_y</code> so <code>draw_debug()</code> can place the magenta dots on the original camera image.</p>
+<div class="diagram p2-roi-diagram" aria-label="Region of interest diagram"><div class="p2-frame"><div class="p2-ignored">IGNORED</div><div class="p2-roi-line">roi_y</div><div class="p2-roi">ROI - line detection happens here</div></div></div>
+<h3>2. Threshold Pipeline</h3>
+<p>You already saw each of these steps in the Colab experiment notebook (P2.2). Here they are combined into the pipeline that runs on every frame.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Blur, threshold, and morphology</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">blur = cv2.GaussianBlur(cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY), (7, 7), 0)
+_, binary = cv2.threshold(blur, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY_INV)
 
-plt.imshow(cv2.cvtColor(roi, cv2.COLOR_BGR2RGB))
-plt.title("ROI - only this region is processed")
-plt.axis("off")
-plt.show()</code></pre></figure>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-roi">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-thresholding" data-lesson-link="proj2-thresholding"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.4 Thresholding</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-morphology" data-lesson-link="proj2-morphology"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.6 Morphology &rarr;</span></a>
-</nav>
-</article>
-<article class="lesson-content" data-lesson="proj2-morphology" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.6 Morphological Cleaning</div>
-<h1>P2.6 Morphological Cleaning</h1>
-<div class="lesson-meta"><span>OpenCV</span><span>Noise removal</span><span>14 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<p class="lead">You saw this in Colab Cell 5. After thresholding, the binary image usually has small white specks that are not the line. Morphological operations remove those specks and repair small gaps in the line.</p>
-<!-- lane_follower_adv.py:230-232 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Opening and closing</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">MORPH_KERNEL_SIZE = 7
 kernel = np.ones((MORPH_KERNEL_SIZE, MORPH_KERNEL_SIZE), np.uint8)
-binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN,  kernel)
 binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)</code></pre></figure>
-<div class="grid-3">
-<div class="card"><h4>Opening</h4><p><code>MORPH_OPEN</code> erodes then dilates. Small blobs disappear; the main line survives.</p></div>
-<div class="card"><h4>Closing</h4><p><code>MORPH_CLOSE</code> dilates then erodes. Small holes and interruptions in the line get bridged.</p></div>
-<div class="card"><h4>Kernel</h4><p><code>np.ones((7, 7))</code> creates a 7-pixel square tool used for both operations.</p></div>
+<div class="pd-anatomy-list">
+<details class="solution" open><summary><code>cv2.cvtColor(..., cv2.COLOR_BGR2GRAY)</code></summary><div><p>The phone image has blue, green, and red channels. The detector uses brightness contrast, so color is collapsed to one grayscale channel from 0 to 255.</p></div></details>
+<details class="solution"><summary><code>cv2.GaussianBlur(..., (7, 7), 0)</code></summary><div><p>Blur removes tiny camera noise before thresholding. A 7 by 7 Gaussian blur prevents isolated bright or dark specks from becoming false line pixels.</p></div></details>
+<details class="solution"><summary><code>cv2.THRESH_BINARY_INV</code></summary><div><p>Every pixel at or below <code>BINARY_THRESHOLD</code> becomes white. The inverted threshold is correct for a dark line on a light floor. If your line is white on a dark floor, use <code>cv2.THRESH_BINARY</code> instead.</p></div></details>
+<details class="solution"><summary><code>MORPH_OPEN</code> then <code>MORPH_CLOSE</code></summary><div><p>Opening removes small white blobs that are not the line. Closing repairs small holes and breaks in the tape stripe. The square kernel controls how aggressively both operations clean the binary image.</p></div></details>
 </div>
-<div class="diagram p2-morph-panels" aria-label="Morphological cleaning diagram">
-<div><strong>Before</strong><span class="p2-noisy-line"></span><small>Line plus noise blobs.</small></div>
-<div><strong>After OPEN</strong><span class="p2-open-line"></span><small>Noise removed.</small></div>
-<div><strong>After CLOSE</strong><span class="p2-closed-line"></span><small>Gaps filled.</small></div>
-</div>
-<h3>Choosing Kernel Size</h3>
-<p>If the cleaning looked good in Colab, no changes are needed. If noise was still present, increase the robot-code kernel from <code>7</code> to <code>9</code> in the configuration block.</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Observed line in binary window</th><th>Kernel adjustment</th></tr></thead><tbody>
-<tr><td>Line is narrow, less than about 20 px wide.</td><td>Reduce to <code>(5, 5)</code>.</td></tr>
-<tr><td>Line is wide, more than about 60 px wide.</td><td>Increase to <code>(9, 9)</code>.</td></tr>
-<tr><td>Line is clean and continuous.</td><td>Keep <code>(7, 7)</code>.</td></tr>
-</tbody></table></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-morphology">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-roi" data-lesson-link="proj2-roi"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.5 ROI</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-row-scanning" data-lesson-link="proj2-row-scanning"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.7 Row Scanning &rarr;</span></a>
-</nav>
-</article>
-<article class="lesson-content" data-lesson="proj2-row-scanning" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.7 Row Scanning</div>
-<h1>P2.7 Row Scanning: Finding the Line Position</h1>
-<div class="lesson-meta"><span>NumPy</span><span>Line detection</span><span>20 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<p class="lead">You saw this in Colab Cell 6. After thresholding and cleaning, the binary image shows the line as a white region. Row scanning finds the horizontal center of that white region at several heights in the image.</p>
-<div class="callout info" role="note"><div class="callout-icon">CELL 6</div><div><div class="callout-title">The robot view should match Colab</div><p>The magenta points in the robot's main window should look like the magenta points in Colab Cell 6. If the points do not appear, the issue is almost always thresholding or camera setup, not the row-scanning loop.</p></div></div>
-<!-- lane_follower_adv.py:39 and 235-246 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Row scanning section of detect_lane()</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]
-
-points = []
+<div class="diagram p2-morph-panels" aria-label="Morphological cleaning diagram"><div><strong>Before</strong><span class="p2-noisy-line"></span><small>Line plus noise blobs.</small></div><div><strong>After OPEN</strong><span class="p2-open-line"></span><small>Noise removed.</small></div><div><strong>After CLOSE</strong><span class="p2-closed-line"></span><small>Gaps filled.</small></div></div>
+<h3>3. Row Scanning</h3>
+<p>After thresholding and cleaning, the binary image shows the line as a white region. Row scanning finds the horizontal center of that white region at several heights in the image.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Row scanning loop</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">points = []
 for frac in ROW_FRACS:
-    ry = int(binary.shape[0] * frac)
-    xs = np.where(binary[ry] &gt; 0)[0]
+    ry  = int(binary.shape[0] * frac)
+    xs  = np.where(binary[ry] &gt; 0)[0]
     if len(xs) &lt; 15:
         continue
     runs = np.split(xs, np.where(np.diff(xs) &gt; 1)[0] + 1)
@@ -6707,97 +7792,32 @@ for frac in ROW_FRACS:
     if len(best) &lt; 12:
         continue
     points.append((int((best[0] + best[-1]) / 2), ry + roi_y))</code></pre></figure>
-<div class="diagram p2-scan-diagram" aria-label="Row scanning diagram">
-<div class="p2-scan-frame">
-<span class="p2-track"></span>
-<span class="p2-scan-row r1"></span><span class="p2-scan-dot d1"></span>
-<span class="p2-scan-row r2"></span><span class="p2-scan-dot d2"></span>
-<span class="p2-scan-row r3"></span><span class="p2-scan-dot d3"></span>
-<span class="p2-scan-row r4"></span><span class="p2-scan-dot d4"></span>
-<span class="p2-scan-row r5"></span><span class="p2-scan-dot d5"></span>
-</div>
-</div>
-<h3>Line-by-line</h3>
-<div class="pd-anatomy-list">
-<details class="solution" open><summary><code>ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]</code></summary><div><p>These are five scan rows inside the ROI. <code>0.90</code> is near the bottom, closest to the robot. <code>0.30</code> is farther ahead.</p></div></details>
-<details class="solution"><summary><code>xs = np.where(binary[ry] &gt; 0)[0]</code></summary><div><p>This returns the x-coordinates of all white pixels in row <code>ry</code>. In the binary image, white means "line."</p></div></details>
-<details class="solution"><summary><code>if len(xs) &lt; 15: continue</code></summary><div><p>A row with fewer than 15 white pixels is probably noise, not a real tape line.</p></div></details>
-<details class="solution"><summary><code>np.diff(xs)</code> and <code>np.split(...)</code></summary><div><p><code>np.diff(xs)</code> finds gaps between white pixels. Splitting at gaps creates separate contiguous white runs. The real line should be one of those runs.</p></div></details>
-<details class="solution"><summary><code>best = max(runs, key=len)</code></summary><div><p>The longest continuous run is chosen because the actual line is usually larger than reflections or leftover noise.</p></div></details>
-<details class="solution"><summary><code>(best[0] + best[-1]) / 2</code></summary><div><p>The center of the longest run becomes the line's x-position for that scan row.</p></div></details>
-</div>
-<div class="definition-card"><span class="def-term">Example <code>points</code></span><p><code>[(320, 620), (315, 540), (308, 460), (301, 380), (295, 300)]</code><br />Together, these points trace the line from near the robot to farther ahead.</p></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-row-scanning">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-morphology" data-lesson-link="proj2-morphology"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.6 Morphology</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-two-point" data-lesson-link="proj2-two-point"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.8 Two-Point Steering &rarr;</span></a>
-</nav>
-</article>
-<article class="lesson-content" data-lesson="proj2-two-point" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.8 Two-Point Steering</div>
-<h1>P2.8 Two-Point Steering: Near and Far</h1>
-<div class="lesson-meta"><span>Control</span><span>Lookahead</span><span>20 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<p class="lead">You already computed the steering error in Colab Cell 7. The robot computes that same number on every frame, roughly 20 times per second.</p>
-<p>In Project 1, steering used one number: how far the ball center was from the frame center. A line has direction, so one point is not enough. Project 2 uses a near point and a far point.</p>
-<!-- lane_follower_adv.py:305-310 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Two-point error calculation</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">near_pt, far_pt = points[0], points[-1]
-near_cx, near_cy = near_pt
-far_cx, _ = far_pt
-
-position_error = (near_cx - w / 2) / w
-direction_error = (far_cx - near_cx) / w
-raw_angle_error = 0.25 * position_error + 0.75 * direction_error</code></pre></figure>
-<div class="diagram p2-steering-scenarios" aria-label="Two-point steering scenarios">
-<div><strong>Straight</strong><span class="p2-lane straight"></span><small>Near and far aligned. Direction error is near zero.</small></div>
-<div><strong>Gentle curve</strong><span class="p2-lane gentle"></span><small>Far point shifts right. Robot starts turning early.</small></div>
-<div><strong>Sharp curve</strong><span class="p2-lane sharp"></span><small>Far point moves strongly. Turn command grows.</small></div>
-</div>
-<h3>Every Term</h3>
-<div class="pd-anatomy-list">
-<details class="solution" open><summary><code>near_pt = points[0]</code></summary><div><p>The first point comes from <code>ROW_FRACS[0] = 0.90</code>, close to the bottom of the ROI. It tells the robot where the line is right now.</p></div></details>
-<details class="solution"><summary><code>far_pt = points[-1]</code></summary><div><p>The last detected point is farther ahead. It tells the robot where the line is going.</p></div></details>
-<details class="solution"><summary><code>position_error</code></summary><div><p>This is the current offset from image center. If <code>near_cx = 400</code> and <code>w = 640</code>, then <code>(400 - 320) / 640 = +0.125</code>.</p></div></details>
-<details class="solution"><summary><code>direction_error</code></summary><div><p>This is the line's direction from near to far. If <code>far_cx</code> is larger than <code>near_cx</code>, the line is heading right.</p></div></details>
-<details class="solution"><summary><code>0.25 * position + 0.75 * direction</code></summary><div><p>The default gives 25 percent weight to current position and 75 percent to lookahead direction. That makes the robot anticipate curves instead of reacting late.</p></div></details>
-</div>
-<h3>Compare to Project 1</h3>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Project</th><th>Error formula</th><th>Behavior</th></tr></thead><tbody>
-<tr><td>Project 1</td><td><code>(cx - w / 2) / w</code></td><td>Object tracking only needs the target center.</td></tr>
-<tr><td>Project 2</td><td><code>0.25 * position_error + 0.75 * direction_error</code></td><td>Line following needs current offset plus where the line is going.</td></tr>
+<div class="diagram p2-scan-diagram" aria-label="Row scanning diagram"><div class="p2-scan-frame"><span class="p2-track"></span><span class="p2-scan-row r1"></span><span class="p2-scan-dot d1"></span><span class="p2-scan-row r2"></span><span class="p2-scan-dot d2"></span><span class="p2-scan-row r3"></span><span class="p2-scan-dot d3"></span><span class="p2-scan-row r4"></span><span class="p2-scan-dot d4"></span><span class="p2-scan-row r5"></span><span class="p2-scan-dot d5"></span></div></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>ROW_FRACS</code></td><td>The five scan rows inside the ROI. <code>0.90</code> is near the bottom, closest to the robot; <code>0.30</code> is farther ahead.</td></tr>
+<tr><td><code>np.where(binary[ry] &gt; 0)[0]</code></td><td>Returns the x-coordinates of all white pixels in row <code>ry</code>. In the binary image, white means line.</td></tr>
+<tr><td><code>if len(xs) &lt; 15</code></td><td>Rejects rows with too few white pixels. A tiny white run is usually noise, not tape.</td></tr>
+<tr><td><code>np.diff(xs)</code></td><td>Measures gaps between consecutive white x-coordinates.</td></tr>
+<tr><td><code>np.split(...)</code></td><td>Splits the white pixels into separate contiguous runs whenever a gap appears.</td></tr>
+<tr><td><code>best = max(runs, key=len)</code></td><td>Chooses the longest continuous white run because the tape should be larger than reflections or leftover noise.</td></tr>
+<tr><td><code>if len(best) &lt; 12</code></td><td>Rejects a run that is still too narrow to trust.</td></tr>
+<tr><td><code>(best[0] + best[-1]) / 2</code></td><td>Computes the center x-position of the longest white run.</td></tr>
+<tr><td><code>ry + roi_y</code></td><td>Converts the y-position from ROI coordinates back to full-frame coordinates for drawing.</td></tr>
 </tbody></table></div>
-<div class="callout tip" role="note"><div class="callout-icon">TUNE</div><div><div class="callout-title">Weight tuning</div><p>If the robot cuts corners, increase direction weight, such as <code>0.15 / 0.85</code>. If it over-anticipates and weaves on straight sections, use more position weight, such as <code>0.5 / 0.5</code>.</p></div></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-two-point">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-row-scanning" data-lesson-link="proj2-row-scanning"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.7 Row Scanning</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-smoothing" data-lesson-link="proj2-smoothing"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.9 Smoothing &rarr;</span></a>
-</nav>
-</article>
-<article class="lesson-content" data-lesson="proj2-smoothing" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.9 Exponential Smoothing</div>
-<h1>P2.9 Exponential Smoothing</h1>
-<div class="lesson-meta"><span>Filtering</span><span>Control stability</span><span>12 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<p class="lead">Row scanning can jitter because a slightly different set of pixels may pass the threshold each frame. Project 2 smooths the angle error before it reaches the PID.</p>
-<!-- lane_follower_adv.py:22 and 320-323 -->
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Exponential smoothing</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">SMOOTH_RATE = 0.04
-
-self.smoothed_angle = (
+<h3>4. Two-Point Steering Error</h3>
+<p>Once <code>detect_lane()</code> has returned at least two points, <code>LaneFollower.control()</code> computes the same steering error you saw in Colab Cell 7. A line has direction, so one point is not enough: the robot uses a near point and a far point.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Two-point error calculation</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">position_error  = (near_cx - w / 2) / w
+direction_error = (far_cx  - near_cx) / w
+raw_angle_error = 0.25 * position_error + 0.75 * direction_error</code></pre></figure>
+<div class="diagram p2-steering-scenarios" aria-label="Two-point steering scenarios"><div><strong>Straight</strong><span class="p2-lane straight"></span><small>Near and far aligned. Direction error is near zero.</small></div><div><strong>Gentle curve</strong><span class="p2-lane gentle"></span><small>Far point shifts right. Robot starts turning early.</small></div><div><strong>Sharp curve</strong><span class="p2-lane sharp"></span><small>Far point moves strongly. Turn command grows.</small></div></div>
+<p><code>position_error</code> is the current offset from image center. <code>direction_error</code> is the line direction from near to far. The default blend gives 25 percent weight to current position and 75 percent to lookahead direction, so the robot anticipates curves instead of reacting late.</p>
+<h3>5. Exponential Smoothing</h3>
+<p>Row scanning can jitter because a slightly different set of pixels may pass the threshold each frame. Immediately after the raw angle calculation, <code>LaneFollower.control()</code> smooths the error before it reaches the PID. This is the same idea as the browser interpreter demo from the old smoothing lesson.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Smoothed steering error</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">self.smoothed_angle = (
     SMOOTH_RATE * self.smoothed_angle
     + (1 - SMOOTH_RATE) * raw_angle_error
 )</code></pre></figure>
-<p>With <code>SMOOTH_RATE = 0.04</code>, the old smoothed value has 4 percent influence and the new raw measurement has 96 percent influence. This is an exponential moving average, also called a first-order low-pass filter.</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Setting</th><th>Effect</th><th>Risk</th></tr></thead><tbody>
-<tr><td>Lower, such as <code>0.01</code></td><td>Less smoothing because raw measurement has 99 percent weight.</td><td>Robot may twitch on noisy detections.</td></tr>
-<tr><td>Default, <code>0.04</code></td><td>Light smoothing for slow tests.</td><td>Usually stable on clean floor tracks.</td></tr>
-<tr><td>Higher, such as <code>0.20</code></td><td>More smoothing because the old value has more weight.</td><td>Robot reacts more slowly to real curves.</td></tr>
-</tbody></table></div>
-<h3>Run a Tiny Smoothing Experiment</h3>
-<p>Run this in the browser, then change <code>SMOOTH_RATE</code> to <code>0.5</code> and run again. Higher values keep more of the old value, so the output changes more slowly.</p>
+<p>With <code>SMOOTH_RATE = 0.04</code>, the old smoothed value has 4 percent influence and the new raw measurement has 96 percent influence. Lower values react faster but can twitch on noisy detections; higher values react more slowly but can help on unstable lighting.</p>
 <figure class="code-card" data-runnable="true" data-chapter="project-2" data-filename="smoothing_demo.py"><figcaption><span>Exponential smoothing demo</span><span class="local-run-badge">Run in browser</span></figcaption><pre><code class="language-python">smoothed = 0.0
 raw_values = [0.1, 0.15, 0.12, 0.3, 0.28, 0.25, 0.05, 0.02]
 SMOOTH_RATE = 0.04
@@ -6805,19 +7825,32 @@ SMOOTH_RATE = 0.04
 for raw in raw_values:
     smoothed = SMOOTH_RATE * smoothed + (1 - SMOOTH_RATE) * raw
     print(f"raw={raw:.2f}  smoothed={smoothed:.3f}")</code></pre></figure>
-<h3>Why Project 1 Needed Less Smoothing</h3>
-<p>YOLO bounding boxes are already fairly stable because the model produces a coherent object box. Row scanning directly depends on thresholded pixels, so small lighting changes can move the scan center by a few pixels. Smoothing absorbs that noise.</p>
-<div class="definition-card"><span class="def-term">Standard EMA form</span><p><code>smoothed = alpha * raw + (1 - alpha) * previous</code><br />In this code, <code>alpha = 1 - SMOOTH_RATE = 0.96</code>.</p></div>
+<h3>6. What detect_lane Returns</h3>
+<p>The return values are the contract between the vision function, <code>LaneFollower.control()</code>, and <code>draw_debug()</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Return values</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">if len(points) &lt; 2:
+    return None, None, None, area, roi_y, binary, points
+
+return points[0], points[-1], points, area, roi_y, binary, points</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Returned value</th><th>Where it is used</th></tr></thead><tbody>
+<tr><td><code>points[0]</code> / <code>near_pt</code></td><td>The near line center used by <code>LaneFollower.control()</code> for current position error and by <code>draw_debug()</code> for the first magenta point.</td></tr>
+<tr><td><code>points[-1]</code> / <code>far_pt</code></td><td>The far line center used for direction error and the blue lookahead line in the main debug window.</td></tr>
+<tr><td><code>points</code></td><td>All detected row centers. <code>draw_debug()</code> draws them as magenta dots; <code>LaneFollower.control()</code> stores them in the debug dictionary.</td></tr>
+<tr><td><code>area</code></td><td>Total white pixels in the cleaned binary image. The controller uses it as a distance/speed diagnostic through <code>dist_error</code>.</td></tr>
+<tr><td><code>roi_y</code></td><td>The y-coordinate of the ROI boundary. <code>draw_debug()</code> draws this as the orange horizontal line.</td></tr>
+<tr><td><code>binary</code></td><td>The cleaned black-and-white image shown in the binary debug window.</td></tr>
+<tr><td><code>None</code> values</td><td>If fewer than two scan points are found, <code>LaneFollower.control()</code> treats the line as missing and enters the search/stop behavior.</td></tr>
+</tbody></table></div>
+<div class="callout info" role="note"><div class="callout-icon">API</div><div><div class="callout-title">One function, one job</div><p><code>detect_lane()</code> does one thing: convert a raw camera frame into lane points and debug values that become the steering error. Everything before it (phone stream, state machine, PID, UDP) and everything after it (LaneFollower, Commander, Telemetry) does not know or care how those points were computed. Swap <code>detect_lane()</code> for a YOLO call and you have Project 1. Swap it for a different algorithm and you have a different robot entirely. This separation is the most important software design principle in the whole course.</p></div></div>
 </div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-smoothing">Mark as Complete</button></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-detect-lane">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-two-point" data-lesson-link="proj2-two-point"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.8 Two-Point Steering</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-lane-follower" data-lesson-link="proj2-lane-follower"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.10 LaneFollower &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-config" data-lesson-link="proj2-config"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.3 Configuration</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-lane-follower" data-lesson-link="proj2-lane-follower"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.5 LaneFollower &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="proj2-lane-follower" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.10 The LaneFollower Class</div>
-<h1>P2.10 The LaneFollower Class</h1>
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.5 The LaneFollower Class</div>
+<h1>P2.5 The LaneFollower Class</h1>
 <div class="lesson-meta"><span>Control logic</span><span>Full method</span><span>24 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
@@ -6909,13 +7942,138 @@ for raw in raw_values:
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-lane-follower">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-smoothing" data-lesson-link="proj2-smoothing"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.9 Smoothing</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-visualisation" data-lesson-link="proj2-visualisation"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.11 Visualisation &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-detect-lane" data-lesson-link="proj2-detect-lane"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.4 The detect_lane Function</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-main-loop" data-lesson-link="proj2-main-loop"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.6 Main Loop &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj2-main-loop" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.6 The Main Loop</div>
+<h1>P2.6 The Main Loop</h1>
+<div class="lesson-meta"><span>Runtime loop</span><span>Camera to motors</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead"><code>main()</code> connects the phone stream, lane follower, UDP motor sender, telemetry receiver, keyboard controls, and OpenCV windows into one live robot loop.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Complete main() function</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">def main():
+    global BINARY_THRESHOLD
+
+    mobile_ip = &quot;10.18.204.215&quot;
+    stream_url = f&quot;http://{mobile_ip}:8080/video&quot;
+    print(f&quot;Stream: {stream_url}&quot;)
+
+    video     = MobileVideoStream(stream_url)
+    commander = Commander(ESP_IP, UDP_CMD_PORT)
+    telemetry = Telemetry(UDP_TELEM_PORT)
+
+    print(&quot;Waiting for camera...&quot;)
+    for _ in range(30):
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+    print()
+
+    if not video.connected:
+        print(&quot;Could not connect to camera&quot;)
+        exit(1)
+
+    follower = LaneFollower()
+    commander.stop()
+    time.sleep(0.5)
+
+    print(&quot;\nLane Following Active&quot;)
+    print(
+        f&quot;BINARY_THRESHOLD: {BINARY_THRESHOLD}  &quot;
+        f&quot;ROI: {ROI_HEIGHT_PERCENT:.0%}  &quot;
+        f&quot;KERNEL: {MORPH_KERNEL_SIZE}x{MORPH_KERNEL_SIZE}  &quot;
+        f&quot;TARGET_AREA: {TARGET_AREA}&quot;
+    )
+    print(&quot;Q=Quit  R=Reset  T=Threshold up  Y=Threshold down&quot;)
+    print(&quot;=&quot; * 60 + &quot;\n&quot;)
+
+    last_fid      = -1
+    last_cmd_time = 0.0
+    CMD_INTERVAL  = 0.03
+    fps_count     = 0
+    fps_timer     = time.time()
+
+    while True:
+        frame, fid = video.read()
+        if frame is None or fid == last_fid:
+            time.sleep(0.005)
+            continue
+
+        last_fid   = fid
+        fps_count += 1
+        if fps_count &gt;= 30:
+            print(f&quot;FPS: {fps_count / (time.time() - fps_timer):.1f}&quot;)
+            fps_count = 0
+            fps_timer = time.time()
+
+        frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+        left_speed, right_speed, debug = follower.control(frame)
+        print(left_speed, right_speed)
+
+        now = time.time()
+        if now - last_cmd_time &gt;= CMD_INTERVAL:
+            commander.motors(0, 0) if (left_speed == right_speed == 0) \
+                else commander.motors(
+                    -left_speed / MOTOR_OUTPUT_SCALE,
+                    right_speed / MOTOR_OUTPUT_SCALE,
+                )
+            last_cmd_time = now
+
+        draw_debug(frame, debug, left_speed, right_speed, telemetry.read())
+        cv2.imshow(&quot;Lane Follower&quot;, frame)
+
+        key = cv2.waitKey(1) &amp; 0xFF
+        if key == ord(&#39;q&#39;):
+            break
+        elif key == ord(&#39;r&#39;):
+            follower.pid_turn.reset()
+            follower.pid_dist.reset()
+            follower.smoothed_angle = 0.0
+            print(&quot;Reset&quot;)
+        elif key == ord(&#39;t&#39;):
+            BINARY_THRESHOLD = min(BINARY_THRESHOLD + 5, 255)
+            print(f&quot;BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}&quot;)
+        elif key == ord(&#39;y&#39;):
+            BINARY_THRESHOLD = max(BINARY_THRESHOLD - 5, 0)
+            print(f&quot;BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}&quot;)
+
+    print(&quot;\nShutting down...&quot;)
+    commander.stop()
+    time.sleep(0.2)
+    video.stop()
+    telemetry.stop()
+    cv2.destroyAllWindows()
+    print(&quot;Done&quot;)</code></pre></figure>
+<h3>Frame Rotation</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Project 2-only frame rotation</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)</code></pre></figure>
+<p>This line does not exist in Project 1. The phone camera outputs frames with the wrong orientation when mounted sideways on the robot. This rotation corrects it before any processing. Adjust the constant if your image appears rotated in the wrong direction.</p>
+<h3>Scaled Motor Command</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Motor send line</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">commander.motors(
+    -left_speed / MOTOR_OUTPUT_SCALE,
+    right_speed / MOTOR_OUTPUT_SCALE,
+)</code></pre></figure>
+<p>There are two differences from Project 1. First, <code>MOTOR_OUTPUT_SCALE</code> is <code>10</code> by default: <code>BODY_TURN_KP = 100</code> can produce outputs up to about +/-3000, so dividing by 10 maps that to about +/-300 before the driver clips to +/-255. If response feels weak, try <code>8</code>; if it oversteers, try <code>12</code>. Second, the negative left speed handles the same motor wiring consideration as Project 1. If the robot spins instead of going forward, remove the negative sign.</p>
+<h3>Runtime Threshold Adjustment</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>T/Y threshold keys</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">elif key == ord('t'):
+    BINARY_THRESHOLD = min(BINARY_THRESHOLD + 5, 255)
+    print(f"BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}")
+elif key == ord('y'):
+    BINARY_THRESHOLD = max(BINARY_THRESHOLD - 5, 0)
+    print(f"BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}")</code></pre></figure>
+<p><code>T</code> increases <code>BINARY_THRESHOLD</code> by 5. <code>Y</code> decreases it by 5. Use this for fine tuning only after you found your baseline value in Colab. If you need to adjust by more than +/-15 from your Colab value, your lighting conditions have changed significantly; rerun the Colab notebook with a new photo.</p>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-main-loop">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj2-lane-follower" data-lesson-link="proj2-lane-follower"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.5 LaneFollower</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-visualisation" data-lesson-link="proj2-visualisation"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.7 Visualisation &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="proj2-visualisation" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.11 Visualisation and the Binary Window</div>
-<h1>P2.11 Visualisation and the Binary Window</h1>
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.7 Visualisation and the Binary Window</div>
+<h1>P2.7 Visualisation and the Binary Window</h1>
 <div class="lesson-meta"><span>Debugging</span><span>OpenCV windows</span><span>16 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
@@ -6928,7 +8086,7 @@ for raw in raw_values:
 <h3>Main Window Elements</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Element</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Orange horizontal line</td><td>Start of the ROI. Everything above it is ignored.</td></tr>
-<tr><td>Magenta dots</td><td>Row-scan lane centers found in P2.7.</td></tr>
+<tr><td>Magenta dots</td><td>Row-scan lane centers found in P2.4.</td></tr>
 <tr><td>Blue line</td><td>Line from near point to far point, showing detected lane direction.</td></tr>
 <tr><td>Green center line</td><td>Frame center, the desired steering reference.</td></tr>
 <tr><td>Cyan smooth line</td><td>Smoothed steering error after exponential filtering.</td></tr>
@@ -6962,13 +8120,13 @@ for raw in raw_values:
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-visualisation">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-lane-follower" data-lesson-link="proj2-lane-follower"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.10 LaneFollower</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.12 Running &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-main-loop" data-lesson-link="proj2-main-loop"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.6 Main Loop</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.8 Running &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="proj2-running" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.12 Running and Tuning</div>
-<h1>P2.12 Running and Tuning</h1>
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.8 Running and Tuning</div>
+<h1>P2.8 Running and Tuning</h1>
 <div class="lesson-meta"><span>Testing</span><span>Tuning</span><span>18 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
@@ -7022,13 +8180,13 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-running">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-visualisation" data-lesson-link="proj2-visualisation"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.11 Visualisation</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.13 Connecting the Dots &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-visualisation" data-lesson-link="proj2-visualisation"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.7 Visualisation</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P2.9 Connecting the Dots &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="proj2-dots" data-chapter="proj2" data-chapter-title="★ Project 2: Lane Follower" style="--chapter-accent:#facc15;--chapter-color:#facc15">
-<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.13 Connecting the Dots</div>
-<h1>P2.13 Connecting the Dots</h1>
+<div class="lesson-kicker">★ Project 2: Lane Follower <span>&rsaquo;</span> P2.9 Connecting the Dots</div>
+<h1>P2.9 Connecting the Dots</h1>
 <div class="lesson-meta"><span>Review</span><span>Architecture</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
@@ -7061,7 +8219,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-dots">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.12 Running</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.8 Running</span></a>
 <a class="lesson-nav-btn next" href="?lesson=project-archive" data-lesson-link="project-archive"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Student Projects &rarr;</span></a>
 </nav>
 </article>
@@ -7118,7 +8276,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="project-archive">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.13 Connecting the Dots</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.9 Connecting the Dots</span></a>
 <span></span>
 </nav>
 </article>
@@ -7129,8 +8287,8 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
     const projectCLessons = [{"id":"projC-overview","label":"PC.0 What You Are Building","title":"PC.0 What You Are Building","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":true},{"id":"projC-hardware","label":"PC.1 Hardware","title":"PC.1 Understanding the Hardware","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-encoders","label":"PC.2 Encoder Motors","title":"PC.2 How Encoder Motors Work","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-wiring","label":"PC.3 Wiring","title":"PC.3 Wiring the System","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-arduino-basics","label":"PC.4 Arduino Basics","title":"PC.4 Arduino Programming Basics","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-first-sketch","label":"PC.5 Blink and Serial","title":"PC.5 Your First Arduino Sketch: Blink and Serial","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-reading-pulses","label":"PC.6 Encoder Pulses","title":"PC.6 Reading Encoder Pulses","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-distance","label":"PC.7 Ticks to Distance","title":"PC.7 Converting Ticks to Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-drive-distance","label":"PC.8 Drive Distance","title":"PC.8 Driving Forward a Precise Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-turning","label":"PC.9 Turn 90 Degrees","title":"PC.9 Turning Exactly 90 Degrees","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-path","label":"PC.10 Running a Path","title":"PC.10 Putting It Together: Running a Path","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-troubleshooting","label":"PC.11 Troubleshooting","title":"PC.11 Troubleshooting and Tuning","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false}];
     const projectDLessons = [{"id":"projD-udp","label":"PD.0 What Is UDP","title":"PD.0 What Is UDP and Why Does a Robot Use It","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":true},{"id":"projD-wifi","label":"PD.1 UNO R4 WiFi","title":"PD.1 How WiFi Works on the UNO R4","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-arduino","label":"PD.2 Arduino Sketch","title":"PD.2 The Arduino Sketch: Connect, Listen, Drive","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-python","label":"PD.3 Python UDP Script","title":"PD.3 The Python Script: Send Commands, Read Telemetry","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-keyboard","label":"PD.4 Keyboard Control","title":"PD.4 Keyboard Control: Drive with WASD","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-telemetry","label":"PD.5 Encoder Telemetry","title":"PD.5 Receiving Encoder Telemetry in Python","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-loop","label":"PD.6 Full Communication Loop","title":"PD.6 Understanding the Full Communication Loop","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-project1","label":"PD.7 Connect to Project 1","title":"PD.7 Connecting the Dots to Project 1","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false}];
-    const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
-    const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-changes","label":"P2.3 What Changes","title":"P2.3 What Changes from Project 1","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-thresholding","label":"P2.4 Binary Thresholding","title":"P2.4 Binary Thresholding: Making the Line Visible","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-roi","label":"P2.5 ROI","title":"P2.5 The Region of Interest (ROI)","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-morphology","label":"P2.6 Morphological Cleaning","title":"P2.6 Morphological Cleaning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-row-scanning","label":"P2.7 Row Scanning","title":"P2.7 Row Scanning: Finding the Line Position","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-two-point","label":"P2.8 Two-Point Steering","title":"P2.8 Two-Point Steering: Near and Far","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-smoothing","label":"P2.9 Exponential Smoothing","title":"P2.9 Exponential Smoothing","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.10 LaneFollower Class","title":"P2.10 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.11 Visualisation","title":"P2.11 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.12 Running and Tuning","title":"P2.12 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.13 Connecting the Dots","title":"P2.13 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
+    const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-get-code","label":"P1.0b Get the Code","title":"P1.0b Get the Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
+    const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-get-code","label":"P2.0b Get the Code","title":"P2.0b Get the Code","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-config","label":"P2.3 Configuration","title":"P2.3 Configuration: Fill In Your Values","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-detect-lane","label":"P2.4 The detect_lane Function","title":"P2.4 The detect_lane Function","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.5 LaneFollower Class","title":"P2.5 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-main-loop","label":"P2.6 Main Loop","title":"P2.6 The Main Loop","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.7 Visualisation","title":"P2.7 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.8 Running and Tuning","title":"P2.8 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.9 Connecting the Dots","title":"P2.9 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
     window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons);
     window.COURSE_CHAPTERS.splice(
@@ -7140,8 +8298,8 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
       {"key":"projB","title":"* Project B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
       {"key":"projC","title":"* Project C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-arduino-basics","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
       {"key":"projD","title":"* Project D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
-      {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
-      {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-physical-setup","proj2-opencv-notebook","proj2-changes","proj2-thresholding","proj2-roi","proj2-morphology","proj2-row-scanning","proj2-two-point","proj2-smoothing","proj2-lane-follower","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"}
+      {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
+      {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"}
     );
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>

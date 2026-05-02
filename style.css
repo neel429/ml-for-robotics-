@@ -713,6 +713,7 @@ pre code {
       font-size: 0.76rem;
     }
     .copy-btn,
+    .download-code-btn,
     .colab-btn,
     .next-btn,
     .table-sort {
@@ -732,6 +733,8 @@ pre code {
     }
     .copy-btn:hover,
     .copy-btn:focus-visible,
+    .download-code-btn:hover,
+    .download-code-btn:focus-visible,
     .next-btn:hover,
     .next-btn:focus-visible,
     .table-sort:hover,
@@ -1166,7 +1169,8 @@ pre code {
       border-bottom-color: #d0d7de;
       color: #57606a;
     }
-    html[data-theme="light"] .copy-btn {
+    html[data-theme="light"] .copy-btn,
+    html[data-theme="light"] .download-code-btn {
       color: #57606a;
       background: #f6f8fa;
       border-color: #d0d7de;
@@ -2743,6 +2747,7 @@ body:not(.lesson-app) .code-actions {
 }
 
 body:not(.lesson-app) .copy-btn,
+body:not(.lesson-app) .download-code-btn,
 body:not(.lesson-app) .run-btn,
 body:not(.lesson-app) .reset-code-btn,
 body:not(.lesson-app) .reset-chapter-btn {
@@ -2969,6 +2974,7 @@ body.lesson-app .code-actions {
 }
 
 body.lesson-app .copy-btn,
+body.lesson-app .download-code-btn,
 body.lesson-app .run-btn,
 body.lesson-app .reset-code-btn,
 body.lesson-app .reset-chapter-btn,
@@ -2983,6 +2989,7 @@ body.lesson-app .colab-inline-btn {
 }
 
 body.lesson-app .copy-btn,
+body.lesson-app .download-code-btn,
 body.lesson-app .reset-code-btn,
 body.lesson-app .reset-chapter-btn {
   color: #8b949e;
@@ -2991,6 +2998,7 @@ body.lesson-app .reset-chapter-btn {
 }
 
 body.lesson-app .copy-btn:hover,
+body.lesson-app .download-code-btn:hover,
 body.lesson-app .reset-code-btn:hover,
 body.lesson-app .reset-chapter-btn:hover {
   color: #e6edf3;
@@ -3216,9 +3224,11 @@ html[data-theme="light"] body.lesson-app .colab-reason {
 }
 
 html.light-mode body.lesson-app .copy-btn,
+html.light-mode body.lesson-app .download-code-btn,
 html.light-mode body.lesson-app .reset-code-btn,
 html.light-mode body.lesson-app .reset-chapter-btn,
 html[data-theme="light"] body.lesson-app .copy-btn,
+html[data-theme="light"] body.lesson-app .download-code-btn,
 html[data-theme="light"] body.lesson-app .reset-code-btn,
 html[data-theme="light"] body.lesson-app .reset-chapter-btn {
   color: #57606a;
