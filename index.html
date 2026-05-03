@@ -8409,35 +8409,43 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 <p class="lead">Learn MediaPipe on a laptop image in Colab before touching the robot. You will see landmarks drawn on your own hand, inspect the coordinate system, and test the open/closed classification before wiring it to UDP motor commands.</p>
 <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/proj3-gesture-recognition.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
 <div class="callout info" role="note"><div class="callout-icon">task</div><div><div class="callout-title">Why download a .task file?</div><p>The new MediaPipe Tasks API separates the Python library from the model weights. The library, installed with <code>pip install mediapipe</code>, gives you the inference engine. The <code>.task</code> file contains the trained hand landmark model weights, about 8 MB, downloaded from Google's servers. This separation means Google can update the model independently of the library. The <code>wget</code> command in Cell 1 downloads the model once to your Colab session. In VS Code, the download script in the setup lesson saves it permanently to your project folder.</p></div></div>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 1: Install and download model" data-lang="python"><figcaption><span>Install MediaPipe and download the model</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">!pip install mediapipe -q
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 1: Install and download model" data-lang="python"><figcaption><span>Install MediaPipe and download the model</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">!pip install -q mediapipe
 !wget -q https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
 
-print("MediaPipe installed and model downloaded.")</script></figure>
+import os
+if os.path.exists("hand_landmarker.task"):
+    size_mb = os.path.getsize("hand_landmarker.task") / 1024 / 1024
+    print(f"Model downloaded successfully ({size_mb:.1f} MB)")
+else:
+    print("ERROR: Model file not found. Re-run this cell.")</script></figure>
+<div class="callout info" role="note"><div class="callout-icon">load</div><div><div class="callout-title">Why two steps to load the model?</div><p>Cell 1 downloads the model weights file, about 8MB, from Google's servers and saves it as <code>hand_landmarker.task</code> in the Colab session's local storage. Cell 2 loads that file into memory and initializes the detector. Both cells are required. The <code>-q</code> flag in <code>wget</code> makes the download silent; it gives no output even when it succeeds. The verification print above confirms it worked. If the file size shows as 0 MB or the file is missing, your internet connection blocked the download. Try re-running Cell 1.</p></div></div>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 2: Initialize HandLandmarker" data-lang="python"><figcaption><span>Initialize the HandLandmarker</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">import cv2
 import mediapipe as mp
 import numpy as np
 import matplotlib.pyplot as plt
 from google.colab import files
-from mediapipe import solutions
-from mediapipe.framework.formats import landmark_pb2
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision as mp_vision
 
+HAND_CONNECTIONS = [
+    (0, 1), (1, 2), (2, 3), (3, 4),
+    (0, 5), (5, 6), (6, 7), (7, 8),
+    (5, 9), (9, 10), (10, 11), (11, 12),
+    (9, 13), (13, 14), (14, 15), (15, 16),
+    (13, 17), (0, 17), (17, 18), (18, 19), (19, 20),
+]
+
 def draw_hand_landmarks(rgb_image, hand_landmarks_list):
     annotated = np.copy(rgb_image)
+    h, w, _ = annotated.shape
+
     for hand_landmarks in hand_landmarks_list:
-        proto = landmark_pb2.NormalizedLandmarkList()
-        proto.landmark.extend([
-            landmark_pb2.NormalizedLandmark(x=lm.x, y=lm.y, z=lm.z)
-            for lm in hand_landmarks
-        ])
-        solutions.drawing_utils.draw_landmarks(
-            annotated,
-            proto,
-            solutions.hands.HAND_CONNECTIONS,
-            solutions.drawing_styles.get_default_hand_landmarks_style(),
-            solutions.drawing_styles.get_default_hand_connections_style(),
-        )
+        pts = [(int(lm.x * w), int(lm.y * h)) for lm in hand_landmarks]
+        for start, end in HAND_CONNECTIONS:
+            cv2.line(annotated, pts[start], pts[end], (0, 255, 0), 2)
+        for pt in pts:
+            cv2.circle(annotated, pt, 4, (0, 0, 255), -1)
+
     return annotated
 
 base_options = mp_python.BaseOptions(model_asset_path="hand_landmarker.task")
@@ -8691,7 +8699,8 @@ print("Open hand:", is_hand_open(open_hand))   # should print True</script></fig
             command = "left"
 
     if result.hand_landmarks:
-        draw_hand_landmarks(frame, result.hand_landmarks)
+        rgb_annotated = draw_hand_landmarks(rgb, result.hand_landmarks)
+        frame[:] = cv2.cvtColor(rgb_annotated, cv2.COLOR_RGB2BGR)
 
     left_speed, right_speed = self._gesture_to_speeds(command)
     return left_speed, right_speed, command, debug</script></figure>
@@ -8701,7 +8710,7 @@ print("Open hand:", is_hand_open(open_hand))   # should print True</script></fig
 <tr><td><code>result.hand_landmarks</code></td><td>List of detected hands. Each hand is a direct list of 21 normalized landmark objects.</td></tr>
 <tr><td><code>result.handedness</code></td><td>List of left/right handedness classifications aligned with <code>result.hand_landmarks</code> by index.</td></tr>
 <tr><td><code>hands_dict[label] = {"open": open_state}</code></td><td>Stores each hand by name so the command logic can read <code>hands_dict["Left"]["open"]</code> and <code>hands_dict["Right"]["open"]</code>.</td></tr>
-<tr><td><code>draw_hand_landmarks(...)</code></td><td>Converts the Tasks API landmark list into a drawable landmark proto, then draws the hand connections on the frame.</td></tr>
+<tr><td><code>draw_hand_landmarks(...)</code></td><td>Uses a small OpenCV helper to draw hand connections and landmark dots directly from the Tasks API landmark list.</td></tr>
 </tbody></table></div>
 <div class="callout warning" role="alert"><div class="callout-icon">MIR</div><div><div class="callout-title">Mirror note for phone camera</div><p>MediaPipe labels hands from the model's perspective, not always the user's. <code>gesture_recognize.py</code> flips the webcam frame for a mirror effect with <code>frame = cv2.flip(frame, 1)</code>. <code>gesture_control.py</code> does not flip the phone stream because the phone camera is not being used as a mirror. Test which labeling your setup produces and swap <code>Left</code> and <code>Right</code> in the gesture block if needed.</p></div></div>
 <div class="callout warning" role="alert"><div class="callout-icon">FIX</div><div><div class="callout-title">Troubleshooting inverted commands</div><p>If forward and backward are swapped, or left and right are inverted, the handedness labels are mirrored for your camera setup. In <code>gesture_control.py</code>, find the gesture classification block and swap <code>Left</code> and <code>Right</code> everywhere in that section.</p></div></div>
@@ -8724,13 +8733,25 @@ print("Open hand:", is_hand_open(open_hand))   # should print True</script></fig
 <article class="card download-card"><h3>gesture_control.py</h3><p>The robot control script. Place it in the same folder as <code>shared.py</code>.</p><a class="download-card-btn" href="gesture_control.py" download>Download</a></article>
 </div>
 <div class="callout info" role="note"><div class="callout-icon">cam</div><div><div class="callout-title">Local test file is separate</div><p><code>gesture_recognize.py</code> runs on a laptop webcam with <code>cv2.VideoCapture(0)</code>. It does not import <code>shared.py</code> because it has no robot connection. Use it to test gestures before running <code>gesture_control.py</code>.</p></div></div>
+<h3>One-Time Model Download</h3>
+<p>Run this once in VS Code from the same folder as <code>gesture_recognize.py</code> and <code>gesture_control.py</code>. Both files need <code>hand_landmarker.task</code> in that folder.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="download_model.py" data-lang="python"><figcaption><span>Download hand_landmarker.task</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">import urllib.request, os
+
+if not os.path.exists("hand_landmarker.task"):
+    print("Downloading model (~8MB)...")
+    urllib.request.urlretrieve(
+        "https://storage.googleapis.com/mediapipe-models/"
+        "hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+        "hand_landmarker.task",
+    )
+    print("Done.")
+else:
+    print("Model already present.")</script></figure>
 <p>This is the complete robot control file for reference. Come back to this as each lesson explains one section.</p>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-download-filename="gesture_control.py" data-lang="python"><figcaption><span>Complete robot control file</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">import time
 
 import cv2
 import mediapipe as mp
-from mediapipe import solutions
-from mediapipe.framework.formats import landmark_pb2
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision as mp_vision
 
@@ -8750,22 +8771,43 @@ BASE_SPEED = 9
 TURN_SPEED = 7
 
 MODEL_PATH = "hand_landmarker.task"
+HAND_CONNECTIONS = [
+    (0, 1),
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (0, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (5, 9),
+    (9, 10),
+    (10, 11),
+    (11, 12),
+    (9, 13),
+    (13, 14),
+    (14, 15),
+    (15, 16),
+    (13, 17),
+    (0, 17),
+    (17, 18),
+    (18, 19),
+    (19, 20),
+]
 
 
-def draw_hand_landmarks(frame, hand_landmarks_list):
+def draw_hand_landmarks(rgb_image, hand_landmarks_list):
+    annotated = rgb_image.copy()
+    h, w, _ = annotated.shape
+
     for hand_landmarks in hand_landmarks_list:
-        proto = landmark_pb2.NormalizedLandmarkList()
-        proto.landmark.extend(
-            landmark_pb2.NormalizedLandmark(x=lm.x, y=lm.y, z=lm.z)
-            for lm in hand_landmarks
-        )
-        solutions.drawing_utils.draw_landmarks(
-            frame,
-            proto,
-            solutions.hands.HAND_CONNECTIONS,
-            solutions.drawing_styles.get_default_hand_landmarks_style(),
-            solutions.drawing_styles.get_default_hand_connections_style(),
-        )
+        pts = [(int(lm.x * w), int(lm.y * h)) for lm in hand_landmarks]
+        for start, end in HAND_CONNECTIONS:
+            cv2.line(annotated, pts[start], pts[end], (0, 255, 0), 2)
+        for pt in pts:
+            cv2.circle(annotated, pt, 4, (0, 0, 255), -1)
+
+    return annotated
 
 
 # ================= HAND GESTURE DETECTOR =================
@@ -8864,7 +8906,8 @@ class HandGestureDetector:
                 command = "left"
 
         if result.hand_landmarks:
-            draw_hand_landmarks(frame, result.hand_landmarks)
+            rgb_annotated = draw_hand_landmarks(rgb, result.hand_landmarks)
+            frame[:] = cv2.cvtColor(rgb_annotated, cv2.COLOR_RGB2BGR)
 
         left_speed, right_speed = self._gesture_to_speeds(command)
         return left_speed, right_speed, command, debug
@@ -9165,7 +9208,8 @@ if __name__ == "__main__":
                 command = "left"
 
         if result.hand_landmarks:
-            draw_hand_landmarks(frame, result.hand_landmarks)
+            rgb_annotated = draw_hand_landmarks(rgb, result.hand_landmarks)
+            frame[:] = cv2.cvtColor(rgb_annotated, cv2.COLOR_RGB2BGR)
 
         left_speed, right_speed = self._gesture_to_speeds(command)
         return left_speed, right_speed, command, debug
@@ -9185,7 +9229,7 @@ if __name__ == "__main__":
     )
     self._landmarker = mp_vision.HandLandmarker.create_from_options(options)
     self._last_timestamp_ms = 0</script></figure>
-<p><code>HandLandmarkerOptions</code> loads <code>hand_landmarker.task</code> and selects <code>RunningMode.VIDEO</code>, which requires a timestamp for each camera frame. The drawing helper uses MediaPipe's drawing utilities after converting the Tasks landmarks into the format those utilities expect.</p>
+<p><code>HandLandmarkerOptions</code> loads <code>hand_landmarker.task</code> and selects <code>RunningMode.VIDEO</code>, which requires a timestamp for each camera frame. The drawing helper is pure OpenCV: it converts normalized landmark coordinates into pixel positions, then draws lines and dots on the frame.</p>
 <h3>Method 2: <code>_is_open</code></h3>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>_is_open</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def _is_open(self, hand_landmarks):
     pts = hand_landmarks
@@ -9259,7 +9303,8 @@ if __name__ == "__main__":
             command = "left"
 
     if result.hand_landmarks:
-        draw_hand_landmarks(frame, result.hand_landmarks)
+        rgb_annotated = draw_hand_landmarks(rgb, result.hand_landmarks)
+        frame[:] = cv2.cvtColor(rgb_annotated, cv2.COLOR_RGB2BGR)
 
     left_speed, right_speed = self._gesture_to_speeds(command)
     return left_speed, right_speed, command, debug</script></figure>
@@ -9426,8 +9471,7 @@ if __name__ == "__main__":
     video.stop()
     detector.close()
     cv2.destroyAllWindows()
-    print("Done")
-</script></figure>
+    print("Done")</script></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>What changed from Projects 1 and 2</th></tr></thead><tbody>
 <tr><td><code>detector = HandGestureDetector()</code></td><td>Replaces <code>tracker = Tracker()</code> and <code>follower = LaneFollower()</code>. Same pattern: one controller object initialized before the loop.</td></tr>
 <tr><td><code>left_speed, right_speed, cmd_name, debug = detector.detect(frame)</code></td><td>Replaces <code>tracker.control(frame)</code> and <code>follower.control(frame)</code>. <code>cmd_name</code> is a new string used for the HUD and terminal print.</td></tr>
@@ -9451,13 +9495,18 @@ if __name__ == "__main__":
 <div class="lesson-body">
 <h3>Install MediaPipe and the HandLandmarker model</h3>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal" data-lang="text"><figcaption><span>Terminal</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">pip install mediapipe</script></figure>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="download_model.py" data-lang="python"><figcaption><span>Download hand_landmarker.task</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">import urllib.request
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="download_model.py" data-lang="python"><figcaption><span>Download hand_landmarker.task</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">import urllib.request, os
 
-urllib.request.urlretrieve(
-    "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-    "hand_landmarker.task",
-)
-print("Model downloaded.")</script></figure>
+if not os.path.exists("hand_landmarker.task"):
+    print("Downloading model (~8MB)...")
+    urllib.request.urlretrieve(
+        "https://storage.googleapis.com/mediapipe-models/"
+        "hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+        "hand_landmarker.task",
+    )
+    print("Done.")
+else:
+    print("Model already present.")</script></figure>
 <p>Run the Python download snippet once from the same folder as <code>gesture_recognize.py</code> and <code>gesture_control.py</code>. Both scripts expect <code>hand_landmarker.task</code> beside them.</p>
 <h3>Step 1: Test Gesture Recognition Locally First</h3>
 <p>Before connecting to the robot, run <code>gesture_recognize.py</code> on your laptop webcam.</p>

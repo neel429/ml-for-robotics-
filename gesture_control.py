@@ -2,8 +2,6 @@ import time
 
 import cv2
 import mediapipe as mp
-from mediapipe import solutions
-from mediapipe.framework.formats import landmark_pb2
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision as mp_vision
 
@@ -23,22 +21,43 @@ BASE_SPEED = 9
 TURN_SPEED = 7
 
 MODEL_PATH = "hand_landmarker.task"
+HAND_CONNECTIONS = [
+    (0, 1),
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (0, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (5, 9),
+    (9, 10),
+    (10, 11),
+    (11, 12),
+    (9, 13),
+    (13, 14),
+    (14, 15),
+    (15, 16),
+    (13, 17),
+    (0, 17),
+    (17, 18),
+    (18, 19),
+    (19, 20),
+]
 
 
-def draw_hand_landmarks(frame, hand_landmarks_list):
+def draw_hand_landmarks(rgb_image, hand_landmarks_list):
+    annotated = rgb_image.copy()
+    h, w, _ = annotated.shape
+
     for hand_landmarks in hand_landmarks_list:
-        proto = landmark_pb2.NormalizedLandmarkList()
-        proto.landmark.extend(
-            landmark_pb2.NormalizedLandmark(x=lm.x, y=lm.y, z=lm.z)
-            for lm in hand_landmarks
-        )
-        solutions.drawing_utils.draw_landmarks(
-            frame,
-            proto,
-            solutions.hands.HAND_CONNECTIONS,
-            solutions.drawing_styles.get_default_hand_landmarks_style(),
-            solutions.drawing_styles.get_default_hand_connections_style(),
-        )
+        pts = [(int(lm.x * w), int(lm.y * h)) for lm in hand_landmarks]
+        for start, end in HAND_CONNECTIONS:
+            cv2.line(annotated, pts[start], pts[end], (0, 255, 0), 2)
+        for pt in pts:
+            cv2.circle(annotated, pt, 4, (0, 0, 255), -1)
+
+    return annotated
 
 
 # ================= HAND GESTURE DETECTOR =================
@@ -137,7 +156,8 @@ class HandGestureDetector:
                 command = "left"
 
         if result.hand_landmarks:
-            draw_hand_landmarks(frame, result.hand_landmarks)
+            rgb_annotated = draw_hand_landmarks(rgb, result.hand_landmarks)
+            frame[:] = cv2.cvtColor(rgb_annotated, cv2.COLOR_RGB2BGR)
 
         left_speed, right_speed = self._gesture_to_speeds(command)
         return left_speed, right_speed, command, debug
