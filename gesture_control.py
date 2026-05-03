@@ -1,156 +1,170 @@
-import cv2
 import time
+
+import cv2
 import mediapipe as mp
+from mediapipe import solutions
+from mediapipe.framework.formats import landmark_pb2
+from mediapipe.tasks import python as mp_python
+from mediapipe.tasks.python import vision as mp_vision
 
-from shared import MobileVideoStream, Commander
-
-
-def load_mediapipe_hands():
-    try:
-        return mp.solutions.hands, mp.solutions.drawing_utils
-    except AttributeError:
-        from mediapipe.python.solutions import drawing_utils, hands
-        return hands, drawing_utils
+from shared import Commander, MobileVideoStream
 
 
 # ================= CONFIGURATION =================
-ESP_IP        = "192.168.137.35"
-UDP_CMD_PORT  = 5001
+ESP_IP = "192.168.137.35"
+UDP_CMD_PORT = 5001
 
 # Mobile phone camera stream
-MOBILE_IP     = "10.18.88.38"   # ← change to your phone's IP
-STREAM_URL    = f"http://{MOBILE_IP}:8080/video"
+MOBILE_IP = "10.18.88.38"  # Change to your phone's IP
+STREAM_URL = f"http://{MOBILE_IP}:8080/video"
 
-# ⭐ Speed Settings — tune these to your robot
-BASE_SPEED    = 9   # base wheel speed (0–255)
-TURN_SPEED    = 7   # speed used for the spinning wheel during a turn
+# Speed settings. Tune these to your robot.
+BASE_SPEED = 9
+TURN_SPEED = 7
+
+MODEL_PATH = "hand_landmarker.task"
+
+
+def draw_hand_landmarks(frame, hand_landmarks_list):
+    for hand_landmarks in hand_landmarks_list:
+        proto = landmark_pb2.NormalizedLandmarkList()
+        proto.landmark.extend(
+            landmark_pb2.NormalizedLandmark(x=lm.x, y=lm.y, z=lm.z)
+            for lm in hand_landmarks
+        )
+        solutions.drawing_utils.draw_landmarks(
+            frame,
+            proto,
+            solutions.hands.HAND_CONNECTIONS,
+            solutions.drawing_styles.get_default_hand_landmarks_style(),
+            solutions.drawing_styles.get_default_hand_connections_style(),
+        )
+
 
 # ================= HAND GESTURE DETECTOR =================
 class HandGestureDetector:
     """
-    Two-hand gesture → direct motor speeds (no PID).
+    Two-hand gesture -> direct motor speeds.
 
     Gesture map:
-      Both open   → FORWARD
-      Both closed → BACKWARD
-      Right open, Left closed → TURN RIGHT  (left wheel drives)
-      Left open, Right closed → TURN LEFT   (right wheel drives)
-      Single / no hand        → STOP
+      Both open   -> FORWARD
+      Both closed -> BACKWARD
+      Right open, Left closed -> TURN RIGHT
+      Left open, Right closed -> TURN LEFT
+      Single / no hand        -> STOP
     """
 
-    def __init__(self):
-        self.mp_hands, self.mp_draw = load_mediapipe_hands()
-        self.hands    = self.mp_hands.Hands(
-            static_image_mode=False,
-            max_num_hands=2,
-            min_detection_confidence=0.7,
-            min_tracking_confidence=0.6
+    def __init__(self, model_path=MODEL_PATH):
+        base_options = mp_python.BaseOptions(model_asset_path=model_path)
+        options = mp_vision.HandLandmarkerOptions(
+            base_options=base_options,
+            running_mode=mp_vision.RunningMode.VIDEO,
+            num_hands=2,
+            min_hand_detection_confidence=0.7,
+            min_hand_presence_confidence=0.7,
+            min_tracking_confidence=0.6,
         )
+        self._landmarker = mp_vision.HandLandmarker.create_from_options(options)
+        self._last_timestamp_ms = 0
 
-    def _is_open(self, lm):
-        """Return True when hand is mostly open (≥3 digits extended)."""
-        pts = lm.landmark
+    def _next_timestamp_ms(self):
+        timestamp_ms = int(time.time() * 1000)
+        if timestamp_ms <= self._last_timestamp_ms:
+            timestamp_ms = self._last_timestamp_ms + 1
+        self._last_timestamp_ms = timestamp_ms
+        return timestamp_ms
+
+    def _is_open(self, hand_landmarks):
+        pts = hand_landmarks
         count = 0
-        # Thumb (x-axis comparison)
+
         if pts[4].x > pts[2].x:
             count += 1
-        # Four fingers (tip above PIP = extended)
+
         for tip, pip in zip([8, 12, 16, 20], [6, 10, 14, 18]):
             if pts[tip].y < pts[pip].y:
                 count += 1
+
         return count >= 3
 
     def _gesture_to_speeds(self, command):
-        """
-        Map a command string to (left_speed, right_speed).
-        Positive = forward, negative = backward.
-        """
         if command == "forward":
-            return  BASE_SPEED,  BASE_SPEED
-        elif command == "backward":
+            return BASE_SPEED, BASE_SPEED
+        if command == "backward":
             return -BASE_SPEED, -BASE_SPEED
-        elif command == "left":
-            # Only right wheel turns; left wheel still
-            return  0,  TURN_SPEED
-        elif command == "right":
-            # Only left wheel turns; right wheel still
-            return  TURN_SPEED,  0
-        else:                          # "stop"
-            return  0,  0
+        if command == "left":
+            return 0, TURN_SPEED
+        if command == "right":
+            return TURN_SPEED, 0
+        return 0, 0
 
     def detect(self, frame):
-        """
-        Process a BGR frame, draw landmarks, return:
-          (left_speed, right_speed, command_name, debug_dict)
-        """
-        rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.hands.process(rgb)
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
+        result = self._landmarker.detect_for_video(mp_image, self._next_timestamp_ms())
 
         command = "stop"
-        debug   = {
-            'left_hand':  None,
-            'right_hand': None,
-            'left_open':  False,
-            'right_open': False,
+        hands_dict = {}
+        debug = {
+            "left_hand": None,
+            "right_hand": None,
+            "left_open": False,
+            "right_open": False,
         }
 
-        if results.multi_hand_landmarks and results.multi_handedness:
-            hands = {}
+        for i, handedness_list in enumerate(result.handedness):
+            label = handedness_list[0].category_name
+            open_state = self._is_open(result.hand_landmarks[i])
+            hands_dict[label] = {"open": open_state}
 
-            for lm, handedness in zip(results.multi_hand_landmarks,
-                                      results.multi_handedness):
-                label   = handedness.classification[0].label   # "Left" / "Right"
-                is_open = self._is_open(lm)
-                hands[label] = {'lm': lm, 'open': is_open}
+            if label == "Left":
+                debug["left_hand"] = "detected"
+                debug["left_open"] = open_state
+            elif label == "Right":
+                debug["right_hand"] = "detected"
+                debug["right_open"] = open_state
 
-                self.mp_draw.draw_landmarks(
-                    frame, lm, self.mp_hands.HAND_CONNECTIONS
-                )
+        if "Left" in hands_dict and "Right" in hands_dict:
+            left_open = hands_dict["Left"]["open"]
+            right_open = hands_dict["Right"]["open"]
+            if left_open and right_open:
+                command = "forward"
+            elif not left_open and not right_open:
+                command = "backward"
+            elif right_open and not left_open:
+                command = "right"
+            elif left_open and not right_open:
+                command = "left"
 
-            if 'Left' in hands:
-                debug['left_hand'] = 'detected'
-                debug['left_open'] = hands['Left']['open']
-            if 'Right' in hands:
-                debug['right_hand'] = 'detected'
-                debug['right_open'] = hands['Right']['open']
-
-            # Require BOTH hands for a movement command
-            if 'Left' in hands and 'Right' in hands:
-                lo = hands['Left']['open']
-                ro = hands['Right']['open']
-                if   lo and ro:     command = "forward"
-                elif not lo and not ro: command = "backward"
-                elif ro and not lo: command = "right"
-                elif lo and not ro: command = "left"
+        if result.hand_landmarks:
+            draw_hand_landmarks(frame, result.hand_landmarks)
 
         left_speed, right_speed = self._gesture_to_speeds(command)
         return left_speed, right_speed, command, debug
 
     def close(self):
-        self.hands.close()
+        self._landmarker.close()
 
 
 # ================= MAIN =================
 def main():
     print("\n" + "=" * 55)
-    print("  🤖 Hand-Gesture Robot — Mobile Camera Edition")
+    print("  Hand-Gesture Robot - Mobile Camera Edition")
     print(f"  BASE_SPEED={BASE_SPEED}  TURN_SPEED={TURN_SPEED}")
     print("=" * 55)
-    print("  🖐️🖐️  Both open    → FORWARD")
-    print("  ✊✊   Both closed  → BACKWARD")
-    print("  🖐️✊  Right open   → TURN RIGHT")
-    print("  ✊🖐️  Left open    → TURN LEFT")
-    print("  (one hand only)  → STOP")
+    print("  Both open        -> FORWARD")
+    print("  Both closed      -> BACKWARD")
+    print("  Right open only  -> TURN RIGHT")
+    print("  Left open only   -> TURN LEFT")
+    print("  One/no hand      -> STOP")
     print("  Q = quit")
     print("=" * 55 + "\n")
 
-    # --- Boot up subsystems ---
-    print(f"Connecting to camera at {STREAM_URL} …")
-    video     = MobileVideoStream(STREAM_URL)
+    print(f"Connecting to camera at {STREAM_URL} ...")
+    video = MobileVideoStream(STREAM_URL)
     commander = Commander(ESP_IP, UDP_CMD_PORT)
-    detector  = HandGestureDetector()
+    detector = HandGestureDetector()
 
-    # Wait for first frame
     wait_start = time.time()
     while time.time() - wait_start < 15:
         if video.connected:
@@ -160,29 +174,29 @@ def main():
     print()
 
     if not video.connected:
-        print("❌ Could not connect to camera stream. Check MOBILE_IP.")
-        exit(1)
+        print("Could not connect to camera stream. Check MOBILE_IP.")
+        detector.close()
+        video.stop()
+        return
 
     commander.stop()
     time.sleep(0.3)
 
-    # --- Control loop variables ---
-    last_fid       = -1
-    last_left      = 0
-    last_right     = 0
-    last_cmd_name  = "stop"
-    last_cmd_time  = 0.0
-    CMD_INTERVAL   = 0.08    # re-send every 80 ms even if unchanged (keep-alive)
+    last_fid = -1
+    last_left = 0
+    last_right = 0
+    last_cmd_time = 0.0
+    cmd_interval = 0.08
 
     fps_count = 0
     fps_timer = time.time()
 
-    CMD_COLORS = {
-        "forward":  (0,   255,   0),
-        "backward": (0,     0, 255),
-        "left":     (255, 255,   0),
-        "right":    (255,   0, 255),
-        "stop":     (100, 100, 100),
+    cmd_colors = {
+        "forward": (0, 255, 0),
+        "backward": (0, 0, 255),
+        "left": (255, 255, 0),
+        "right": (255, 0, 255),
+        "stop": (100, 100, 100),
     }
 
     while True:
@@ -192,77 +206,96 @@ def main():
             time.sleep(0.005)
             continue
 
-        last_fid   = fid
+        last_fid = fid
         fps_count += 1
 
-        # FPS readout every 30 frames
         if fps_count >= 30:
             fps = fps_count / (time.time() - fps_timer)
-            print(f"📊 FPS: {fps:.1f}")
+            print(f"FPS: {fps:.1f}")
             fps_count = 0
             fps_timer = time.time()
 
-        # --- Gesture detection ---
         try:
             left_speed, right_speed, cmd_name, debug = detector.detect(frame)
-        except Exception as e:
-            print(f"❌ Detection error: {e}")
+        except Exception as error:
+            print(f"Detection error: {error}")
             left_speed = right_speed = 0
-            cmd_name   = "stop"
-            debug      = {}
+            cmd_name = "stop"
+            debug = {}
 
-        # --- Send command ---
         now = time.time()
-        speed_changed = (abs(left_speed - last_left) > 5 or
-                         abs(right_speed - last_right) > 5)
-        if speed_changed or (now - last_cmd_time) >= CMD_INTERVAL:
+        speed_changed = (
+            abs(left_speed - last_left) > 5
+            or abs(right_speed - last_right) > 5
+        )
+        if speed_changed or (now - last_cmd_time) >= cmd_interval:
             commander.motors(left_speed, right_speed)
-            last_left     = left_speed
-            last_right    = right_speed
-            last_cmd_name = cmd_name
+            last_left = left_speed
+            last_right = right_speed
             last_cmd_time = now
-            print(f"🤖 {cmd_name.upper():8s} | L:{left_speed:+4d}  R:{right_speed:+4d}")
+            print(f"{cmd_name.upper():8s} | L:{left_speed:+4d}  R:{right_speed:+4d}")
 
-        # --- HUD overlay ---
         h, w = frame.shape[:2]
 
-        # Command badge (top-right)
-        color = CMD_COLORS.get(cmd_name, (200, 200, 200))
+        color = cmd_colors.get(cmd_name, (200, 200, 200))
         cv2.rectangle(frame, (w - 130, 8), (w - 8, 50), color, -1)
-        cv2.putText(frame, cmd_name.upper(),
-                    (w - 125, 38), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
-                    (0, 0, 0), 2)
+        cv2.putText(
+            frame,
+            cmd_name.upper(),
+            (w - 125, 38),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.75,
+            (0, 0, 0),
+            2,
+        )
 
-        # Speed readout
-        cv2.putText(frame, f"L:{left_speed:+4d}  R:{right_speed:+4d}",
-                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.65,
-                    (0, 255, 0), 2)
+        cv2.putText(
+            frame,
+            f"L:{left_speed:+4d}  R:{right_speed:+4d}",
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.65,
+            (0, 255, 0),
+            2,
+        )
 
-        # Hand state indicators
-        left_state  = ("OPEN" if debug.get('left_open')  else "CLOSED") \
-                       if debug.get('left_hand')  else "---"
-        right_state = ("OPEN" if debug.get('right_open') else "CLOSED") \
-                       if debug.get('right_hand') else "---"
+        left_state = (
+            "OPEN" if debug.get("left_open") else "CLOSED"
+        ) if debug.get("left_hand") else "---"
+        right_state = (
+            "OPEN" if debug.get("right_open") else "CLOSED"
+        ) if debug.get("right_hand") else "---"
 
-        cv2.putText(frame, f"LEFT:  {left_state}",
-                    (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
-                    (0, 255, 255), 1)
-        cv2.putText(frame, f"RIGHT: {right_state}",
-                    (10, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
-                    (0, 255, 255), 1)
+        cv2.putText(
+            frame,
+            f"LEFT:  {left_state}",
+            (10, 60),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.55,
+            (0, 255, 255),
+            1,
+        )
+        cv2.putText(
+            frame,
+            f"RIGHT: {right_state}",
+            (10, 85),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.55,
+            (0, 255, 255),
+            1,
+        )
 
         cv2.imshow("Hand-Gesture Robot Control", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
-    # --- Shutdown ---
-    print("\nShutting down…")
+    print("\nShutting down...")
     commander.stop()
     time.sleep(0.2)
     video.stop()
     detector.close()
     cv2.destroyAllWindows()
-    print("✅ Done")
+    print("Done")
 
 
 if __name__ == "__main__":
