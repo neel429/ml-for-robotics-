@@ -531,8 +531,9 @@ _result
 
   function blockDetailsFromElement(el, index = 0) {
     const codeEl = el.querySelector("code");
+    const sourceEl = el.querySelector('script[type="text/plain"].code-source');
     const codeClass = codeEl?.className || "";
-    const code = cleanCode(el.dataset.code || codeEl?.textContent || "");
+    const code = cleanCode(el.dataset.code || sourceEl?.textContent || codeEl?.textContent || "");
     const python = isPython(codeEl) || el.dataset.lang === "python";
     const chapter = normalizeChapter(el.dataset.chapter, chapterFromElement(el));
     const session = sessionKeyFor(el);

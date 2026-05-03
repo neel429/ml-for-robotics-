@@ -200,6 +200,23 @@
 <a class="lesson-link" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span>P2.9 Connecting the Dots</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
+<div class="lesson-group" data-chapter="proj3" style="--chapter-accent:#a855f7">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>* Project 3: Gesture Controlled Robot</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link is-exercise" href="?lesson=proj3-mediapipe" data-lesson-link="proj3-mediapipe"><span>P3.0 What Is MediaPipe?</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-landmark-detection" data-lesson-link="proj3-landmark-detection"><span>P3.1 How Hand Landmark Detection Works</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-mediapipe-colab" data-lesson-link="proj3-mediapipe-colab"><span>P3.2 The MediaPipe Colab Notebook</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-understanding-landmarks" data-lesson-link="proj3-understanding-landmarks"><span>P3.3 Understanding Landmarks</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-open-closed" data-lesson-link="proj3-open-closed"><span>P3.4 Open vs Closed: Reading Finger State</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-two-hand-logic" data-lesson-link="proj3-two-hand-logic"><span>P3.5 Two-Hand Gesture Logic</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-get-code" data-lesson-link="proj3-get-code"><span>P3.6 Get the Robot Code</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-what-changes" data-lesson-link="proj3-what-changes"><span>P3.7 What Changes from Project 2</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-detector-class" data-lesson-link="proj3-detector-class"><span>P3.8 The HandGestureDetector Class</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-main-loop" data-lesson-link="proj3-main-loop"><span>P3.9 The Main Loop</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-running" data-lesson-link="proj3-running"><span>P3.10 Running and Testing</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj3-dots" data-lesson-link="proj3-dots"><span>P3.11 Connecting the Dots</span><span class="completion-dot" aria-hidden="true"></span></a>
+</div>
+</div>
 <div class="lesson-group" data-chapter="projects" style="--chapter-accent:var(--cyan)">
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>Project Archive</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
@@ -334,6 +351,14 @@
 <p>Replace YOLO with classical OpenCV thresholding, row scanning, and two-point steering for a floor-line robot.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="proj2">0 / 14 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=proj2-classical-cv" data-lesson-link="proj2-classical-cv">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="proj3" style="--chapter-accent:#a855f7">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Project 3</span><span>12 lessons</span></div>
+<h2>Gesture Controlled Robot</h2>
+<p>Use MediaPipe hand landmarks to map two-hand gestures directly to UDP motor commands.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="proj3">0 / 12 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=proj3-mediapipe" data-lesson-link="proj3-mediapipe">Start</a>
 </article></section>
 </article>
     <article class="lesson-content" data-lesson="ch0-welcome" data-chapter="ch0" data-chapter-title="Chapter 0: Welcome & How to Use This Guide" style="--chapter-accent:var(--ch0)">
@@ -8304,6 +8329,1119 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-dots">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=proj2-running" data-lesson-link="proj2-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.8 Running</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-mediapipe" data-lesson-link="proj3-mediapipe"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.0 What Is MediaPipe? &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-mediapipe" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.0 What Is MediaPipe?</div>
+<h1>P3.0 What Is MediaPipe?</h1>
+<div class="lesson-meta"><span>MediaPipe</span><span>Pre-trained model</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">In Project 1 you trained your own YOLO model from scratch: 150 images, Roboflow labels, 15 minutes of Colab training. That gave you a model that detects exactly what you chose. In Project 2 you used no model at all, just pixel math. In Project 3 you use a third approach: a pre-trained model built by Google for one specific task.</p>
+<p>MediaPipe is a collection of ready-made ML pipelines for common computer vision tasks. Hand tracking, face detection, pose estimation, object detection: all available as Python imports with no training required. You do not collect data, you do not train, you do not export weights. You install the library and call three lines of code.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Approach</th><th>Project 1 YOLO</th><th>Project 2 Classical</th><th>Project 3 MediaPipe</th></tr></thead><tbody>
+<tr><td>Model</td><td>You trained it</td><td>No model</td><td>Google pre-trained</td></tr>
+<tr><td>What it detects</td><td>Your custom object</td><td>Bright/dark contrast</td><td>Human hands, always</td></tr>
+<tr><td>Setup time</td><td>Project A, about 1 hour</td><td>Zero</td><td><code>pip install</code> plus 3 lines</td></tr>
+<tr><td>Flexibility</td><td>Anything you label</td><td>Controlled scenes</td><td>Hands only</td></tr>
+<tr><td>Speed on CPU</td><td>15-30 fps</td><td>60+ fps</td><td>25-30 fps</td></tr>
+</tbody></table></div>
+<div class="callout robotics" role="note"><div class="callout-icon">MP</div><div><div class="callout-title">Task-specific pre-trained model</div><p>MediaPipe's hand tracking runs on phones in real time. It powers features in Google Meet, YouTube, and Android camera apps. When you install it and call it in Python, you are using the same kind of optimized model that runs on millions of devices daily. Someone spent months building and optimizing it so you do not have to.</p></div></div>
+<h3>Robot Gesture Map</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Gesture</th><th>Command</th></tr></thead><tbody>
+<tr><td>Both hands open</td><td><strong>FORWARD</strong></td></tr>
+<tr><td>Both hands closed</td><td><strong>BACKWARD</strong></td></tr>
+<tr><td>Right open, left closed</td><td><strong>TURN RIGHT</strong></td></tr>
+<tr><td>Left open, right closed</td><td><strong>TURN LEFT</strong></td></tr>
+<tr><td>One hand or no hands</td><td><strong>STOP</strong></td></tr>
+</tbody></table></div>
+<div class="callout info" role="note"><div class="callout-icon">PRE</div><div><div class="callout-title">Prerequisites</div><p>Complete Project B so the phone stream works, complete Project D so UDP motor commands work, and keep <code>shared.py</code> in the project folder from Projects 1 and 2. The Arduino still runs the same <code>robot_udp</code> sketch from Project D. There is no new Arduino code.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-mediapipe">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.9 Connecting the Dots</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-landmark-detection" data-lesson-link="proj3-landmark-detection"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.1 Hand Landmarks &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-landmark-detection" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.1 How Hand Landmark Detection Works</div>
+<h1>P3.1 How Hand Landmark Detection Works</h1>
+<div class="lesson-meta"><span>Landmarks</span><span>Coordinates</span><span>15 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">MediaPipe does not just detect that a hand is present. It detects 21 specific points on the hand called landmarks. Each landmark has an x, y, and z coordinate normalized to the image size.</p>
+<figure class="p3-hand-diagram" aria-label="MediaPipe 21 hand landmarks">
+<div class="p3-palm"></div>
+<span class="p3-dot p0">0</span><span class="p3-dot p1">1</span><span class="p3-dot p2">2</span><span class="p3-dot p3">3</span><span class="p3-dot p4">4</span>
+<span class="p3-dot p5">5</span><span class="p3-dot p6">6</span><span class="p3-dot p7">7</span><span class="p3-dot p8">8</span>
+<span class="p3-dot p9">9</span><span class="p3-dot p10">10</span><span class="p3-dot p11">11</span><span class="p3-dot p12">12</span>
+<span class="p3-dot p13">13</span><span class="p3-dot p14">14</span><span class="p3-dot p15">15</span><span class="p3-dot p16">16</span>
+<span class="p3-dot p17">17</span><span class="p3-dot p18">18</span><span class="p3-dot p19">19</span><span class="p3-dot p20">20</span>
+</figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Index</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>0</td><td>wrist, reference point for thumb detection</td></tr>
+<tr><td>2, 3, 4</td><td>thumb MCP, thumb IP, thumb tip</td></tr>
+<tr><td>6, 8</td><td>index PIP and tip</td></tr>
+<tr><td>10, 12</td><td>middle PIP and tip</td></tr>
+<tr><td>14, 16</td><td>ring PIP and tip</td></tr>
+<tr><td>18, 20</td><td>pinky PIP and tip</td></tr>
+</tbody></table></div>
+<p>The core insight: if a finger tip is above its PIP joint, it has a lower y value because y increases downward. That finger is extended. If the tip is below the PIP joint, the finger is curled.</p>
+<div class="p3-finger-state-grid">
+<figure class="p3-finger-state"><div><span class="pip"></span><span class="tip high"></span><span class="bone high"></span></div><figcaption><strong>Extended finger</strong><br /><code>tip.y &lt; pip.y</code></figcaption></figure>
+<figure class="p3-finger-state"><div><span class="pip"></span><span class="tip low"></span><span class="bone low"></span></div><figcaption><strong>Curled finger</strong><br /><code>tip.y &gt; pip.y</code></figcaption></figure>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">xy</div><div><div class="callout-title">Normalized coordinates</div><p>The coordinates are normalized: x and y are between 0 and 1, where (0,0) is the top-left of the image and (1,1) is the bottom-right. This means the detection works regardless of image resolution. A hand at x=0.5 is always in the horizontal center of the frame.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-landmark-detection">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-mediapipe" data-lesson-link="proj3-mediapipe"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.0 MediaPipe</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-mediapipe-colab" data-lesson-link="proj3-mediapipe-colab"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.2 Colab Notebook &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-mediapipe-colab" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.2 The MediaPipe Colab Notebook</div>
+<h1>P3.2 The MediaPipe Colab Notebook</h1>
+<div class="lesson-meta"><span>Colab</span><span>Still images</span><span>25 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Learn MediaPipe on a laptop image in Colab before touching the robot. You will see landmarks drawn on your own hand, inspect the coordinate system, and test the open/closed classification before wiring it to UDP motor commands.</p>
+<a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/proj3-gesture-recognition.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+<div class="callout info" role="note"><div class="callout-icon">pip</div><div><div class="callout-title">Installation note</div><p>MediaPipe is not pre-installed in Colab. The first cell installs it. <code>opencv-python</code> and NumPy are already available in Colab. The <code>-q</code> flag suppresses the long install output.</p></div></div>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 1: Install and import" data-lang="python"><figcaption><span>Install and import</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">!pip install mediapipe -q
+
+import cv2
+import mediapipe as mp
+import numpy as np
+from IPython.display import display, Image as IPImage
+import ipywidgets as widgets
+
+print("MediaPipe version:", mp.__version__)</script></figure>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 2: Initialize the hands detector" data-lang="python"><figcaption><span>Initialize the hands detector</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">mp_hands = mp.solutions.hands
+mp_draw  = mp.solutions.drawing_utils
+
+hands = mp_hands.Hands(
+    static_image_mode=False,
+    max_num_hands=2,
+    min_detection_confidence=0.7,
+    min_tracking_confidence=0.6
+)
+
+print("Hand detector initialized.")
+print(f"Watching for up to {hands.max_num_hands} hands")</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>static_image_mode=False</code></td><td>Video mode. The model uses temporal information between frames to track hands once detected, which is faster than detecting from scratch every frame.</td></tr>
+<tr><td><code>max_num_hands=2</code></td><td>Maximum number of hands to detect simultaneously. Set to 2 because gesture control requires both hands visible at once.</td></tr>
+<tr><td><code>min_detection_confidence=0.7</code></td><td>Only report a hand detection if the model is at least 70% confident.</td></tr>
+<tr><td><code>min_tracking_confidence=0.6</code></td><td>Once a hand is found, keep tracking it as long as confidence stays above 60%.</td></tr>
+</tbody></table></div>
+<h3>Cell 3: Test on a Still Image</h3>
+<p>Upload a photo of your own hand to Colab. Use the Files panel upload button or the upload prompt in this cell.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 3: Test on a still image" data-lang="python"><figcaption><span>Upload and process a hand photo</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">from google.colab import files
+uploaded = files.upload()   # upload your hand photo
+
+img      = cv2.imread(list(uploaded.keys())[0])
+img_rgb  = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+results  = hands.process(img_rgb)
+
+print(f"Hands detected: {len(results.multi_hand_landmarks) if results.multi_hand_landmarks else 0}")
+
+if results.multi_hand_landmarks:
+    for i, hand_lm in enumerate(results.multi_hand_landmarks):
+        mp_draw.draw_landmarks(img_rgb, hand_lm, mp_hands.HAND_CONNECTIONS)
+        print(f"\nHand {i+1} - first 5 landmark coordinates:")
+        for j in range(5):
+            lm = hand_lm.landmark[j]
+            print(f"  Landmark {j}: x={lm.x:.3f}  y={lm.y:.3f}  z={lm.z:.3f}")
+
+import matplotlib.pyplot as plt
+plt.figure(figsize=(8, 6))
+plt.imshow(img_rgb)
+plt.title("MediaPipe hand landmarks")
+plt.axis("off")
+plt.show()</script></figure>
+<p><code>hands.process()</code> requires an RGB image, not BGR. This is why <code>cvtColor</code> runs before processing but after loading. Passing BGR gives wrong results without an error.</p>
+<h3>Cell 4: Read Specific Landmarks</h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 4: Read specific landmarks" data-lang="python"><figcaption><span>Inspect wrist, tip, and PIP coordinates</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">if results.multi_hand_landmarks:
+    hand = results.multi_hand_landmarks[0]
+    lm   = hand.landmark
+
+    print("Key landmarks for finger detection:")
+    print(f"  Wrist (0):           x={lm[0].x:.3f}  y={lm[0].y:.3f}")
+    print(f"  Index tip (8):       x={lm[8].x:.3f}  y={lm[8].y:.3f}")
+    print(f"  Index PIP (6):       x={lm[6].x:.3f}  y={lm[6].y:.3f}")
+    print()
+
+    index_extended = lm[8].y < lm[6].y
+    print(f"Index finger extended: {index_extended}")
+    print(f"  tip.y={lm[8].y:.3f}  pip.y={lm[6].y:.3f}")
+    print(f"  tip is {'ABOVE' if index_extended else 'BELOW'} PIP = finger is {'extended' if index_extended else 'curled'}")</script></figure>
+<p>This is the exact comparison used by the gesture detector. <code>tip.y &lt; pip.y</code> means the tip is higher in the image, which means the finger is extended.</p>
+<h3>Cell 5: The is_hand_open Function</h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 5: is_hand_open" data-lang="python"><figcaption><span>Classify one hand as open or closed</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">def is_hand_open(hand_landmarks):
+    pts    = hand_landmarks.landmark
+    count  = 0
+
+    # Thumb: compare x-distance from wrist
+    # tip farther from wrist than IP joint = thumb extended
+    if pts[4].x > pts[2].x:
+        count += 1
+
+    # Four fingers: tip above PIP = finger extended
+    for tip, pip in zip([8, 12, 16, 20], [6, 10, 14, 18]):
+        if pts[tip].y < pts[pip].y:
+            count += 1
+
+    return count >= 3   # open if 3 or more digits extended
+
+print("Testing is_hand_open on your uploaded photo:")
+if results.multi_hand_landmarks:
+    result = is_hand_open(results.multi_hand_landmarks[0])
+    print(f"  Hand is: {'OPEN' if result else 'CLOSED'}")</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>pts = hand_landmarks.landmark</code></td><td>Shorthand for the list of 21 landmark objects.</td></tr>
+<tr><td><code>pts[4].x &gt; pts[2].x</code></td><td>Thumb detection uses x-axis because the thumb extends sideways. This is an approximation for a right hand held palm-forward; the local webcam test has a more robust check.</td></tr>
+<tr><td><code>zip([8,12,16,20], [6,10,14,18])</code></td><td>Pairs each finger tip with its PIP joint.</td></tr>
+<tr><td><code>count &gt;= 3</code></td><td>Open means at least 3 of 5 digits are extended.</td></tr>
+</tbody></table></div>
+<h3>Cell 6: Two-Hand Gesture Classification</h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 6: classify_gesture" data-lang="python"><figcaption><span>Two-hand command logic</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">def classify_gesture(hands_dict):
+    if 'Left' not in hands_dict or 'Right' not in hands_dict:
+        return "stop"   # need both hands
+
+    lo = hands_dict['Left']['open']
+    ro = hands_dict['Right']['open']
+
+    if   lo and ro:         return "forward"
+    elif not lo and not ro: return "backward"
+    elif ro and not lo:     return "right"
+    elif lo and not ro:     return "left"
+    return "stop"</script></figure>
+<div class="table-wrap"><table class="data-table p3-command-table"><thead><tr><th>Left hand</th><th>Right hand</th><th>Command</th></tr></thead><tbody>
+<tr class="cmd-forward"><td>OPEN</td><td>OPEN</td><td>FORWARD</td></tr>
+<tr class="cmd-backward"><td>CLOSED</td><td>CLOSED</td><td>BACKWARD</td></tr>
+<tr class="cmd-right"><td>CLOSED</td><td>OPEN</td><td>TURN RIGHT</td></tr>
+<tr class="cmd-left"><td>OPEN</td><td>CLOSED</td><td>TURN LEFT</td></tr>
+<tr class="cmd-stop"><td>One hand</td><td>---</td><td>STOP</td></tr>
+</tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">2</div><div><div class="callout-title">Why require both hands?</div><p>If only one hand is required, any accidental hand entering the frame triggers a command. Requiring both hands creates a deliberate activation gesture. The robot only moves when you consciously hold both hands up.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">cam</div><div><div class="callout-title">Live webcam test runs in VS Code, not Colab</div><p>The <code>gesture_recognize.py</code> file in the repository runs live gesture detection on your laptop webcam using <code>cv2.VideoCapture(0)</code>. This file is designed to run in VS Code, not Colab. The Colab notebook teaches the concepts on still images. The live test runs locally.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-mediapipe-colab">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-landmark-detection" data-lesson-link="proj3-landmark-detection"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.1 Hand Landmarks</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-understanding-landmarks" data-lesson-link="proj3-understanding-landmarks"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.3 Understanding Landmarks &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-understanding-landmarks" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.3 Understanding Landmarks</div>
+<h1>P3.3 Understanding Landmarks</h1>
+<div class="lesson-meta"><span>Landmark review</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The gesture code uses only a subset of the 21 landmarks: the wrist, the thumb chain, and the PIP/tip pairs for the four fingers.</p>
+<figure class="p3-hand-diagram p3-hand-focus" aria-label="Gesture landmarks used by is_hand_open">
+<div class="p3-palm"></div>
+<span class="p3-dot p0 is-used">0</span><span class="p3-dot p1">1</span><span class="p3-dot p2 is-used">2</span><span class="p3-dot p3">3</span><span class="p3-dot p4 is-used">4</span>
+<span class="p3-dot p5">5</span><span class="p3-dot p6 is-used">6</span><span class="p3-dot p7">7</span><span class="p3-dot p8 is-used">8</span>
+<span class="p3-dot p9">9</span><span class="p3-dot p10 is-used">10</span><span class="p3-dot p11">11</span><span class="p3-dot p12 is-used">12</span>
+<span class="p3-dot p13">13</span><span class="p3-dot p14 is-used">14</span><span class="p3-dot p15">15</span><span class="p3-dot p16 is-used">16</span>
+<span class="p3-dot p17">17</span><span class="p3-dot p18 is-used">18</span><span class="p3-dot p19">19</span><span class="p3-dot p20 is-used">20</span>
+</figure>
+<div class="callout info" role="note"><div class="callout-icon">z</div><div><div class="callout-title">MediaPipe also returns depth</div><p>MediaPipe also returns a z coordinate for each landmark. Negative z means the landmark is in front of the wrist, toward the camera. This project does not use z, but depth information could detect distance from the camera or more nuanced gestures like a pointing finger aimed toward the robot.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-understanding-landmarks">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-mediapipe-colab" data-lesson-link="proj3-mediapipe-colab"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.2 Colab Notebook</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-open-closed" data-lesson-link="proj3-open-closed"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.4 Open vs Closed &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-open-closed" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.4 Open vs Closed: Reading Finger State</div>
+<h1>P3.4 Open vs Closed: Reading Finger State</h1>
+<div class="lesson-meta"><span>Finger state</span><span>Browser demo</span><span>15 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The robot needs one Boolean per hand: open or closed. The method below counts extended digits and returns open when at least three are extended.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>HandGestureDetector._is_open()</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def _is_open(self, lm):
+    """Return True when hand is mostly open (≥3 digits extended)."""
+    pts = lm.landmark
+    count = 0
+    # Thumb (x-axis comparison)
+    if pts[4].x > pts[2].x:
+        count += 1
+    # Four fingers (tip above PIP = extended)
+    for tip, pip in zip([8, 12, 16, 20], [6, 10, 14, 18]):
+        if pts[tip].y < pts[pip].y:
+            count += 1
+    return count >= 3</script></figure>
+<h3>Try the Rule in the Browser</h3>
+<p>Modify the y values to simulate a closed fist and verify the function returns <code>False</code>.</p>
+<figure class="code-card" data-runnable="true" data-chapter="3" data-session="proj3-open-closed" data-filename="open_closed_demo.py" data-lang="python"><figcaption><span>Open hand simulation</span><span class="local-run-badge">Run in browser</span></figcaption><script type="text/plain" class="code-source">import numpy as np
+
+class FakeLandmark:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+def is_hand_open(pts_list):
+    pts = pts_list
+    count = 0
+    if pts[4].x > pts[2].x:
+        count += 1
+    for tip, pip in zip([8,12,16,20], [6,10,14,18]):
+        if pts[tip].y < pts[pip].y:
+            count += 1
+    return count >= 3
+
+# Simulate an open hand - all tips above their PIP joints
+open_hand = [FakeLandmark(0.5, 0.9)] * 21  # wrist at bottom
+open_hand[2]  = FakeLandmark(0.3, 0.7)  # thumb MCP
+open_hand[4]  = FakeLandmark(0.2, 0.6)  # thumb tip - extended
+open_hand[6]  = FakeLandmark(0.4, 0.5)  # index PIP
+open_hand[8]  = FakeLandmark(0.4, 0.3)  # index tip - ABOVE PIP
+open_hand[10] = FakeLandmark(0.5, 0.5)
+open_hand[12] = FakeLandmark(0.5, 0.3)  # middle tip - ABOVE PIP
+open_hand[14] = FakeLandmark(0.6, 0.5)
+open_hand[16] = FakeLandmark(0.6, 0.3)  # ring tip - ABOVE PIP
+open_hand[18] = FakeLandmark(0.7, 0.5)
+open_hand[20] = FakeLandmark(0.7, 0.4)  # pinky tip - ABOVE PIP
+
+print("Open hand:", is_hand_open(open_hand))   # should print True</script></figure>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-open-closed">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-understanding-landmarks" data-lesson-link="proj3-understanding-landmarks"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.3 Understanding Landmarks</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-two-hand-logic" data-lesson-link="proj3-two-hand-logic"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.5 Two-Hand Logic &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-two-hand-logic" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.5 Two-Hand Gesture Logic</div>
+<h1>P3.5 Two-Hand Gesture Logic</h1>
+<div class="lesson-meta"><span>Gesture mapping</span><span>Safety logic</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The detector stores each hand by label, checks whether it is open, then chooses a command only when both hands are present.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>Complete detect() method</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def detect(self, frame):
+    """
+    Process a BGR frame, draw landmarks, return:
+      (left_speed, right_speed, command_name, debug_dict)
+    """
+    rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = self.hands.process(rgb)
+
+    command = "stop"
+    debug   = {
+        'left_hand':  None,
+        'right_hand': None,
+        'left_open':  False,
+        'right_open': False,
+    }
+
+    if results.multi_hand_landmarks and results.multi_handedness:
+        hands = {}
+
+        for lm, handedness in zip(results.multi_hand_landmarks,
+                                  results.multi_handedness):
+            label   = handedness.classification[0].label   # "Left" / "Right"
+            is_open = self._is_open(lm)
+            hands[label] = {'lm': lm, 'open': is_open}
+
+            self.mp_draw.draw_landmarks(
+                frame, lm, self.mp_hands.HAND_CONNECTIONS
+            )
+
+        if 'Left' in hands:
+            debug['left_hand'] = 'detected'
+            debug['left_open'] = hands['Left']['open']
+        if 'Right' in hands:
+            debug['right_hand'] = 'detected'
+            debug['right_open'] = hands['Right']['open']
+
+        # Require BOTH hands for a movement command
+        if 'Left' in hands and 'Right' in hands:
+            lo = hands['Left']['open']
+            ro = hands['Right']['open']
+            if   lo and ro:     command = "forward"
+            elif not lo and not ro: command = "backward"
+            elif ro and not lo: command = "right"
+            elif lo and not ro: command = "left"
+
+    left_speed, right_speed = self._gesture_to_speeds(command)
+    return left_speed, right_speed, command, debug</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>results = self.hands.process(rgb)</code></td><td>MediaPipe requires RGB. The phone stream frame is BGR, so OpenCV converts before processing.</td></tr>
+<tr><td><code>results.multi_hand_landmarks</code></td><td>List of detected hand landmark objects. Each element corresponds to one hand.</td></tr>
+<tr><td><code>results.multi_handedness</code></td><td>List of handedness classifications aligned with the landmark list.</td></tr>
+<tr><td><code>zip(...)</code></td><td>Pairs each landmark object with its handedness label.</td></tr>
+<tr><td><code>hands[label] = {'lm': lm, 'open': is_open}</code></td><td>Stores each hand by name so the command logic can read <code>hands['Left']['open']</code> and <code>hands['Right']['open']</code>.</td></tr>
+</tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">MIR</div><div><div class="callout-title">Mirror note for phone camera</div><p>MediaPipe labels hands from the model's perspective, not always the user's. <code>gesture_recognize.py</code> flips the webcam frame for a mirror effect with <code>frame = cv2.flip(frame, 1)</code>. <code>gesture_control.py</code> does not flip the phone stream because the phone camera is not being used as a mirror. Test which labeling your setup produces and swap <code>Left</code> and <code>Right</code> in the gesture block if needed.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">FIX</div><div><div class="callout-title">Troubleshooting inverted commands</div><p>If forward and backward are swapped, or left and right are inverted, the handedness labels are mirrored for your camera setup. In <code>gesture_control.py</code>, find the gesture classification block and swap <code>Left</code> and <code>Right</code> everywhere in that section.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-two-hand-logic">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-open-closed" data-lesson-link="proj3-open-closed"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.4 Open vs Closed</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-get-code" data-lesson-link="proj3-get-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.6 Get the Robot Code &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-get-code" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.6 Get the Robot Code</div>
+<h1>P3.6 Get the Robot Code</h1>
+<div class="lesson-meta"><span>VS Code</span><span>Robot file</span><span>20 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The robot version uses the same phone stream and UDP command infrastructure from earlier projects. Only the vision module changes.</p>
+<div class="grid grid-2">
+<article class="card download-card"><h3>shared.py</h3><p>Already have this from Projects 1 and 2. No download needed if it is already in your <code>my-detector</code> folder.</p><a class="download-card-btn" href="shared.py" download>Download</a></article>
+<article class="card download-card"><h3>gesture_control.py</h3><p>The robot control script. Place it in the same folder as <code>shared.py</code>.</p><a class="download-card-btn" href="gesture_control.py" download>Download</a></article>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">cam</div><div><div class="callout-title">Local test file is separate</div><p><code>gesture_recognize.py</code> runs on a laptop webcam with <code>cv2.VideoCapture(0)</code>. It does not import <code>shared.py</code> because it has no robot connection. Use it to test gestures before running <code>gesture_control.py</code>.</p></div></div>
+<p>This is the complete robot control file for reference. Come back to this as each lesson explains one section.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-download-filename="gesture_control.py" data-lang="python"><figcaption><span>Complete robot control file</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">import cv2
+import time
+import mediapipe as mp
+
+from shared import MobileVideoStream, Commander
+
+
+# ================= CONFIGURATION =================
+ESP_IP        = "192.168.137.35"
+UDP_CMD_PORT  = 5001
+
+# Mobile phone camera stream
+MOBILE_IP     = "10.18.88.38"   # ← change to your phone's IP
+STREAM_URL    = f"http://{MOBILE_IP}:8080/video"
+
+# ⭐ Speed Settings — tune these to your robot
+BASE_SPEED    = 9   # base wheel speed (0–255)
+TURN_SPEED    = 7   # speed used for the spinning wheel during a turn
+
+# ================= HAND GESTURE DETECTOR =================
+class HandGestureDetector:
+    """
+    Two-hand gesture → direct motor speeds (no PID).
+
+    Gesture map:
+      Both open   → FORWARD
+      Both closed → BACKWARD
+      Right open, Left closed → TURN RIGHT  (left wheel drives)
+      Left open, Right closed → TURN LEFT   (right wheel drives)
+      Single / no hand        → STOP
+    """
+
+    def __init__(self):
+        self.mp_hands = mp.solutions.hands
+        self.hands    = self.mp_hands.Hands(
+            static_image_mode=False,
+            max_num_hands=2,
+            min_detection_confidence=0.7,
+            min_tracking_confidence=0.6
+        )
+        self.mp_draw  = mp.solutions.drawing_utils
+
+    def _is_open(self, lm):
+        """Return True when hand is mostly open (≥3 digits extended)."""
+        pts = lm.landmark
+        count = 0
+        # Thumb (x-axis comparison)
+        if pts[4].x > pts[2].x:
+            count += 1
+        # Four fingers (tip above PIP = extended)
+        for tip, pip in zip([8, 12, 16, 20], [6, 10, 14, 18]):
+            if pts[tip].y < pts[pip].y:
+                count += 1
+        return count >= 3
+
+    def _gesture_to_speeds(self, command):
+        """
+        Map a command string to (left_speed, right_speed).
+        Positive = forward, negative = backward.
+        """
+        if command == "forward":
+            return  BASE_SPEED,  BASE_SPEED
+        elif command == "backward":
+            return -BASE_SPEED, -BASE_SPEED
+        elif command == "left":
+            # Only right wheel turns; left wheel still
+            return  0,  TURN_SPEED
+        elif command == "right":
+            # Only left wheel turns; right wheel still
+            return  TURN_SPEED,  0
+        else:                          # "stop"
+            return  0,  0
+
+    def detect(self, frame):
+        """
+        Process a BGR frame, draw landmarks, return:
+          (left_speed, right_speed, command_name, debug_dict)
+        """
+        rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = self.hands.process(rgb)
+
+        command = "stop"
+        debug   = {
+            'left_hand':  None,
+            'right_hand': None,
+            'left_open':  False,
+            'right_open': False,
+        }
+
+        if results.multi_hand_landmarks and results.multi_handedness:
+            hands = {}
+
+            for lm, handedness in zip(results.multi_hand_landmarks,
+                                      results.multi_handedness):
+                label   = handedness.classification[0].label   # "Left" / "Right"
+                is_open = self._is_open(lm)
+                hands[label] = {'lm': lm, 'open': is_open}
+
+                self.mp_draw.draw_landmarks(
+                    frame, lm, self.mp_hands.HAND_CONNECTIONS
+                )
+
+            if 'Left' in hands:
+                debug['left_hand'] = 'detected'
+                debug['left_open'] = hands['Left']['open']
+            if 'Right' in hands:
+                debug['right_hand'] = 'detected'
+                debug['right_open'] = hands['Right']['open']
+
+            # Require BOTH hands for a movement command
+            if 'Left' in hands and 'Right' in hands:
+                lo = hands['Left']['open']
+                ro = hands['Right']['open']
+                if   lo and ro:     command = "forward"
+                elif not lo and not ro: command = "backward"
+                elif ro and not lo: command = "right"
+                elif lo and not ro: command = "left"
+
+        left_speed, right_speed = self._gesture_to_speeds(command)
+        return left_speed, right_speed, command, debug
+
+    def close(self):
+        self.hands.close()
+
+
+# ================= MAIN =================
+def main():
+    print("\n" + "=" * 55)
+    print("  🤖 Hand-Gesture Robot — Mobile Camera Edition")
+    print(f"  BASE_SPEED={BASE_SPEED}  TURN_SPEED={TURN_SPEED}")
+    print("=" * 55)
+    print("  🖐️🖐️  Both open    → FORWARD")
+    print("  ✊✊   Both closed  → BACKWARD")
+    print("  🖐️✊  Right open   → TURN RIGHT")
+    print("  ✊🖐️  Left open    → TURN LEFT")
+    print("  (one hand only)  → STOP")
+    print("  Q = quit")
+    print("=" * 55 + "\n")
+
+    # --- Boot up subsystems ---
+    print(f"Connecting to camera at {STREAM_URL} …")
+    video     = MobileVideoStream(STREAM_URL)
+    commander = Commander(ESP_IP, UDP_CMD_PORT)
+    detector  = HandGestureDetector()
+
+    # Wait for first frame
+    wait_start = time.time()
+    while time.time() - wait_start < 15:
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(".", end="", flush=True)
+    print()
+
+    if not video.connected:
+        print("❌ Could not connect to camera stream. Check MOBILE_IP.")
+        exit(1)
+
+    commander.stop()
+    time.sleep(0.3)
+
+    # --- Control loop variables ---
+    last_fid       = -1
+    last_left      = 0
+    last_right     = 0
+    last_cmd_name  = "stop"
+    last_cmd_time  = 0.0
+    CMD_INTERVAL   = 0.08    # re-send every 80 ms even if unchanged (keep-alive)
+
+    fps_count = 0
+    fps_timer = time.time()
+
+    CMD_COLORS = {
+        "forward":  (0,   255,   0),
+        "backward": (0,     0, 255),
+        "left":     (255, 255,   0),
+        "right":    (255,   0, 255),
+        "stop":     (100, 100, 100),
+    }
+
+    while True:
+        frame, fid = video.read()
+
+        if frame is None or fid == last_fid:
+            time.sleep(0.005)
+            continue
+
+        last_fid   = fid
+        fps_count += 1
+
+        # FPS readout every 30 frames
+        if fps_count >= 30:
+            fps = fps_count / (time.time() - fps_timer)
+            print(f"📊 FPS: {fps:.1f}")
+            fps_count = 0
+            fps_timer = time.time()
+
+        # --- Gesture detection ---
+        try:
+            left_speed, right_speed, cmd_name, debug = detector.detect(frame)
+        except Exception as e:
+            print(f"❌ Detection error: {e}")
+            left_speed = right_speed = 0
+            cmd_name   = "stop"
+            debug      = {}
+
+        # --- Send command ---
+        now = time.time()
+        speed_changed = (abs(left_speed - last_left) > 5 or
+                         abs(right_speed - last_right) > 5)
+        if speed_changed or (now - last_cmd_time) >= CMD_INTERVAL:
+            commander.motors(left_speed, right_speed)
+            last_left     = left_speed
+            last_right    = right_speed
+            last_cmd_name = cmd_name
+            last_cmd_time = now
+            print(f"🤖 {cmd_name.upper():8s} | L:{left_speed:+4d}  R:{right_speed:+4d}")
+
+        # --- HUD overlay ---
+        h, w = frame.shape[:2]
+
+        # Command badge (top-right)
+        color = CMD_COLORS.get(cmd_name, (200, 200, 200))
+        cv2.rectangle(frame, (w - 130, 8), (w - 8, 50), color, -1)
+        cv2.putText(frame, cmd_name.upper(),
+                    (w - 125, 38), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
+                    (0, 0, 0), 2)
+
+        # Speed readout
+        cv2.putText(frame, f"L:{left_speed:+4d}  R:{right_speed:+4d}",
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.65,
+                    (0, 255, 0), 2)
+
+        # Hand state indicators
+        left_state  = ("OPEN" if debug.get('left_open')  else "CLOSED") \
+                       if debug.get('left_hand')  else "---"
+        right_state = ("OPEN" if debug.get('right_open') else "CLOSED") \
+                       if debug.get('right_hand') else "---"
+
+        cv2.putText(frame, f"LEFT:  {left_state}",
+                    (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
+                    (0, 255, 255), 1)
+        cv2.putText(frame, f"RIGHT: {right_state}",
+                    (10, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
+                    (0, 255, 255), 1)
+
+        cv2.imshow("Hand-Gesture Robot Control", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # --- Shutdown ---
+    print("\nShutting down…")
+    commander.stop()
+    time.sleep(0.2)
+    video.stop()
+    detector.close()
+    cv2.destroyAllWindows()
+    print("✅ Done")
+
+
+if __name__ == "__main__":
+    main()</script></figure>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-get-code">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-two-hand-logic" data-lesson-link="proj3-two-hand-logic"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.5 Two-Hand Logic</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-what-changes" data-lesson-link="proj3-what-changes"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.7 What Changes &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-what-changes" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.7 What Changes from Project 2</div>
+<h1>P3.7 What Changes from Projects 1 and 2</h1>
+<div class="lesson-meta"><span>Architecture</span><span>No PID</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<div class="table-wrap"><table class="data-table"><thead><tr><th></th><th>Project 1</th><th>Project 2</th><th>Project 3</th></tr></thead><tbody>
+<tr><td>Vision module</td><td>Tracker (YOLO)</td><td>LaneFollower (OpenCV threshold)</td><td>HandGestureDetector (MediaPipe)</td></tr>
+<tr><td>Input to control</td><td>bbox cx, area</td><td>near_cx, far_cx</td><td>command string</td></tr>
+<tr><td>Control type</td><td>PID, continuous</td><td>PID, continuous</td><td>Direct lookup</td></tr>
+<tr><td>New import</td><td><code>ultralytics</code></td><td>OpenCV pipeline</td><td><code>mediapipe</code></td></tr>
+<tr><td>Shared infra</td><td><code>shared.py</code></td><td><code>shared.py</code></td><td><code>shared.py</code></td></tr>
+<tr><td>Arduino sketch</td><td><code>robot_udp</code></td><td><code>robot_udp</code></td><td><code>robot_udp</code></td></tr>
+</tbody></table></div>
+<h3>Three Things Are New</h3>
+<ol>
+<li><code>mediapipe</code> import and <code>Hands()</code> initialization</li>
+<li><code>HandGestureDetector</code> class</li>
+<li>Direct speed lookup instead of PID</li>
+</ol>
+<p>Everything else is shared infrastructure from Project D.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">PID</div><div><div class="callout-title">The biggest conceptual change: no PID</div><p>Projects 1 and 2 used PID controllers that continuously adjusted motor speed based on a numeric error signal. Project 3 does not. There is no error. The gesture maps directly to a speed pair. Both hands open means <code>left = BASE_SPEED</code> and <code>right = BASE_SPEED</code>. Done.</p><p>This is open-loop gesture control. It is simpler and more predictable for discrete commands like go, stop, and turn. The robot does not know where it is or how far it has traveled. It just executes the commanded gesture until the gesture changes.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-what-changes">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-get-code" data-lesson-link="proj3-get-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.6 Get Code</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-detector-class" data-lesson-link="proj3-detector-class"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.8 Detector Class &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-detector-class" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.8 The HandGestureDetector Class</div>
+<h1>P3.8 The HandGestureDetector Class</h1>
+<div class="lesson-meta"><span>Class walkthrough</span><span>MediaPipe</span><span>22 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">This class is the only new controller in Project 3. It initializes MediaPipe, reads each hand, classifies the two-hand gesture, and maps that gesture to motor speeds.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>Complete HandGestureDetector class</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">class HandGestureDetector:
+    """
+    Two-hand gesture → direct motor speeds (no PID).
+
+    Gesture map:
+      Both open   → FORWARD
+      Both closed → BACKWARD
+      Right open, Left closed → TURN RIGHT  (left wheel drives)
+      Left open, Right closed → TURN LEFT   (right wheel drives)
+      Single / no hand        → STOP
+    """
+
+    def __init__(self):
+        self.mp_hands = mp.solutions.hands
+        self.hands    = self.mp_hands.Hands(
+            static_image_mode=False,
+            max_num_hands=2,
+            min_detection_confidence=0.7,
+            min_tracking_confidence=0.6
+        )
+        self.mp_draw  = mp.solutions.drawing_utils
+
+    def _is_open(self, lm):
+        """Return True when hand is mostly open (≥3 digits extended)."""
+        pts = lm.landmark
+        count = 0
+        # Thumb (x-axis comparison)
+        if pts[4].x > pts[2].x:
+            count += 1
+        # Four fingers (tip above PIP = extended)
+        for tip, pip in zip([8, 12, 16, 20], [6, 10, 14, 18]):
+            if pts[tip].y < pts[pip].y:
+                count += 1
+        return count >= 3
+
+    def _gesture_to_speeds(self, command):
+        """
+        Map a command string to (left_speed, right_speed).
+        Positive = forward, negative = backward.
+        """
+        if command == "forward":
+            return  BASE_SPEED,  BASE_SPEED
+        elif command == "backward":
+            return -BASE_SPEED, -BASE_SPEED
+        elif command == "left":
+            # Only right wheel turns; left wheel still
+            return  0,  TURN_SPEED
+        elif command == "right":
+            # Only left wheel turns; right wheel still
+            return  TURN_SPEED,  0
+        else:                          # "stop"
+            return  0,  0
+
+    def detect(self, frame):
+        """
+        Process a BGR frame, draw landmarks, return:
+          (left_speed, right_speed, command_name, debug_dict)
+        """
+        rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = self.hands.process(rgb)
+
+        command = "stop"
+        debug   = {
+            'left_hand':  None,
+            'right_hand': None,
+            'left_open':  False,
+            'right_open': False,
+        }
+
+        if results.multi_hand_landmarks and results.multi_handedness:
+            hands = {}
+
+            for lm, handedness in zip(results.multi_hand_landmarks,
+                                      results.multi_handedness):
+                label   = handedness.classification[0].label   # "Left" / "Right"
+                is_open = self._is_open(lm)
+                hands[label] = {'lm': lm, 'open': is_open}
+
+                self.mp_draw.draw_landmarks(
+                    frame, lm, self.mp_hands.HAND_CONNECTIONS
+                )
+
+            if 'Left' in hands:
+                debug['left_hand'] = 'detected'
+                debug['left_open'] = hands['Left']['open']
+            if 'Right' in hands:
+                debug['right_hand'] = 'detected'
+                debug['right_open'] = hands['Right']['open']
+
+            # Require BOTH hands for a movement command
+            if 'Left' in hands and 'Right' in hands:
+                lo = hands['Left']['open']
+                ro = hands['Right']['open']
+                if   lo and ro:     command = "forward"
+                elif not lo and not ro: command = "backward"
+                elif ro and not lo: command = "right"
+                elif lo and not ro: command = "left"
+
+        left_speed, right_speed = self._gesture_to_speeds(command)
+        return left_speed, right_speed, command, debug
+
+    def close(self):
+        self.hands.close()</script></figure>
+<h3>Method 1: <code>__init__</code></h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>__init__</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def __init__(self):
+    self.mp_hands = mp.solutions.hands
+    self.hands    = self.mp_hands.Hands(
+        static_image_mode=False,
+        max_num_hands=2,
+        min_detection_confidence=0.7,
+        min_tracking_confidence=0.6
+    )
+    self.mp_draw  = mp.solutions.drawing_utils</script></figure>
+<p><code>mp_hands.Hands()</code> is initialized with the same parameters as the Colab notebook. <code>mp_draw</code> stores the drawing utilities for rendering landmarks on the frame.</p>
+<h3>Method 2: <code>_is_open</code></h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>_is_open</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def _is_open(self, lm):
+    """Return True when hand is mostly open (≥3 digits extended)."""
+    pts = lm.landmark
+    count = 0
+    # Thumb (x-axis comparison)
+    if pts[4].x > pts[2].x:
+        count += 1
+    # Four fingers (tip above PIP = extended)
+    for tip, pip in zip([8, 12, 16, 20], [6, 10, 14, 18]):
+        if pts[tip].y < pts[pip].y:
+            count += 1
+    return count >= 3</script></figure>
+<p>Identical to the <code>is_hand_open</code> function from Colab Cell 5. You already understand this.</p>
+<h3>Method 3: <code>_gesture_to_speeds</code></h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>_gesture_to_speeds</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def _gesture_to_speeds(self, command):
+    """
+    Map a command string to (left_speed, right_speed).
+    Positive = forward, negative = backward.
+    """
+    if command == "forward":
+        return  BASE_SPEED,  BASE_SPEED
+    elif command == "backward":
+        return -BASE_SPEED, -BASE_SPEED
+    elif command == "left":
+        # Only right wheel turns; left wheel still
+        return  0,  TURN_SPEED
+    elif command == "right":
+        # Only left wheel turns; right wheel still
+        return  TURN_SPEED,  0
+    else:                          # "stop"
+        return  0,  0</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Command</th><th>Speeds</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>forward</code></td><td><code>BASE_SPEED, BASE_SPEED</code></td><td>both wheels forward</td></tr>
+<tr><td><code>backward</code></td><td><code>-BASE_SPEED, -BASE_SPEED</code></td><td>both wheels backward</td></tr>
+<tr><td><code>left</code></td><td><code>0, TURN_SPEED</code></td><td>only right wheel drives</td></tr>
+<tr><td><code>right</code></td><td><code>TURN_SPEED, 0</code></td><td>only left wheel drives</td></tr>
+<tr><td><code>stop</code></td><td><code>0, 0</code></td><td>no movement</td></tr>
+</tbody></table></div>
+<p>Using one wheel stationary and one wheel driving creates a pivot turn. It is more responsive than differential steering for coarse gesture control, where the user wants an immediate direction change. The tradeoff is that the turn is less smooth.</p>
+<h3>Method 4: <code>detect</code></h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>detect</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def detect(self, frame):
+    """
+    Process a BGR frame, draw landmarks, return:
+      (left_speed, right_speed, command_name, debug_dict)
+    """
+    rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = self.hands.process(rgb)
+
+    command = "stop"
+    debug   = {
+        'left_hand':  None,
+        'right_hand': None,
+        'left_open':  False,
+        'right_open': False,
+    }
+
+    if results.multi_hand_landmarks and results.multi_handedness:
+        hands = {}
+
+        for lm, handedness in zip(results.multi_hand_landmarks,
+                                  results.multi_handedness):
+            label   = handedness.classification[0].label   # "Left" / "Right"
+            is_open = self._is_open(lm)
+            hands[label] = {'lm': lm, 'open': is_open}
+
+            self.mp_draw.draw_landmarks(
+                frame, lm, self.mp_hands.HAND_CONNECTIONS
+            )
+
+        if 'Left' in hands:
+            debug['left_hand'] = 'detected'
+            debug['left_open'] = hands['Left']['open']
+        if 'Right' in hands:
+            debug['right_hand'] = 'detected'
+            debug['right_open'] = hands['Right']['open']
+
+        # Require BOTH hands for a movement command
+        if 'Left' in hands and 'Right' in hands:
+            lo = hands['Left']['open']
+            ro = hands['Right']['open']
+            if   lo and ro:     command = "forward"
+            elif not lo and not ro: command = "backward"
+            elif ro and not lo: command = "right"
+            elif lo and not ro: command = "left"
+
+    left_speed, right_speed = self._gesture_to_speeds(command)
+    return left_speed, right_speed, command, debug</script></figure>
+<p>The Colab concepts appear directly in this method: <code>results = self.hands.process(rgb)</code>, <code>self._is_open(lm)</code>, the same gesture classification logic, and <code>mp_draw.draw_landmarks</code>.</p>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-detector-class">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-what-changes" data-lesson-link="proj3-what-changes"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.7 What Changes</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-main-loop" data-lesson-link="proj3-main-loop"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.9 Main Loop &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-main-loop" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.9 The Main Loop</div>
+<h1>P3.9 The Main Loop</h1>
+<div class="lesson-meta"><span>Main loop</span><span>Keep-alive</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The loop follows the same architecture as Projects 1 and 2: read frame, compute motor speeds, send UDP command, draw a HUD, repeat.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>Complete main() function</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def main():
+    print("\n" + "=" * 55)
+    print("  🤖 Hand-Gesture Robot — Mobile Camera Edition")
+    print(f"  BASE_SPEED={BASE_SPEED}  TURN_SPEED={TURN_SPEED}")
+    print("=" * 55)
+    print("  🖐️🖐️  Both open    → FORWARD")
+    print("  ✊✊   Both closed  → BACKWARD")
+    print("  🖐️✊  Right open   → TURN RIGHT")
+    print("  ✊🖐️  Left open    → TURN LEFT")
+    print("  (one hand only)  → STOP")
+    print("  Q = quit")
+    print("=" * 55 + "\n")
+
+    # --- Boot up subsystems ---
+    print(f"Connecting to camera at {STREAM_URL} …")
+    video     = MobileVideoStream(STREAM_URL)
+    commander = Commander(ESP_IP, UDP_CMD_PORT)
+    detector  = HandGestureDetector()
+
+    # Wait for first frame
+    wait_start = time.time()
+    while time.time() - wait_start < 15:
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(".", end="", flush=True)
+    print()
+
+    if not video.connected:
+        print("❌ Could not connect to camera stream. Check MOBILE_IP.")
+        exit(1)
+
+    commander.stop()
+    time.sleep(0.3)
+
+    # --- Control loop variables ---
+    last_fid       = -1
+    last_left      = 0
+    last_right     = 0
+    last_cmd_name  = "stop"
+    last_cmd_time  = 0.0
+    CMD_INTERVAL   = 0.08    # re-send every 80 ms even if unchanged (keep-alive)
+
+    fps_count = 0
+    fps_timer = time.time()
+
+    CMD_COLORS = {
+        "forward":  (0,   255,   0),
+        "backward": (0,     0, 255),
+        "left":     (255, 255,   0),
+        "right":    (255,   0, 255),
+        "stop":     (100, 100, 100),
+    }
+
+    while True:
+        frame, fid = video.read()
+
+        if frame is None or fid == last_fid:
+            time.sleep(0.005)
+            continue
+
+        last_fid   = fid
+        fps_count += 1
+
+        # FPS readout every 30 frames
+        if fps_count >= 30:
+            fps = fps_count / (time.time() - fps_timer)
+            print(f"📊 FPS: {fps:.1f}")
+            fps_count = 0
+            fps_timer = time.time()
+
+        # --- Gesture detection ---
+        try:
+            left_speed, right_speed, cmd_name, debug = detector.detect(frame)
+        except Exception as e:
+            print(f"❌ Detection error: {e}")
+            left_speed = right_speed = 0
+            cmd_name   = "stop"
+            debug      = {}
+
+        # --- Send command ---
+        now = time.time()
+        speed_changed = (abs(left_speed - last_left) > 5 or
+                         abs(right_speed - last_right) > 5)
+        if speed_changed or (now - last_cmd_time) >= CMD_INTERVAL:
+            commander.motors(left_speed, right_speed)
+            last_left     = left_speed
+            last_right    = right_speed
+            last_cmd_name = cmd_name
+            last_cmd_time = now
+            print(f"🤖 {cmd_name.upper():8s} | L:{left_speed:+4d}  R:{right_speed:+4d}")
+
+        # --- HUD overlay ---
+        h, w = frame.shape[:2]
+
+        # Command badge (top-right)
+        color = CMD_COLORS.get(cmd_name, (200, 200, 200))
+        cv2.rectangle(frame, (w - 130, 8), (w - 8, 50), color, -1)
+        cv2.putText(frame, cmd_name.upper(),
+                    (w - 125, 38), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
+                    (0, 0, 0), 2)
+
+        # Speed readout
+        cv2.putText(frame, f"L:{left_speed:+4d}  R:{right_speed:+4d}",
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.65,
+                    (0, 255, 0), 2)
+
+        # Hand state indicators
+        left_state  = ("OPEN" if debug.get('left_open')  else "CLOSED") \
+                       if debug.get('left_hand')  else "---"
+        right_state = ("OPEN" if debug.get('right_open') else "CLOSED") \
+                       if debug.get('right_hand') else "---"
+
+        cv2.putText(frame, f"LEFT:  {left_state}",
+                    (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
+                    (0, 255, 255), 1)
+        cv2.putText(frame, f"RIGHT: {right_state}",
+                    (10, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
+                    (0, 255, 255), 1)
+
+        cv2.imshow("Hand-Gesture Robot Control", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # --- Shutdown ---
+    print("\nShutting down…")
+    commander.stop()
+    time.sleep(0.2)
+    video.stop()
+    detector.close()
+    cv2.destroyAllWindows()
+    print("✅ Done")</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>What changed from Projects 1 and 2</th></tr></thead><tbody>
+<tr><td><code>detector = HandGestureDetector()</code></td><td>Replaces <code>tracker = Tracker()</code> and <code>follower = LaneFollower()</code>. Same pattern: one controller object initialized before the loop.</td></tr>
+<tr><td><code>left_speed, right_speed, cmd_name, debug = detector.detect(frame)</code></td><td>Replaces <code>tracker.control(frame)</code> and <code>follower.control(frame)</code>. <code>cmd_name</code> is a new string used for the HUD and terminal print.</td></tr>
+<tr><td><code>speed_changed = ...</code></td><td>Sends a command when speed changes significantly or when the keep-alive interval has elapsed.</td></tr>
+<tr><td><code>CMD_INTERVAL = 0.08</code></td><td>Resends motor commands every 80ms, safely below the Arduino's 500ms command timeout. Projects 1 and 2 used 30ms because PID produces a new output every frame; here the gesture can stay unchanged for seconds, so the keep-alive is essential.</td></tr>
+<tr><td><code>commander.motors(left_speed, right_speed)</code></td><td>No negative sign on <code>left_speed</code>. If the robot spins instead of going forward, use <code>commander.motors(-left_speed, right_speed)</code>.</td></tr>
+<tr><td><code>detector.close()</code></td><td>MediaPipe cleanup releases the underlying model resources.</td></tr>
+</tbody></table></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-main-loop">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-detector-class" data-lesson-link="proj3-detector-class"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.8 Detector Class</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-running" data-lesson-link="proj3-running"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.10 Running and Testing &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-running" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.10 Running and Testing</div>
+<h1>P3.10 Running and Testing</h1>
+<div class="lesson-meta"><span>Run locally</span><span>Checklist</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<h3>Install MediaPipe</h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal" data-lang="text"><figcaption><span>Terminal</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">pip install mediapipe</script></figure>
+<h3>Step 1: Test Gesture Recognition Locally First</h3>
+<p>Before connecting to the robot, run <code>gesture_recognize.py</code> on your laptop webcam.</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal" data-lang="text"><figcaption><span>Local webcam test</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">python gesture_recognize.py</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Test</th><th>Expected display</th></tr></thead><tbody>
+<tr><td>Hold both hands open</td><td>FORWARD</td></tr>
+<tr><td>Make both fists</td><td>BACK</td></tr>
+<tr><td>Right open, left fist</td><td>RIGHT</td></tr>
+<tr><td>Left open, right fist</td><td>LEFT</td></tr>
+<tr><td>Drop one hand</td><td>STOP</td></tr>
+</tbody></table></div>
+<h3>Step 2: Fill in Configuration</h3>
+<p>In <code>gesture_control.py</code>, update <code>ESP_IP</code> with your Arduino IP from Project D and <code>MOBILE_IP</code> with your phone IP from Project B.</p>
+<h3>Step 3: Run with Robot</h3>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal" data-lang="text"><figcaption><span>Robot control</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">python gesture_control.py</script></figure>
+<p>The terminal prints each command as it is sent:</p>
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal output" data-lang="text"><figcaption><span>Example output</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">FORWARD  | L: +9  R: +9
+STOP     | L:  0  R:  0
+RIGHT    | L: +7  R:  0</script></figure>
+<h3>Common Issues</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Issue</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Gestures not detected</td><td>Check lighting and background. Lower <code>min_detection_confidence</code> to 0.5 if hands are frequently missed.</td></tr>
+<tr><td>Robot moves when only one hand is visible</td><td>Check that <code>max_num_hands=2</code> and the logic requires both <code>Left</code> and <code>Right</code> in the hands dict.</td></tr>
+<tr><td>LEFT and RIGHT are swapped</td><td>Use the mirror note from P3.5 and swap <code>Left</code> and <code>Right</code> labels in the gesture block.</td></tr>
+<tr><td>Robot does not respond at all</td><td>Run <code>robot_keyboard.py</code> from Project D to confirm UDP still works.</td></tr>
+</tbody></table></div>
+<h3>Final Checklist</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-recognize-runs" />gesture_recognize.py runs on laptop webcam without errors</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-gestures-classified" />All five gestures classify correctly in the local test</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-mediapipe-installed" />mediapipe is installed in the venv</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-ips-updated" />ESP_IP and MOBILE_IP are updated in gesture_control.py</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-keyboard-confirmed" />robot_keyboard.py from Project D confirmed still working</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-forward" />Robot responds to FORWARD gesture and drives forward</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj3-stop" />Robot stops when one hand is lowered</label></div>
+</div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-running">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-main-loop" data-lesson-link="proj3-main-loop"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.9 Main Loop</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj3-dots" data-lesson-link="proj3-dots"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P3.11 Connecting the Dots &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj3-dots" data-chapter="proj3" data-chapter-title="* Project 3: Gesture Controlled Robot" style="--chapter-accent:#a855f7;--chapter-color:#a855f7">
+<div class="lesson-kicker">* Project 3: Gesture Controlled Robot <span>&rsaquo;</span> P3.11 Connecting the Dots</div>
+<h1>P3.11 Connecting the Dots</h1>
+<div class="lesson-meta"><span>Summary</span><span>Architecture</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">You have now built three robot vision behaviors on the same foundation.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Project</th><th>Vision</th><th>Control</th></tr></thead><tbody>
+<tr><td>Project 1</td><td>Neural network finds an object</td><td>PID steers toward it</td></tr>
+<tr><td>Project 2</td><td>Pixel math finds a line</td><td>PID follows it</td></tr>
+<tr><td>Project 3</td><td>Neural network reads your hand</td><td>Direct command to motors</td></tr>
+</tbody></table></div>
+<p>All three use the same infrastructure. All three communicate over UDP. All three use the same Arduino sketch. The vision module and control logic swapped three times. The foundation never changed.</p>
+<h3>The Three Approaches to Vision</h3>
+<div class="grid grid-3">
+<article class="card"><h3>Trained custom model</h3><p>Flexible, works on any object you train for, requires data collection.</p><p><strong>Use when:</strong> the thing you want to detect does not have a ready-made detector.</p></article>
+<article class="card"><h3>Classical image processing</h3><p>Fast, no model needed, brittle to lighting changes.</p><p><strong>Use when:</strong> the visual target is simple and the environment is controlled.</p></article>
+<article class="card"><h3>Pre-trained task-specific model</h3><p>Zero training required, very accurate for the specific task, cannot be used outside its design.</p><p><strong>Use when:</strong> your task matches one that already has a production model.</p></article>
+</div>
+<div class="callout robotics" role="note"><div class="callout-icon">BOT</div><div><div class="callout-title">The architecture is the point</div><p>The pipeline you built, phone camera to laptop vision to UDP commands to Arduino to motors, is architecturally identical to how commercial mobile robots receive instructions. In a production robot each part would be dedicated hardware, but the data flow is the same.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj3-dots">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj3-running" data-lesson-link="proj3-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.10 Running</span></a>
 <a class="lesson-nav-btn next" href="?lesson=project-archive" data-lesson-link="project-archive"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Student Projects &rarr;</span></a>
 </nav>
 </article>
@@ -8348,6 +9486,15 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
                 </div>
                 <strong>Open Project 2 lessons &rarr;</strong>
               </a>
+              <a class="card" href="index.html?lesson=proj3-mediapipe" data-lesson-link="proj3-mediapipe" style="display:block;text-decoration:none;border-color:#a855f7;margin-bottom:1rem">
+                <div class="project-label">Project 3 &mdash; Gesture Controlled Robot</div>
+                <h3>MediaPipe Hand Gesture Control</h3>
+                <p class="muted">A complete follow-up project that uses MediaPipe hand landmarks, two-hand gesture classification, direct speed lookup, and the same phone-stream and UDP robot architecture.</p>
+                <div class="chip-row" style="--chapter-color: #a855f7">
+                  <span class="chip">MediaPipe</span><span class="chip">Hand Landmarks</span><span class="chip">Gesture Control</span><span class="chip">UDP</span><span class="chip">shared.py</span>
+                </div>
+                <strong>Open Project 3 lessons &rarr;</strong>
+              </a>
               <a class="card" href="project.html" style="display:block;text-decoration:none;border-color:var(--cyan)">
                 <div class="project-label">Project 01 — Autonomous Robotics</div>
                 <h3>Ball-Following Robot with YOLO + PID Control</h3>
@@ -8360,7 +9507,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="project-archive">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj2-dots" data-lesson-link="proj2-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P2.9 Connecting the Dots</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj3-dots" data-lesson-link="proj3-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P3.11 Connecting the Dots</span></a>
 <span></span>
 </nav>
 </article>
@@ -8373,8 +9520,9 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
     const projectDLessons = [{"id":"projD-udp","label":"PD.0 What Is UDP","title":"PD.0 What Is UDP and Why Does a Robot Use It","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":true},{"id":"projD-wifi","label":"PD.1 UNO R4 WiFi","title":"PD.1 How WiFi Works on the UNO R4","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-arduino","label":"PD.2 Arduino Sketch","title":"PD.2 The Arduino Sketch: Connect, Listen, Drive","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-python","label":"PD.3 Python UDP Script","title":"PD.3 The Python Script: Send Commands, Read Telemetry","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-keyboard","label":"PD.4 Keyboard Control","title":"PD.4 Keyboard Control: Drive with WASD","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-telemetry","label":"PD.5 Encoder Telemetry","title":"PD.5 Receiving Encoder Telemetry in Python","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-loop","label":"PD.6 Full Communication Loop","title":"PD.6 Understanding the Full Communication Loop","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-project1","label":"PD.7 Connect to Project 1","title":"PD.7 Connecting the Dots to Project 1","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false}];
     const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-get-code","label":"P1.0b Get the Code","title":"P1.0b Get the Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-shared","label":"P1.3b shared.py \u2014 The Foundation","title":"P1.3b The Shared Infrastructure","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-get-code","label":"P2.0b Get the Code","title":"P2.0b Get the Code","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-config","label":"P2.3 Configuration","title":"P2.3 Configuration: Fill In Your Values","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-detect-lane","label":"P2.4 The detect_lane Function","title":"P2.4 The detect_lane Function","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.5 LaneFollower Class","title":"P2.5 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-main-loop","label":"P2.6 Main Loop","title":"P2.6 The Main Loop","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.7 Visualisation","title":"P2.7 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.8 Running and Tuning","title":"P2.8 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.9 Connecting the Dots","title":"P2.9 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
+    const project3Lessons = [{"id":"proj3-mediapipe","label":"P3.0 What Is MediaPipe?","title":"P3.0 What Is MediaPipe?","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":true},{"id":"proj3-landmark-detection","label":"P3.1 Hand Landmarks","title":"P3.1 How Hand Landmark Detection Works","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-mediapipe-colab","label":"P3.2 MediaPipe Colab","title":"P3.2 The MediaPipe Colab Notebook","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-understanding-landmarks","label":"P3.3 Understanding Landmarks","title":"P3.3 Understanding Landmarks","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-open-closed","label":"P3.4 Open vs Closed","title":"P3.4 Open vs Closed: Reading Finger State","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-two-hand-logic","label":"P3.5 Two-Hand Logic","title":"P3.5 Two-Hand Gesture Logic","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-get-code","label":"P3.6 Get the Robot Code","title":"P3.6 Get the Robot Code","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-what-changes","label":"P3.7 What Changes","title":"P3.7 What Changes from Projects 1 and 2","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-detector-class","label":"P3.8 HandGestureDetector","title":"P3.8 The HandGestureDetector Class","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-main-loop","label":"P3.9 Main Loop","title":"P3.9 The Main Loop","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-running","label":"P3.10 Running and Testing","title":"P3.10 Running and Testing","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-dots","label":"P3.11 Connecting the Dots","title":"P3.11 Connecting the Dots","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons, ...project3Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.findIndex((chapter) => chapter.key === "projects"),
       0,
@@ -8383,7 +9531,8 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
       {"key":"projC","title":"* Project C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-arduino-basics","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
       {"key":"projD","title":"* Project D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-shared","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
-      {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"}
+      {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"},
+      {"key":"proj3","title":"* Project 3: Gesture Controlled Robot","lessonIds":["proj3-mediapipe","proj3-landmark-detection","proj3-mediapipe-colab","proj3-understanding-landmarks","proj3-open-closed","proj3-two-hand-logic","proj3-get-code","proj3-what-changes","proj3-detector-class","proj3-main-loop","proj3-running","proj3-dots"],"firstLesson":"proj3-mediapipe"}
     );
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
