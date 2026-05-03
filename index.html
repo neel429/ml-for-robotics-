@@ -8418,8 +8418,12 @@ from IPython.display import display, Image as IPImage
 import ipywidgets as widgets
 
 print("MediaPipe version:", mp.__version__)</script></figure>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 2: Initialize the hands detector" data-lang="python"><figcaption><span>Initialize the hands detector</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">mp_hands = mp.solutions.hands
-mp_draw  = mp.solutions.drawing_utils
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 2: Initialize the hands detector" data-lang="python"><figcaption><span>Initialize the hands detector</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">try:
+    mp_hands = mp.solutions.hands
+    mp_draw  = mp.solutions.drawing_utils
+except AttributeError:
+    from mediapipe.python.solutions import hands as mp_hands
+    from mediapipe.python.solutions import drawing_utils as mp_draw
 
 hands = mp_hands.Hands(
     static_image_mode=False,
@@ -8706,6 +8710,14 @@ import mediapipe as mp
 from shared import MobileVideoStream, Commander
 
 
+def load_mediapipe_hands():
+    try:
+        return mp.solutions.hands, mp.solutions.drawing_utils
+    except AttributeError:
+        from mediapipe.python.solutions import drawing_utils, hands
+        return hands, drawing_utils
+
+
 # ================= CONFIGURATION =================
 ESP_IP        = "192.168.137.35"
 UDP_CMD_PORT  = 5001
@@ -8732,14 +8744,13 @@ class HandGestureDetector:
     """
 
     def __init__(self):
-        self.mp_hands = mp.solutions.hands
+        self.mp_hands, self.mp_draw = load_mediapipe_hands()
         self.hands    = self.mp_hands.Hands(
             static_image_mode=False,
             max_num_hands=2,
             min_detection_confidence=0.7,
             min_tracking_confidence=0.6
         )
-        self.mp_draw  = mp.solutions.drawing_utils
 
     def _is_open(self, lm):
         """Return True when hand is mostly open (≥3 digits extended)."""
@@ -9017,14 +9028,13 @@ if __name__ == "__main__":
     """
 
     def __init__(self):
-        self.mp_hands = mp.solutions.hands
+        self.mp_hands, self.mp_draw = load_mediapipe_hands()
         self.hands    = self.mp_hands.Hands(
             static_image_mode=False,
             max_num_hands=2,
             min_detection_confidence=0.7,
             min_tracking_confidence=0.6
         )
-        self.mp_draw  = mp.solutions.drawing_utils
 
     def _is_open(self, lm):
         """Return True when hand is mostly open (≥3 digits extended)."""
@@ -9109,14 +9119,13 @@ if __name__ == "__main__":
         self.hands.close()</script></figure>
 <h3>Method 1: <code>__init__</code></h3>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>__init__</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def __init__(self):
-    self.mp_hands = mp.solutions.hands
+    self.mp_hands, self.mp_draw = load_mediapipe_hands()
     self.hands    = self.mp_hands.Hands(
         static_image_mode=False,
         max_num_hands=2,
         min_detection_confidence=0.7,
         min_tracking_confidence=0.6
-    )
-    self.mp_draw  = mp.solutions.drawing_utils</script></figure>
+    )</script></figure>
 <p><code>mp_hands.Hands()</code> is initialized with the same parameters as the Colab notebook. <code>mp_draw</code> stores the drawing utilities for rendering landmarks on the frame.</p>
 <h3>Method 2: <code>_is_open</code></h3>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="gesture_control.py" data-lang="python"><figcaption><span>_is_open</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">def _is_open(self, lm):
