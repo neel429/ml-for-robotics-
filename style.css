@@ -3454,6 +3454,14 @@ body.lesson-app .p3-finger-state > div {
   height: 170px;
 }
 
+body.lesson-app .p3-finger-image img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background: #0d1117;
+}
+
 body.lesson-app .p3-finger-state .pip,
 body.lesson-app .p3-finger-state .tip {
   position: absolute;

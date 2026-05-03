@@ -9,8 +9,8 @@ from ultralytics import YOLO
 # ──────────────────────────────────────────────────────────────────────────────
 
 # Network
-ESP_IP         = "YOUR_ESP_IP"        # e.g. "192.168.1.100"
-MOBILE_IP      = "YOUR_PHONE_IP"      # e.g. "192.168.1.101"
+ESP_IP         = "192.168.137.149"        # e.g. "192.168.1.100"
+MOBILE_IP      = "172.24.17.163"      # e.g. "192.168.1.101"
 UDP_CMD_PORT   = 5001
 UDP_TELEM_PORT = 5002
 
@@ -274,6 +274,7 @@ def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y)
 # ──────────────────────────────────────────────────────────────────────────────
 
 def main():
+    global SMOOTH_RATE
 
     stream_url = f"http://{MOBILE_IP}:8080/video"
     print(f"Stream: {stream_url}")
@@ -332,7 +333,7 @@ def main():
         # Send motor command at a fixed interval
         now = time.time()
         if now - last_cmd_time >= CMD_INTERVAL:
-            commander.motors(-left_speed, right_speed)
+            commander.motors(left_speed, right_speed)
             last_cmd_time = now
 
         draw_overlay(frame, debug, left_speed, right_speed,

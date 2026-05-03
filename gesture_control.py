@@ -17,8 +17,8 @@ MOBILE_IP = "10.18.88.38"  # Change to your phone's IP
 STREAM_URL = f"http://{MOBILE_IP}:8080/video"
 
 # Speed settings. Tune these to your robot.
-BASE_SPEED = 9
-TURN_SPEED = 7
+BASE_SPEED = 13
+TURN_SPEED = 11
 
 MODEL_PATH = "hand_landmarker.task"
 HAND_CONNECTIONS = [

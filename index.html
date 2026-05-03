@@ -5622,6 +5622,7 @@ def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y)
 # ──────────────────────────────────────────────────────────────────────────────
 
 def main():
+    global SMOOTH_RATE
 
     stream_url = f"http://{MOBILE_IP}:8080/video"
     print(f"Stream: {stream_url}")
@@ -5680,7 +5681,7 @@ def main():
         # Send motor command at a fixed interval
         now = time.time()
         if now - last_cmd_time &gt;= CMD_INTERVAL:
-            commander.motors(-left_speed, right_speed)
+            commander.motors(left_speed, right_speed)
             last_cmd_time = now
 
         draw_overlay(frame, debug, left_speed, right_speed,
@@ -6466,7 +6467,7 @@ def send_stop():
 </tbody></table></div>
 <p>The only difference is the added LED state field. When Project 1 sends <code>MOTOR,150,100,TRACKING</code>, the Arduino sketch must parse the third field and set the RGB LED.</p>
 <div class="definition-card"><span class="def-term">The third field</span><p><code>MOTOR,leftSpeed,rightSpeed,LED_STATE</code>. The tracker passes the current state name so the robot can show <code>TRACKING</code>, <code>SEARCHING</code>, <code>ACQUIRING</code>, or <code>OFF</code> on the physical LED.</p></div>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="commander_state_led.py"><figcaption><span>State travels with the motor command</span><span class="local-run-badge">Main loop</span></figcaption><pre><code class="language-python">commander.motors(-left_speed, right_speed, debug["state"])</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="commander_state_led.py"><figcaption><span>State travels with the motor command</span><span class="local-run-badge">Main loop</span></figcaption><pre><code class="language-python">commander.motors(left_speed, right_speed, debug["state"])</code></pre></figure>
 <h3>Arduino Sketch Update: RGB LED State</h3>
 <p>Update the Project D <code>robot_udp</code> sketch so it accepts the three-field command and controls the WS2812B LED on pin <code>A3</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="project_d_parseCommand.ino"><figcaption><span>Project D parseCommand()</span><span class="local-run-badge">Before</span></figcaption><pre><code class="language-cpp">void parseCommand(char* packet) {
@@ -6854,7 +6855,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="steps">
 <div class="step"><div><strong>Step 1: Get a frame.</strong> <code>frame, fid = video.read()</code> returns the latest frame from <code>MobileVideoStream</code>'s background thread. If <code>fid</code> equals <code>last_fid</code>, no new frame has arrived, so the loop skips this iteration and avoids wasting YOLO inference on duplicate frames.</div></div>
 <div class="step"><div><strong>Step 2: Run detection and control.</strong> <code>left_speed, right_speed, debug = tracker.control(frame)</code> runs <code>_detect(frame)</code>, advances the state machine, computes PID outputs if tracking, applies ramping from Project C's acceleration concept, and returns two wheel commands plus debug data.</div></div>
-<div class="step"><div><strong>Step 3: Send motor command.</strong> At a fixed interval, the main loop sends <code>commander.motors(-left_speed, right_speed)</code>. The command path is the Project D UDP sender, now wrapped in <code>Commander</code>.</div></div>
+<div class="step"><div><strong>Step 3: Send motor command.</strong> At a fixed interval, the main loop sends <code>commander.motors(left_speed, right_speed)</code>. The command path is the Project D UDP sender, now wrapped in <code>Commander</code>.</div></div>
 <div class="step"><div><strong>Step 4: Draw the HUD.</strong> <code>draw_overlay(...)</code> combines the tracker debug dictionary, motor outputs, and <code>telemetry.read()</code> into the on-screen display.</div></div>
 <div class="step"><div><strong>Step 5: Show the frame.</strong> <code>cv2.imshow(...)</code> displays the annotated camera feed, just like Project A and Project B did.</div></div>
 </div>
@@ -6866,7 +6867,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <tr><td><code>ramp()</code></td><td>Project C concept</td><td>Limits acceleration so motor commands do not jump instantly.</td></tr>
 <tr><td><code>debug</code> dictionary</td><td>P1.10</td><td>Feeds the HUD with state, area, error, speed limit, and box data.</td></tr>
 </tbody></table></div>
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The negative left speed can be chassis-specific</div><p>Line: <code>commander.motors(-left_speed, right_speed)</code>. The negative sign on <code>left_speed</code> accounts for the motor orientation on this chassis. On a differential-drive robot, left and right motors often face opposite directions. If both receive the same positive voltage, one wheel can spin clockwise and the other counter-clockwise, making the robot spin in place.</p><p>Test with Project D's keyboard script by sending <code>MOTOR,100,100</code>. If the robot goes forward, remove the minus. If it spins, keep the minus or swap the side that is negated according to your wiring.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Motor sign can be chassis-specific</div><p>Line: <code>commander.motors(left_speed, right_speed)</code>. This version sends the left motor speed as a positive value, matching the current Project 1 robot wiring. On some chassis, motor orientation may still be reversed.</p><p>Test with Project D's keyboard script by sending <code>MOTOR,100,100</code>. If the robot spins instead of moving forward, change the send line to <code>commander.motors(-left_speed, right_speed)</code> or swap the side that is negated according to your wiring.</p></div></div>
 <h3>Why the debug dictionary matters</h3>
 <p>The tracker does not just return motor speeds. It also returns state, area, smoothed angle, distance error, speed limit, and bounding box data. This keeps the control logic and HUD connected without making the HUD rerun detection or recompute control decisions.</p>
 </div>
@@ -6973,6 +6974,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <h3>The Complete <code>main()</code> Function</h3>
 <p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>Project 1 main loop</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def main():
+    global SMOOTH_RATE
+
     mobile_ip = "10.18.204.215"
     stream_url = f"http://{mobile_ip}:8080/video"
 
@@ -7024,7 +7027,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 
         now = time.time()
         if now - last_cmd_time &gt;= CMD_INTERVAL:
-            commander.motors(-left_speed, right_speed, debug["state"])
+            commander.motors(left_speed, right_speed, debug["state"])
             last_cmd_time = now
 
         draw_overlay(
@@ -7067,7 +7070,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <details class="solution"><summary><code>commander.stop()</code> before the loop</summary><div><p>This sends a fresh stop packet before tracking begins. If a previous run crashed while motors were moving, startup still begins from a known safe command state.</p></div></details>
 <details class="solution"><summary><code>CMD_INTERVAL = 0.03</code></summary><div><p>This limits outgoing motor commands to about 33 Hz. Sending faster than that does not improve robot control and can flood the Arduino UDP receive buffer.</p></div></details>
 <details class="solution"><summary><code>if frame is None or fid == last_fid</code></summary><div><p>This skips empty reads and duplicate frames. The loop does not waste YOLO inference on the same image twice.</p></div></details>
-<details class="solution"><summary><code>commander.motors(-left_speed, right_speed, debug["state"])</code></summary><div><p>The negative sign is chassis-specific motor orientation. Verify it with the Project D keyboard test. The third argument sends the current state to the Arduino LED code from P1.6.</p></div></details>
+<details class="solution"><summary><code>commander.motors(left_speed, right_speed, debug["state"])</code></summary><div><p>The current Project 1 code sends the left motor speed as a positive value. Verify motor direction with the Project D keyboard test. The third argument sends the current state to the Arduino LED code from P1.6.</p></div></details>
 <details class="solution"><summary><code>telemetry.read()</code> inside <code>draw_overlay()</code></summary><div><p>Project 1 displays encoder ticks but does not yet use them for closed-loop wheel control. The telemetry data is for HUD diagnosis in this project.</p></div></details>
 <details class="solution"><summary>Shutdown order</summary><div><p>The program sends <code>commander.stop()</code> before stopping video and telemetry threads. Motor power is cut before communication objects are torn down.</p></div></details>
 </div>
@@ -8164,7 +8167,7 @@ return points[0], points[-1], points, area, roi_y, binary, points</code></pre></
     -left_speed / MOTOR_OUTPUT_SCALE,
     right_speed / MOTOR_OUTPUT_SCALE,
 )</code></pre></figure>
-<p>There are two differences from Project 1. First, <code>MOTOR_OUTPUT_SCALE</code> is <code>10</code> by default: <code>BODY_TURN_KP = 100</code> can produce outputs up to about +/-3000, so dividing by 10 maps that to about +/-300 before the driver clips to +/-255. If response feels weak, try <code>8</code>; if it oversteers, try <code>12</code>. Second, the negative left speed handles the same motor wiring consideration as Project 1. If the robot spins instead of going forward, remove the negative sign.</p>
+<p>There are two differences from Project 1. First, <code>MOTOR_OUTPUT_SCALE</code> is <code>10</code> by default: <code>BODY_TURN_KP = 100</code> can produce outputs up to about +/-3000, so dividing by 10 maps that to about +/-300 before the driver clips to +/-255. If response feels weak, try <code>8</code>; if it oversteers, try <code>12</code>. Second, this line may still need a motor-sign adjustment depending on your chassis. Project 1 now sends <code>left_speed</code> as positive by default; if the robot spins instead of going forward, add or remove the negative sign for your wiring.</p>
 <h3>Runtime Threshold Adjustment</h3>
 <figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>T/Y threshold keys</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">elif key == ord('t'):
     BINARY_THRESHOLD = min(BINARY_THRESHOLD + 5, 255)
@@ -8371,14 +8374,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">MediaPipe does not just detect that a hand is present. It detects 21 specific points on the hand called landmarks. Each landmark has an x, y, and z coordinate normalized to the image size.</p>
-<figure class="p3-hand-diagram" aria-label="MediaPipe 21 hand landmarks">
-<div class="p3-palm"></div>
-<span class="p3-dot p0">0</span><span class="p3-dot p1">1</span><span class="p3-dot p2">2</span><span class="p3-dot p3">3</span><span class="p3-dot p4">4</span>
-<span class="p3-dot p5">5</span><span class="p3-dot p6">6</span><span class="p3-dot p7">7</span><span class="p3-dot p8">8</span>
-<span class="p3-dot p9">9</span><span class="p3-dot p10">10</span><span class="p3-dot p11">11</span><span class="p3-dot p12">12</span>
-<span class="p3-dot p13">13</span><span class="p3-dot p14">14</span><span class="p3-dot p15">15</span><span class="p3-dot p16">16</span>
-<span class="p3-dot p17">17</span><span class="p3-dot p18">18</span><span class="p3-dot p19">19</span><span class="p3-dot p20">20</span>
-</figure>
+<figure class="lesson-image-card"><img src="hand_landmarks.png" alt="MediaPipe hand landmark diagram showing 21 numbered hand points" loading="lazy" /><figcaption>MediaPipe hand landmark indices used for gesture detection.</figcaption></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Index</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>0</td><td>wrist, reference point for thumb detection</td></tr>
 <tr><td>2, 3, 4</td><td>thumb MCP, thumb IP, thumb tip</td></tr>
@@ -8389,8 +8385,8 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 </tbody></table></div>
 <p>The core insight: if a finger tip is above its PIP joint, it has a lower y value because y increases downward. That finger is extended. If the tip is below the PIP joint, the finger is curled.</p>
 <div class="p3-finger-state-grid">
-<figure class="p3-finger-state"><div><span class="pip"></span><span class="tip high"></span><span class="bone high"></span></div><figcaption><strong>Extended finger</strong><br /><code>tip.y &lt; pip.y</code></figcaption></figure>
-<figure class="p3-finger-state"><div><span class="pip"></span><span class="tip low"></span><span class="bone low"></span></div><figcaption><strong>Curled finger</strong><br /><code>tip.y &gt; pip.y</code></figcaption></figure>
+<figure class="p3-finger-state p3-finger-image"><img src="extended_finger.png" alt="Extended finger landmark example" loading="lazy" /><figcaption><strong>Extended finger</strong><br /><code>tip.y &lt; pip.y</code></figcaption></figure>
+<figure class="p3-finger-state p3-finger-image"><img src="curled_finger.png" alt="Curled finger landmark example" loading="lazy" /><figcaption><strong>Curled finger</strong><br /><code>tip.y &gt; pip.y</code></figcaption></figure>
 </div>
 <div class="callout info" role="note"><div class="callout-icon">xy</div><div><div class="callout-title">Normalized coordinates</div><p>The coordinates are normalized: x and y are between 0 and 1, where (0,0) is the top-left of the image and (1,1) is the bottom-right. This means the detection works regardless of image resolution. A hand at x=0.5 is always in the horizontal center of the frame.</p></div></div>
 </div>
@@ -8767,8 +8763,8 @@ MOBILE_IP = "10.18.88.38"  # Change to your phone's IP
 STREAM_URL = f"http://{MOBILE_IP}:8080/video"
 
 # Speed settings. Tune these to your robot.
-BASE_SPEED = 9
-TURN_SPEED = 7
+BASE_SPEED = 13
+TURN_SPEED = 11
 
 MODEL_PATH = "hand_landmarker.task"
 HAND_CONNECTIONS = [
@@ -9523,9 +9519,9 @@ else:
 <h3>Step 3: Run with Robot</h3>
 <figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal" data-lang="text"><figcaption><span>Robot control</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">python gesture_control.py</script></figure>
 <p>The terminal prints each command as it is sent:</p>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal output" data-lang="text"><figcaption><span>Example output</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">FORWARD  | L: +9  R: +9
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="terminal output" data-lang="text"><figcaption><span>Example output</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">FORWARD  | L:+13  R:+13
 STOP     | L:  0  R:  0
-RIGHT    | L: +7  R:  0</script></figure>
+RIGHT    | L:+11  R:  0</script></figure>
 <h3>Common Issues</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Issue</th><th>Fix</th></tr></thead><tbody>
 <tr><td>Gestures not detected</td><td>Check lighting and background. Lower <code>min_hand_detection_confidence</code> to 0.5 if hands are frequently missed.</td></tr>
