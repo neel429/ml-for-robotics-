@@ -173,6 +173,7 @@
 <a class="lesson-link" href="?lesson=proj1-vscode" data-lesson-link="proj1-vscode"><span>P1.1 Setting Up VS Code</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span>P1.2 Installing Dependencies</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-config" data-lesson-link="proj1-config"><span>P1.3 Configuration</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=proj1-shared" data-lesson-link="proj1-shared"><span>P1.3b shared.py &mdash; The Foundation</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-pid" data-lesson-link="proj1-pid"><span>P1.4 The PID Controller</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-camera" data-lesson-link="proj1-camera"><span>P1.5 Reading the Camera Stream</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=proj1-udp-send" data-lesson-link="proj1-udp-send"><span>P1.6 Sending Commands (UDP)</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -322,7 +323,7 @@
 </article>
 <article class="chapter-card" data-chapter-card="proj1" style="--chapter-accent:#f97316">
 <div class="chapter-card-strip"></div>
-<div class="chapter-card-top"><span>Project 1</span><span>13 lessons</span></div>
+<div class="chapter-card-top"><span>Project 1</span><span>15 lessons</span></div>
 <h2>Object Tracker</h2>
 <p>Build a local YOLO + PID vision loop that sends UDP motor commands.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="proj1">0 / 13 complete</small></div>
@@ -3154,7 +3155,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 
 <p class="lead">In Project A you ran detection on a webcam plugged into your laptop. That works for a desktop demo but it is useless for a robot. A robot moves. It cannot drag a USB cable behind it. The camera must be wireless.</p>
 <p>A phone is the perfect solution for learning. It already has a high quality camera, a battery, WiFi, and a screen. Both apps we use turn the phone into a network camera that streams live video over your local WiFi. Your laptop connects to that stream over the network exactly the way a browser loads a video: no cable, no Bluetooth, no special hardware.</p>
-<p>This is also exactly how Project 1's robot works. The <code>MobileVideoStream</code> class in <code>obj_track_adv.py</code> connects to a phone stream using the same URL format you will set up in this project. By the end of Project B you will understand every line of that class.</p>
+<p>This is also exactly how Project 1's robot works. The <code>MobileVideoStream</code> class in <code>shared.py</code> connects to a phone stream using the same URL format you will set up in this project. By the end of Project B you will understand every line of that class.</p>
 <div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Same architecture, smaller scale</div><p>Professional mobile robots use the same concept at a higher level. A drone streams its camera feed over WiFi or 4G to a ground station running detection algorithms. An autonomous vehicle streams from multiple cameras to an onboard computer. The architecture is identical to what you are building here: the difference is bandwidth and latency.</p></div></div>
 <h3>What You Need</h3>
 <div class="steps">
@@ -3451,7 +3452,7 @@ end = buf.find(b&quot;\\xff\\xd9&quot;, start + 2) # find the next end marker
 jpg = buf[start:end + 2]              # slice out the complete JPEG
 frame = cv2.imdecode(...)             # decode bytes into an image array</code></pre></figure>
 <div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Do not decode an empty JPEG</div><p>The end marker must be searched <em>after</em> the start marker. If the code finds an old end marker first, the slice can be empty and OpenCV raises <code>(-215:Assertion failed) !buf.empty()</code> inside <code>cv2.imdecode</code>.</p></div></div>
-<p>This exact pattern is used in the <code>MobileVideoStream</code> class in Project 1's <code>obj_track_adv.py</code>. Now you know exactly why it is there.</p>
+<p>This exact pattern is used in the <code>MobileVideoStream</code> class in <code>shared.py</code>. Now you know exactly why it is there.</p>
 <h3>Why cv2.imdecode Instead Of cv2.VideoCapture</h3>
 <p>In Project A you used <code>cv2.VideoCapture(0)</code> to open a webcam. <code>VideoCapture</code> handles USB and some network cameras using built-in drivers. However it does not reliably handle MJPEG streams from phone apps. <code>imdecode</code> works on raw bytes directly, which gives us full control over how frames are read and handles connection drops and reconnects cleanly.</p>
 <h3>The Detection Line</h3>
@@ -3473,7 +3474,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Look at the <code>MobileVideoStream</code> class in <code>obj_track_adv.py</code> from Project 1. Open the file in VS Code and read through it now. You will recognize every concept.</p>
+<p class="lead">Look at the <code>MobileVideoStream</code> class in <code>shared.py</code> from Project 1. Open the file in VS Code and read through it now. You will recognize every concept.</p>
 <div class="steps">
 <div class="step"><div><strong>The <code>__init__</code> method:</strong> creates the stream URL and starts a background thread. You now know why a background thread exists: to keep frames flowing without blocking the main detection loop.</div></div>
 <div class="step"><div><strong>The <code>_run</code> method:</strong> contains the MJPEG parsing loop. The <code>buf.find()</code> calls for <code>0xff 0xd8</code> and <code>0xff 0xd9</code> are exactly the same as <code>read_frame</code> in your <code>detect_stream.py</code>. The difference is that <code>MobileVideoStream</code> runs this loop in a background thread and stores the latest frame in <code>self.frame</code>, while your simple script reads frames one at a time in the main loop.</div></div>
@@ -5240,7 +5241,7 @@ telem_sock.close()</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Open <code>obj_track_adv.py</code> in VS Code and find the <code>Commander</code> and <code>Telemetry</code> classes. Project D was designed so those classes look familiar instead of mysterious.</p>
+<p class="lead">Open <code>shared.py</code> in VS Code and find the <code>Commander</code> and <code>Telemetry</code> classes. Project D was designed so those classes look familiar instead of mysterious.</p>
 
 <h3>The Commander Class</h3>
 <div class="pd-bridge-list">
@@ -5276,7 +5277,7 @@ telem_sock.close()</code></pre></figure>
 <div class="step"><label><input type="checkbox" data-checklist-key="projD-csv-log" /><code>telemetry_log.csv</code> was generated and opened successfully.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projD-bind-sendto" />You can explain the difference between <code>bind()</code> and <code>sendto()</code>.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projD-timeout" />You can explain what <code>CMD_TIMEOUT_MS</code> does and why it matters.</label></div>
-<div class="step"><label><input type="checkbox" data-checklist-key="projD-project1-classes" />You have read <code>Commander</code> and <code>Telemetry</code> in <code>obj_track_adv.py</code> and recognized the Project D patterns.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-project1-classes" />You have read <code>Commander</code> and <code>Telemetry</code> in <code>shared.py</code> and recognized the Project D patterns.</label></div>
 </div>
 <p>When all boxes are checked, you are ready for Project 1.</p>
 
@@ -5322,26 +5323,24 @@ telem_sock.close()</code></pre></figure>
 <div class="step"><label><input type="checkbox" data-checklist-key="proj1-preflight-stream" />You know your phone stream URL from Project B.</label></div>
 </div>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Do not skip broken prerequisites</div><p>If any box is unchecked, finish that project before continuing. Project 1 is an integration project; it will not work if its detector, camera stream, motor base, or UDP link is already broken.</p></div></div>
-<h3>Full Code</h3><p class="lead">This is the complete file. Every lesson in this project explains one section of it. Read it top to bottom now &mdash; even if you do not understand it yet. Then come back to each lesson to understand what each part does.</p><figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="Obj_track_adv.py" data-download-filename="Obj_track_adv.py"><figcaption><span>Complete Obj_track_adv.py</span><span class="local-run-badge">Copy or download</span></figcaption><pre><code class="language-python">import cv2
+<h3>Full Code</h3><p class="lead">This is the complete file for reference. Do not try to read it all now &mdash; it will not make sense yet. As you work through each lesson, come back here to find the exact section being explained. By the end of the project every line will be familiar.</p><figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py" data-download-filename="obj_track_adv.py"><figcaption><span>Complete obj_track_adv.py</span><span class="local-run-badge">Copy or download</span></figcaption><pre><code class="language-python">from shared import PID, MobileVideoStream, Commander, Telemetry, RobotState, ramp
+import cv2
 import numpy as np
 import time
-import socket
-import threading
-import requests
 from ultralytics import YOLO
-
 
 # ──────────────────────────────────────────────────────────────────────────────
 #  CONFIGURATION
 # ──────────────────────────────────────────────────────────────────────────────
 
 # Network
-ESP_IP         = &quot;192.168.137.228&quot;
+ESP_IP         = "YOUR_ESP_IP"        # e.g. "192.168.1.100"
+MOBILE_IP      = "YOUR_PHONE_IP"      # e.g. "192.168.1.101"
 UDP_CMD_PORT   = 5001
 UDP_TELEM_PORT = 5002
 
 # Vision
-TARGET_OBJECT = &quot;ball&quot;
+TARGET_OBJECT = "ball"
 TARGET_AREA   = 143_000
 
 # Turn PID
@@ -5372,185 +5371,11 @@ LOST_TIMEOUT   = 1.0
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-#  CONTROLLERS
-# ──────────────────────────────────────────────────────────────────────────────
-
-class PID:
-    &quot;&quot;&quot;Proportional-Integral-Derivative controller with optional output clamping.&quot;&quot;&quot;
-
-    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
-        self.max_integral  = max_integral
-        self.output_limits = output_limits
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-    def update(self, error):
-        now = time.time()
-        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
-        self._prev_time = now
-
-        self._integral   = np.clip(self._integral + error * dt,
-                                   -self.max_integral, self.max_integral)
-        derivative       = (error - self._prev_error) / dt
-        self._prev_error = error
-
-        output = self.kp * error + self.ki * self._integral + self.kd * derivative
-        if self.output_limits:
-            output = np.clip(output, *self.output_limits)
-        return output
-
-    def reset(self):
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NETWORKING
-# ──────────────────────────────────────────────────────────────────────────────
-
-class MobileVideoStream:
-    &quot;&quot;&quot;Continuously pulls MJPEG frames from a phone camera in a background thread.&quot;&quot;&quot;
-
-    def __init__(self, url):
-        self.url       = url
-        self.frame     = None
-        self.fid       = 0
-        self.connected = False
-        self.running   = True
-        self._lock     = threading.Lock()
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        backoff = 1.0
-        while self.running:
-            try:
-                response = requests.get(self.url, stream=True, timeout=10)
-                if response.status_code != 200:
-                    raise ConnectionError(&quot;Non-200 status&quot;)
-
-                self.connected = True
-                backoff = 1.0
-                buf = b&quot;&quot;
-
-                for chunk in response.iter_content(1024):
-                    buf += chunk
-                    start = buf.find(b&quot;\xff\xd8&quot;)
-                    end   = buf.find(b&quot;\xff\xd9&quot;)
-
-                    if start != -1 and end != -1:
-                        jpg = buf[start : end + 2]
-                        buf = buf[end + 2 :]
-                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
-                        if img is not None:
-                            with self._lock:
-                                self.frame = img
-                                self.fid  += 1
-
-                    if not self.running:
-                        break
-
-            except Exception:
-                self.connected = False
-                time.sleep(backoff)
-                backoff = min(backoff * 2, 8.0)
-
-    def read(self):
-        with self._lock:
-            return self.frame, self.fid
-
-    def stop(self):
-        self.running = False
-
-
-class Commander:
-    &quot;&quot;&quot;Sends UDP motor commands to the ESP.&quot;&quot;&quot;
-
-    def __init__(self, ip, port):
-        self.ip    = ip
-        self.port  = port
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    def motors(self, left, right, light=&quot;off&quot;):
-        msg = f&quot;MOTOR,{int(left)},{int(right)},{light.upper()}&quot;
-        self._sock.sendto(msg.encode(), (self.ip, self.port))
-
-    def stop(self):
-        self._sock.sendto(b&quot;STOP,OFF&quot;, (self.ip, self.port))
-
-
-class Telemetry:
-    &quot;&quot;&quot;Receives encoder telemetry from the ESP over UDP.&quot;&quot;&quot;
-
-    def __init__(self, port):
-        self.left_ticks  = 0
-        self.right_ticks = 0
-        self.cmd_left    = 0
-        self.cmd_right   = 0
-        self.running     = True
-        self._lock       = threading.Lock()
-        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.bind((&quot;&quot;, port))
-        self._sock.settimeout(1.0)
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        while self.running:
-            try:
-                data, _ = self._sock.recvfrom(128)
-                parts   = data.decode().strip().split(&quot;,&quot;)
-                if parts[0] == &quot;ENC&quot; and len(parts) == 5:
-                    with self._lock:
-                        self.left_ticks  = int(parts[1])
-                        self.right_ticks = int(parts[2])
-                        self.cmd_left    = int(parts[3])
-                        self.cmd_right   = int(parts[4])
-            except Exception:
-                pass
-
-    def read(self):
-        with self._lock:
-            return {
-                &quot;left_ticks&quot;:  self.left_ticks,
-                &quot;right_ticks&quot;: self.right_ticks,
-                &quot;cmd_left&quot;:    self.cmd_left,
-                &quot;cmd_right&quot;:   self.cmd_right,
-            }
-
-    def stop(self):
-        self.running = False
-        self._sock.close()
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  STATE MACHINE
-# ──────────────────────────────────────────────────────────────────────────────
-
-class RobotState:
-    STOPPED   = &quot;STOPPED&quot;
-    SEARCHING = &quot;SEARCHING&quot;
-    ACQUIRING = &quot;ACQUIRING&quot;
-    TRACKING  = &quot;TRACKING&quot;
-
-
-# ──────────────────────────────────────────────────────────────────────────────
 #  TRACKER
 # ──────────────────────────────────────────────────────────────────────────────
 
-def ramp(current, target, max_step):
-    &quot;&quot;&quot;Limit how fast a value can change per step.&quot;&quot;&quot;
-    diff = target - current
-    if abs(diff) &lt;= max_step:
-        return target
-    return current + max_step * np.sign(diff)
-
-
 class Tracker:
-    &quot;&quot;&quot;YOLO-based ball tracker with PID control and a 4-state state machine.&quot;&quot;&quot;
+    """YOLO-based ball tracker with PID control and a 4-state state machine."""
 
     STATE_COLORS = {
         RobotState.STOPPED:   (100, 100, 100),
@@ -5560,15 +5385,15 @@ class Tracker:
     }
 
     def __init__(self, model_path, target):
-        print(&quot;Loading YOLO model...&quot;)
+        print("Loading YOLO model...")
         self.model  = YOLO(model_path)
         self.target = target
 
         try:
-            self.model.to(&quot;cuda&quot;)
-            print(&quot;Using CUDA&quot;)
+            self.model.to("cuda")
+            print("Using CUDA")
         except Exception:
-            print(&quot;Using CPU&quot;)
+            print("Using CPU")
         self.model.fuse()
 
         self.pid_turn = PID(BODY_TURN_KP, BODY_TURN_KI, BODY_TURN_KD,
@@ -5589,7 +5414,7 @@ class Tracker:
     # ── Detection ────────────────────────────────────────────────────────────
 
     def _detect(self, frame):
-        &quot;&quot;&quot;Return the bounding box of the largest detected target, or None.&quot;&quot;&quot;
+        """Return the bounding box of the largest detected target, or None."""
         results   = self.model(frame, imgsz=320, verbose=False, conf=0.60)
         best      = None
         best_area = 0
@@ -5642,7 +5467,7 @@ class Tracker:
     # ── Control ──────────────────────────────────────────────────────────────
 
     def _motor_outputs_for_ball(self, cx, area, frame_width):
-        &quot;&quot;&quot;Compute raw left/right targets when the ball is visible.&quot;&quot;&quot;
+        """Compute raw left/right targets when the ball is visible."""
         raw_angle_error = (cx - frame_width / 2) / frame_width
 
         if abs(raw_angle_error) &lt; ANGLE_DEAD_ZONE:
@@ -5672,7 +5497,7 @@ class Tracker:
         return tgt_left, tgt_right, dist_error, turn_cmd, base_speed
 
     def control(self, frame):
-        &quot;&quot;&quot;Run one control cycle; returns (left_speed, right_speed, debug_dict).&quot;&quot;&quot;
+        """Run one control cycle; returns (left_speed, right_speed, debug_dict)."""
         h, w = frame.shape[:2]
         bbox = self._detect(frame)
         self._update_state(bbox is not None)
@@ -5701,15 +5526,15 @@ class Tracker:
         self.cur_right = ramp(self.cur_right, tgt_right, MAX_ACCEL)
 
         debug = {
-            &quot;state&quot;:          self.state,
-            &quot;bbox&quot;:           bbox,
-            &quot;smoothed_angle&quot;: self.smoothed_angle,
-            &quot;turn_cmd&quot;:       turn_cmd,
-            &quot;dist_error&quot;:     dist_error,
-            &quot;base_speed&quot;:     base_speed,
-            &quot;area&quot;:           area,
-            &quot;cx&quot;:             int(cx) if bbox is None else int((bbox[0] + bbox[2]) / 2),
-            &quot;speed_limit&quot;:    self.speed_limit,
+            "state":          self.state,
+            "bbox":           bbox,
+            "smoothed_angle": self.smoothed_angle,
+            "turn_cmd":       turn_cmd,
+            "dist_error":     dist_error,
+            "base_speed":     base_speed,
+            "area":           area,
+            "cx":             int(cx) if bbox is None else int((bbox[0] + bbox[2]) / 2),
+            "speed_limit":    self.speed_limit,
         }
         return round(self.cur_left), round(self.cur_right), debug
 
@@ -5725,42 +5550,42 @@ class Tracker:
 
 def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y):
     h, w = frame.shape[:2]
-    state_color = Tracker.STATE_COLORS.get(debug[&quot;state&quot;], (255, 255, 255))
+    state_color = Tracker.STATE_COLORS.get(debug["state"], (255, 255, 255))
 
     # Centre line
     cv2.line(frame, (w // 2, 0), (w // 2, h), (0, 255, 0), 1)
 
     # Smoothed-angle indicator
-    smooth_x = int(w / 2 + debug[&quot;smoothed_angle&quot;] * w)
+    smooth_x = int(w / 2 + debug["smoothed_angle"] * w)
     cv2.line(frame, (smooth_x, 0), (smooth_x, h), (0, 255, 255), 2)
-    cv2.putText(frame, &quot;SMOOTH&quot;, (smooth_x + 5, 20),
+    cv2.putText(frame, "SMOOTH", (smooth_x + 5, 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
 
     # Bounding box
-    if debug[&quot;bbox&quot;] is not None:
-        x1, y1, x2, y2 = debug[&quot;bbox&quot;]
+    if debug["bbox"] is not None:
+        x1, y1, x2, y2 = debug["bbox"]
         x1, y1, x2, y2 = (int(x1 * scale_x), int(y1 * scale_y),
                            int(x2 * scale_x), int(y2 * scale_y))
 
-        if abs(debug[&quot;dist_error&quot;]) &lt; AREA_DEAD_ZONE:
+        if abs(debug["dist_error"]) &lt; AREA_DEAD_ZONE:
             box_color = (0, 255, 0)     # green  — correct distance
-        elif debug[&quot;dist_error&quot;] &gt; 0:
+        elif debug["dist_error"] &gt; 0:
             box_color = (0, 0, 255)     # red    — too close
         else:
             box_color = (255, 100, 0)   # blue   — too far
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), box_color, 2)
         cy = (y1 + y2) // 2
-        cv2.circle(frame, (int(debug[&quot;cx&quot;] * scale_x), cy), 6, (0, 0, 255), -1)
+        cv2.circle(frame, (int(debug["cx"] * scale_x), cy), 6, (0, 0, 255), -1)
 
     # Text HUD
     lines = [
-        (f&quot;STATE:  {debug[&#39;state&#39;]}&quot;,                                   state_color),
-        (f&quot;SMOOTH: {debug[&#39;smoothed_angle&#39;]:+.3f}&quot;,                     (0, 255, 255)),
-        (f&quot;AREA:   {int(debug[&#39;area&#39;])} / {TARGET_AREA}&quot;,               (255, 255, 255)),
-        (f&quot;SPD LIM:{debug[&#39;speed_limit&#39;]:.0%}&quot;,                         (255, 255, 255)),
-        (f&quot;L:{int(left_speed):+4d} R:{int(right_speed):+4d}&quot;,           (0, 255, 0)),
-        (f&quot;ENC L:{telem[&#39;left_ticks&#39;]:+4d} R:{telem[&#39;right_ticks&#39;]:+4d}&quot;, (255, 165, 0)),
+        (f"STATE:  {debug['state']}",                                   state_color),
+        (f"SMOOTH: {debug['smoothed_angle']:+.3f}",                     (0, 255, 255)),
+        (f"AREA:   {int(debug['area'])} / {TARGET_AREA}",               (255, 255, 255)),
+        (f"SPD LIM:{debug['speed_limit']:.0%}",                         (255, 255, 255)),
+        (f"L:{int(left_speed):+4d} R:{int(right_speed):+4d}",           (0, 255, 0)),
+        (f"ENC L:{telem['left_ticks']:+4d} R:{telem['right_ticks']:+4d}", (255, 165, 0)),
     ]
     for i, (text, color) in enumerate(lines):
         thickness = 2 if i in (0, 4) else 1
@@ -5774,33 +5599,33 @@ def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y)
 # ──────────────────────────────────────────────────────────────────────────────
 
 def main():
-    mobile_ip  = &quot;10.18.204.215&quot;
-    stream_url = f&quot;http://{mobile_ip}:8080/video&quot;
-    print(f&quot;Stream: {stream_url}&quot;)
+
+    stream_url = f"http://{MOBILE_IP}:8080/video"
+    print(f"Stream: {stream_url}")
 
     video     = MobileVideoStream(stream_url)
     commander = Commander(ESP_IP, UDP_CMD_PORT)
     telemetry = Telemetry(UDP_TELEM_PORT)
 
-    print(&quot;Waiting for camera&quot;, end=&quot;&quot;, flush=True)
+    print("Waiting for camera", end="", flush=True)
     for _ in range(30):
         if video.connected:
             break
         time.sleep(0.5)
-        print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+        print(".", end="", flush=True)
     print()
 
     if not video.connected:
-        print(&quot;Could not connect to camera&quot;)
+        print("Could not connect to camera")
         return
 
-    tracker = Tracker(&quot;best.pt&quot;, TARGET_OBJECT)
+    tracker = Tracker("best.pt", TARGET_OBJECT)
     commander.stop()
     time.sleep(0.5)
 
-    print(f&quot;\nTracking: {TARGET_OBJECT}  |  Target area: {TARGET_AREA}&quot;)
-    print(&quot;Q=Quit  R=Reset  F=Smooth faster  S=Smooth slower&quot;)
-    print(&quot;=&quot; * 60)
+    print(f"\nTracking: {TARGET_OBJECT}  |  Target area: {TARGET_AREA}")
+    print("Q=Quit  R=Reset  F=Smooth faster  S=Smooth slower")
+    print("=" * 60)
 
     last_fid      = -1
     last_cmd_time = 0.0
@@ -5818,7 +5643,7 @@ def main():
         fps_count += 1
         if fps_count &gt;= 30:
             fps = fps_count / (time.time() - fps_timer)
-            print(f&quot;FPS: {fps:.1f}  SMOOTH_RATE: {SMOOTH_RATE:.2f}&quot;)
+            print(f"FPS: {fps:.1f}  SMOOTH_RATE: {SMOOTH_RATE:.2f}")
             fps_count = 0
             fps_timer = time.time()
 
@@ -5838,32 +5663,33 @@ def main():
         draw_overlay(frame, debug, left_speed, right_speed,
                      telemetry.read(), w / orig_w, h / orig_h)
 
-        cv2.imshow(f&quot;Object Tracker — {TARGET_OBJECT}&quot;, frame)
+        cv2.imshow(f"Object Tracker — {TARGET_OBJECT}", frame)
 
         key = cv2.waitKey(1) &amp; 0xFF
-        if key == ord(&quot;q&quot;):
+        if key == ord("q"):
             break
-        elif key == ord(&quot;r&quot;):
+        elif key == ord("r"):
             tracker.reset()
-            print(&quot;Reset&quot;)
-        elif key == ord(&quot;f&quot;):
+            print("Reset")
+        elif key == ord("f"):
             SMOOTH_RATE = min(SMOOTH_RATE + 0.02, 0.5)
-            print(f&quot;SMOOTH_RATE → {SMOOTH_RATE:.2f}&quot;)
-        elif key == ord(&quot;s&quot;):
+            print(f"SMOOTH_RATE → {SMOOTH_RATE:.2f}")
+        elif key == ord("s"):
             SMOOTH_RATE = max(SMOOTH_RATE - 0.02, 0.02)
-            print(f&quot;SMOOTH_RATE → {SMOOTH_RATE:.2f}&quot;)
+            print(f"SMOOTH_RATE → {SMOOTH_RATE:.2f}")
 
-    print(&quot;\nShutting down...&quot;)
+    print("\nShutting down...")
     commander.stop()
     time.sleep(0.2)
     video.stop()
     telemetry.stop()
     cv2.destroyAllWindows()
-    print(&quot;Done&quot;)
+    print("Done")
 
 
-if __name__ == &quot;__main__&quot;:
-    main()</code></pre></figure></div>
+if __name__ == "__main__":
+    main()
+</code></pre></figure><p class="muted">Download this file and place it in your <code>my-detector</code> project folder. You will not run it until the final lesson.</p></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.7 Project 1 Bridge</span></a>
@@ -5876,14 +5702,17 @@ if __name__ == &quot;__main__&quot;:
 <div class="lesson-meta"><span>Download</span><span>GitHub</span><span>8 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">The code for this project is in the course GitHub repository. You need to download it to your laptop before anything else.</p>
+<p class="lead">The code for this project is in the course GitHub repository. Download both files before continuing.</p>
 <div class="steps">
 <div class="step"><div><strong>Step 1 &mdash; Open the repository.</strong><br />Go to <a href="https://github.com/neel429/ml-for-robotics-" target="_blank" rel="noreferrer">github.com/neel429/ml-for-robotics-</a>.</div></div>
-<div class="step"><div><strong>Step 2 &mdash; Download the file.</strong><br />Navigate to the code folder and find <code>Obj_track_adv.py</code>. Click the file name to open it, then click the Download Raw File button, the down-arrow icon in the top right of the file view. Save it to your <code>my-detector</code> project folder from Project A.</div></div>
-<div class="step"><div><strong>Step 3 &mdash; Verify the file is there.</strong><br />Open VS Code and open the <code>my-detector</code> folder. You should see <code>Obj_track_adv.py</code> in the file explorer on the left.</div></div>
-<div class="step"><div><strong>Step 4 &mdash; Open it and read the configuration block.</strong><br />Open the file. The very top section is the CONFIGURATION block. Every value in this section must be filled in before running. The next lesson walks through each one.</div></div>
+<div class="step"><div><strong>Step 2 &mdash; Download the two files below.</strong><br />Save both files to your <code>my-detector</code> project folder from Project A.</div></div>
+<div class="step"><div><strong>Step 3 &mdash; Verify the files are there.</strong><br />Open VS Code and open the <code>my-detector</code> folder. You should see <code>shared.py</code> and <code>obj_track_adv.py</code> in the file explorer on the left.</div></div>
+<div class="step"><div><strong>Step 4 &mdash; Open the project file and read the configuration block.</strong><br />Open <code>obj_track_adv.py</code>. The very top section after the import lines is the CONFIGURATION block. Every value in this section must be filled in before running. The next lesson walks through each one.</div></div>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">CODE</div><div><div class="callout-title">Do not run the file yet</div><p>It will not work with the default placeholder values. Complete every lesson in this project first, then run it in the final lesson.</p></div></div>
+<h3>Download Files</h3>
+<div class="grid-2"><div class="card download-card"><h4><code>shared.py</code></h4><p>Reusable infrastructure: PID controller, camera stream, UDP commands, telemetry, and state machine constants. Used by both Project 1 and Project 2.</p><a class="download-card-btn" href="shared.py" download>Download</a></div><div class="card download-card"><h4><code>obj_track_adv.py</code></h4><p>Project 1 specific code: YOLO detection, the Tracker class, HUD overlay, and the main loop.</p><a class="download-card-btn" href="obj_track_adv.py" download>Download</a></div></div>
+<p class="muted">Both files must be in the same folder. <code>shared.py</code> is imported by <code>obj_track_adv.py</code> automatically when you run it &mdash; you never open or edit <code>shared.py</code> directly.</p>
+<div class="callout info" role="note"><div class="callout-icon">CODE</div><div><div class="callout-title">Do not run the files yet</div><p>They will not work with the default placeholder values. Complete every lesson in this project first, then run the project file in the final lesson.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-get-code">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -5901,7 +5730,7 @@ if __name__ == &quot;__main__&quot;:
 <div class="steps">
 <div class="step"><div>Open your <code>my-detector</code> folder in VS Code.</div></div>
 <div class="step"><div>Activate the same virtual environment you used in Project A. On Windows use <code>venv\Scripts\activate</code>. On macOS or Linux use <code>source venv/bin/activate</code>.</div></div>
-<div class="step"><div>Copy <code>obj_track_adv.py</code> into this folder if it is not already there.</div></div>
+<div class="step"><div>Copy <code>shared.py</code> and <code>obj_track_adv.py</code> into this folder if they are not already there.</div></div>
 <div class="step"><div>Copy your trained <code>best.pt</code> into the same folder as <code>obj_track_adv.py</code>.</div></div>
 </div>
 <div class="callout tip" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Reuse the Project A environment</div><p>In Project A you created <code>my-detector</code> and installed <code>ultralytics</code>, <code>opencv-python</code>, and <code>requests</code>. Those are the core packages Project 1 needs. You do not need a new folder or a new virtual environment.</p></div></div>
@@ -5992,6 +5821,348 @@ print("All dependencies present.")</code></pre></figure>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-config">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=proj1-dependencies" data-lesson-link="proj1-dependencies"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.2 Installing Dependencies</span></a>
+<a class="lesson-nav-btn next" href="?lesson=proj1-shared" data-lesson-link="proj1-shared"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.3b shared.py &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="proj1-shared" data-chapter="proj1" data-chapter-title="&#9733; Project 1: Object Tracker" style="--chapter-accent:#f97316">
+<div class="lesson-kicker">&#9733; Project 1: Object Tracker <span>&rsaquo;</span> P1.3b The Shared Infrastructure</div>
+<h1>P1.3b The Shared Infrastructure</h1>
+<div class="lesson-meta"><span>Architecture</span><span>shared.py</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Before looking at the Project 1 specific code, it helps to understand what is in <code>shared.py</code>. This file is the foundation both projects are built on. You will study it once here and never need to re-read it in Project 2 &mdash; it will already be familiar.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py" data-download-filename="shared.py"><figcaption><span>Complete shared.py</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python"># shared.py
+# Reusable infrastructure used by both obj_track_adv.py
+# and lane_follower_adv.py.
+# Contains: PID, MobileVideoStream, Commander, Telemetry,
+# RobotState, ramp()
+
+import cv2
+import numpy as np
+import time
+import socket
+import threading
+import requests
+
+
+class PID:
+    """Proportional-Integral-Derivative controller with optional output clamping."""
+
+    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.max_integral  = max_integral
+        self.output_limits = output_limits
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+    def update(self, error):
+        now = time.time()
+        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
+        self._prev_time = now
+
+        self._integral   = np.clip(self._integral + error * dt,
+                                   -self.max_integral, self.max_integral)
+        derivative       = (error - self._prev_error) / dt
+        self._prev_error = error
+
+        output = self.kp * error + self.ki * self._integral + self.kd * derivative
+        if self.output_limits:
+            output = np.clip(output, *self.output_limits)
+        return output
+
+    def reset(self):
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+class MobileVideoStream:
+    """Continuously pulls MJPEG frames from a phone camera in a background thread."""
+
+    def __init__(self, url):
+        self.url       = url
+        self.frame     = None
+        self.fid       = 0
+        self.connected = False
+        self.running   = True
+        self._lock     = threading.Lock()
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                response = requests.get(self.url, stream=True, timeout=10)
+                if response.status_code != 200:
+                    raise ConnectionError("Non-200 status")
+
+                self.connected = True
+                backoff = 1.0
+                buf = b""
+
+                for chunk in response.iter_content(1024):
+                    buf += chunk
+                    start = buf.find(b"\xff\xd8")
+                    end   = buf.find(b"\xff\xd9")
+
+                    if start != -1 and end != -1:
+                        jpg = buf[start : end + 2]
+                        buf = buf[end + 2 :]
+                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid  += 1
+
+                    if not self.running:
+                        break
+
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False
+
+class Commander:
+    """Sends UDP motor commands to the ESP."""
+
+    def __init__(self, ip, port):
+        self.ip    = ip
+        self.port  = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light="off"):
+        msg = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b"STOP,OFF", (self.ip, self.port))
+
+class Telemetry:
+    """Receives encoder telemetry from the ESP over UDP."""
+
+    def __init__(self, port):
+        self.left_ticks  = 0
+        self.right_ticks = 0
+        self.cmd_left    = 0
+        self.cmd_right   = 0
+        self.running     = True
+        self._lock       = threading.Lock()
+        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind(("", port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(128)
+                parts   = data.decode().strip().split(",")
+                if parts[0] == "ENC" and len(parts) == 5:
+                    with self._lock:
+                        self.left_ticks  = int(parts[1])
+                        self.right_ticks = int(parts[2])
+                        self.cmd_left    = int(parts[3])
+                        self.cmd_right   = int(parts[4])
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return {
+                "left_ticks":  self.left_ticks,
+                "right_ticks": self.right_ticks,
+                "cmd_left":    self.cmd_left,
+                "cmd_right":   self.cmd_right,
+            }
+
+    def stop(self):
+        self.running = False
+        self._sock.close()
+
+class RobotState:
+    STOPPED   = "STOPPED"
+    SEARCHING = "SEARCHING"
+    ACQUIRING = "ACQUIRING"
+    TRACKING  = "TRACKING"
+
+def ramp(current, target, max_step):
+    """Limit how fast a value can change per step."""
+    diff = target - current
+    if abs(diff) &lt;= max_step:
+        return target
+    return current + max_step * np.sign(diff)</code></pre></figure>
+<h3>PID</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>PID controller</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">class PID:
+    """Proportional-Integral-Derivative controller with optional output clamping."""
+
+    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.max_integral  = max_integral
+        self.output_limits = output_limits
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None
+
+    def update(self, error):
+        now = time.time()
+        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
+        self._prev_time = now
+
+        self._integral   = np.clip(self._integral + error * dt,
+                                   -self.max_integral, self.max_integral)
+        derivative       = (error - self._prev_error) / dt
+        self._prev_error = error
+
+        output = self.kp * error + self.ki * self._integral + self.kd * derivative
+        if self.output_limits:
+            output = np.clip(output, *self.output_limits)
+        return output
+
+    def reset(self):
+        self._integral   = 0.0
+        self._prev_error = 0.0
+        self._prev_time  = None</code></pre></figure>
+<p>The PID controller. Takes an error value, returns a correction. Two instances run simultaneously in Project 1 &mdash; one for steering, one for distance. Explained in full in lesson P1.4.</p>
+<h3>MobileVideoStream</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>MobileVideoStream</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">class MobileVideoStream:
+    """Continuously pulls MJPEG frames from a phone camera in a background thread."""
+
+    def __init__(self, url):
+        self.url       = url
+        self.frame     = None
+        self.fid       = 0
+        self.connected = False
+        self.running   = True
+        self._lock     = threading.Lock()
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                response = requests.get(self.url, stream=True, timeout=10)
+                if response.status_code != 200:
+                    raise ConnectionError("Non-200 status")
+
+                self.connected = True
+                backoff = 1.0
+                buf = b""
+
+                for chunk in response.iter_content(1024):
+                    buf += chunk
+                    start = buf.find(b"\xff\xd8")
+                    end   = buf.find(b"\xff\xd9")
+
+                    if start != -1 and end != -1:
+                        jpg = buf[start : end + 2]
+                        buf = buf[end + 2 :]
+                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid  += 1
+
+                    if not self.running:
+                        break
+
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False</code></pre></figure>
+<p>Connects to the phone camera over WiFi and delivers frames continuously in a background thread. You built the non-threaded version of this in Project B. Explained in full in lesson P1.5.</p>
+<h3>Commander and Telemetry</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Commander</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">class Commander:
+    """Sends UDP motor commands to the ESP."""
+
+    def __init__(self, ip, port):
+        self.ip    = ip
+        self.port  = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light="off"):
+        msg = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b"STOP,OFF", (self.ip, self.port))</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Telemetry</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">class Telemetry:
+    """Receives encoder telemetry from the ESP over UDP."""
+
+    def __init__(self, port):
+        self.left_ticks  = 0
+        self.right_ticks = 0
+        self.cmd_left    = 0
+        self.cmd_right   = 0
+        self.running     = True
+        self._lock       = threading.Lock()
+        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind(("", port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(128)
+                parts   = data.decode().strip().split(",")
+                if parts[0] == "ENC" and len(parts) == 5:
+                    with self._lock:
+                        self.left_ticks  = int(parts[1])
+                        self.right_ticks = int(parts[2])
+                        self.cmd_left    = int(parts[3])
+                        self.cmd_right   = int(parts[4])
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return {
+                "left_ticks":  self.left_ticks,
+                "right_ticks": self.right_ticks,
+                "cmd_left":    self.cmd_left,
+                "cmd_right":   self.cmd_right,
+            }
+
+    def stop(self):
+        self.running = False
+        self._sock.close()</code></pre></figure>
+<p>Commander sends motor commands to the Arduino over UDP. Telemetry receives encoder tick data back. You built both of these in Project D. Explained in P1.6 and P1.7.</p>
+<h3>RobotState and ramp()</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>RobotState constants</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">class RobotState:
+    STOPPED   = "STOPPED"
+    SEARCHING = "SEARCHING"
+    ACQUIRING = "ACQUIRING"
+    TRACKING  = "TRACKING"</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>ramp()</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">def ramp(current, target, max_step):
+    """Limit how fast a value can change per step."""
+    diff = target - current
+    if abs(diff) &lt;= max_step:
+        return target
+    return current + max_step * np.sign(diff)</code></pre></figure>
+<p>RobotState is four string constants naming the four states. <code>ramp()</code> limits how fast a value can change &mdash; the acceleration limiter. Both are used in the state machine lesson P1.8.</p>
+<div class="callout info" role="note"><div class="callout-icon">INFO</div><div><div class="callout-title">You only read this once</div><p>Every lesson from P1.4 onward explains one section of <code>obj_track_adv.py</code> specifically. <code>shared.py</code> is the foundation underneath all of it. When Project 2 arrives, its first import line will be identical to Project 1's. That one line is the whole point.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-shared">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=proj1-config" data-lesson-link="proj1-config"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.3 Configuration</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-pid" data-lesson-link="proj1-pid"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.4 PID Controller &rarr;</span></a>
 </nav>
 </article>
@@ -6031,7 +6202,8 @@ print("All dependencies present.")</code></pre></figure>
 <div class="definition-card"><span class="def-term">Project 1 PID approach</span><p><code>correction = Kp * error + Ki * integral + Kd * derivative</code><br /><code>motor_output = base + correction</code></p></div>
 <p>The Project C version had two output levels: full speed or slow speed. The PID version produces a continuous output, so a large error creates a large correction and a small error creates a small correction.</p>
 <h3>The Project 1 PID Class</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="pid_class_full.py"><figcaption><span>Project 1 PID class</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class PID:
+<p class="muted">This class is in <code>shared.py</code> &mdash; the version below is identical in both projects.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Project 1 PID class</span><span class="local-run-badge">shared.py</span></figcaption><pre><code class="language-python">class PID:
     def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
         self.kp = kp
         self.ki = ki
@@ -6073,7 +6245,8 @@ print("All dependencies present.")</code></pre></figure>
 <details class="solution"><summary><code>reset()</code></summary><div><p>Project C called <code>resetEncoders()</code> at the start of a movement. Project 1 calls <code>reset()</code> when tracking fully stops, so stale integral and derivative memory do not affect a new tracking session.</p></div></details>
 </div>
 <h3>Why There Are Two PIDs</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="pid_instances.py"><figcaption><span>Two independent controllers</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">self.pid_turn = PID(
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>Two independent controllers</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">self.pid_turn = PID(
     BODY_TURN_KP,
     BODY_TURN_KI,
     BODY_TURN_KD,
@@ -6111,7 +6284,7 @@ tgt_right = base_speed - turn_cmd</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-pid">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=proj1-config" data-lesson-link="proj1-config"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.3 Configuration</span></a>
+<a class="lesson-nav-btn" href="?lesson=proj1-shared" data-lesson-link="proj1-shared"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.3b shared.py</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-camera" data-lesson-link="proj1-camera"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.5 Camera Stream &rarr;</span></a>
 </nav>
 </article>
@@ -6144,7 +6317,8 @@ while True:
     annotated = results[0].plot()    # then draw
     cv2.imshow("Detection", annotated)</code></pre></figure>
 <h3>Project 1 Code: Threaded Frame Reading</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="mobile_video_stream_full.py"><figcaption><span>Project 1 MobileVideoStream</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class MobileVideoStream:
+<p class="muted"><code>MobileVideoStream</code> is in <code>shared.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Project 1 MobileVideoStream</span><span class="local-run-badge">shared.py</span></figcaption><pre><code class="language-python">class MobileVideoStream:
     def __init__(self, url):
         self.url = url
         self.frame = None
@@ -6232,7 +6406,7 @@ while True:
 <div class="lesson-meta"><span>Networking</span><span>Run locally</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">The <code>Commander</code> class is <code>cmd_sock</code> from Project D wrapped in a class. Open <code>robot_control.py</code> from Project D beside <code>obj_track_adv.py</code>.</p>
+<p class="lead">The <code>Commander</code> class is <code>cmd_sock</code> from Project D wrapped in a class. Open <code>robot_control.py</code> from Project D beside <code>shared.py</code>.</p>
 <h3>Project D Code: Two Simple Functions</h3>
 <figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="project_d_command_functions.py"><figcaption><span>Project D robot_control.py sender</span><span class="local-run-badge">Reference</span></figcaption><pre><code class="language-python">cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -6243,7 +6417,8 @@ def send_command(left, right):
 def send_stop():
     cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))</code></pre></figure>
 <h3>Project 1 Code: The Same Sender as a Class</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="commander_class_full.py"><figcaption><span>Project 1 Commander</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class Commander:
+<p class="muted"><code>Commander</code> is in <code>shared.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Project 1 Commander</span><span class="local-run-badge">shared.py</span></figcaption><pre><code class="language-python">class Commander:
     def __init__(self, ip, port):
         self.ip = ip
         self.port = port
@@ -6363,7 +6538,8 @@ def read_telemetry():
         pass
     return None, None</code></pre></figure>
 <h3>Project 1 Code: Threaded Telemetry</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="telemetry_class_threaded.py"><figcaption><span>Project 1 Telemetry</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class Telemetry:
+<p class="muted"><code>Telemetry</code> is in <code>shared.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Project 1 Telemetry</span><span class="local-run-badge">shared.py</span></figcaption><pre><code class="language-python">class Telemetry:
     def __init__(self, port):
         self.left_ticks = 0
         self.right_ticks = 0
@@ -6472,7 +6648,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 </tbody></table></div>
 <p>The learned FrozenLake policy handles uncertainty through training. The Project 1 state machine is hand-designed because early physical robot testing needs behavior that is predictable and debuggable.</p>
 <h3>The Four Robot States</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="robot_state.py"><figcaption><span>RobotState constants</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">class RobotState:
+<p class="muted">This code is in <code>shared.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>RobotState constants</span><span class="local-run-badge">shared.py</span></figcaption><pre><code class="language-python">class RobotState:
     STOPPED = "STOPPED"
     SEARCHING = "SEARCHING"
     ACQUIRING = "ACQUIRING"
@@ -6484,7 +6661,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="card"><h4>TRACKING</h4><p>The target has been confirmed for enough frames. The robot uses full PID authority.</p></div>
 </div>
 <h3>The Full <code>_update_state()</code> Method</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="update_state_full.py"><figcaption><span>State transition logic</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def _update_state(self, bbox_found):
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>State transition logic</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def _update_state(self, bbox_found):
     if bbox_found:
         self.last_seen_t = time.time()
 
@@ -6524,7 +6702,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <details class="solution"><summary><code>self.pid_turn.reset()</code> and <code>self.pid_dist.reset()</code></summary><div><p>The PIDs reset only when the target has been lost long enough to stop. They are not reset on every brief search, because that would erase useful accumulated correction and cause a lurch when the ball reappears.</p></div></details>
 </div>
 <h3>Searching Spin</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="searching_spin.py"><figcaption><span>Spin toward the last known target direction</span><span class="local-run-badge">control()</span></figcaption><pre><code class="language-python">elif self.state == RobotState.SEARCHING:
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>Spin toward the last known target direction</span><span class="local-run-badge">control()</span></figcaption><pre><code class="language-python">elif self.state == RobotState.SEARCHING:
     tgt_left = 10 * self.last_turn_dir * self.speed_limit
     tgt_right = -10 * self.last_turn_dir * self.speed_limit</code></pre></figure>
 <p><code>last_turn_dir</code> remembers which side the target was on before it disappeared. If the ball was last seen on the right, the robot searches right first because that is the most likely direction to reacquire it.</p>
@@ -6551,7 +6730,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="lesson-body">
 <p class="lead">This lesson follows one frame from camera input to motor command. The goal is to see how all components interact in the order they run.</p>
 <h3>The Full <code>control()</code> Method</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="control_method_full.py"><figcaption><span>Tracker.control()</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def control(self, frame):
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>Tracker.control()</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def control(self, frame):
     h, w = frame.shape[:2]
     bbox = self._detect(frame)
     self._update_state(bbox is not None)
@@ -6602,14 +6782,16 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <tr><td><code>debug = {...}</code></td><td>P1.10</td><td>Packages internal control values for the HUD without recomputing them.</td></tr>
 </tbody></table></div>
 <h3>The Ramp Function</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="ramp_function.py"><figcaption><span>Motor acceleration limiter</span><span class="local-run-badge">Control helper</span></figcaption><pre><code class="language-python">def ramp(current, target, max_step):
+<p class="muted">This code is in <code>shared.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="shared.py"><figcaption><span>Motor acceleration limiter</span><span class="local-run-badge">Control helper</span></figcaption><pre><code class="language-python">def ramp(current, target, max_step):
     diff = target - current
     if abs(diff) &lt;= max_step:
         return target
     return current + max_step * np.sign(diff)</code></pre></figure>
 <p>With <code>MAX_ACCEL = 2</code>, a motor command can change by only 2 PWM units per control cycle. At about 33 Hz, going from 0 to 255 would take roughly <code>255 / 2 / 33 = 3.9</code> seconds, which is intentionally gentle for first testing.</p>
 <h3>The Full <code>_motor_outputs_for_ball()</code> Method</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="motor_outputs_full.py"><figcaption><span>Converting one bounding box into two wheel speeds</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def _motor_outputs_for_ball(self, cx, area, frame_width):
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>Converting one bounding box into two wheel speeds</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def _motor_outputs_for_ball(self, cx, area, frame_width):
     raw_angle_error = (cx - frame_width / 2) / frame_width
 
     if abs(raw_angle_error) &lt; ANGLE_DEAD_ZONE:
@@ -6679,7 +6861,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="lesson-body">
 <p class="lead">The HUD has no new robotics concepts. It is a live dashboard that draws each piece of internal data onto the camera frame so you can debug without staring at terminal logs.</p>
 <h3>The Full <code>draw_overlay()</code> Function</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="draw_overlay_full.py"><figcaption><span>HUD drawing function</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y):
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>HUD drawing function</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def draw_overlay(frame, debug, left_speed, right_speed, telem, scale_x, scale_y):
     h, w = frame.shape[:2]
     state_color = Tracker.STATE_COLORS.get(debug["state"], (255, 255, 255))
 
@@ -6765,7 +6948,8 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="lesson-body">
 <p class="lead">The <code>main()</code> function is the integration point. Every line traces back to a project you already completed.</p>
 <h3>The Complete <code>main()</code> Function</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="main_function_annotated.py"><figcaption><span>Project 1 main loop</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def main():
+<p class="muted">This code is in <code>obj_track_adv.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-1" data-filename="obj_track_adv.py"><figcaption><span>Project 1 main loop</span><span class="local-run-badge">obj_track_adv.py</span></figcaption><pre><code class="language-python">def main():
     mobile_ip = "10.18.204.215"
     stream_url = f"http://{mobile_ip}:8080/video"
 
@@ -6947,16 +7131,48 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="diagram" aria-label="Project 2 classical vision flow">
 <div class="flow-row"><div class="flow-node">Phone camera<br /><span class="mini muted">floor image</span></div><div class="arrow">&rarr;</div><div class="flow-node">OpenCV pipeline<br /><span class="mini muted">threshold + scan rows</span></div><div class="arrow">&rarr;</div><div class="flow-node">LaneFollower<br /><span class="mini muted">two-point steering + PID</span></div><div class="arrow">&rarr;</div><div class="flow-node">Commander<br /><span class="mini muted">UDP motor commands</span></div></div>
 </div>
-<p>Everything after the vision result is familiar. The robot still receives motor commands over UDP and sends telemetry back. Only the detection module changes.</p>
-<h3>Full Code</h3><p class="lead">This is the complete file. Every lesson in this project explains one section of it. Read it top to bottom now &mdash; even if you do not understand it yet. Then come back to each lesson to understand what each part does.</p><figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py" data-download-filename="lane_follower_adv.py"><figcaption><span>Complete lane_follower_adv.py</span><span class="local-run-badge">Copy or download</span></figcaption><pre><code class="language-python">import cv2
+<p>Everything after the vision result is familiar. The robot still receives motor commands over UDP and sends telemetry back. Only the project-specific vision and control code changes.</p>
+<h3>The entire difference between Project 1 and Project 2 is what comes after the import line.</h3>
+<div class="grid-2">
+<div>
+<h4><code>obj_track_adv.py</code></h4>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="obj_track_adv.py"><figcaption><span>Project 1 structure</span><span class="local-run-badge">Source file</span></figcaption><pre><code class="language-python">from shared import ...
+# identical line
+
+class Tracker:
+    def _detect(self, frame):  # &lt;- YOLO
+        ...
+
+def draw_overlay(...):
+    ...</code></pre></figure>
+</div>
+<div>
+<h4><code>lane_follower_adv.py</code></h4>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Project 2 structure</span><span class="local-run-badge">Source file</span></figcaption><pre><code class="language-python">from shared import ...
+# identical line
+
+class PD:
+    ...
+
+def detect_lane(frame):  # &lt;- OpenCV
+    ...
+
+class LaneFollower:
+    ...
+
+def draw_debug(...):
+    ...</code></pre></figure>
+</div>
+</div>
+<p><code>shared.py</code> is unchanged. The vision module swapped. Everything else &mdash; the camera, the UDP, the state machine, the PID, the main loop structure &mdash; is identical.</p>
+<h3>Full Code</h3><p class="lead">This is the complete file for reference. Do not try to read it all now &mdash; it will not make sense yet. As you work through each lesson, come back here to find the exact section being explained. By the end of the project every line will be familiar.</p><figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py" data-download-filename="lane_follower_adv.py"><figcaption><span>Complete lane_follower_adv.py</span><span class="local-run-badge">Copy or download</span></figcaption><pre><code class="language-python">from shared import PID, MobileVideoStream, Commander, Telemetry, RobotState, ramp
+import cv2
 import numpy as np
 import time
-import socket
-import threading
-import requests
 
 # ==================== CONFIGURATION ====================
-ESP_IP         = &quot;192.168.137.228&quot;
+ESP_IP         = "YOUR_ESP_IP"        # e.g. "192.168.1.100"
+MOBILE_IP      = "YOUR_PHONE_IP"      # e.g. "192.168.1.101"
 UDP_CMD_PORT   = 5001
 UDP_TELEM_PORT = 5002
 
@@ -6991,10 +7207,10 @@ LOST_TIMEOUT   = 1.0
 ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]
 
 STATE_COLORS = {
-    &quot;STOPPED&quot;:   (100, 100, 100),
-    &quot;SEARCHING&quot;: (255, 165,   0),
-    &quot;ACQUIRING&quot;: (255, 255,   0),
-    &quot;TRACKING&quot;:  (  0, 255,   0),
+    "STOPPED":   (100, 100, 100),
+    "SEARCHING": (255, 165,   0),
+    "ACQUIRING": (255, 255,   0),
+    "TRACKING":  (  0, 255,   0),
 }
 
 
@@ -7023,146 +7239,12 @@ class PD:
         self._prev_time  = None
 
 
-class PID:
-    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
-        self.max_integral  = max_integral
-        self.output_limits = output_limits
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-    def update(self, error):
-        now = time.time()
-        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
-        self._prev_time = now
-        self._integral  = np.clip(
-            self._integral + error * dt, -self.max_integral, self.max_integral
-        )
-        derivative       = (error - self._prev_error) / dt
-        self._prev_error = error
-        out = self.kp * error + self.ki * self._integral + self.kd * derivative
-        if self.output_limits:
-            out = np.clip(out, *self.output_limits)
-        print(f&quot;error: {error:.3f} | derivative: {derivative:.3f} | out: {out:.3f}&quot;)
-        return out
-
-    def reset(self):
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-
-# ==================== VIDEO STREAM ====================
-class MobileVideoStream:
-    def __init__(self, url):
-        self.url       = url
-        self.frame     = None
-        self.fid       = 0
-        self._lock     = threading.Lock()
-        self.connected = False
-        self.running   = True
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        backoff = 1.0
-        while self.running:
-            try:
-                r = requests.get(self.url, stream=True, timeout=10)
-                if r.status_code != 200:
-                    raise ConnectionError()
-                self.connected = True
-                backoff = 1.0
-                buf = b&#39;&#39;
-                for chunk in r.iter_content(1024):
-                    if not self.running:
-                        break
-                    buf += chunk
-                    a, b = buf.find(b&#39;\xff\xd8&#39;), buf.find(b&#39;\xff\xd9&#39;)
-                    if a != -1 and b != -1:
-                        img = cv2.imdecode(np.frombuffer(buf[a:b+2], np.uint8), cv2.IMREAD_COLOR)
-                        buf = buf[b+2:]
-                        if img is not None:
-                            with self._lock:
-                                self.frame = img
-                                self.fid  += 1
-            except Exception:
-                self.connected = False
-                time.sleep(backoff)
-                backoff = min(backoff * 2, 8.0)
-
-    def read(self):
-        with self._lock:
-            return self.frame, self.fid
-
-    def stop(self):
-        self.running = False
-
-
-# ==================== COMMANDER ====================
-class Commander:
-    def __init__(self, ip, port):
-        self.ip    = ip
-        self.port  = port
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    def motors(self, left, right, light=&#39;off&#39;):
-        msg = f&quot;MOTOR,{int(left)},{int(right)},{light.upper()}&quot;
-        self._sock.sendto(msg.encode(), (self.ip, self.port))
-
-    def stop(self):
-        self._sock.sendto(b&quot;STOP,OFF&quot;, (self.ip, self.port))
-
-
-# ==================== TELEMETRY ====================
-class Telemetry:
-    def __init__(self, port):
-        self._lock   = threading.Lock()
-        self.running = True
-        self.data    = dict(left_ticks=0, right_ticks=0, cmd_left=0, cmd_right=0)
-        self._sock   = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.bind((&#39;&#39;, port))
-        self._sock.settimeout(1.0)
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        while self.running:
-            try:
-                msg = self._sock.recvfrom(128)[0].decode().strip()
-                if msg.startswith(&quot;ENC,&quot;):
-                    parts = msg.split(&#39;,&#39;)
-                    if len(parts) == 5:
-                        with self._lock:
-                            self.data = dict(
-                                left_ticks  = int(parts[1]),
-                                right_ticks = int(parts[2]),
-                                cmd_left    = int(parts[3]),
-                                cmd_right   = int(parts[4]),
-                            )
-            except Exception:
-                pass
-
-    def read(self):
-        with self._lock:
-            return dict(self.data)
-
-    def stop(self):
-        self.running = False
-        self._sock.close()
 
 
 # ==================== HELPERS ====================
-def ramp(current, target, max_step):
-    diff = target - current
-    if abs(diff) &lt;= max_step:
-        return target
-    return current + max_step * np.sign(diff)
-
 
 def scale_motors(left, right):
-    &quot;&quot;&quot;Scale motor commands so neither exceeds MAX_SPEED.&quot;&quot;&quot;
+    """Scale motor commands so neither exceeds MAX_SPEED."""
     peak = max(abs(left), abs(right))
     if peak &gt; MAX_SPEED:
         scale = MAX_SPEED / peak
@@ -7201,15 +7283,6 @@ def detect_lane(frame):
         return None, None, None, area, roi_y, binary, points
 
     return points[0], points[-1], points, area, roi_y, binary, points
-
-
-# ==================== STATE MACHINE ====================
-class RobotState:
-    STOPPED   = &quot;STOPPED&quot;
-    SEARCHING = &quot;SEARCHING&quot;
-    ACQUIRING = &quot;ACQUIRING&quot;
-    TRACKING  = &quot;TRACKING&quot;
-
 
 # ==================== LANE FOLLOWER ====================
 class LaneFollower:
@@ -7302,19 +7375,19 @@ class LaneFollower:
         self.cur_right = ramp(self.cur_right, tgt_right, MAX_ACCEL)
 
         debug = {
-            &#39;state&#39;:          self.state,
-            &#39;line_found&#39;:     line_found,
-            &#39;cx&#39;:             cx,
-            &#39;cy&#39;:             cy,
-            &#39;area&#39;:           area,
-            &#39;roi_y&#39;:          roi_y,
-            &#39;binary&#39;:         binary,
-            &#39;smoothed_angle&#39;: self.smoothed_angle,
-            &#39;turn_cmd&#39;:       turn_cmd,
-            &#39;dist_error&#39;:     dist_error,
-            &#39;base_speed&#39;:     BASE_SPEED if line_found else 0,
-            &#39;speed_limit&#39;:    self.speed_limit,
-            &#39;points&#39;:         points if line_found else [],
+            'state':          self.state,
+            'line_found':     line_found,
+            'cx':             cx,
+            'cy':             cy,
+            'area':           area,
+            'roi_y':          roi_y,
+            'binary':         binary,
+            'smoothed_angle': self.smoothed_angle,
+            'turn_cmd':       turn_cmd,
+            'dist_error':     dist_error,
+            'base_speed':     BASE_SPEED if line_found else 0,
+            'speed_limit':    self.speed_limit,
+            'points':         points if line_found else [],
         }
         return round(self.cur_left), round(self.cur_right), debug
 
@@ -7324,91 +7397,90 @@ def draw_debug(frame, debug, left_speed, right_speed, telem):
     h, w = frame.shape[:2]
 
     # ROI line
-    cv2.line(frame, (0, debug[&#39;roi_y&#39;]), (w, debug[&#39;roi_y&#39;]), (0, 165, 255), 1)
-    cv2.putText(frame, &quot;ROI&quot;, (5, debug[&#39;roi_y&#39;] - 5),
+    cv2.line(frame, (0, debug['roi_y']), (w, debug['roi_y']), (0, 165, 255), 1)
+    cv2.putText(frame, "ROI", (5, debug['roi_y'] - 5),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 165, 255), 1)
 
     # Centre and smoothed-angle guide lines
     cv2.line(frame, (w // 2, 0), (w // 2, h), (0, 255, 0), 1)
-    smooth_x = int(w / 2 + debug[&#39;smoothed_angle&#39;] * w)
+    smooth_x = int(w / 2 + debug['smoothed_angle'] * w)
     cv2.line(frame, (smooth_x, 0), (smooth_x, h), (0, 255, 255), 2)
-    cv2.putText(frame, &quot;SMOOTH&quot;, (smooth_x + 5, 20),
+    cv2.putText(frame, "SMOOTH", (smooth_x + 5, 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
 
     # Detected lane points and centroid
-    if debug[&#39;line_found&#39;]:
-        color = ((0, 255, 0) if abs(debug[&#39;dist_error&#39;]) &lt; AREA_DEAD_ZONE
-                 else (0, 0, 255) if debug[&#39;dist_error&#39;] &lt; 0
+    if debug['line_found']:
+        color = ((0, 255, 0) if abs(debug['dist_error']) &lt; AREA_DEAD_ZONE
+                 else (0, 0, 255) if debug['dist_error'] &lt; 0
                  else (255, 100, 0))
-        cv2.circle(frame, (debug[&#39;cx&#39;], debug[&#39;cy&#39;]), 8, color, -1)
-        cv2.line(frame, (w // 2, debug[&#39;cy&#39;]), (debug[&#39;cx&#39;], debug[&#39;cy&#39;]), (0, 255, 255), 2)
+        cv2.circle(frame, (debug['cx'], debug['cy']), 8, color, -1)
+        cv2.line(frame, (w // 2, debug['cy']), (debug['cx'], debug['cy']), (0, 255, 255), 2)
 
-        for px, py in debug[&#39;points&#39;]:
+        for px, py in debug['points']:
             cv2.circle(frame, (px, py), 5, (255, 0, 255), -1)
-        if len(debug[&#39;points&#39;]) &gt;= 2:
-            cv2.line(frame, debug[&#39;points&#39;][0], debug[&#39;points&#39;][-1], (255, 0, 0), 2)
+        if len(debug['points']) &gt;= 2:
+            cv2.line(frame, debug['points'][0], debug['points'][-1], (255, 0, 0), 2)
 
     # HUD text
-    sc = STATE_COLORS.get(debug[&#39;state&#39;], (255, 255, 255))
+    sc = STATE_COLORS.get(debug['state'], (255, 255, 255))
     lines = [
-        (f&quot;STATE:  {debug[&#39;state&#39;]}&quot;,                       sc,            25),
-        (f&quot;SMOOTH: {debug[&#39;smoothed_angle&#39;]:+.3f}&quot;,          (0, 255, 255), 50),
-        (f&quot;AREA:   {int(debug[&#39;area&#39;])} / {TARGET_AREA}&quot;,   (255,255,255), 75),
-        (f&quot;SPD LIM:{debug[&#39;speed_limit&#39;]:.0%}&quot;,             (255,255,255), 100),
-        (f&quot;L:{int(left_speed):+4d} R:{int(right_speed):+4d}&quot;, (0,255,0),   125),
-        (f&quot;DIST:   {debug[&#39;dist_error&#39;]:+.3f}&quot;,             (255, 165, 0), 150),
-        (f&quot;ENC L:{telem[&#39;left_ticks&#39;]:+4d} R:{telem[&#39;right_ticks&#39;]:+4d}&quot;, (255,165,0), 175),
-        (f&quot;THRESH: {BINARY_THRESHOLD}&quot;,                     (200,200,200), 200),
+        (f"STATE:  {debug['state']}",                       sc,            25),
+        (f"SMOOTH: {debug['smoothed_angle']:+.3f}",          (0, 255, 255), 50),
+        (f"AREA:   {int(debug['area'])} / {TARGET_AREA}",   (255,255,255), 75),
+        (f"SPD LIM:{debug['speed_limit']:.0%}",             (255,255,255), 100),
+        (f"L:{int(left_speed):+4d} R:{int(right_speed):+4d}", (0,255,0),   125),
+        (f"DIST:   {debug['dist_error']:+.3f}",             (255, 165, 0), 150),
+        (f"ENC L:{telem['left_ticks']:+4d} R:{telem['right_ticks']:+4d}", (255,165,0), 175),
+        (f"THRESH: {BINARY_THRESHOLD}",                     (200,200,200), 200),
     ]
     for text, color, y in lines:
         thickness = 2 if y in (25, 125) else 1
         cv2.putText(frame, text, (10, y), cv2.FONT_HERSHEY_SIMPLEX, 0.55 if thickness == 1 else 0.65, color, thickness)
 
     # Binary window
-    if debug[&#39;binary&#39;] is not None:
-        bin_disp = cv2.resize(cv2.cvtColor(debug[&#39;binary&#39;], cv2.COLOR_GRAY2BGR), (640, 480))
-        cv2.putText(bin_disp, f&quot;THRESH={BINARY_THRESHOLD}&quot;, (10, 25),
+    if debug['binary'] is not None:
+        bin_disp = cv2.resize(cv2.cvtColor(debug['binary'], cv2.COLOR_GRAY2BGR), (640, 480))
+        cv2.putText(bin_disp, f"THRESH={BINARY_THRESHOLD}", (10, 25),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 1)
-        cv2.imshow(&quot;Binary (lane detection)&quot;, bin_disp)
+        cv2.imshow("Binary (lane detection)", bin_disp)
 
 
 # ==================== MAIN ====================
 def main():
     global BINARY_THRESHOLD
 
-    mobile_ip = &quot;10.18.204.215&quot;
-    stream_url = f&quot;http://{mobile_ip}:8080/video&quot;
-    print(f&quot;Stream: {stream_url}&quot;)
+    stream_url = f"http://{MOBILE_IP}:8080/video"
+    print(f"Stream: {stream_url}")
 
     video     = MobileVideoStream(stream_url)
     commander = Commander(ESP_IP, UDP_CMD_PORT)
     telemetry = Telemetry(UDP_TELEM_PORT)
 
-    print(&quot;Waiting for camera...&quot;)
+    print("Waiting for camera...")
     for _ in range(30):
         if video.connected:
             break
         time.sleep(0.5)
-        print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+        print(".", end="", flush=True)
     print()
 
     if not video.connected:
-        print(&quot;Could not connect to camera&quot;)
+        print("Could not connect to camera")
         exit(1)
 
     follower = LaneFollower()
     commander.stop()
     time.sleep(0.5)
 
-    print(&quot;\nLane Following Active&quot;)
+    print("\nLane Following Active")
     print(
-        f&quot;BINARY_THRESHOLD: {BINARY_THRESHOLD}  &quot;
-        f&quot;ROI: {ROI_HEIGHT_PERCENT:.0%}  &quot;
-        f&quot;KERNEL: {MORPH_KERNEL_SIZE}x{MORPH_KERNEL_SIZE}  &quot;
-        f&quot;TARGET_AREA: {TARGET_AREA}&quot;
+        f"BINARY_THRESHOLD: {BINARY_THRESHOLD}  "
+        f"ROI: {ROI_HEIGHT_PERCENT:.0%}  "
+        f"KERNEL: {MORPH_KERNEL_SIZE}x{MORPH_KERNEL_SIZE}  "
+        f"TARGET_AREA: {TARGET_AREA}"
     )
-    print(&quot;Q=Quit  R=Reset  T=Threshold up  Y=Threshold down&quot;)
-    print(&quot;=&quot; * 60 + &quot;\n&quot;)
+    print("Q=Quit  R=Reset  T=Threshold up  Y=Threshold down")
+    print("=" * 60 + "\n")
 
     last_fid      = -1
     last_cmd_time = 0.0
@@ -7425,7 +7497,7 @@ def main():
         last_fid   = fid
         fps_count += 1
         if fps_count &gt;= 30:
-            print(f&quot;FPS: {fps_count / (time.time() - fps_timer):.1f}&quot;)
+            print(f"FPS: {fps_count / (time.time() - fps_timer):.1f}")
             fps_count = 0
             fps_timer = time.time()
 
@@ -7443,35 +7515,35 @@ def main():
             last_cmd_time = now
 
         draw_debug(frame, debug, left_speed, right_speed, telemetry.read())
-        cv2.imshow(&quot;Lane Follower&quot;, frame)
+        cv2.imshow("Lane Follower", frame)
 
         key = cv2.waitKey(1) &amp; 0xFF
-        if key == ord(&#39;q&#39;):
+        if key == ord('q'):
             break
-        elif key == ord(&#39;r&#39;):
+        elif key == ord('r'):
             follower.pid_turn.reset()
             follower.pid_dist.reset()
             follower.smoothed_angle = 0.0
-            print(&quot;Reset&quot;)
-        elif key == ord(&#39;t&#39;):
+            print("Reset")
+        elif key == ord('t'):
             BINARY_THRESHOLD = min(BINARY_THRESHOLD + 5, 255)
-            print(f&quot;BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}&quot;)
-        elif key == ord(&#39;y&#39;):
+            print(f"BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}")
+        elif key == ord('y'):
             BINARY_THRESHOLD = max(BINARY_THRESHOLD - 5, 0)
-            print(f&quot;BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}&quot;)
+            print(f"BINARY_THRESHOLD -&gt; {BINARY_THRESHOLD}")
 
-    print(&quot;\nShutting down...&quot;)
+    print("\nShutting down...")
     commander.stop()
     time.sleep(0.2)
     video.stop()
     telemetry.stop()
     cv2.destroyAllWindows()
-    print(&quot;Done&quot;)
+    print("Done")
 
 
-if __name__ == &quot;__main__&quot;:
+if __name__ == "__main__":
     main()
-</code></pre></figure></div>
+</code></pre></figure><p class="muted">Download this file and place it in your <code>my-detector</code> project folder. You will not run it until the final lesson.</p></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-classical-cv">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=proj1-running" data-lesson-link="proj1-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.12 Running and Testing</span></a>
@@ -7484,14 +7556,16 @@ if __name__ == &quot;__main__&quot;:
 <div class="lesson-meta"><span>Download</span><span>GitHub</span><span>8 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">The code for this project is in the course GitHub repository. You need to download it to your laptop before anything else.</p>
+<p class="lead">The code for this project is in the course GitHub repository. You need the shared infrastructure file and the Project 2 lane follower file before continuing.</p>
 <div class="steps">
 <div class="step"><div><strong>Step 1 &mdash; Open the repository.</strong><br />Go to <a href="https://github.com/neel429/ml-for-robotics-" target="_blank" rel="noreferrer">github.com/neel429/ml-for-robotics-</a>.</div></div>
-<div class="step"><div><strong>Step 2 &mdash; Download the file.</strong><br />Navigate to the code folder and find <code>lane_follower_adv.py</code>. Click the file name to open it, then click the Download Raw File button, the down-arrow icon in the top right of the file view. Save it to your <code>my-detector</code> project folder from Project A.</div></div>
-<div class="step"><div><strong>Step 3 &mdash; Verify the file is there.</strong><br />Open VS Code and open the <code>my-detector</code> folder. You should see <code>lane_follower_adv.py</code> in the file explorer on the left.</div></div>
-<div class="step"><div><strong>Step 4 &mdash; Open it and read the configuration block.</strong><br />Open the file. The very top section is the CONFIGURATION block. Every value in this section must be filled in before running. The configuration lesson walks through each one.</div></div>
+<div class="step"><div><strong>Step 2 &mdash; Download the files below.</strong><br />Save them to your <code>my-detector</code> project folder from Project A.</div></div>
+<div class="step"><div><strong>Step 3 &mdash; Verify the files are there.</strong><br />Open VS Code and open the <code>my-detector</code> folder. You should see <code>shared.py</code> and <code>lane_follower_adv.py</code> in the file explorer on the left.</div></div>
+<div class="step"><div><strong>Step 4 &mdash; Open the project file and read the configuration block.</strong><br />Open <code>lane_follower_adv.py</code>. The very top section after the import lines is the CONFIGURATION block. Every value in this section must be filled in before running. The configuration lesson walks through each one.</div></div>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">CODE</div><div><div class="callout-title">Do not run the file yet</div><p>It will not work with the default placeholder values. Complete every lesson in this project first, then run it in the final lesson.</p></div></div>
+<h3>Download Files</h3>
+<div class="grid-2"><div class="card download-card"><h4><code>shared.py</code></h4><p>Reusable infrastructure: PID controller, camera stream, UDP commands, telemetry, and state machine constants. Used by both Project 1 and Project 2.</p><a class="download-card-btn" href="shared.py" download>Download</a><p class="muted mini">Already have this from Project 1? You do not need to download it again. Skip to <code>lane_follower_adv.py</code>.</p></div><div class="card download-card"><h4><code>lane_follower_adv.py</code></h4><p>Project 2 specific code: detect_lane(), LaneFollower class, binary thresholding pipeline, two-point steering, and the main loop.</p><a class="download-card-btn" href="lane_follower_adv.py" download>Download</a></div></div>
+<div class="callout info" role="note"><div class="callout-icon">CODE</div><div><div class="callout-title">Do not run the files yet</div><p>They will not work with the default placeholder values. Complete every lesson in this project first, then run the project file in the final lesson.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj2-get-code">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -7727,6 +7801,17 @@ STATE_COLORS = {
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead">All four image processing steps &mdash; thresholding, ROI cropping, morphological cleaning, and row scanning &mdash; live inside a single function called <code>detect_lane()</code>. It takes one camera frame as input and returns the detected line position. Read it as one piece, not four separate ideas.</p>
+<details class="solution" aria-label="shared.py reference"><summary>Reminder: what is in shared.py</summary><div>
+<ul>
+<li><code>PID</code> &mdash; the controller used for steering</li>
+<li><code>MobileVideoStream</code> &mdash; phone camera thread</li>
+<li><code>Commander</code> &mdash; sends UDP motor commands</li>
+<li><code>Telemetry</code> &mdash; receives encoder data</li>
+<li><code>RobotState</code> &mdash; STOPPED / SEARCHING / ACQUIRING / TRACKING</li>
+<li><code>ramp()</code> &mdash; acceleration limiter</li>
+</ul>
+<p>These are unchanged from Project 1. If anything in <code>lane_follower_adv.py</code> references one of these names, it is using the version from <code>shared.py</code>.</p>
+</div></details>
 <figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Complete detect_lane() function</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">def detect_lane(frame):
     h, w  = frame.shape[:2]
     roi_y = int(h * (1 - ROI_HEIGHT_PERCENT))
@@ -7818,7 +7903,7 @@ raw_angle_error = 0.25 * position_error + 0.75 * direction_error</code></pre></f
     + (1 - SMOOTH_RATE) * raw_angle_error
 )</code></pre></figure>
 <p>With <code>SMOOTH_RATE = 0.04</code>, the old smoothed value has 4 percent influence and the new raw measurement has 96 percent influence. Lower values react faster but can twitch on noisy detections; higher values react more slowly but can help on unstable lighting.</p>
-<figure class="code-card" data-runnable="true" data-chapter="project-2" data-filename="smoothing_demo.py"><figcaption><span>Exponential smoothing demo</span><span class="local-run-badge">Run in browser</span></figcaption><pre><code class="language-python">smoothed = 0.0
+<figure class="code-card" data-runnable="true" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Exponential smoothing demo</span><span class="local-run-badge">Run in browser</span></figcaption><pre><code class="language-python">smoothed = 0.0
 raw_values = [0.1, 0.15, 0.12, 0.3, 0.28, 0.25, 0.05, 0.02]
 SMOOTH_RATE = 0.04
 
@@ -7953,6 +8038,7 @@ return points[0], points[-1], points, area, roi_y, binary, points</code></pre></
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <p class="lead"><code>main()</code> connects the phone stream, lane follower, UDP motor sender, telemetry receiver, keyboard controls, and OpenCV windows into one live robot loop.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py &mdash; first line"><figcaption><span>Shared import line</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">from shared import PID, MobileVideoStream, Commander, Telemetry, RobotState, ramp</code></pre></figure>
 <figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="lane_follower_adv.py"><figcaption><span>Complete main() function</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">def main():
     global BINARY_THRESHOLD
 
@@ -8287,7 +8373,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
     const projectCLessons = [{"id":"projC-overview","label":"PC.0 What You Are Building","title":"PC.0 What You Are Building","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":true},{"id":"projC-hardware","label":"PC.1 Hardware","title":"PC.1 Understanding the Hardware","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-encoders","label":"PC.2 Encoder Motors","title":"PC.2 How Encoder Motors Work","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-wiring","label":"PC.3 Wiring","title":"PC.3 Wiring the System","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-arduino-basics","label":"PC.4 Arduino Basics","title":"PC.4 Arduino Programming Basics","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-first-sketch","label":"PC.5 Blink and Serial","title":"PC.5 Your First Arduino Sketch: Blink and Serial","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-reading-pulses","label":"PC.6 Encoder Pulses","title":"PC.6 Reading Encoder Pulses","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-distance","label":"PC.7 Ticks to Distance","title":"PC.7 Converting Ticks to Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-drive-distance","label":"PC.8 Drive Distance","title":"PC.8 Driving Forward a Precise Distance","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-turning","label":"PC.9 Turn 90 Degrees","title":"PC.9 Turning Exactly 90 Degrees","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-path","label":"PC.10 Running a Path","title":"PC.10 Putting It Together: Running a Path","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false},{"id":"projC-troubleshooting","label":"PC.11 Troubleshooting","title":"PC.11 Troubleshooting and Tuning","chapter":"projC","chapterTitle":"* Project C: Precise Movement with Encoders","exercise":false}];
     const projectDLessons = [{"id":"projD-udp","label":"PD.0 What Is UDP","title":"PD.0 What Is UDP and Why Does a Robot Use It","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":true},{"id":"projD-wifi","label":"PD.1 UNO R4 WiFi","title":"PD.1 How WiFi Works on the UNO R4","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-arduino","label":"PD.2 Arduino Sketch","title":"PD.2 The Arduino Sketch: Connect, Listen, Drive","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-python","label":"PD.3 Python UDP Script","title":"PD.3 The Python Script: Send Commands, Read Telemetry","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-keyboard","label":"PD.4 Keyboard Control","title":"PD.4 Keyboard Control: Drive with WASD","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-telemetry","label":"PD.5 Encoder Telemetry","title":"PD.5 Receiving Encoder Telemetry in Python","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-loop","label":"PD.6 Full Communication Loop","title":"PD.6 Understanding the Full Communication Loop","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-project1","label":"PD.7 Connect to Project 1","title":"PD.7 Connecting the Dots to Project 1","chapter":"projD","chapterTitle":"* Project D: Talk to Your Robot Over WiFi","exercise":false}];
-    const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-get-code","label":"P1.0b Get the Code","title":"P1.0b Get the Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
+    const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-get-code","label":"P1.0b Get the Code","title":"P1.0b Get the Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-shared","label":"P1.3b shared.py \u2014 The Foundation","title":"P1.3b The Shared Infrastructure","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-get-code","label":"P2.0b Get the Code","title":"P2.0b Get the Code","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-config","label":"P2.3 Configuration","title":"P2.3 Configuration: Fill In Your Values","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-detect-lane","label":"P2.4 The detect_lane Function","title":"P2.4 The detect_lane Function","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.5 LaneFollower Class","title":"P2.5 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-main-loop","label":"P2.6 Main Loop","title":"P2.6 The Main Loop","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.7 Visualisation","title":"P2.7 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.8 Running and Tuning","title":"P2.8 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.9 Connecting the Dots","title":"P2.9 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
     window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons);
@@ -8298,7 +8384,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
       {"key":"projB","title":"* Project B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
       {"key":"projC","title":"* Project C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-arduino-basics","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
       {"key":"projD","title":"* Project D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
-      {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
+      {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-shared","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
       {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"}
     );
   </script>

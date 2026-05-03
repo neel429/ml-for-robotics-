@@ -1,12 +1,11 @@
+from shared import PID, MobileVideoStream, Commander, Telemetry, RobotState, ramp
 import cv2
 import numpy as np
 import time
-import socket
-import threading
-import requests
 
 # ==================== CONFIGURATION ====================
-ESP_IP         = "192.168.137.228"
+ESP_IP         = "YOUR_ESP_IP"        # e.g. "192.168.1.100"
+MOBILE_IP      = "YOUR_PHONE_IP"      # e.g. "192.168.1.101"
 UDP_CMD_PORT   = 5001
 UDP_TELEM_PORT = 5002
 
@@ -73,143 +72,9 @@ class PD:
         self._prev_time  = None
 
 
-class PID:
-    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
-        self.max_integral  = max_integral
-        self.output_limits = output_limits
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-    def update(self, error):
-        now = time.time()
-        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
-        self._prev_time = now
-        self._integral  = np.clip(
-            self._integral + error * dt, -self.max_integral, self.max_integral
-        )
-        derivative       = (error - self._prev_error) / dt
-        self._prev_error = error
-        out = self.kp * error + self.ki * self._integral + self.kd * derivative
-        if self.output_limits:
-            out = np.clip(out, *self.output_limits)
-        print(f"error: {error:.3f} | derivative: {derivative:.3f} | out: {out:.3f}")
-        return out
-
-    def reset(self):
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-
-# ==================== VIDEO STREAM ====================
-class MobileVideoStream:
-    def __init__(self, url):
-        self.url       = url
-        self.frame     = None
-        self.fid       = 0
-        self._lock     = threading.Lock()
-        self.connected = False
-        self.running   = True
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        backoff = 1.0
-        while self.running:
-            try:
-                r = requests.get(self.url, stream=True, timeout=10)
-                if r.status_code != 200:
-                    raise ConnectionError()
-                self.connected = True
-                backoff = 1.0
-                buf = b''
-                for chunk in r.iter_content(1024):
-                    if not self.running:
-                        break
-                    buf += chunk
-                    a, b = buf.find(b'\xff\xd8'), buf.find(b'\xff\xd9')
-                    if a != -1 and b != -1:
-                        img = cv2.imdecode(np.frombuffer(buf[a:b+2], np.uint8), cv2.IMREAD_COLOR)
-                        buf = buf[b+2:]
-                        if img is not None:
-                            with self._lock:
-                                self.frame = img
-                                self.fid  += 1
-            except Exception:
-                self.connected = False
-                time.sleep(backoff)
-                backoff = min(backoff * 2, 8.0)
-
-    def read(self):
-        with self._lock:
-            return self.frame, self.fid
-
-    def stop(self):
-        self.running = False
-
-
-# ==================== COMMANDER ====================
-class Commander:
-    def __init__(self, ip, port):
-        self.ip    = ip
-        self.port  = port
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    def motors(self, left, right, light='off'):
-        msg = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
-        self._sock.sendto(msg.encode(), (self.ip, self.port))
-
-    def stop(self):
-        self._sock.sendto(b"STOP,OFF", (self.ip, self.port))
-
-
-# ==================== TELEMETRY ====================
-class Telemetry:
-    def __init__(self, port):
-        self._lock   = threading.Lock()
-        self.running = True
-        self.data    = dict(left_ticks=0, right_ticks=0, cmd_left=0, cmd_right=0)
-        self._sock   = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.bind(('', port))
-        self._sock.settimeout(1.0)
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        while self.running:
-            try:
-                msg = self._sock.recvfrom(128)[0].decode().strip()
-                if msg.startswith("ENC,"):
-                    parts = msg.split(',')
-                    if len(parts) == 5:
-                        with self._lock:
-                            self.data = dict(
-                                left_ticks  = int(parts[1]),
-                                right_ticks = int(parts[2]),
-                                cmd_left    = int(parts[3]),
-                                cmd_right   = int(parts[4]),
-                            )
-            except Exception:
-                pass
-
-    def read(self):
-        with self._lock:
-            return dict(self.data)
-
-    def stop(self):
-        self.running = False
-        self._sock.close()
 
 
 # ==================== HELPERS ====================
-def ramp(current, target, max_step):
-    diff = target - current
-    if abs(diff) <= max_step:
-        return target
-    return current + max_step * np.sign(diff)
-
 
 def scale_motors(left, right):
     """Scale motor commands so neither exceeds MAX_SPEED."""
@@ -251,15 +116,6 @@ def detect_lane(frame):
         return None, None, None, area, roi_y, binary, points
 
     return points[0], points[-1], points, area, roi_y, binary, points
-
-
-# ==================== STATE MACHINE ====================
-class RobotState:
-    STOPPED   = "STOPPED"
-    SEARCHING = "SEARCHING"
-    ACQUIRING = "ACQUIRING"
-    TRACKING  = "TRACKING"
-
 
 # ==================== LANE FOLLOWER ====================
 class LaneFollower:
@@ -426,8 +282,7 @@ def draw_debug(frame, debug, left_speed, right_speed, telem):
 def main():
     global BINARY_THRESHOLD
 
-    mobile_ip = "10.18.204.215"
-    stream_url = f"http://{mobile_ip}:8080/video"
+    stream_url = f"http://{MOBILE_IP}:8080/video"
     print(f"Stream: {stream_url}")
 
     video     = MobileVideoStream(stream_url)
