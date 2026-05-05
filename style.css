@@ -1694,7 +1694,6 @@ body.lesson-app .lesson-body {
   .lesson-kicker,
   .code-filename,
   .code-lang,
-  .colab-reason,
   .chapter-card p,
   .chapter-card-top,
   .chapter-card-progress small,
@@ -2992,10 +2991,8 @@ html[data-theme="light"] body:not(.lesson-app) .code-header {
 
 html.light-mode body:not(.lesson-app) .code-filename,
 html.light-mode body:not(.lesson-app) .code-lang,
-html.light-mode body:not(.lesson-app) .colab-reason,
 html[data-theme="light"] body:not(.lesson-app) .code-filename,
-html[data-theme="light"] body:not(.lesson-app) .code-lang,
-html[data-theme="light"] body:not(.lesson-app) .colab-reason {
+html[data-theme="light"] body:not(.lesson-app) .code-lang {
   color: #57606a;
 }
 
@@ -3043,8 +3040,7 @@ body.lesson-app .code-header {
 }
 
 body.lesson-app .code-filename,
-body.lesson-app .code-lang,
-body.lesson-app .colab-reason {
+body.lesson-app .code-lang {
   color: #8b949e;
   font-family: "JetBrains Mono", monospace;
 }
@@ -3286,10 +3282,8 @@ html[data-theme="light"] body.lesson-app .code-header {
 
 html.light-mode body.lesson-app .code-filename,
 html.light-mode body.lesson-app .code-lang,
-html.light-mode body.lesson-app .colab-reason,
 html[data-theme="light"] body.lesson-app .code-filename,
-html[data-theme="light"] body.lesson-app .code-lang,
-html[data-theme="light"] body.lesson-app .colab-reason {
+html[data-theme="light"] body.lesson-app .code-lang {
   color: #57606a;
 }
 

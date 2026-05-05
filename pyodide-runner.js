@@ -570,6 +570,7 @@ _result
 
   function initRunnableCells(containerEl = document) {
     const root = containerEl || document;
+    findAll(root, ".colab-reason").forEach((el) => el.remove());
     findAll(root, "figure.code-card").forEach(transformFigure);
     findAll(root, '.code-block[data-runnable="true"]').forEach(makeRunnable);
     findAll(root, '.code-block[data-runnable="false"]').forEach(makeStaticCodeBlock);
