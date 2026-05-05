@@ -504,7 +504,6 @@ _result
           ${downloadFilename ? `<button class="download-code-btn" type="button" data-download-filename="${escapeHtml(downloadFilename)}" title="Download code">Download</button>` : ""}
           ${runnable ? `<button class="reset-code-btn" type="button" title="Reset this code cell to the original example">↺ Reset</button>` : ""}
           ${runnable ? `<button class="run-btn" type="button" data-chapter="${escapeHtml(chapter)}" data-session="${escapeHtml(session)}">Run</button>` : ""}
-          ${colabOnly ? `<span class="colab-reason" title="This cell needs Google Colab or unsupported browser packages.">Colab-only code</span>` : ""}
         </div>
       </div>
       ${
