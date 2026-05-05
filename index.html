@@ -2424,8 +2424,7 @@ plt.show()</code></pre></figure>
 <div class="definition-card"><span class="def-term">What is a neural network really?</span><p>A mathematical function with thousands of adjustable knobs called weights. Training is the process of turning those knobs until the function's output matches the correct answer for every training example.</p></div>
 <div class="definition-card"><span class="def-term">What is it good for?</span><p>Neural networks shine when the relationship between inputs and outputs is too complex for simple rules. Recognizing a face, understanding speech, and detecting objects in images are examples. For simpler problems like the Chapter 3 failure dataset, Random Forest is often just as good and much simpler.</p></div>
 </div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>You already saw machine learning find patterns in data in Chapter 3. Think of one prediction problem from daily life where the relationship feels too complex for simple rules. Write it down. You will refer back to it at the end of this chapter.</p></div></div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Compare the cooking analogy to the Chapter 3 Random Forest. Which one feels more like a recipe book, and which one feels more like tasting and adjusting?</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>You already saw machine learning find patterns in data in Chapter 3. Think of one prediction problem from daily life where the relationship is too complex for simple rules. Write it down. You will refer back to it at the end of this chapter.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2563,8 +2562,7 @@ B = 0.0
 plot_neuron(DATASET, W1, W2, B)</code></pre></figure>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The limit of one neuron</div><p>A single neuron can only draw a straight line. XOR and circles are not linearly separable, which is why useful neural networks need layers.</p></div></div>
 <h4>Why does this matter?</h4>
-<p>When you built the failure predictor in Chapter 3, normal and failure examples were often separable enough that simple algorithms worked well. Neural networks become valuable when your data looks more like the XOR or circles problem: when the pattern cannot be captured by a straight line. Complex signals from images, audio, games, or mixed sensor tables often look more like circles than like two clean blobs.</p>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Sketch one dataset that a straight line can separate, then sketch one that needs a curve. You do not need exact coordinates. The goal is to see the boundary shape before lesson 6.3 explains how layers create it.</p></div></div>
+<p>When you built the failure predictor in Chapter 3, the data was roughly linearly separable — normal operation and failure formed groups that a line could mostly separate. That is why simple algorithms worked well. Neural networks become valuable when your data looks more like the XOR or circles problem — when the pattern you are trying to find cannot be captured by a straight line. Real robotics data (camera images, audio signals, complex sensor combinations) almost always looks like circles, not like two clean blobs.</p>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-perceptron">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2606,7 +2604,7 @@ count_params([3, 4, 4, 4, 1])</code></pre></figure>
 <p><strong>Layer 1 (3->4):</strong> Each of the 3 inputs connects to each of the 4 neurons. That is <code>3 x 4 = 12</code> weights. Each of the 4 neurons also has 1 bias. Total: 16 parameters.</p>
 <p><strong>Layer 2 (4->4):</strong> Each of the 4 neurons from layer 1 connects to each of the 4 neurons in layer 2. That is <code>4 x 4 = 16</code> weights plus 4 biases. Total: 20 parameters.</p>
 <p><strong>Layer 3 (4->1):</strong> 4 connections to the output neuron plus 1 bias. Total: 5 parameters.</p>
-<p><strong>Grand total:</strong> 41 parameters. This network can be trained on a laptop in seconds. Large modern neural networks use the same math, just with many more learned numbers.</p>
+<p><strong>Grand total: 41 parameters.</strong> This network can be trained on a laptop in seconds. YOLO26n has 3.5 million. GPT-4 has roughly 1 trillion. The math is the same — just way more of it.</p>
 <div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Challenge</div><p>What is the smallest network, with the fewest parameters, that has at least one hidden layer and takes 2 inputs to produce 1 output? Calculate it before reading the answer.</p><p><strong>Answer:</strong> <code>2 -> 1 -> 1</code> has <code>(2 x 1 + 1) + (1 x 1 + 1) = 5</code> parameters.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-layers">Mark as Complete</button></div>
@@ -2640,6 +2638,7 @@ count_params([3, 4, 4, 4, 1])</code></pre></figure>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="healthy_training_curve.py"><figcaption>healthy_training_curve.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
+np.random.seed(42)
 epochs = np.arange(1, 51)
 loss = 1.2 * np.exp(-0.08 * epochs) + 0.1 + np.random.randn(50) * 0.02
 
@@ -2658,7 +2657,7 @@ ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;)
 plt.tight_layout()
 plt.show()</code></pre></figure>
 <p>The loss started high because the network was randomly wrong, then decreased toward a floor called the irreducible error: the minimum possible loss on this data. The small wiggles in the curve come from randomness in which training examples each batch contains. A smooth curve means large batches. A noisy curve means small ones.</p>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Rerun the cell a few times. The curve has different wiggles each time but the same general shape. The wiggles are random noise, but the downward trend is the real learning signal.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Change the random seed on line 4 from 42 to any other number and rerun. The curve has different wiggles each time but always the same general shape. This is because the wiggles are random noise but the downward trend is the real learning signal.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-gradient-descent">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2679,7 +2678,6 @@ plt.show()</code></pre></figure>
 <p>The left plot is the loss surface: a bowl shape where the center is the minimum. The orange path is gradient descent navigating toward that minimum. The right plot shows the loss at each step. A healthy run looks like this: the path moves inward and the loss drops smoothly.</p>
 <p>Run the cell with <code>LEARNING_RATE = 0.1</code> first so you know what good looks like. Then try each value and observe:</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Learning rate</th><th>What happens</th></tr></thead><tbody><tr><td><code>0.01</code></td><td>Path takes tiny steps and needs many more steps to converge.</td></tr><tr><td><code>0.1</code></td><td>Smooth convergence. This is the sweet spot here.</td></tr><tr><td><code>0.9</code></td><td>Path overshoots the minimum and zigzags.</td></tr><tr><td><code>1.5</code></td><td>Path diverges completely. Loss goes up.</td></tr></tbody></table></div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>Before changing the learning rate, predict which value will finish closest to the minimum. Then predict which value will have the largest final loss. Run the cell once for each value and compare your guesses to the output.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="watch_gradient_descent_live.py"><figcaption>watch_gradient_descent_live.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 

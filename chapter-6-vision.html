@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chapter 6 - Computer Vision | ML for Robotics</title>
+  <title>Chapter 6 - Neural Networks | ML for Robotics</title>
   <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
-    <script>try{const theme=localStorage.getItem("mlr-theme");if(theme)document.documentElement.dataset.theme=theme;}catch(error){}</script>
+  <script>try{const theme=localStorage.getItem("mlr-theme");if(theme)document.documentElement.dataset.theme=theme;}catch(error){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -53,7 +53,7 @@
       <details open style="--chapter-color: var(--ch3)">
         <summary><span class="dot"></span>Chapter 3</summary>
         <a href="chapter-3-supervised.html#supervised">Supervised Learning</a>
-        <a href="chapter-3-supervised.html#classification-regression">Classification & Regression</a>
+        <a href="chapter-3-supervised.html#classification-regression">Classification &amp; Regression</a>
         <a href="chapter-3-supervised.html#algorithms">Key Algorithms</a>
         <a href="chapter-3-supervised.html#ml-pipeline">ML Pipeline</a>
         <a href="chapter-3-supervised.html#robot-failure-project">Robot Arm Failure Project</a>
@@ -73,11 +73,20 @@
       </details>
       <details open style="--chapter-color: var(--ch6)">
         <summary><span class="dot"></span>Chapter 6</summary>
-        <a href="chapter-6-vision.html#computer-vision">Computer Vision</a>
-        <a href="chapter-6-vision.html#opencv">OpenCV</a>
-        <a href="chapter-6-vision.html#tensorflow">TensorFlow/Keras</a>
-        <a href="chapter-6-vision.html#cnn">CNNs</a>
-        <a href="chapter-6-vision.html#traffic-sign-project">Traffic Sign Project</a>
+        <a href="chapter-6-vision.html#neural-networks">Neural Networks</a>
+        <a href="chapter-6-vision.html#lesson-60">6.0 What Is a Neural Network?</a>
+        <a href="chapter-6-vision.html#lesson-61">6.1 Anatomy of a Neuron</a>
+        <a href="chapter-6-vision.html#lesson-62">6.2 ★ Perceptron Playground</a>
+        <a href="chapter-6-vision.html#lesson-63">6.3 Layers</a>
+        <a href="chapter-6-vision.html#lesson-64">6.4 Gradient Descent</a>
+        <a href="chapter-6-vision.html#lesson-65">6.5 ★ GD Live</a>
+        <a href="chapter-6-vision.html#lesson-66">6.6 Three Knobs</a>
+        <a href="chapter-6-vision.html#lesson-67">6.7 ★ sin(x) Experiment</a>
+        <a href="chapter-6-vision.html#lesson-68">6.8 Activation Functions</a>
+        <a href="chapter-6-vision.html#lesson-69">6.9 Overfitting</a>
+        <a href="chapter-6-vision.html#lesson-610">6.10 ★ Build in Keras</a>
+        <a href="chapter-6-vision.html#lesson-611">6.11 Reading Training Curves</a>
+        <a href="chapter-6-vision.html#lesson-612">6.12 When to Use Neural Networks</a>
       </details>
       <details open style="--chapter-color: var(--ch7)">
         <summary><span class="dot"></span>Chapter 7</summary>
@@ -96,237 +105,926 @@
 
   <main class="page" id="top">
     <div class="container">
-      <article class="chapter ch6 observe" id="computer-vision" data-title="Chapter 6 — Computer Vision for Robotics">
-              <header class="chapter-header">
-                <span class="chapter-badge">Chapter 6 / 7</span>
-                <a class="breadcrumb" href="chapter-5-rl.html#reinforcement-learning">← Previous Chapter: Reinforcement Learning</a>
-                <div class="chapter-kicker">Kaggle project</div>
-                <h2>Computer Vision for Robotics: <span>Traffic Sign Classifier</span></h2>
-                <p class="lead">Computer vision lets robots use cameras as sensors. This chapter replaces the old MNIST demo with a real traffic sign classification project.</p>
-              </header>
-              <section class="section-card observe" data-title="6.1 Why Vision Matters">
-                <h3>6.1 Why Vision Matters in Robotics</h3>
-                <p>Cameras are cheap, rich sensors. Robots use vision to read signs, detect obstacles, estimate pose, inspect parts, track lanes, and understand human workspaces.</p>
-              </section>
-              <section id="opencv" class="section-card observe" data-title="6.3 OpenCV">
-                <h3>6.2 Tools: OpenCV</h3>
-                <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="opencv_quick_demo.py"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
-      import matplotlib.pyplot as plt
-      
-      img_bgr = cv2.imread("traffic_sign.jpg")
-      print(img_bgr.shape)             # height, width, channels
-      
-      img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-      small = cv2.resize(img_rgb, (32, 32))
-      edges = cv2.Canny(small, threshold1=50, threshold2=150)
-      
-      cv2.rectangle(img_rgb, (20, 20), (120, 120), (0, 255, 0), 2)
-      plt.imshow(img_rgb)
-      plt.axis("off")
-      plt.show()</code></pre></figure>
-                <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">BGR vs RGB</div><p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p></div></div>
-              </section>
-              <section id="tensorflow" class="section-card observe" data-title="6.3 TensorFlow/Keras">
-                <h3>6.3 Tools: TensorFlow/Keras</h3>
-                <p>TensorFlow is Google's library for building and training neural networks. Keras is the friendly wrapper on top, like power steering on a car. You will use tensors, layers, models, epochs, batches, loss functions, and optimizers.</p>
-                <div class="diagram">
-                  <div class="flow-row" aria-label="Keras sequential stack">
-                    <div class="flow-node">Input image</div><div class="arrow">→</div>
-                    <div class="flow-node">Layers stacked in order</div><div class="arrow">→</div>
-                    <div class="flow-node">Class probabilities</div>
-                  </div>
-                </div>
-              </section>
-              <section id="cnn" class="section-card observe" data-title="6.2 CNNs">
-                <h3>6.4 How Convolutional Neural Networks See</h3>
-                <p>A normal neural network sees a flat list of pixels. A CNN scans small filters across the image, so it can learn edges, corners, textures, shapes, and eventually objects.</p>
-                <div class="diagram">
-                  <div class="flow-row" aria-label="CNN architecture diagram">
-                    <div class="flow-node">Input 32x32 image</div><div class="arrow">→</div>
-                    <div class="flow-node">Conv2D + MaxPool</div><div class="arrow">→</div>
-                    <div class="flow-node">Dense → 43 signs</div>
-                  </div>
-                </div>
-                <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="example_sobel_edge_filter.py"><figcaption>Example Sobel edge filter</figcaption><pre><code class="language-python">sobel_x = np.array([
-          [-1, 0, 1],
-          [-2, 0, 2],
-          [-1, 0, 1]
-      ])</code></pre></figure>
-              </section>
-              <section id="traffic-sign-project" class="section-card observe" data-title="6.4 Project: Traffic Sign Classifier">
-                <h3>6.5 ★ Project: Traffic Sign Classifier with TensorFlow + OpenCV</h3>
-                <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
-                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
-                <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch6-traffic-sign-classifier.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Kaggle download of GTSRB"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
-import json
-import os
-from getpass import getpass
+      <article class="chapter ch6 observe" id="neural-networks" data-title="Chapter 6 — Neural Networks">
+        <header class="chapter-header">
+          <span class="chapter-badge">Chapter 6 / 7</span>
+          <a class="breadcrumb" href="chapter-5-rl.html#reinforcement-learning">← Previous Chapter: Reinforcement Learning</a>
+          <div class="chapter-kicker">Browser + Colab experiments</div>
+          <h2>Neural Networks: <span>How Machines Learn</span></h2>
+          <p class="lead">Every concept introduced with an experiment first. Break things deliberately. Watch them fail. Fix one knob at a time. By the end you can look at any training curve and diagnose what is wrong without being told.</p>
+        </header>
 
-os.makedirs("/root/.kaggle", exist_ok=True)
-token = json.loads(getpass("Paste your Kaggle API token text: ").strip())
-with open("/root/.kaggle/kaggle.json", "w") as f:
-    json.dump(token, f)
-os.chmod("/root/.kaggle/kaggle.json", 0o600)
-!kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
-!unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Downloads and extracts the traffic sign dataset into Colab.</p></div></div><div class="expected"><strong>Expected output</strong>Folders containing sign images and labels.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Explore dataset"><figcaption>Cell 2: Explore dataset</figcaption><pre><code class="language-python">from pathlib import Path
-      import pandas as pd
-      import matplotlib.pyplot as plt
-      
-      train_csv = Path("gtsrb/Train.csv")
-      df = pd.read_csv(train_csv)
-      display(df.head())
-      df["ClassId"].value_counts().sort_index().plot(kind="bar", figsize=(14, 4))
-      plt.title("Images per traffic sign class")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows metadata and checks whether classes are balanced.</p></div></div><div class="expected"><strong>Expected output</strong>A table and a 43-bar class count chart.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3: OpenCV preprocessing pipeline"><figcaption>Cell 3: OpenCV preprocessing pipeline</figcaption><pre><code class="language-python">import cv2
-      import numpy as np
-      from tensorflow.keras.preprocessing.image import ImageDataGenerator
-      
-      images, labels = [], []
-      for _, row in df.iterrows():
-          path = Path("gtsrb") / row["Path"]
-          img = cv2.imread(str(path))
-          img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-          img = cv2.resize(img, (32, 32))
-          img = img.astype("float32") / 255.0
-          images.append(img)
-          labels.append(row["ClassId"])
-      
-      X = np.array(images)
-      y = np.array(labels)
-      print(X.shape, y.shape)</code></pre></figure>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3b: Data augmentation setup"><figcaption>Cell 3b: Data augmentation setup</figcaption><pre><code class="language-python">augmenter = ImageDataGenerator(
-          rotation_range=10,
-          zoom_range=0.10,
-          horizontal_flip=True
-      )
-      
-      # Use with care: horizontal flips can change the meaning of some traffic signs.</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples.</p></div></div><div class="expected"><strong>Expected output</strong><code>(num_images, 32, 32, 3)</code> and labels.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 4: Split into train/validation/test"><figcaption>Cell 4: Split into train/validation/test</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
-      
-      X_train, X_temp, y_train, y_temp = train_test_split(
-          X, y, test_size=0.3, random_state=42, stratify=y
-      )
-      X_val, X_test, y_val, y_test = train_test_split(
-          X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
-      )</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Creates separate data for training, tuning during training, and final evaluation.</p></div></div><div class="expected"><strong>Expected output</strong>No output; three splits are ready.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5: Build CNN architecture"><figcaption>Cell 5: Build CNN architecture</figcaption><pre><code class="language-python">import tensorflow as tf
-      from tensorflow import keras
-      from tensorflow.keras import layers
-      
-      model = keras.Sequential([
-          layers.Conv2D(32, (3, 3), activation="relu", input_shape=(32, 32, 3)),
-          layers.MaxPooling2D((2, 2)),
-          layers.Conv2D(64, (3, 3), activation="relu"),
-          layers.MaxPooling2D((2, 2)),
-          layers.Flatten(),
-          layers.Dense(256, activation="relu"),
-          layers.Dropout(0.5),
-          layers.Dense(43, activation="softmax")
-      ])
-      model.summary()</code></pre></figure>
-                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision.</p></div></div><div class="expected"><strong>Expected output</strong>A model summary with trainable parameters.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 6: Compile model"><figcaption>Cell 6: Compile model</figcaption><pre><code class="language-python">model.compile(
-          optimizer="adam",
-          loss="sparse_categorical_crossentropy",
-          metrics=["accuracy"]
-      )</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p><code>adam</code> updates weights, loss measures wrongness, and accuracy reports percent correct.</p></div></div><div class="expected"><strong>Expected output</strong>No output; model is ready to train.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 7: Train for 15 epochs"><figcaption>Cell 7: Train for 15 epochs</figcaption><pre><code class="language-python">history = model.fit(
-          X_train, y_train,
-          validation_data=(X_val, y_val),
-          epochs=15,
-          batch_size=64
-      )</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Each epoch passes through the training set once and reports train/validation accuracy.</p></div></div><div class="expected"><strong>Expected output</strong>A live progress bar for each epoch.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 8: Plot accuracy and loss curves"><figcaption>Cell 8: Plot accuracy and loss curves</figcaption><pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-      axes[0].plot(history.history["accuracy"], label="train")
-      axes[0].plot(history.history["val_accuracy"], label="val")
-      axes[0].set_title("Accuracy")
-      axes[0].legend()
-      
-      axes[1].plot(history.history["loss"], label="train")
-      axes[1].plot(history.history["val_loss"], label="val")
-      axes[1].set_title("Loss")
-      axes[1].legend()
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">What this does</div><p>If training accuracy rises but validation accuracy stalls, the model may be overfitting.</p></div></div><div class="expected"><strong>Expected output</strong>Two learning curves.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 9: Evaluate on test set"><figcaption>Cell 9: Evaluate on test set</figcaption><pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
-      print(f"Test accuracy: {test_acc:.3f}")</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The test set is used once at the end to estimate real-world performance.</p></div></div><div class="expected"><strong>Expected output</strong>A single test accuracy value.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 10: Confusion matrix and top mistakes"><figcaption>Cell 10: Confusion matrix and top mistakes</figcaption><pre><code class="language-python">from sklearn.metrics import confusion_matrix
-      
-      pred = np.argmax(model.predict(X_test), axis=1)
-      cm = confusion_matrix(y_test, pred)
-      
-      plt.figure(figsize=(9, 9))
-      plt.imshow(cm, cmap="Blues")
-      plt.title("43-class confusion matrix")
-      plt.xlabel("Predicted class")
-      plt.ylabel("True class")
-      plt.colorbar()
-      plt.show()
-      
-      mistakes = []
-      for true_id in range(43):
-          for pred_id in range(43):
-              if true_id != pred_id and cm[true_id, pred_id] > 0:
-                  mistakes.append((cm[true_id, pred_id], true_id, pred_id))
-      print(sorted(mistakes, reverse=True)[:10])</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions.</p></div></div><div class="expected"><strong>Expected output</strong>A 43x43 plot and top 10 confusion tuples.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 11: Test one image"><figcaption>Cell 11: Test one image</figcaption><pre><code class="language-python">idx = 0
-      probs = model.predict(X_test[idx:idx+1])[0]
-      pred_label = np.argmax(probs)
-      confidence = probs[pred_label]
-      
-      plt.imshow(X_test[idx])
-      plt.title(f"Predicted {pred_label}, true {y_test[idx]}, confidence {confidence:.1%}")
-      plt.axis("off")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What this does</div><p>Shows a concrete example instead of only aggregate metrics.</p></div></div><div class="expected"><strong>Expected output</strong>A sign image with predicted label, true label, and confidence.</div></div>
-                <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 12: OpenCV raw-image prediction overlay"><figcaption>Cell 12: OpenCV raw-image prediction overlay</figcaption><pre><code class="language-python">sample_path = Path("gtsrb") / df.iloc[0]["Path"]
-      raw_bgr = cv2.imread(str(sample_path))
-      raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
-      
-      model_input = cv2.resize(raw_rgb, (32, 32)).astype("float32") / 255.0
-      probs = model.predict(model_input[None, ...])[0]
-      pred_label = np.argmax(probs)
-      confidence = probs[pred_label]
-      
-      overlay = raw_rgb.copy()
-      cv2.putText(
-          overlay,
-          f"Class {pred_label}: {confidence:.1%}",
-          (5, 25),
-          cv2.FONT_HERSHEY_SIMPLEX,
-          0.7,
-          (255, 255, 255),
-          2
-      )
-      
-      plt.imshow(overlay)
-      plt.axis("off")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">What this does</div><p>This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top.</p></div></div><div class="expected"><strong>Expected output</strong>A traffic sign image with prediction text overlaid.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="Cell 13: Challenge - add a third Conv2D block"><figcaption>Cell 13: Challenge - add a third Conv2D block</figcaption><pre><code class="language-python"># Add before Flatten:
-      # layers.Conv2D(128, (3, 3), activation="relu"),
-      # layers.MaxPooling2D((2, 2)),
-      #
-      # Retrain and compare validation accuracy and training time.</code></pre></figure>
-                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What this does</div><p>A deeper network may learn richer features, but it can also overfit or train slower.</p></div></div><div class="expected"><strong>Expected output</strong>Your comparison notes.</div></div>
-              </section>
-              <div class="chapter-nav">
-                <a class="breadcrumb" href="chapter-5-rl.html#reinforcement-learning">← Previous Chapter</a>
-                <a class="next-btn" href="chapter-7-next.html#whats-next">Next Chapter → What's Next?</a>
+        <!-- ============================================================ -->
+        <!-- LESSON 6.0 -->
+        <!-- ============================================================ -->
+        <section id="lesson-60" class="section-card observe" data-title="6.0 What Is a Neural Network?">
+          <h3>6.0 What Is a Neural Network?</h3>
+          <p>In Chapter 3 you trained a Random Forest to predict machine failure. The Random Forest learned rules like "if temperature is above X and torque is above Y, flag as failure." It works well but the rules are fixed once training is done. A neural network learns differently — instead of rules, it learns adjustable numbers that it keeps tuning until its answers are correct.</p>
+          <p>Think of it like learning to cook. A recipe book gives you fixed rules: 200 degrees, 30 minutes, 2 cups of flour. A neural network is more like a chef who keeps tasting and adjusting — a pinch more salt here, two minutes less heat there — until the dish is right. The adjustments are the learning.</p>
+          <div class="grid-2">
+            <div class="card">
+              <h4>What is a neural network really?</h4>
+              <p>A mathematical function with thousands of adjustable knobs called <strong>weights</strong>. Training is the process of turning those knobs until the function's output matches the correct answer for every training example.</p>
+            </div>
+            <div class="card">
+              <h4>What is it good for?</h4>
+              <p>Neural networks shine when the relationship between inputs and outputs is too complex for simple rules. Recognizing a face, understanding speech, detecting objects in images. For simpler problems like the Chapter 3 failure dataset, Random Forest is often just as good and much simpler.</p>
+            </div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Try this</div>
+              <p>You already saw machine learning find patterns in data in Chapter 3. Think of one prediction problem from daily life where you think the relationship is too complex for simple rules. Write it down. You will refer back to it at the end of this chapter.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.1 -->
+        <!-- ============================================================ -->
+        <section id="lesson-61" class="section-card observe" data-title="6.1 Anatomy of a Neuron">
+          <h3>6.1 Anatomy of a Neuron</h3>
+          <p>A neuron is the smallest building block of a neural network. Understanding one neuron completely means understanding the foundation of everything that follows.</p>
+          <div class="card">
+            <h4>Analogy — The exam scorer</h4>
+            <p>Imagine scoring a student's exam performance using three things: homework average, midterm score, and attendance. You might decide homework matters most so you give it weight 0.5, midterm gets weight 0.4, and attendance gets only weight 0.1. You multiply each by its weight, add them up, and get a performance score. A neuron does exactly this — multiply each input by its weight and add them all up.</p>
+          </div>
+          <p>The only difference from the exam scorer is one extra step: after adding everything up, the neuron passes the result through an <strong>activation function</strong>. This is what makes neural networks powerful. Without it, no matter how many neurons you stack, the whole thing collapses into one simple weighted sum — and you are back to linear regression.</p>
+          <h4>Step by step — what one neuron computes</h4>
+          <div class="steps">
+            <div class="step">
+              <div>
+                <strong>Step 1 — Multiply each input by its weight</strong>
+                <p><code>temperature × 0.8 = 0.72</code><br />
+                <code>vibration &nbsp;&nbsp; × 0.3 = 0.21</code><br />
+                <code>speed &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; × -0.2 = -0.10</code></p>
               </div>
-            </article>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Step 2 — Add everything including the bias</strong>
+                <p><code>z = 0.72 + 0.21 + (−0.10) + (−0.40) = 0.43</code></p>
+                <p>The bias −0.40 shifts the result. It is like a base score before any inputs are considered.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Step 3 — Pass through the activation function</strong>
+                <p><code>sigmoid(0.43) = 0.606</code></p>
+                <p>Sigmoid squashes any number into a value between 0 and 1. Here: 60.6% confident something is abnormal.</p>
+              </div>
+            </div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Try this before running</div>
+              <p>Before running the code, predict: if you increase the vibration weight from 0.3 to 0.9 (making vibration more important), will the confidence go up or down? Write your prediction, then run.</p>
+            </div>
+          </div>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.1-neuron.py">
+            <figcaption>One neuron — sigmoid activation</figcaption>
+            <pre><code class="language-python">import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+# Sensor readings (normalized 0-1)
+x = np.array([0.9, 0.7, 0.5])   # temp, vibration, speed
+
+# Weights and bias (these would be learned during training)
+w = np.array([0.8, 0.3, -0.2])
+b = -0.4
+
+z = np.dot(w, x) + b             # weighted sum
+a = sigmoid(z)                   # activation
+
+print(f"Weighted sum z: {z:.4f}")
+print(f"After sigmoid:  {a:.4f}")
+print(f"Interpretation: {a*100:.1f}% confidence of abnormality")
+
+# Try changing the weights and see what happens:
+# What if vibration (w[1]) matters more than temperature (w[0])?</code></pre>
+          </figure>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Exercise</div>
+              <ol>
+                <li>Change <code>w[1]</code> from 0.3 to 0.9. What does the confidence become? Was your prediction correct?</li>
+                <li>Change <code>b</code> from -0.4 to 0.0. What happens and why?</li>
+                <li>What combination of weights and bias gives you exactly 50% confidence? (Hint: sigmoid(0) = 0.5. What must z equal?)</li>
+              </ol>
+            </div>
+          </div>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div>
+              <div class="callout-title">Remember</div>
+              <p>The network does not decide these weights — you do not either. Training finds them automatically by trying thousands of combinations and keeping the ones that produce correct outputs.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.2 -->
+        <!-- ============================================================ -->
+        <section id="lesson-62" class="section-card observe" data-title="6.2 ★ Perceptron Playground">
+          <h3>6.2 ★ Experiment: The Perceptron Playground</h3>
+          <p>You just saw one neuron compute a single number. Now let it make a decision: given two input features, classify a data point as red or blue. The neuron draws a boundary — everything on one side is red, everything on the other is blue.</p>
+          <p>The boundary is always a straight line. That is the fundamental limit of one neuron. For some problems a straight line is enough. For others it is completely useless. This experiment shows you both cases so you feel the limit before you understand why it exists.</p>
+          <h4>What to do</h4>
+          <ol>
+            <li>Run the cell with <code>DATASET = "linear"</code>. Move W1, W2, and B until the line separates red from blue. This is solvable — a straight line works here.</li>
+            <li>Change to <code>DATASET = "xor"</code>. Now try to separate them. Spend two minutes genuinely trying. You cannot do it. A straight line will always leave some red on the blue side.</li>
+            <li>Change to <code>DATASET = "circles"</code>. Same problem — the boundary you need is a circle, not a line.</li>
+          </ol>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Question</div>
+              <p>After trying XOR: what shape of boundary would actually work? A curve? Two lines? This question has a real answer and lesson 6.3 gives it to you.</p>
+            </div>
+          </div>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.2-perceptron-playground.py">
+            <figcaption>Perceptron Playground</figcaption>
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+
+def get_dataset(name):
+    if name == "linear":
+        X1 = np.random.randn(50, 2) + np.array([2, 2])
+        X2 = np.random.randn(50, 2) + np.array([-2, -2])
+        X  = np.vstack([X1, X2])
+        y  = np.array([1]*50 + [0]*50)
+    elif name == "xor":
+        X1 = np.random.randn(25, 2) * 0.5 + np.array([2, 2])
+        X2 = np.random.randn(25, 2) * 0.5 + np.array([-2, -2])
+        X3 = np.random.randn(25, 2) * 0.5 + np.array([2, -2])
+        X4 = np.random.randn(25, 2) * 0.5 + np.array([-2, 2])
+        X  = np.vstack([X1, X2, X3, X4])
+        y  = np.array([1]*50 + [0]*50)
+    elif name == "circles":
+        t  = np.linspace(0, 2*np.pi, 50)
+        X1 = np.column_stack([np.cos(t)*0.5 + np.random.randn(50)*0.1,
+                               np.sin(t)*0.5 + np.random.randn(50)*0.1])
+        X2 = np.column_stack([np.cos(t)*2.0 + np.random.randn(50)*0.2,
+                               np.sin(t)*2.0 + np.random.randn(50)*0.2])
+        X  = np.vstack([X1, X2])
+        y  = np.array([1]*50 + [0]*50)
+    return X, y
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
+
+def plot_neuron(dataset="xor", w1=1.0, w2=1.0, b=0.0):
+    X, y = get_dataset(dataset)
+    w    = np.array([w1, w2])
+    xx, yy = np.meshgrid(np.linspace(-4,4,200), np.linspace(-4,4,200))
+    Z  = sigmoid(np.c_[xx.ravel(), yy.ravel()] @ w + b).reshape(xx.shape)
+    pred = (sigmoid(X @ w + b) &gt;= 0.5).astype(int)
+    acc  = (pred == y).mean() * 100
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.contourf(xx, yy, Z, levels=[0, 0.5, 1],
+                colors=['#3b82f6', '#ef4444'], alpha=0.25)
+    ax.contour(xx, yy, Z, levels=[0.5], colors=['white'], linewidths=2)
+    ax.scatter(X[y==1,0], X[y==1,1], c='#ef4444', s=40,
+               edgecolors='white', linewidths=0.5, label='Class 1')
+    ax.scatter(X[y==0,0], X[y==0,1], c='#3b82f6', s=40,
+               edgecolors='white', linewidths=0.5, label='Class 0')
+    ax.set_title(f"Dataset: {dataset}  |  Accuracy: {acc:.1f}%",
+                 fontsize=12, color='white', pad=10)
+    ax.set_facecolor('#0d1117')
+    fig.patch.set_facecolor('#0d1117')
+    ax.tick_params(colors='gray')
+    ax.spines[:].set_color('#30363d')
+    ax.legend(facecolor='#161b22', labelcolor='white')
+    plt.tight_layout()
+    plt.show()
+    print(f"Accuracy: {acc:.1f}%")
+
+DATASET = "xor"   # options: "linear", "xor", "circles"
+W1 = 1.0          # change these and re-run
+W2 = 1.0
+B  = 0.0
+
+plot_neuron(DATASET, W1, W2, B)</code></pre>
+          </figure>
+          <div class="callout warning" role="alert">
+            <div class="callout-icon">⚠️</div>
+            <div>
+              <div class="callout-title">One neuron — one straight line</div>
+              <p>A single neuron can only draw a straight line. XOR and circles are not linearly separable — no straight line can divide them. This is why we need multiple neurons in multiple layers.</p>
+            </div>
+          </div>
+          <h4>Why does this matter?</h4>
+          <p>When you built the failure predictor in Chapter 3, the data was roughly linearly separable — normal operation and failure formed groups that a line could mostly separate. That is why simple algorithms worked well. Neural networks become valuable when your data looks more like the XOR or circles problem — when the pattern you are trying to find cannot be captured by a straight line. Real robotics data (camera images, audio signals, complex sensor combinations) almost always looks like circles, not like two clean blobs.</p>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.3 -->
+        <!-- ============================================================ -->
+        <section id="lesson-63" class="section-card observe" data-title="6.3 From One Neuron to Many: Layers">
+          <h3>6.3 From One Neuron to Many: Layers</h3>
+          <p>The perceptron playground proved one neuron cannot solve XOR. But what if you used three neurons? The trick is that each neuron draws its own line — and three lines together can carve out any shape you want.</p>
+          <div class="card">
+            <h4>Analogy — The committee decision</h4>
+            <p>One judge gives one opinion. Three judges can together make a more nuanced decision — one might care about speed, another about accuracy, a third about style. Their combined vote can capture patterns no single judge could see. A hidden layer is a committee of neurons voting together.</p>
+          </div>
+          <h4>What a layer actually does</h4>
+          <p>Each neuron in the hidden layer gets the same inputs but has different weights — so each neuron learns to notice a different aspect of the data. The outputs of all those neurons become the inputs to the next layer. By the time data reaches the output layer, it has been transformed so many times that previously impossible separations become simple.</p>
+          <h4>Counting the knobs</h4>
+          <p>Every connection between neurons is one weight — one knob to tune. Every neuron also has one bias. The total number of these knobs is the number of <strong>parameters</strong>. More parameters means more capacity to learn complex patterns, but also more data needed and more risk of memorizing instead of learning.</p>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Try this before running</div>
+              <p>For the network 3 inputs → 4 neurons → 1 output, how many weights are there? How many biases? Calculate it before running the code.</p>
+            </div>
+          </div>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.3-count-params.py">
+            <figcaption>Count parameters in a network</figcaption>
+            <pre><code class="language-python">def count_params(layer_sizes):
+    total = 0
+    for i in range(len(layer_sizes) - 1):
+        weights = layer_sizes[i] * layer_sizes[i+1]
+        biases  = layer_sizes[i+1]
+        params  = weights + biases
+        print(f"Layer {i+1}: {layer_sizes[i]}→{layer_sizes[i+1]}"
+              f"  ({weights} weights + {biases} biases = {params})")
+        total += params
+    print(f"Total parameters: {total:,}")
+
+count_params([3, 4, 4, 1])
+print()
+count_params([3, 64, 64, 1])   # much bigger hidden layers
+print()
+count_params([3, 4, 4, 4, 1]) # extra hidden layer</code></pre>
+          </figure>
+          <p><strong>For <code>count_params([3, 4, 4, 1])</code> — walk through it:</strong></p>
+          <p><strong>Layer 1 (3→4):</strong> Each of the 3 inputs connects to each of the 4 neurons. That is 3×4 = 12 weights. Each of the 4 neurons also has 1 bias. Total: 16 parameters.</p>
+          <p><strong>Layer 2 (4→4):</strong> Each of the 4 neurons from layer 1 connects to each of the 4 neurons in layer 2. That is 4×4 = 16 weights plus 4 biases. Total: 20 parameters.</p>
+          <p><strong>Layer 3 (4→1):</strong> 4 connections to the output neuron plus 1 bias. Total: 5 parameters.</p>
+          <p><strong>Grand total: 41 parameters.</strong> This network can be trained on a laptop in seconds. YOLO26n has 3.5 million. GPT-4 has roughly 1 trillion. The math is the same — just way more of it.</p>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Challenge</div>
+              <p>What is the smallest network (fewest parameters) that has at least one hidden layer and takes 2 inputs to produce 1 output? Calculate it.</p>
+              <p><strong>Answer:</strong> 2→1→1 has (2×1+1) + (1×1+1) = 5 parameters.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.4 -->
+        <!-- ============================================================ -->
+        <section id="lesson-64" class="section-card observe" data-title="6.4 Gradient Descent">
+          <h3>6.4 How Networks Learn: Gradient Descent</h3>
+          <p>Networks have tens to millions of weights. Training has to find the right value for all of them simultaneously. How? Not by trying every combination — there are too many. Instead, training makes small improvements over and over until the network is good enough. This process is called <strong>gradient descent</strong>.</p>
+          <div class="card">
+            <h4>Analogy — The blindfolded hiker</h4>
+            <p>You are blindfolded on a hilly landscape. Your goal is to find the lowest valley. You cannot see anything — but you can feel the slope under your feet. At each step you feel which direction slopes downward and take one step that way. After enough steps you reach a valley. Gradient descent is this process, but the landscape has millions of dimensions instead of two.</p>
+          </div>
+          <h4>What is the loss?</h4>
+          <p>The height in the hiking analogy is the <strong>loss</strong> — a number that measures how wrong the network is. When the network predicts 0.9 failure probability and the true label is 0 (no failure), that is a large loss. When it predicts 0.05 and the label is 0, the loss is small. Training minimizes this number.</p>
+          <p>The most common loss for classification is called <strong>cross-entropy</strong>. For regression it is <strong>mean squared error</strong> — the average of (prediction − true value)² across all training examples. You do not need to derive these. Just know that loss = how wrong the network is, and training makes it smaller.</p>
+          <h4>The five steps of one training iteration</h4>
+          <div class="steps">
+            <div class="step">
+              <div>
+                <strong>Step 1 — Forward pass</strong>
+                <p>Feed one batch of training examples (say, 32 rows) through the network from left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each of the 32 examples.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Step 2 — Compute loss</strong>
+                <p>Compare the 32 predictions to the 32 true labels. Compute the average error. This single number tells you how wrong the network is right now.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Step 3 — Backward pass (backpropagation)</strong>
+                <p>Figure out which weights caused the most error. Calculus tells us how much each weight contributed to the loss — this is the <strong>gradient</strong>. The gradient points in the direction that increases loss. We want to go the opposite direction.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Step 4 — Update weights</strong>
+                <p>Move every weight a small step in the direction that reduces loss.</p>
+                <p><code>new weight = old weight − learning rate × gradient</code></p>
+                <p>The learning rate controls how big the step is. Too large and the network overshoots. Too small and training takes forever.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Step 5 — Repeat</strong>
+                <p>Do this for every batch in the training set. When you have gone through every batch once, that is one <strong>epoch</strong>. Training runs for many epochs until the loss stops improving.</p>
+              </div>
+            </div>
+          </div>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Try this before running</div>
+              <p>The code below simulates a loss curve over 50 epochs. Before running: what shape do you expect the curve to have? Flat? Always decreasing? Noisy? Predict it, then run.</p>
+            </div>
+          </div>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.4-loss-curve.py">
+            <figcaption>Simulated training loss curve</figcaption>
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+epochs = np.arange(1, 51)
+loss   = 1.2 * np.exp(-0.08 * epochs) + 0.1 + np.random.randn(50)*0.02
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(epochs, loss, color='#6366f1', linewidth=2, label='Training loss')
+ax.axhline(y=0.1, color='#30363d', linestyle='--', label='Irreducible error')
+ax.set_xlabel("Epoch", color='#8b949e')
+ax.set_ylabel("Loss", color='#8b949e')
+ax.set_title("Healthy Training Curve", color='#e6edf3')
+ax.set_facecolor('#0d1117')
+fig.patch.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+ax.legend(facecolor='#161b22', labelcolor='white')
+plt.tight_layout()
+plt.show()</code></pre>
+          </figure>
+          <p>The loss started high (network was randomly wrong) and decreased toward a floor called the <strong>irreducible error</strong> — the minimum possible loss on this data. The small wiggles in the curve come from randomness in which training examples each batch contains. A smooth curve means large batches. A noisy curve means small ones.</p>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Try this</div>
+              <p>Change the random seed on line 4 from 42 to any other number and rerun. The curve has different wiggles each time but always the same general shape. This is because the wiggles are random noise but the downward trend is the real learning signal.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.5 -->
+        <!-- ============================================================ -->
+        <section id="lesson-65" class="section-card observe" data-title="6.5 ★ Watch Gradient Descent Live">
+          <h3>6.5 ★ Experiment: Watch Gradient Descent Live</h3>
+          <p>The hiking analogy is clearer when you can see the landscape. This experiment shows gradient descent as an actual path on a 2D loss surface. You control the learning rate and watch the path crawl, converge, wobble, or fly off the edge.</p>
+          <h4>What you are looking at</h4>
+          <p>The left plot is the loss surface — a bowl shape where the center is the minimum. The orange path is gradient descent navigating toward that minimum. The right plot shows the loss at each step. A healthy run looks like: path spirals inward, loss drops smoothly.</p>
+          <p>Run the cell with <code>LEARNING_RATE = 0.1</code> first so you know what good looks like. Then try each of these and observe:</p>
+          <div class="table-wrap">
+            <table class="data-table" aria-label="Learning rate effects on gradient descent">
+              <thead><tr><th>Learning Rate</th><th>What happens</th></tr></thead>
+              <tbody>
+                <tr><td><code>LR = 0.01</code></td><td>Path takes tiny steps, needs many more steps to converge</td></tr>
+                <tr><td><code>LR = 0.1</code></td><td>Smooth convergence — this is the sweet spot here</td></tr>
+                <tr><td><code>LR = 0.9</code></td><td>Path overshoots the minimum and zigzags</td></tr>
+                <tr><td><code>LR = 1.5</code></td><td>Path diverges completely, loss goes UP</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.5-gradient-descent-live.py">
+            <figcaption>Gradient descent on a 2D loss surface</figcaption>
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+def loss(x, y):
+    return (x - 2)**2 + 2*(y - 1)**2
+
+def grad(x, y):
+    return np.array([2*(x-2), 4*(y-1)])
+
+LEARNING_RATE = 0.1   # try 0.01, 0.1, 0.9, 1.5
+STEPS         = 30
+START         = np.array([-2.0, -2.0])
+
+pos    = START.copy()
+path   = [pos.copy()]
+losses = [loss(*pos)]
+
+for _ in range(STEPS):
+    g   = grad(*pos)
+    pos = pos - LEARNING_RATE * g
+    path.append(pos.copy())
+    losses.append(loss(*pos))
+
+path = np.array(path)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+fig.patch.set_facecolor('#0d1117')
+
+x = np.linspace(-3, 5, 200)
+y = np.linspace(-3, 4, 200)
+X, Y = np.meshgrid(x, y)
+Z    = loss(X, Y)
+
+ax1.contourf(X, Y, Z, levels=30, cmap='Blues_r', alpha=0.8)
+ax1.contour(X, Y, Z, levels=15, colors='white', alpha=0.3, linewidths=0.5)
+ax1.plot(path[:,0], path[:,1], 'o-', color='#f97316',
+         markersize=4, linewidth=2, label='GD path')
+ax1.plot(2, 1, '*', color='#10b981', markersize=15, label='Minimum')
+ax1.plot(START[0], START[1], 's', color='#ef4444', markersize=10, label='Start')
+ax1.set_title(f"Loss Surface  (LR={LEARNING_RATE})", color='#e6edf3', fontsize=11)
+ax1.set_facecolor('#0d1117')
+ax1.legend(facecolor='#161b22', labelcolor='white', fontsize=9)
+ax1.tick_params(colors='#8b949e')
+ax1.spines[:].set_color('#30363d')
+
+ax2.plot(losses, color='#6366f1', linewidth=2)
+ax2.set_xlabel("Step", color='#8b949e')
+ax2.set_ylabel("Loss", color='#8b949e')
+ax2.set_title("Loss vs Steps", color='#e6edf3', fontsize=11)
+ax2.set_facecolor('#0d1117')
+ax2.tick_params(colors='#8b949e')
+ax2.spines[:].set_color('#30363d')
+
+plt.tight_layout()
+plt.show()
+
+print(f"Final loss: {losses[-1]:.6f}")
+print(f"Final position: x={path[-1,0]:.4f}, y={path[-1,1]:.4f}")
+print(f"True minimum:   x=2.0000,           y=1.0000")</code></pre>
+          </figure>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Question</div>
+              <p>After running LR = 1.5 and seeing divergence, answer this: In the hiking analogy, what does a learning rate of 1.5 represent physically? What would happen to a blindfolded hiker who took giant leaps instead of careful steps?</p>
+            </div>
+          </div>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div>
+              <div class="callout-title">Key insight</div>
+              <p>The learning rate is the most sensitive hyperparameter in neural network training. The default value in Adam optimizer (the most common optimizer) is 0.001. This is usually a safe starting point for real networks. Only change it if training is clearly too slow or clearly unstable.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.6 -->
+        <!-- ============================================================ -->
+        <section id="lesson-66" class="section-card observe" data-title="6.6 The Three Knobs">
+          <h3>6.6 The Three Knobs: Learning Rate, Epochs, Architecture</h3>
+          <p>Every neural network training run has three settings you choose before anything starts. These are the three knobs. Getting them right is more art than science — but you can develop intuition by understanding what each one does and watching what happens when you get it wrong. The next lesson is entirely about that.</p>
+          <div class="grid-3">
+            <div class="card">
+              <h4>Learning Rate</h4>
+              <p>Controls the step size during gradient descent. Too small and training crawls — it might take 10,000 epochs to converge. Too large and the network overshoots the minimum, bounces around, or diverges entirely. You just saw this in lesson 6.5. The safe default with the Adam optimizer is 0.001. In the next experiment you will use plain gradient descent where 0.1 is the sweet spot.</p>
+              <p class="muted">Default: 0.001 (Adam)</p>
+            </div>
+            <div class="card">
+              <h4>Epochs</h4>
+              <p>One epoch = one complete pass through all your training data. Too few epochs and the network has not seen enough examples to learn the pattern — this is called <strong>underfitting</strong>. Too many epochs and the network memorizes the training examples instead of learning the general pattern — this is called <strong>overfitting</strong>. You will see both of these failures in lesson 6.9.</p>
+              <p class="muted">Typical range: 10–500</p>
+            </div>
+            <div class="card">
+              <h4>Architecture</h4>
+              <p>How many layers and how many neurons per layer. A network that is too small does not have enough parameters to represent the pattern in the data. A network that is too large has so many parameters it memorizes every training example instead of generalizing. A common starting architecture for simple problems is two hidden layers with 16 or 32 neurons each. You will build this in the next lesson.</p>
+              <p class="muted">Start: 2 hidden layers, 16–32 neurons</p>
+            </div>
+          </div>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div>
+              <div class="callout-title">What comes next</div>
+              <p>The next lesson gives you a broken network. Learning rate is set to 5.0 (way too high). Epochs is set to 5 (way too few). The hidden layer has only 2 neurons (way too small). Your job is to fix one knob at a time and watch the network improve. Predict now: which of the three do you think matters most?</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.7 -->
+        <!-- ============================================================ -->
+        <section id="lesson-67" class="section-card observe" data-title="6.7 ★ sin(x) Experiment">
+          <h3>6.7 ★ Experiment: Teach a Network to Learn sin(x)</h3>
+          <p>You know what sin(x) looks like — a smooth wave that rises and falls between -1 and +1. A neural network knows nothing. It starts with random weights and has no concept of waves, curves, or math. In this experiment you will watch it figure out sin(x) from scratch, purely by being shown (x, sin(x)) pairs thousands of times and correcting itself each time.</p>
+          <p>The twist: we train on x from 0 to 2π, then test on 0 to 4π — a range the network has never seen. This directly shows whether the network truly learned the sin function or just memorized the training data.</p>
+          <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch6-sin-experiment.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div>
+              <div class="callout-title">Architecture: 1 → 20 → 10 → 1</div>
+              <p>One input (x value), two hidden layers, one output (predicted sin(x)). The hidden layers use ReLU activation — without it the layers collapse to a straight line. The output uses no activation (linear) because sin(x) can be any value between −1 and +1.</p>
+            </div>
+          </div>
+          <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 4: Adam training loop (key excerpt)">
+            <figcaption>Cell 4: Adam training loop (key excerpt)</figcaption>
+            <pre><code class="language-python">for epoch in range(1, epochs + 1):
+    # Forward pass
+    z1 = np.dot(x, W1) + b1
+    a1 = relu(z1)
+    z2 = np.dot(a1, W2) + b2
+    a2 = relu(z2)
+    z3 = np.dot(a2, W3) + b3
+    a3 = linear(z3)              # linear output — no clamping
+
+    # Loss
+    loss = mse_loss(y, a3)
+
+    # Backward pass (chain rule layer by layer)
+    d_loss_a3 = 2 * (a3 - y) / len(x)
+    delta3 = d_loss_a3                 # linear_derivative = 1
+    dW3 = np.dot(a2.T, delta3)
+
+    delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+    dW2 = np.dot(a1.T, delta2)
+
+    delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+    dW1 = np.dot(x.T, delta1)
+
+    # Adam update for W1 (same pattern for all other weights)
+    m_W1 = beta1*m_W1 + (1-beta1)*dW1
+    v_W1 = beta2*v_W1 + (1-beta2)*(dW1**2)
+    W1 -= lr * (m_W1/(1-beta1**epoch)) / (np.sqrt(v_W1/(1-beta2**epoch)) + eps)</code></pre>
+          </figure>
+          <h4>Structured challenges</h4>
+          <div class="steps">
+            <div class="step">
+              <div>
+                <strong>Challenge 1 — Minimum viable network</strong>
+                <p>Find the smallest <code>HIDDEN_DIM1</code> and <code>HIDDEN_DIM2</code> that still accurately approximates sin(x) on the training range. How few neurons can learn a sine wave?</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Challenge 2 — Generalization limits</strong>
+                <p>Set <code>TRAIN_RANGE=2</code>, <code>TEST_RANGE=8</code>. Does the network generalize to 4x the training range? What about 6x?</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Challenge 3 — Too many epochs</strong>
+                <p>Set <code>EPOCHS=50000</code>. Does accuracy keep improving? What happens to the generalization plot? (This is overfitting in action.)</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Challenge 4 — Learning rate extremes</strong>
+                <p>Try <code>LEARNING_RATE=0.5</code> and <code>LEARNING_RATE=0.000001</code>. What does the loss curve look like in each case?</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.8 -->
+        <!-- ============================================================ -->
+        <section id="lesson-68" class="section-card observe" data-title="6.8 Activation Functions">
+          <h3>6.8 Activation Functions: Why Non-Linearity Matters</h3>
+          <p>Every neuron applies an activation function after its weighted sum. Without this step, stacking neurons does nothing useful — the whole network collapses to one big linear function regardless of how many layers you add. The activation function is what gives neural networks their power.</p>
+          <div class="grid-3">
+            <div class="card">
+              <h4>Sigmoid</h4>
+              <p><code>f(z) = 1 / (1 + e⁻ᶻ)</code></p>
+              <p>Output: 0 to 1. Good for the output layer of binary classifiers. Problem: <strong>vanishing gradient</strong> — for large |z| the gradient shrinks near zero, so early layers stop learning.</p>
+            </div>
+            <div class="card">
+              <h4>ReLU</h4>
+              <p><code>f(z) = max(0, z)</code></p>
+              <p>Output: 0 to ∞. The default choice for hidden layers. Fast and simple. Problem: <strong>dying ReLU</strong> — neurons that always output 0 stop contributing entirely.</p>
+            </div>
+            <div class="card">
+              <h4>Tanh</h4>
+              <p><code>f(z) = (eᶻ − e⁻ᶻ) / (eᶻ + e⁻ᶻ)</code></p>
+              <p>Output: −1 to 1. Zero-centered version of sigmoid. Often works better in practice for hidden layers than sigmoid.</p>
+            </div>
+          </div>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.8-activations.py">
+            <figcaption>Activation function comparison</figcaption>
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+z = np.linspace(-5, 5, 300)
+
+sigmoid_fn = 1 / (1 + np.exp(-z))
+relu_fn    = np.maximum(0, z)
+tanh_fn    = np.tanh(z)
+
+fig, axes = plt.subplots(1, 3, figsize=(13, 4))
+fig.patch.set_facecolor('#0d1117')
+
+for ax, fn, name, color, note in zip(
+    axes,
+    [sigmoid_fn, relu_fn, tanh_fn],
+    ['Sigmoid', 'ReLU', 'Tanh'],
+    ['#6366f1', '#f97316', '#10b981'],
+    ['Output: 0 to 1\nGood for output layer',
+     'Output: 0 to inf\nDefault for hidden layers',
+     'Output: -1 to 1\nZero-centered sigmoid']
+):
+    ax.plot(z, fn, color=color, linewidth=2.5)
+    ax.axhline(0, color='#30363d', linewidth=0.8)
+    ax.axvline(0, color='#30363d', linewidth=0.8)
+    ax.set_title(name, color='#e6edf3', fontsize=13)
+    ax.set_xlabel("z", color='#8b949e')
+    ax.text(0.05, 0.08, note, transform=ax.transAxes,
+            color='#8b949e', fontsize=8.5)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+
+plt.tight_layout()
+plt.show()</code></pre>
+          </figure>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div>
+              <div class="callout-title">Practical rule</div>
+              <p>Hidden layers: use ReLU. Output for binary classification: sigmoid. Output for multi-class: softmax. Output for regression: no activation (linear output).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.9 -->
+        <!-- ============================================================ -->
+        <section id="lesson-69" class="section-card observe" data-title="6.9 Overfitting">
+          <h3>6.9 Overfitting and How to Fight It</h3>
+          <p>Every neural network can fail in two opposite directions. Too little training and the network never learns the pattern. Too much training and the network memorizes the training data instead of generalizing. These are underfitting and overfitting.</p>
+          <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="6.9-overfitting.py">
+            <figcaption>The three training scenarios</figcaption>
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+epochs = np.arange(1, 101)
+
+train_under = 0.9 - 0.2 * np.log(epochs/10 + 1) + np.random.randn(100)*0.01
+val_under   = train_under + 0.05 + np.random.randn(100)*0.01
+
+train_good = 0.8 * np.exp(-0.05*epochs) + 0.12 + np.random.randn(100)*0.01
+val_good   = 0.8 * np.exp(-0.04*epochs) + 0.15 + np.random.randn(100)*0.015
+
+train_over = 0.8 * np.exp(-0.08*epochs) + 0.02 + np.random.randn(100)*0.005
+val_over   = 0.8*np.exp(-0.05*epochs) + 0.15 + 0.004*epochs + np.random.randn(100)*0.015
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4), sharey=True)
+fig.patch.set_facecolor('#0d1117')
+
+for ax, (tl, vl), title in zip(
+    axes,
+    [(train_under, val_under), (train_good, val_good), (train_over, val_over)],
+    ['Underfitting', 'Good Fit', 'Overfitting']
+):
+    ax.plot(epochs, tl, color='#6366f1', linewidth=2, label='Train')
+    ax.plot(epochs, vl, color='#f97316', linewidth=2, linestyle='--', label='Val')
+    ax.set_title(title, color='#e6edf3', fontsize=12)
+    ax.set_xlabel("Epoch", color='#8b949e')
+    ax.set_ylabel("Loss", color='#8b949e')
+    ax.set_ylim(0, 1)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+    ax.legend(facecolor='#161b22', labelcolor='white', fontsize=9)
+
+plt.tight_layout()
+plt.show()</code></pre>
+          </figure>
+          <div class="grid-3">
+            <div class="card">
+              <h4>Underfitting</h4>
+              <p>Both train and val loss plateau high. The network has not learned the pattern. Causes: too small a network, too few epochs, learning rate too small. Fix: increase architecture, train longer.</p>
+            </div>
+            <div class="card">
+              <h4>Good Fit</h4>
+              <p>Both losses decrease and level off together. This is what you want. Train loss is slightly lower than val loss — that small gap is normal.</p>
+            </div>
+            <div class="card">
+              <h4>Overfitting</h4>
+              <p>Train loss keeps decreasing but val loss turns back up. The hallmark: the gap between them grows over time. The network is memorizing, not learning.</p>
+            </div>
+          </div>
+          <h4>Three ways to fight overfitting</h4>
+          <div class="steps">
+            <div class="step">
+              <div>
+                <strong>Dropout</strong>
+                <p>During training, randomly set some neurons to zero on each forward pass. Forces the network to learn redundant representations. In Keras: <code>model.add(Dropout(0.3))</code> — 30% of neurons zeroed each batch.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>Early stopping</strong>
+                <p>Stop training when validation loss stops improving. Keras: <code>EarlyStopping(patience=10)</code> stops after 10 epochs with no improvement and restores the best weights.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div>
+                <strong>More data</strong>
+                <p>Always the best cure when you can get it. More diverse examples force the network to generalize rather than memorize.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.10 -->
+        <!-- ============================================================ -->
+        <section id="lesson-610" class="section-card observe" data-title="6.10 ★ Build in Keras">
+          <h3>6.10 ★ From NumPy to Keras</h3>
+          <p>In lesson 6.7 you implemented Adam, forward pass, and backpropagation by hand. Now see how the same network looks in Keras. The math is identical — Keras just handles the training loop automatically.</p>
+          <div class="grid-2">
+            <div class="card">
+              <h4>NumPy (from lesson 6.7)</h4>
+              <pre style="background:transparent;padding:0;margin:0;font-size:0.8rem;"><code class="language-python">z1 = np.dot(x, W1) + b1
+a1 = relu(z1)
+z2 = np.dot(a1, W2) + b2
+a2 = relu(z2)
+z3 = np.dot(a2, W3) + b3
+a3 = linear(z3)
+
+# Manual Adam update for every weight...
+m_W1 = beta1*m_W1 + (1-beta1)*dW1
+...</code></pre>
+            </div>
+            <div class="card">
+              <h4>Keras equivalent</h4>
+              <pre style="background:transparent;padding:0;margin:0;font-size:0.8rem;"><code class="language-python">model = keras.Sequential([
+    keras.layers.Dense(20, activation='relu'),
+    keras.layers.Dense(10, activation='relu'),
+    keras.layers.Dense(1)   # linear output
+])
+model.compile(
+    optimizer=keras.optimizers.Adam(0.001),
+    loss='mse')
+model.fit(x, y, epochs=3000)</code></pre>
+            </div>
+          </div>
+          <p>Keras does everything in lesson 6.7's training loop automatically. The architecture is the same. The Adam optimizer is the same. The MSE loss is the same. Keras just hides the implementation so you can focus on the design rather than the math.</p>
+          <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+          <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Build the Keras network">
+            <figcaption>Cell 2: Build the Keras network</figcaption>
+            <pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+
+LEARNING_RATE = 0.001
+EPOCHS        = 3000
+HIDDEN_DIM1   = 20
+HIDDEN_DIM2   = 10
+
+model = keras.Sequential([
+    keras.layers.Input(shape=(1,)),
+    keras.layers.Dense(HIDDEN_DIM1, activation="relu"),
+    keras.layers.Dense(HIDDEN_DIM2, activation="relu"),
+    keras.layers.Dense(1),
+])
+
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
+    loss="mse",
+    metrics=["mae"],
+)
+
+model.summary()</code></pre>
+          </figure>
+          <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5: Add dropout and early stopping">
+            <figcaption>Cell 5: Add dropout and early stopping</figcaption>
+            <pre><code class="language-python">LEARNING_RATE = 0.001
+EPOCHS        = 5000
+HIDDEN_DIM1   = 64
+HIDDEN_DIM2   = 32
+DROPOUT_RATE  = 0.1
+
+model2 = keras.Sequential([
+    keras.layers.Input(shape=(1,)),
+    keras.layers.Dense(HIDDEN_DIM1, activation="relu"),
+    keras.layers.Dropout(DROPOUT_RATE),
+    keras.layers.Dense(HIDDEN_DIM2, activation="relu"),
+    keras.layers.Dropout(DROPOUT_RATE),
+    keras.layers.Dense(1),
+])
+
+model2.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
+    loss="mse", metrics=["mae"],
+)
+
+early_stop = keras.callbacks.EarlyStopping(
+    monitor="val_loss", patience=150, restore_best_weights=True
+)
+
+history2 = model2.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=EPOCHS, batch_size=32,
+    callbacks=[early_stop], verbose=0,
+)
+print(f"Stopped at epoch {len(history2.history['loss'])} / {EPOCHS}")</code></pre>
+          </figure>
+          <div class="callout exercise-note" role="note">
+            <div class="callout-icon">📝</div>
+            <div>
+              <div class="callout-title">Fix it progressively</div>
+              <ol>
+                <li>Try fewer neurons: <code>HIDDEN_DIM1 = 5</code>, <code>HIDDEN_DIM2 = 2</code>.</li>
+                <li>Try more neurons: <code>HIDDEN_DIM1 = 100</code>, <code>HIDDEN_DIM2 = 50</code>.</li>
+                <li>Try fewer epochs: <code>EPOCHS = 300</code>.</li>
+                <li>Try learning rates 0.0001, 0.001, and 0.01.</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.11 -->
+        <!-- ============================================================ -->
+        <section id="lesson-611" class="section-card observe" data-title="6.11 Reading Training Curves">
+          <h3>6.11 Reading Training Curves</h3>
+          <p>A training curve is the first thing you look at when something goes wrong. Learn to read it and you can diagnose most problems without running more experiments.</p>
+          <div class="table-wrap">
+            <table class="data-table" aria-label="Training curve diagnostic reference">
+              <thead>
+                <tr>
+                  <th>Symptom</th>
+                  <th>Diagnosis</th>
+                  <th>Fix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Loss stays flat from epoch 1</td>
+                  <td>LR too small or bad initialization</td>
+                  <td>Increase LR or use Adam</td>
+                </tr>
+                <tr>
+                  <td>Loss spikes or goes to NaN</td>
+                  <td>LR too large</td>
+                  <td>Reduce LR by 10×</td>
+                </tr>
+                <tr>
+                  <td>Train loss falls, val loss rises after some epochs</td>
+                  <td>Overfitting</td>
+                  <td>Add Dropout, early stopping, or reduce network size</td>
+                </tr>
+                <tr>
+                  <td>Both train and val loss plateau high</td>
+                  <td>Underfitting</td>
+                  <td>More epochs, larger network, or different architecture</td>
+                </tr>
+                <tr>
+                  <td>Val loss lower than train loss</td>
+                  <td>Normal with Dropout active at train time</td>
+                  <td>Expected — no action needed</td>
+                </tr>
+                <tr>
+                  <td>Train accuracy 100%, val accuracy low</td>
+                  <td>Severe overfitting (memorization)</td>
+                  <td>Much more data or much smaller network</td>
+                </tr>
+                <tr>
+                  <td>Both losses very noisy throughout</td>
+                  <td>Batch size too small or LR too large</td>
+                  <td>Increase batch size to 32 or 64</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LESSON 6.12 -->
+        <!-- ============================================================ -->
+        <section id="lesson-612" class="section-card observe" data-title="6.12 When to Use Neural Networks">
+          <h3>6.12 When to Use Neural Networks</h3>
+          <p>Neural networks are not always the right tool. Understanding when <em>not</em> to use one is as important as knowing how to build one.</p>
+          <div class="diagram">
+            <div class="flow-row" aria-label="Neural network decision flowchart">
+              <div class="flow-node">Do you have &gt;10,000 training examples?</div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-node" style="background:var(--warning,#f97316);color:#fff">NO → Try Random Forest first. If you must use NN: keep it small and use heavy regularization.</div>
+              <div class="flow-node" style="background:var(--accent,#6366f1);color:#fff">YES → Continue</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <h4>Use a neural network when…</h4>
+              <p>Your data is images, audio, or raw text. Your dataset is large (thousands of examples or more). Simpler models have already been tried and underperform. You do not need to explain individual predictions.</p>
+            </div>
+            <div class="card">
+              <h4>Prefer Random Forest or XGBoost when…</h4>
+              <p>Your data is tabular (rows and columns). Your dataset is small to medium. You need to explain predictions to stakeholders. You want a fast baseline with minimal tuning.</p>
+            </div>
+          </div>
+          <div class="callout tip" role="note">
+            <div class="callout-icon">💡</div>
+            <div>
+              <div class="callout-title">Where you have been</div>
+              <p>Look back at the prediction problem you wrote down in lesson 6.0. Does it belong in the neural network category or the simpler model category? Most real problems in this course — and in engineering broadly — are in the simpler model category. Neural networks earn their complexity when the data itself demands it.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="chapter-nav">
+          <a class="breadcrumb" href="chapter-5-rl.html#reinforcement-learning">← Previous Chapter</a>
+          <a class="next-btn" href="chapter-7-next.html#whats-next">Next Chapter → What's Next?</a>
+        </div>
+      </article>
     </div>
   </main>
 
