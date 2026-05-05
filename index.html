@@ -4482,7 +4482,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>After selecting YOLOv26, choose <strong>Get download code</strong> instead of downloading a zip file. Roboflow generates a Python code snippet.</p>
 <figure class="lesson-image-card"><img src="dataset_code.png" alt="Roboflow dataset download code dialog" loading="lazy" /><figcaption>Copy the generated Python snippet for the Colab training notebook.</figcaption></figure>
 <p>The snippet looks like this. Your values will differ:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="roboflow_download_snippet.py"><figcaption><span>Roboflow download snippet</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="roboflow_download_snippet.py"><figcaption><span>Roboflow download snippet</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
 rf = Roboflow(api_key=&quot;YOUR_API_KEY_HERE&quot;)
 project = rf.workspace(&quot;your-workspace-name&quot;).project(&quot;your-project-name&quot;)
 version = project.version(1)
@@ -4523,21 +4523,21 @@ dataset = version.download(&quot;yolov8&quot;)</code></pre></figure>
 </div>
 <div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Colab free tier limit</div><p>Colab free tier gives limited daily GPU time, but this project only needs about 10 minutes. Do not leave the notebook idle because Colab can disconnect and clear the session.</p></div></div>
 <h3>Training Notebook Cells</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 1: Install dependencies"><figcaption><span>Cell 1: Install dependencies</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">!pip install ultralytics roboflow -q</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 1: Install dependencies"><figcaption><span>Cell 1: Install dependencies</span></figcaption><pre><code class="language-python">!pip install ultralytics roboflow -q</code></pre></figure>
 <p><code>-q</code> means quiet; it suppresses the long install log.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 2: Check GPU"><figcaption><span>Cell 2: Check GPU</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import torch
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 2: Check GPU"><figcaption><span>Cell 2: Check GPU</span></figcaption><pre><code class="language-python">import torch
 
 print(f&quot;CUDA available: {torch.cuda.is_available()}&quot;)
 print(f&quot;GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else &#x27;None - check runtime type&#x27;}&quot;)</code></pre></figure>
 <p>If this prints <code>None</code>, switch the runtime to GPU before training.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 3: Roboflow download"><figcaption><span>Cell 3: Download dataset from Roboflow</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 3: Roboflow download"><figcaption><span>Cell 3: Download dataset from Roboflow</span></figcaption><pre><code class="language-python">from roboflow import Roboflow
 
 rf = Roboflow(api_key=&quot;YOUR_KEY_HERE&quot;)
 project = rf.workspace(&quot;YOUR_WORKSPACE&quot;).project(&quot;YOUR_PROJECT&quot;)
 version = project.version(1)
 dataset = version.download(&quot;yolov8&quot;)</code></pre></figure>
 <p>Paste your own Roboflow snippet from PA.5. Your API key, workspace, project, and version will differ.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 4: Inspect dataset"><figcaption><span>Cell 4: Inspect dataset structure</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import os
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 4: Inspect dataset"><figcaption><span>Cell 4: Inspect dataset structure</span></figcaption><pre><code class="language-python">import os
 
 dataset_path = &quot;YOUR-PROJECT-NAME-1&quot;  # folder Roboflow created
 for split in [&quot;train&quot;, &quot;valid&quot;, &quot;test&quot;]:
@@ -4545,7 +4545,7 @@ for split in [&quot;train&quot;, &quot;valid&quot;, &quot;test&quot;]:
     labels = len(os.listdir(f&quot;{dataset_path}/{split}/labels&quot;))
     print(f&quot;{split}: {images} images, {labels} labels&quot;)</code></pre></figure>
 <p>A mismatch between images and labels means the export or dataset path is wrong. Fix that before training.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 5: Inspect labels"><figcaption><span>Cell 5: Look at one label file</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import random
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 5: Inspect labels"><figcaption><span>Cell 5: Look at one label file</span></figcaption><pre><code class="language-python">import random
 
 label_files = os.listdir(f&quot;{dataset_path}/train/labels&quot;)
 sample = random.choice(label_files)
@@ -4555,7 +4555,7 @@ print(f&quot;File: {sample}&quot;)
 print(f&quot;Contents:\n{content}&quot;)
 print(&quot;\nFormat: class_id  x_center  y_center  width  height (all normalized 0-1)&quot;)</code></pre></figure>
 <p>This connects the raw YOLO label numbers back to the normalized <code>xywh</code> format from PA.0.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 6: Visualize labels"><figcaption><span>Cell 6: Visualize one training image</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import cv2
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 6: Visualize labels"><figcaption><span>Cell 6: Visualize one training image</span></figcaption><pre><code class="language-python">import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -4582,7 +4582,7 @@ plt.title(f&quot;Sample: {img_file}&quot;)
 plt.axis(&quot;off&quot;)
 plt.show()</code></pre></figure>
 <p>Always look at your labels before training. If the box is wrong, the model is not the problem yet.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 7: Train YOLO26n"><figcaption><span>Cell 7: Train YOLO26n</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">from ultralytics import YOLO
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 7: Train YOLO26n"><figcaption><span>Cell 7: Train YOLO26n</span></figcaption><pre><code class="language-python">from ultralytics import YOLO
 
 model = YOLO(&quot;yolo26n.pt&quot;)   # start from pretrained nano weights
 
@@ -4597,7 +4597,7 @@ results = model.train(
     device=0              # GPU device 0 - auto-falls back to CPU
 )</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Argument</th><th>Value</th><th>What it means</th></tr></thead><tbody><tr><td><code>data</code></td><td><code>data.yaml</code></td><td>Roboflow config listing class names and folder paths.</td></tr><tr><td><code>epochs</code></td><td><code>50</code></td><td>Loop through the full training set 50 times. Enough for small datasets.</td></tr><tr><td><code>imgsz</code></td><td><code>416</code></td><td>Resize images to 416x416. Larger is more accurate but slower.</td></tr><tr><td><code>batch</code></td><td><code>16</code></td><td>Process 16 images at once. Reduce to 8 if Colab runs out of memory.</td></tr><tr><td><code>patience</code></td><td><code>15</code></td><td>Stop early if validation accuracy stops improving.</td></tr><tr><td><code>device</code></td><td><code>0</code></td><td>Use GPU device 0, with CPU fallback if needed.</td></tr></tbody></table></div>
-<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 8: Find best.pt"><figcaption><span>Cell 8: Find trained weights</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">import glob
+<figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Cell 8: Find best.pt"><figcaption><span>Cell 8: Find trained weights</span></figcaption><pre><code class="language-python">import glob
 
 weights = glob.glob(&quot;runs/detect/my_detector/weights/best.pt&quot;)
 print(f&quot;Best weights saved at: {weights[0]}&quot;)</code></pre></figure>
@@ -9303,10 +9303,10 @@ if __name__ == "__main__":
 <div class="lesson-body">
 <p class="lead">Before touching the robot code, build the lane detector step by step on one still image in Colab. You should see the math work on a photo before asking a moving robot to trust it.</p>
 <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/proj2-opencv-experiments.ipynb" target="_blank" rel="noreferrer">Open Project 2 OpenCV Notebook</a>
-<div class="callout warning p2-photo-warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">How to take the right test photo</div><p>The row scanning algorithm expects the tape to look like it does from the robot's camera: a stripe running away from you into the distance, narrow at the top and slightly wider at the bottom.</p><p><strong>CORRECT photo:</strong> stand behind the robot position and hold your phone at roughly a 50-60 degree angle pointing forward-down at the tape. The tape should appear as a vertical stripe running from the bottom of the frame toward the top, like a road disappearing into the distance.</p><p><strong>WRONG photo:</strong> holding the phone straight down above the tape. This produces a horizontal blob in the center of the frame. Row scanning will miss it because it scans horizontal rows looking for a vertical stripe, and because the blob sits in the middle rows instead of the lower rows where the scan lines are.</p><figure class="p2-photo-compare" aria-label="Wrong horizontal tape photo compared with correct vertical tape photo"><div class="p2-photo-panel p2-photo-wrong"><h4>Wrong: straight down</h4><div class="p2-photo-frame"><span class="p2-photo-tape"></span><span class="p2-photo-scan s1"></span><span class="p2-photo-scan s2"></span><span class="p2-photo-scan s3"></span></div><p>Horizontal blob in the center rows.</p></div><div class="p2-photo-panel p2-photo-correct"><h4>Correct: robot camera angle</h4><div class="p2-photo-frame"><span class="p2-photo-tape"></span><span class="p2-photo-scan s1"></span><span class="p2-photo-scan s2"></span><span class="p2-photo-scan s3"></span></div><p>Vertical stripe reaches the lower scan rows.</p></div></figure><p>If you only have a horizontal photo right now, rotate it in the notebook to simulate the correct perspective. Add this line immediately after <code>cv2.imread</code>:</p><figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Optional notebook rotation"><figcaption><span>Rotate a horizontal test photo</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)</code></pre></figure><p>This is the same rotation the robot code applies in <code>main()</code>. Run it and the horizontal tape becomes a vertical stripe.</p></div></div>
+<div class="callout warning p2-photo-warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">How to take the right test photo</div><p>The row scanning algorithm expects the tape to look like it does from the robot's camera: a stripe running away from you into the distance, narrow at the top and slightly wider at the bottom.</p><p><strong>CORRECT photo:</strong> stand behind the robot position and hold your phone at roughly a 50-60 degree angle pointing forward-down at the tape. The tape should appear as a vertical stripe running from the bottom of the frame toward the top, like a road disappearing into the distance.</p><p><strong>WRONG photo:</strong> holding the phone straight down above the tape. This produces a horizontal blob in the center of the frame. Row scanning will miss it because it scans horizontal rows looking for a vertical stripe, and because the blob sits in the middle rows instead of the lower rows where the scan lines are.</p><figure class="p2-photo-compare" aria-label="Wrong horizontal tape photo compared with correct vertical tape photo"><div class="p2-photo-panel p2-photo-wrong"><h4>Wrong: straight down</h4><div class="p2-photo-frame"><span class="p2-photo-tape"></span><span class="p2-photo-scan s1"></span><span class="p2-photo-scan s2"></span><span class="p2-photo-scan s3"></span></div><p>Horizontal blob in the center rows.</p></div><div class="p2-photo-panel p2-photo-correct"><h4>Correct: robot camera angle</h4><div class="p2-photo-frame"><span class="p2-photo-tape"></span><span class="p2-photo-scan s1"></span><span class="p2-photo-scan s2"></span><span class="p2-photo-scan s3"></span></div><p>Vertical stripe reaches the lower scan rows.</p></div></figure><p>If you only have a horizontal photo right now, rotate it in the notebook to simulate the correct perspective. Add this line immediately after <code>cv2.imread</code>:</p><figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Optional notebook rotation"><figcaption><span>Rotate a horizontal test photo</span></figcaption><pre><code class="language-python">frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)</code></pre></figure><p>This is the same rotation the robot code applies in <code>main()</code>. Run it and the horizontal tape becomes a vertical stripe.</p></div></div>
 <h3>Cell 1b: Quick Photo Sanity Check</h3>
 <p>Run this immediately after loading the image. It prints a simple row histogram so you can see whether the tape is actually in the lower 60% of the frame before row scanning begins.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook Cell 1b"><figcaption><span>Where is the tape in your image?</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python"># Quick check — where is the tape in your image?
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook Cell 1b"><figcaption><span>Where is the tape in your image?</span></figcaption><pre><code class="language-python"># Quick check — where is the tape in your image?
 gray_check = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 _, binary_check = cv2.threshold(gray_check, BINARY_THRESHOLD,
                                  255, cv2.THRESH_BINARY_INV)
@@ -9343,13 +9343,13 @@ print("If it appears in the middle rows only, rotate your photo first.")</code><
 <h3>Cell 6: Row Scanning Warning</h3>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Your test photo matters</div><p>The scan rows in this notebook are set up for a photo where the tape appears in the lower half of the frame, as it would when the phone is mounted on the robot pointing forward-downward. If your test photo was taken straight down or the tape is in the center of the image, the scan rows will miss it. Take your test photo from the same angle the phone will be mounted on the robot: forward-facing, angled down so the tape appears in the bottom 60% of the frame. If the dots still do not appear, add print statements to check which rows the tape actually occupies, then adjust <code>ROW_FRACS</code> to match.</p></div></div>
 <p>There is no ROI cropping in the Colab notebook. Cell 6 processes the full image, so <code>ROW_FRACS = [0.90, 0.75, 0.60, 0.45, 0.30]</code> scans rows in the lower part of that full frame. If your tape is in the upper or middle half, those rows can miss it entirely.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook row occupancy check"><figcaption><span>Find which rows contain white pixels</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python"># Find which rows contain white pixels
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook row occupancy check"><figcaption><span>Find which rows contain white pixels</span></figcaption><pre><code class="language-python"># Find which rows contain white pixels
 for ry in range(0, h, 20):   # check every 20 rows
     count = np.count_nonzero(clean[ry])
     if count &gt; 0:
         print(f"Row {ry} ({ry/h:.0%} from top): {count} white pixels")</code></pre></figure>
 <h3>The Most Important Cell</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook Cell 4"><figcaption><span>Binary threshold experiment</span><span class="colab-run-badge">Run in Colab</span></figcaption><pre><code class="language-python">BINARY_THRESHOLD = 70  # Change this value and run again.
+<figure class="code-card" data-runnable="false" data-chapter="project-2" data-filename="Notebook Cell 4"><figcaption><span>Binary threshold experiment</span></figcaption><pre><code class="language-python">BINARY_THRESHOLD = 70  # Change this value and run again.
 
 _, binary = cv2.threshold(blur, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY_INV)
 white_pixels = np.count_nonzero(binary)
@@ -10042,7 +10042,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 <p class="lead">Learn MediaPipe on a laptop image in Colab before touching the robot. You will see landmarks drawn on your own hand, inspect the coordinate system, and test the open/closed classification before wiring it to UDP motor commands.</p>
 <a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/proj3-gesture-recognition.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
 <div class="callout info" role="note"><div class="callout-icon">task</div><div><div class="callout-title">Why download a .task file?</div><p>The new MediaPipe Tasks API separates the Python library from the model weights. The library, installed with <code>pip install mediapipe</code>, gives you the inference engine. The <code>.task</code> file contains the trained hand landmark model weights, about 8 MB, downloaded from Google's servers. This separation means Google can update the model independently of the library. The <code>wget</code> command in Cell 1 downloads the model once to your Colab session. In VS Code, the download script in the setup lesson saves it permanently to your project folder.</p></div></div>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 1: Install and download model" data-lang="python"><figcaption><span>Install MediaPipe and download the model</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">!pip install -q mediapipe
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 1: Install and download model" data-lang="python"><figcaption><span>Install MediaPipe and download the model</span></figcaption><script type="text/plain" class="code-source">!pip install -q mediapipe
 !wget -q https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
 
 import os
@@ -10052,7 +10052,7 @@ if os.path.exists("hand_landmarker.task"):
 else:
     print("ERROR: Model file not found. Re-run this cell.")</script></figure>
 <div class="callout info" role="note"><div class="callout-icon">load</div><div><div class="callout-title">Why two steps to load the model?</div><p>Cell 1 downloads the model weights file, about 8MB, from Google's servers and saves it as <code>hand_landmarker.task</code> in the Colab session's local storage. Cell 2 loads that file into memory and initializes the detector. Both cells are required. The <code>-q</code> flag in <code>wget</code> makes the download silent; it gives no output even when it succeeds. The verification print above confirms it worked. If the file size shows as 0 MB or the file is missing, your internet connection blocked the download. Try re-running Cell 1.</p></div></div>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 2: Initialize HandLandmarker" data-lang="python"><figcaption><span>Initialize the HandLandmarker</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">import cv2
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 2: Initialize HandLandmarker" data-lang="python"><figcaption><span>Initialize the HandLandmarker</span></figcaption><script type="text/plain" class="code-source">import cv2
 import mediapipe as mp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10101,7 +10101,7 @@ print("HandLandmarker ready.")</script></figure>
 </tbody></table></div>
 <h3>Cell 3: Test on a Still Image</h3>
 <p>Upload a photo of your own hand to Colab. Use the Files panel upload button or the upload prompt in this cell.</p>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 3: Test on a still image" data-lang="python"><figcaption><span>Upload and process a hand photo</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">uploaded = files.upload()   # upload your hand photo
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 3: Test on a still image" data-lang="python"><figcaption><span>Upload and process a hand photo</span></figcaption><script type="text/plain" class="code-source">uploaded = files.upload()   # upload your hand photo
 image_path = list(uploaded.keys())[0]
 
 mp_image = mp.Image.create_from_file(image_path)
@@ -10125,7 +10125,7 @@ plt.axis("off")
 plt.show()</script></figure>
 <p>The Tasks API returns <code>result.hand_landmarks</code>, a list of hands, and <code>result.handedness</code>, a matching list of left/right labels. Each hand is already a direct list of 21 normalized landmarks.</p>
 <h3>Cell 4: Read Specific Landmarks</h3>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 4: Read specific landmarks" data-lang="python"><figcaption><span>Inspect wrist, tip, and PIP coordinates</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">if result.hand_landmarks:
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 4: Read specific landmarks" data-lang="python"><figcaption><span>Inspect wrist, tip, and PIP coordinates</span></figcaption><script type="text/plain" class="code-source">if result.hand_landmarks:
     hand = result.hand_landmarks[0]
 
     print("Key landmarks for finger detection:")
@@ -10140,7 +10140,7 @@ plt.show()</script></figure>
     print(f"  tip is {'ABOVE' if index_extended else 'BELOW'} PIP = finger is {'extended' if index_extended else 'curled'}")</script></figure>
 <p>This is the exact comparison used by the gesture detector. <code>tip.y &lt; pip.y</code> means the tip is higher in the image, which means the finger is extended.</p>
 <h3>Cell 5: The is_hand_open Function</h3>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 5: is_hand_open" data-lang="python"><figcaption><span>Classify one hand as open or closed</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">def is_hand_open(hand_landmarks):
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 5: is_hand_open" data-lang="python"><figcaption><span>Classify one hand as open or closed</span></figcaption><script type="text/plain" class="code-source">def is_hand_open(hand_landmarks):
     pts = hand_landmarks
     count = 0
 
@@ -10164,7 +10164,7 @@ if result.hand_landmarks:
 <tr><td><code>count &gt;= 3</code></td><td>Open means at least 3 of 5 digits are extended.</td></tr>
 </tbody></table></div>
 <h3>Cell 6: Two-Hand Gesture Classification</h3>
-<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 6: classify_gesture" data-lang="python"><figcaption><span>Two-hand command logic</span><span class="colab-run-badge">Run in Colab</span></figcaption><script type="text/plain" class="code-source">def classify_gesture(hands_dict):
+<figure class="code-card" data-runnable="false" data-chapter="3" data-filename="Notebook Cell 6: classify_gesture" data-lang="python"><figcaption><span>Two-hand command logic</span></figcaption><script type="text/plain" class="code-source">def classify_gesture(hands_dict):
     if 'Left' not in hands_dict or 'Right' not in hands_dict:
         return "stop"
 
