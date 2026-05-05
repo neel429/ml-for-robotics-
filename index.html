@@ -1637,18 +1637,51 @@ print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</cod
 
 <div class="lesson-body">
 <h3>3.3 The ML Pipeline</h3>
-                <div class="steps">
-                  <div class="step"><div><strong>Get Data</strong> from Kaggle.</div></div>
-                  <div class="step"><div><strong>Explore Data</strong> with <code>head()</code>, <code>info()</code>, and charts.</div></div>
-                  <div class="step"><div><strong>Clean Data</strong> by checking missing values and outliers.</div></div>
-                  <div class="step"><div><strong>Feature Engineering</strong> turns raw columns into useful inputs.</div></div>
-                  <div class="step"><div><strong>Split</strong> into train and test sets, commonly 80/20.</div></div>
-                  <div class="step"><div><strong>Scale</strong> numeric features with <code>StandardScaler</code>.</div></div>
-                  <div class="step"><div><strong>Train Model</strong> on the training set.</div></div>
-                  <div class="step"><div><strong>Evaluate</strong> with accuracy, F1, and a confusion matrix.</div></div>
-                  <div class="step"><div><strong>Tune</strong> algorithms and hyperparameters.</div></div>
-                  <div class="step"><div><strong>Deploy / Use</strong> the model in a decision workflow.</div></div>
-                </div>
+<p>Every ML project follows the same sequence of steps &mdash; from raw data to a working predictor. This sequence is called the ML pipeline. Learning it once means you can apply it to any dataset. The next lesson walks through every step on a real engineering dataset. This lesson gives you the map first.</p>
+<div class="steps">
+<div class="step"><div><strong>Step 1: Get Data</strong><p>Data is the raw material of every ML project. In this course it comes from Kaggle, a platform hosting thousands of free labeled datasets. In industry it comes from sensors, databases, or instruments you build yourself.</p></div></div>
+<div class="step"><div><strong>Step 2: Explore (EDA)</strong><p>Before training anything, look at your data. Check how many rows and columns exist, what data types each column has, and whether the class distribution is balanced. Functions like <code>df.head()</code>, <code>df.info()</code>, and <code>df.describe()</code> give you this picture in seconds. Skipping this step means discovering problems only after hours of wasted training.</p></div></div>
+<div class="step"><div><strong>Step 3: Clean</strong><p>Real data has missing values, duplicate rows, and outliers. Most ML algorithms cannot handle missing values: they either crash or produce silent wrong results. Cleaning means finding and fixing these issues before training starts.</p></div></div>
+<div class="step"><div><strong>Step 4: Feature Engineering</strong><p>Features are the columns you feed into the model. Raw columns are not always in the most useful form: a string category like <code>"L"</code>, <code>"M"</code>, or <code>"H"</code> must be converted to numbers before a model can read it. Feature engineering transforms raw data into the best possible inputs for the algorithm.</p></div></div>
+<div class="step"><div><strong>Step 5: Split Into Train and Test Sets</strong><p>You cannot evaluate a model on the same data it trained on; that is like marking your own homework. Split the data before training so the test set stays completely unseen until the final evaluation.</p>
+<figure class="code-card" data-runnable="true" data-chapter="3" data-filename="train_test_split_demo.py"><figcaption>train_test_split_demo.py</figcaption><pre><code class="language-python">from sklearn.model_selection import train_test_split
+import numpy as np
+
+# Simulated dataset - 1000 examples, 5 features
+X = np.random.rand(1000, 5)
+y = np.random.randint(0, 2, 1000)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,       # 20% reserved for testing
+    random_state=42,     # same split every run
+    stratify=y           # keep class ratio equal in both sets
+)
+print(f"Training rows: {len(X_train)}")
+print(f"Test rows:     {len(X_test)}")</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Setting</th><th>Meaning</th></tr></thead><tbody><tr><td><code>test_size=0.2</code></td><td>800 rows train, 200 rows test.</td></tr><tr><td><code>random_state=42</code></td><td>Same split every time you run the code.</td></tr><tr><td><code>stratify=y</code></td><td>If 10% of <code>y</code> is class 1, both sets will be 10%.</td></tr></tbody></table></div></div></div>
+<div class="step"><div><strong>Step 6: Scale Features</strong><p>Features with large numeric ranges, like RPM in the thousands, dominate features with small ranges, like temperature in the hundreds, even when the smaller feature is more predictive. <code>StandardScaler</code> removes this bias by centering every feature around zero with equal spread.</p>
+<figure class="code-card" data-runnable="true" data-chapter="3" data-filename="standard_scaler_demo.py"><figcaption>standard_scaler_demo.py</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+X_train = np.array([[1500, 298.5], [1800, 302.1], [1200, 296.0]])
+X_test  = np.array([[1650, 300.0]])
+
+scaler = StandardScaler()
+
+# Fit ONLY on training data, then transform both sets
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled  = scaler.transform(X_test)   # NOT fit_transform
+
+print("Before:", X_train[0])
+print("After: ", X_train_scaled[0].round(3))</code></pre></figure>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Scaling leak</div><p>Always call <code>fit_transform</code> on training data and <code>transform</code>, never <code>fit_transform</code>, on test data because fitting the scaler on test data leaks information from the exam into the study guide.</p></div></div></div></div>
+<div class="step"><div><strong>Step 7: Train Model</strong><p>Training feeds the scaled data to the algorithm and lets it adjust its internal numbers to minimize prediction error. In scikit-learn this is always one line: <code>model.fit(X_train, y_train)</code>.</p></div></div>
+<div class="step"><div><strong>Step 8: Evaluate</strong><p>After training, run the model on the test set and compare predictions to the true labels. For classification, use precision, recall, and F1-score rather than accuracy alone because accuracy is misleading when one class is much rarer than the other. A model that predicts <code>"no failure"</code> every time achieves 96% accuracy on a dataset where only 4% of readings are failures, while catching zero real failures.</p></div></div>
+<div class="step"><div><strong>Step 9: Tune</strong><p>Every algorithm has hyperparameters: settings you choose before training. Tuning means trying different values and keeping the combination that produces the best evaluation score.</p></div></div>
+<div class="step"><div><strong>Step 10: Deploy / Use</strong><p>A model that stays in a notebook helps no one. Deployment means saving the trained model to a file and loading it wherever predictions are needed, whether that is a web server, a laptop on a factory floor, or a robot.</p></div></div>
+</div>
+<p><strong>Next step:</strong> The next lesson applies every one of these steps to the AI4I Predictive Maintenance dataset &mdash; real sensor readings from a CNC machine, real failure labels, and real engineering decisions.</p>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-pipeline">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
