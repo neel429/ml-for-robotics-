@@ -2416,22 +2416,20 @@ plt.show()</code></pre></figure>
 <a class="breadcrumb" href="?lesson=ch5-overview" data-lesson-link="ch5-overview">&larr; Previous Chapter: Reinforcement Learning</a>
 <div class="chapter-kicker">Experiment-first intuition</div>
 <h2>Neural Networks: <span>Break Them, Then Fix Them</span></h2>
-<p class="lead">A neural network is a function approximator. You give it inputs, it returns outputs, and during training it adjusts internal numbers until its outputs match the correct answers.</p>
+<p class="lead">Neural networks learn by adjusting numbers over and over until their answers get better.</p>
 </header>
+<p>In Chapter 3 you trained a Random Forest to predict machine failure. The Random Forest learned rules like "if temperature is above X and torque is above Y, flag as failure." It works well, but the rules are fixed once training is done. A neural network learns differently: instead of rules, it learns adjustable numbers that it keeps tuning until its answers are correct.</p>
+<p>Think of it like learning to cook. A recipe book gives you fixed rules: 200 degrees, 30 minutes, 2 cups of flour. A neural network is more like a chef who keeps tasting and adjusting: a pinch more salt here, two minutes less heat there, until the dish is right. The adjustments are the learning.</p>
 <div class="grid-2">
-<div class="definition-card"><span class="def-term">The useful metaphor</span><p>A biological neuron receives signals, adds them up, and fires if the total is high enough. An artificial neuron does a weighted sum, applies an activation function, and passes the result forward.</p></div>
-<div class="definition-card"><span class="def-term">The practical rule</span><p>Neural networks shine on high-dimensional data such as images, audio, and text. For small tabular robotics data, Random Forest is often simpler and just as strong.</p></div>
+<div class="definition-card"><span class="def-term">What is a neural network really?</span><p>A mathematical function with thousands of adjustable knobs called weights. Training is the process of turning those knobs until the function's output matches the correct answer for every training example.</p></div>
+<div class="definition-card"><span class="def-term">What is it good for?</span><p>Neural networks shine when the relationship between inputs and outputs is too complex for simple rules. Recognizing a face, understanding speech, and detecting objects in images are examples. For simpler problems like the Chapter 3 failure dataset, Random Forest is often just as good and much simpler.</p></div>
 </div>
-<div class="diagram"><div class="decision-tree" aria-label="Where neural networks fit">
-<div class="decision-node"><strong>Simple data + small dataset</strong><br />Logistic Regression or Random Forest first.</div>
-<div class="decision-branches"><div class="decision-node"><strong>Images</strong><br />Use a CNN.</div><div class="decision-node"><strong>Text or time series</strong><br />Use an RNN or Transformer.</div></div>
-<div class="decision-node"><strong>Large unstructured data</strong><br />A neural network usually wins if you can train and validate it carefully.</div>
-</div></div>
-<div class="callout tip" role="note"><div class="callout-icon">NN</div><div><div class="callout-title">Not always the right tool</div><p>For the predictive maintenance dataset in Chapter 3, a Random Forest can perform comparably to a neural network with far less complexity. This chapter teaches both how to use neural networks and when not to use them.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>You already saw machine learning find patterns in data in Chapter 3. Think of one prediction problem from daily life where the relationship feels too complex for simple rules. Write it down. You will refer back to it at the end of this chapter.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Compare the cooking analogy to the Chapter 3 Random Forest. Which one feels more like a recipe book, and which one feels more like tasting and adjusting?</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch5-project" data-lesson-link="ch5-project"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 5.3 Maze Project</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch5-q-learning" data-lesson-link="ch5-q-learning"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 5.2 Q-Learning</span></a>
 <a class="lesson-nav-btn next" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.1 Anatomy of a Neuron &rarr;</span></a>
 </nav>
 </article>
@@ -2443,15 +2441,16 @@ plt.show()</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <h3>6.1 Anatomy of a Neuron</h3>
-<p>A single neuron does three things: calculate a weighted sum, apply an activation function, and send the result forward.</p>
-<div class="diagram neuron-map" aria-label="Artificial neuron anatomy">
-<div class="flow-row"><div class="flow-node" title="Input features from sensors or previous neurons">x1, x2, x3</div><div class="arrow">&rarr;</div><div class="flow-node" title="Weights decide how strongly each input matters">weighted sum z = w*x + b</div><div class="arrow">&rarr;</div><div class="flow-node" title="Activation squashes or bends the signal">activation a = f(z)</div><div class="arrow">&rarr;</div><div class="flow-node" title="Output passes to the next layer">output</div></div>
+<p>A neuron is the smallest building block of a neural network. Understanding one neuron completely means understanding the foundation of everything that follows.</p>
+<div class="card"><h4>The exam scorer</h4><p>Imagine scoring a student's exam performance using three things: homework average, midterm score, and attendance. You might decide homework matters most, so you give it weight 0.5; midterm gets weight 0.4; attendance gets weight 0.1. You multiply each input by its weight, add them up, and get a performance score. A neuron does exactly this: multiply each input by its weight and add them all up.</p></div>
+<p>The only difference from the exam scorer is one extra step: after adding everything up, the neuron passes the result through an activation function. This is what makes neural networks powerful. Without it, no matter how many neurons you stack, the whole thing collapses into one simple weighted sum, and you are back to linear regression.</p>
+<h4>Step by step: what one neuron computes</h4>
+<div class="steps">
+<div class="step"><div><strong>Step 1: Multiply each input by its weight</strong><br /><code>temperature x 0.8 = 0.72</code><br /><code>vibration x 0.3 = 0.21</code><br /><code>speed x -0.2 = -0.10</code></div></div>
+<div class="step"><div><strong>Step 2: Add everything including the bias</strong><br /><code>z = 0.72 + 0.21 + (-0.10) + (-0.40) = 0.43</code><br />The bias <code>-0.40</code> shifts the result. It is like a base score before any inputs are considered.</div></div>
+<div class="step"><div><strong>Step 3: Pass through the activation function</strong><br /><code>sigmoid(0.43) = 0.606</code><br />Sigmoid squashes any number into a value between 0 and 1. Here: 60.6% confident something is abnormal.</div></div>
 </div>
-<div class="step-list">
-<div class="step"><div><strong>Step 1: Weighted sum.</strong><br /><code>z = w1*x1 + w2*x2 + w3*x3 + b</code></div></div>
-<div class="step"><div><strong>Step 2: Activation.</strong><br /><code>a = f(z)</code>. Without this, stacked layers collapse into one linear function.</div></div>
-<div class="step"><div><strong>Step 3: Output.</strong><br />The activation becomes an input to the next layer.</div></div>
-</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>If you increase the vibration weight from <code>0.3</code> to <code>0.9</code>, making vibration more important, will the confidence go up or down? Write your prediction, then run.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="single_neuron_sensor_confidence.py"><figcaption>single_neuron_sensor_confidence.py</figcaption><pre><code class="language-python">import numpy as np
 
 def sigmoid(z):
@@ -2472,7 +2471,8 @@ print(f&quot;After sigmoid:  {a:.4f}&quot;)
 print(f&quot;Interpretation: {a*100:.1f}% confidence of abnormality&quot;)
 
 # Try changing w[1]. What happens if vibration matters more than temperature?</code></pre></figure>
-<div class="callout robotics" role="note"><div class="callout-icon">%</div><div><div class="callout-title">Concrete interpretation</div><p>With temperature, vibration, and speed as inputs, this neuron outputs about 60.6% confidence that the machine state is abnormal.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Exercise</div><p>1. Change <code>w[1]</code> from <code>0.3</code> to <code>0.9</code>. What does the confidence become? Was your prediction correct?</p><p>2. Change <code>b</code> from <code>-0.4</code> to <code>0.0</code>. What happens and why?</p><p>3. What combination of weights and bias gives you exactly 50% confidence? Hint: <code>sigmoid(0) = 0.5</code>. What must <code>z</code> equal?</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">TIP</div><div><div class="callout-title">Training finds the numbers</div><p>The network does not decide these weights by hand, and you do not either. Training finds them automatically by trying thousands of adjustments and keeping the ones that produce correct outputs.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-neuron">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2488,12 +2488,15 @@ print(f&quot;Interpretation: {a*100:.1f}% confidence of abnormality&quot;)
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <h3>6.2 Experiment: The Perceptron Playground</h3>
-<p>Run the cell, then change <code>DATASET</code>, <code>W1</code>, <code>W2</code>, and <code>B</code>. The white line is the decision boundary. Try to make XOR or circles exceed 75% accuracy with one neuron.</p>
-<div class="grid-3">
-<div class="card"><h4>Linear</h4><p>One straight boundary can separate the classes.</p></div>
-<div class="card"><h4>XOR</h4><p>The classes form a checkerboard. One line cannot solve it.</p></div>
-<div class="card"><h4>Circles</h4><p>The correct boundary is curved, so one neuron fails.</p></div>
-</div>
+<p>You just saw one neuron compute a single number. Now let it make a decision: given two input features, classify a data point as red or blue. The neuron draws a boundary: everything on one side is red, everything on the other is blue.</p>
+<p>The boundary is always a straight line. That is the fundamental limit of one neuron. For some problems a straight line is enough; for others it is completely useless. This experiment shows you both cases so you feel the limit before you understand why it exists.</p>
+<h4>What to do</h4>
+<ol>
+<li>Run the cell with <code>DATASET = "linear"</code>. Move <code>W1</code>, <code>W2</code>, and <code>B</code> until the line separates red from blue. This is solvable: a straight line works here.</li>
+<li>Change to <code>DATASET = "xor"</code>. Now try to separate them. Spend two minutes genuinely trying. You cannot do it. A straight line will always leave some red on the blue side.</li>
+<li>Change to <code>DATASET = "circles"</code>. Same problem: the boundary you need is a circle, not a line.</li>
+</ol>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>After trying XOR: what shape of boundary would actually work? A curve? Two lines? This question has a real answer, and lesson 6.3 gives it to you.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="perceptron_playground.py"><figcaption>perceptron_playground.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -2559,6 +2562,9 @@ B = 0.0
 
 plot_neuron(DATASET, W1, W2, B)</code></pre></figure>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The limit of one neuron</div><p>A single neuron can only draw a straight line. XOR and circles are not linearly separable, which is why useful neural networks need layers.</p></div></div>
+<h4>Why does this matter?</h4>
+<p>When you built the failure predictor in Chapter 3, normal and failure examples were often separable enough that simple algorithms worked well. Neural networks become valuable when your data looks more like the XOR or circles problem: when the pattern cannot be captured by a straight line. Complex signals from images, audio, games, or mixed sensor tables often look more like circles than like two clean blobs.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Sketch one dataset that a straight line can separate, then sketch one that needs a curve. You do not need exact coordinates. The goal is to see the boundary shape before lesson 6.3 explains how layers create it.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-perceptron">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2574,11 +2580,13 @@ plot_neuron(DATASET, W1, W2, B)</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <h3>6.3 From One Neuron to Many: Layers</h3>
-<p>Stacking neurons creates layers. Each layer transforms the representation of the data, so a problem that was not linearly separable can become separable by the final layer.</p>
-<div class="diagram network-diagram" aria-label="Neural network layer diagram">
-<div class="flow-row"><div class="flow-node">Input layer<br />x1, x2, x3</div><div class="arrow">&rarr;</div><div class="flow-node">Hidden layer 1<br />4 neurons</div><div class="arrow">&rarr;</div><div class="flow-node">Hidden layer 2<br />4 neurons</div><div class="arrow">&rarr;</div><div class="flow-node">Output<br />1 neuron</div></div>
-</div>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Layer</th><th>Weights</th><th>Biases</th><th>Total</th></tr></thead><tbody><tr><td>3 inputs to 4 neurons</td><td>12</td><td>4</td><td>16</td></tr><tr><td>4 neurons to 4 neurons</td><td>16</td><td>4</td><td>20</td></tr><tr><td>4 neurons to 1 output</td><td>4</td><td>1</td><td>5</td></tr><tr><td><strong>Total</strong></td><td></td><td></td><td><strong>41</strong></td></tr></tbody></table></div>
+<p>The perceptron playground proved one neuron cannot solve XOR. But what if you used three neurons? The trick is that each neuron draws its own line, and three lines together can carve out shapes that one line cannot.</p>
+<div class="card"><h4>The committee decision</h4><p>One judge gives one opinion. Three judges can together make a more nuanced decision: one might care about speed, another about accuracy, a third about style. Their combined vote can capture patterns no single judge could see. A hidden layer is a committee of neurons voting together.</p></div>
+<h4>What a layer actually does</h4>
+<p>Each neuron in the hidden layer gets the same inputs but has different weights, so each neuron learns to notice a different aspect of the data. The outputs of all those neurons become the inputs to the next layer. By the time data reaches the output layer, it has been transformed so many times that previously impossible separations can become simple.</p>
+<h4>Counting the knobs</h4>
+<p>Every connection between neurons is one weight: one knob to tune. Every neuron also has one bias. The total number of these knobs is the number of parameters. More parameters means more capacity to learn complex patterns, but also more data needed and more risk of memorizing instead of learning.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>For the network <code>3 inputs -> 4 neurons -> 1 output</code>, how many weights are there? How many biases? Calculate it before running the code.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="count_network_parameters.py"><figcaption>count_network_parameters.py</figcaption><pre><code class="language-python">def count_params(layer_sizes):
     total = 0
     for i in range(len(layer_sizes) - 1):
@@ -2595,7 +2603,11 @@ print()
 count_params([3, 64, 64, 1])
 print()
 count_params([3, 4, 4, 4, 1])</code></pre></figure>
-<div class="callout tip" role="note"><div class="callout-icon">#</div><div><div class="callout-title">Parameters are learned numbers</div><p>YOLO26n has millions of parameters. Your first network here has dozens, which makes the learning mechanics visible.</p></div></div>
+<p><strong>Layer 1 (3->4):</strong> Each of the 3 inputs connects to each of the 4 neurons. That is <code>3 x 4 = 12</code> weights. Each of the 4 neurons also has 1 bias. Total: 16 parameters.</p>
+<p><strong>Layer 2 (4->4):</strong> Each of the 4 neurons from layer 1 connects to each of the 4 neurons in layer 2. That is <code>4 x 4 = 16</code> weights plus 4 biases. Total: 20 parameters.</p>
+<p><strong>Layer 3 (4->1):</strong> 4 connections to the output neuron plus 1 bias. Total: 5 parameters.</p>
+<p><strong>Grand total:</strong> 41 parameters. This network can be trained on a laptop in seconds. Large modern neural networks use the same math, just with many more learned numbers.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Challenge</div><p>What is the smallest network, with the fewest parameters, that has at least one hidden layer and takes 2 inputs to produce 1 output? Calculate it before reading the answer.</p><p><strong>Answer:</strong> <code>2 -> 1 -> 1</code> has <code>(2 x 1 + 1) + (1 x 1 + 1) = 5</code> parameters.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-layers">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2611,14 +2623,20 @@ count_params([3, 4, 4, 4, 1])</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <h3>6.4 How Networks Learn: Gradient Descent</h3>
-<p>Imagine standing blindfolded on a hilly landscape. You want the lowest point, but you can only feel the local slope. Gradient descent is taking repeated downhill steps on the loss surface.</p>
-<div class="step-list">
-<div class="step"><div><strong>Forward pass.</strong><br />Feed examples through the network to produce a prediction.</div></div>
-<div class="step"><div><strong>Compute loss.</strong><br />Compare the prediction to the true label.</div></div>
-<div class="step"><div><strong>Backward pass.</strong><br />Backpropagation calculates each weight's contribution to the loss.</div></div>
-<div class="step"><div><strong>Update weights.</strong><br /><code>weight = weight - learning_rate * gradient</code></div></div>
-<div class="step"><div><strong>Repeat.</strong><br />One epoch is one full pass through the training dataset.</div></div>
+<p>Networks have tens to millions of weights, and training has to find good values for all of them simultaneously. It does not try every combination because there are too many. Instead, training makes small improvements over and over until the network is good enough. This process is called gradient descent.</p>
+<div class="card"><h4>The blindfolded hiker</h4><p>You are blindfolded on a hilly landscape. Your goal is to find the lowest valley. You cannot see anything, but you can feel the slope under your feet. At each step you feel which direction slopes downward and take one step that way.</p><p>After enough steps you reach a valley. Gradient descent is this process, but the landscape has many dimensions instead of two.</p></div>
+<h4>What is the loss?</h4>
+<p>The height in the hiking analogy is the loss: a number that measures how wrong the network is. When the network predicts 0.9 failure probability and the true label is 0, meaning no failure, that is a large loss. When it predicts 0.05 and the label is 0, the loss is small. Training minimizes this number.</p>
+<p>The most common loss for classification is called cross-entropy. For regression it is mean squared error: the average of <code>(prediction - true value)^2</code> across all training examples. You do not need to derive these. Just know that loss means how wrong the network is, and training makes it smaller.</p>
+<h4>The five steps of one training iteration</h4>
+<div class="steps">
+<div class="step"><div><strong>Step 1: Forward pass</strong><p>Feed one batch of training examples, say 32 rows, through the network from left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each of the 32 examples.</p></div></div>
+<div class="step"><div><strong>Step 2: Compute loss</strong><p>Compare the 32 predictions to the 32 true labels. Compute the average error. This single number tells you how wrong the network is right now.</p></div></div>
+<div class="step"><div><strong>Step 3: Backward pass (backpropagation)</strong><p>Figure out which weights caused the most error. Calculus tells us how much each weight contributed to the loss: this is the gradient. The gradient points in the direction that increases loss. We want to go the opposite direction.</p></div></div>
+<div class="step"><div><strong>Step 4: Update weights</strong><p>Move every weight a small step in the direction that reduces loss.</p><p><code>new weight = old weight - learning rate x gradient</code></p><p>The learning rate controls how big the step is. Too large and the network overshoots. Too small and training takes forever.</p></div></div>
+<div class="step"><div><strong>Step 5: Repeat</strong><p>Do this for every batch in the training set. When you have gone through every batch once, that is one epoch. Training runs for many epochs until the loss stops improving.</p></div></div>
 </div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>The code below simulates a loss curve over 50 epochs. What shape do you expect the curve to have: flat, always decreasing, or noisy? Predict it, then run.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="healthy_training_curve.py"><figcaption>healthy_training_curve.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -2639,6 +2657,8 @@ for spine in ax.spines.values():
 ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;)
 plt.tight_layout()
 plt.show()</code></pre></figure>
+<p>The loss started high because the network was randomly wrong, then decreased toward a floor called the irreducible error: the minimum possible loss on this data. The small wiggles in the curve come from randomness in which training examples each batch contains. A smooth curve means large batches. A noisy curve means small ones.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Rerun the cell a few times. The curve has different wiggles each time but the same general shape. The wiggles are random noise, but the downward trend is the real learning signal.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-gradient-descent">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2654,12 +2674,12 @@ plt.show()</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <h3>6.5 Experiment: Watch Gradient Descent Live</h3>
-<p>Run the cell as-is, then try learning rates <code>0.01</code>, <code>0.5</code>, <code>0.9</code>, and <code>1.5</code>. Watch the path crawl, converge, wobble, or diverge.</p>
-<div class="grid-3">
-<div class="card"><h4>Too small</h4><p>Tiny careful steps; learning is slow.</p></div>
-<div class="card"><h4>Just right</h4><p>Stable steps toward the minimum.</p></div>
-<div class="card"><h4>Too large</h4><p>The path overshoots or flies away.</p></div>
-</div>
+<p>The hiking analogy is clearer when you can see the landscape. This experiment shows gradient descent as an actual path on a 2D loss surface. You control the learning rate and watch the path crawl, converge, wobble, or fly off the edge.</p>
+<h4>What you are looking at</h4>
+<p>The left plot is the loss surface: a bowl shape where the center is the minimum. The orange path is gradient descent navigating toward that minimum. The right plot shows the loss at each step. A healthy run looks like this: the path moves inward and the loss drops smoothly.</p>
+<p>Run the cell with <code>LEARNING_RATE = 0.1</code> first so you know what good looks like. Then try each value and observe:</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Learning rate</th><th>What happens</th></tr></thead><tbody><tr><td><code>0.01</code></td><td>Path takes tiny steps and needs many more steps to converge.</td></tr><tr><td><code>0.1</code></td><td>Smooth convergence. This is the sweet spot here.</td></tr><tr><td><code>0.9</code></td><td>Path overshoots the minimum and zigzags.</td></tr><tr><td><code>1.5</code></td><td>Path diverges completely. Loss goes up.</td></tr></tbody></table></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>Before changing the learning rate, predict which value will finish closest to the minimum. Then predict which value will have the largest final loss. Run the cell once for each value and compare your guesses to the output.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="watch_gradient_descent_live.py"><figcaption>watch_gradient_descent_live.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -2719,7 +2739,8 @@ plt.show()
 print(f&quot;Final loss: {losses[-1]:.6f}&quot;)
 print(f&quot;Final position: x={path[-1,0]:.4f}, y={path[-1,1]:.4f}&quot;)
 print(&quot;True minimum:   x=2.0000, y=1.0000&quot;)</code></pre></figure>
-<div class="callout tip" role="note"><div class="callout-icon">LR</div><div><div class="callout-title">Same idea, more dimensions</div><p>A real network does this across thousands or millions of parameters at the same time. The learning rate controls the step size.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>After running <code>LEARNING_RATE = 1.5</code> and seeing divergence, answer this: in the hiking analogy, what does a learning rate of 1.5 represent physically? What would happen to a blindfolded hiker who took giant leaps instead of careful steps?</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">LR</div><div><div class="callout-title">Key insight</div><p>The learning rate is the most sensitive hyperparameter in neural network training. The default value in Adam optimizer, the most common optimizer, is <code>0.001</code>. This is usually a safe starting point for real networks. Only change it if training is clearly too slow or clearly unstable.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-gd-live">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2735,12 +2756,15 @@ print(&quot;True minimum:   x=2.0000, y=1.0000&quot;)</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 <h3>6.6 The Three Knobs</h3>
-<p>The next experiment lets you fix a broken network one knob at a time.</p>
+<p>Every neural network training run has three settings you choose before anything starts. These are the three knobs. Getting them right is more art than science, but you can develop intuition by understanding what each one does and watching what happens when you get it wrong. The next lesson is entirely about that.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Before reading the cards, rank these from most dangerous to least dangerous if set badly: learning rate, epochs, architecture. Keep your ranking nearby and revise it after lesson 6.7.</p></div></div>
 <div class="grid-3 knob-grid">
-<div class="card"><div class="dial-icon"></div><h4>Learning Rate</h4><p>Controls step size. Too small learns slowly; too large diverges. Start around <code>0.001</code> with Adam or <code>0.1</code> in this NumPy experiment.</p></div>
-<div class="card"><div class="dial-icon"></div><h4>Epochs</h4><p>Controls how many full passes through the dataset. Too few underfits; too many can overfit. Start with <code>100</code> here.</p></div>
-<div class="card"><div class="dial-icon"></div><h4>Architecture</h4><p>Controls layers and neurons. Too small cannot learn; too large is slow and may overfit. Start with <code>[16, 16]</code>.</p></div>
+<div class="card"><div class="dial-icon"></div><h4>Learning Rate</h4><p>Controls the step size during gradient descent. Too small and training crawls: it might take 10,000 epochs to converge. Too large and the network overshoots the minimum, bounces around, or diverges entirely. You just saw this in lesson 6.5.</p><p>The safe default with the Adam optimizer is <code>0.001</code>. In the next experiment you will use plain gradient descent where <code>0.1</code> is the sweet spot.</p></div>
+<div class="card"><div class="dial-icon"></div><h4>Epochs</h4><p>One epoch means one complete pass through all your training data. Too few epochs and the network has not seen enough examples to learn the pattern: this is called underfitting. Too many epochs and the network memorizes the training examples instead of learning the general pattern: this is called overfitting. You will see both of these failures in lesson 6.9.</p></div>
+<div class="card"><div class="dial-icon"></div><h4>Architecture</h4><p>Architecture means how many layers and how many neurons per layer. A network that is too small does not have enough parameters to represent the pattern in the data. A network that is too large has so many parameters it may memorize every training example instead of generalizing. A common starting architecture for simple problems is two hidden layers with 16 or 32 neurons each.</p></div>
 </div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>After reading the cards, revise your ranking. Which knob can make training fail immediately? Which knob can look good at first but fail later?</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">NEXT</div><div><div class="callout-title">What comes next</div><p>The next lesson gives you a network to fix. Learning rate, epochs, and architecture all change what the model learns. Your job is to adjust one knob at a time and watch the network improve. Predict now: which of the three do you think matters most?</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-knobs">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
