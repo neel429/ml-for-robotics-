@@ -104,26 +104,211 @@
                 <h2>Unsupervised Learning: <span>Industrial Vibration Clustering</span></h2>
                 <p class="lead">Unsupervised learning finds structure when nobody has labeled the rows. That makes it valuable for sensor streams, vibration logs, and exploratory robotics data.</p>
               </header>
+
+              <section id="what-is-unsupervised" class="section-card observe" data-title="What Is Unsupervised Learning?">
+                <h3>What Is Unsupervised Learning?</h3>
+                <p>In supervised learning every row has a label — someone already answered the question for each example. A human looked at 10,000 sensor readings and wrote "failure" or "normal" next to each one. That labeling is expensive, slow, and sometimes impossible.</p>
+                <p>Unsupervised learning works without labels. You give the algorithm raw data and ask it to find structure on its own: groups of similar rows, patterns that repeat, dimensions that capture the most variation. Nobody told the algorithm what to look for. It discovers it.</p>
+                <div class="grid-2">
+                  <div class="card"><h4>Supervised Learning</h4><p><strong>Data:</strong> rows WITH labels.</p><p><strong>Question:</strong> predict this label from these features.</p><p><strong>Example:</strong> sensor readings → failure or no failure.</p><p>The algorithm is told what the answer looks like.</p></div>
+                  <div class="card"><h4>Unsupervised Learning</h4><p><strong>Data:</strong> rows WITHOUT labels.</p><p><strong>Question:</strong> what structure exists in this data?</p><p><strong>Example:</strong> sensor readings → how many natural groups?</p><p>The algorithm is told nothing — it finds structure itself.</p></div>
+                </div>
+                <div class="callout robotics" role="note"><div class="callout-icon">BOT</div><div><div class="callout-title">Robotics connection</div><p>A robot mapping an unknown building has no labeled floor plan. It must group sensor readings into wall, open space, and obstacle without anyone teaching it those categories. That is unsupervised learning in the real world.</p></div></div>
+              </section>
+
               <section id="clustering" class="section-card observe" data-title="4.1 Clustering & Dimensionality Reduction">
                 <h3>4.1 Concept: Clustering & Dimensionality Reduction</h3>
-                <p><strong>Clustering</strong> groups similar rows. If a motor has normal, imbalanced, and loose modes, vibration windows may naturally form three groups even without labels.</p>
-                <p><strong>PCA</strong> reduces many features into two or three axes so humans can visualize high-dimensional data. It does not magically explain the system, but it helps you inspect patterns.</p>
-                <div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Robotics Connection</div><p>When a robot enters a new environment, unlabeled sensor patterns are often the first clue that something changed.</p></div></div>
+                <h4>Clustering</h4>
+                <p>Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent — that interpretation is your job as the engineer.</p>
+                <p>A vibrating motor shaft might produce three distinct patterns of sensor readings: one when balanced correctly, one with a slight imbalance, and one with a loose bearing. Clustering discovers these three modes automatically even if no one ever labeled which readings belonged to which state.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="three_vibration_modes.py"><figcaption>Run to see three vibration modes that K-Means will learn to separate</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 2, 1000)
+normal     = np.sin(2 * np.pi * 10 * t) * 0.5
+imbalanced = np.sin(2 * np.pi * 18 * t) * 1.2
+loose      = np.sin(2 * np.pi * 10 * t) + 0.4 * np.sin(2 * np.pi * 45 * t)
+
+fig, axes = plt.subplots(3, 1, figsize=(10, 6), sharex=True)
+fig.patch.set_facecolor('#0d1117')
+
+for ax, signal, label, color in zip(
+    axes,
+    [normal, imbalanced, loose],
+    ['Normal operation', 'Imbalanced shaft', 'Loose bearing'],
+    ['#10b981', '#f97316', '#ef4444']
+):
+    ax.plot(t, signal, color=color, linewidth=1.2)
+    ax.set_ylabel(label, color='#8b949e', fontsize=9)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+
+axes[-1].set_xlabel("Time (s)", color='#8b949e')
+fig.suptitle("Three vibration modes — same shaft, different faults",
+             color='#e6edf3', fontsize=11)
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <h4>PCA</h4>
+                <p>Principal Component Analysis (PCA) is not a clustering algorithm. It is a dimensionality reduction technique: it compresses many features into fewer dimensions while preserving as much variation as possible.</p>
+                <p>Imagine your feature table has 10 columns. You cannot plot 10 dimensions. PCA finds the two directions in that 10-dimensional space that capture the most variation and projects everything onto those two axes. The result is a 2D scatter plot you can actually look at.</p>
+                <p>PCA does not label the axes for you. The first principal component is the direction of greatest variance in your data. It might correspond roughly to overall vibration intensity or frequency content, but you interpret that from the data, not from PCA.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="pca_4_features_to_2d.py"><figcaption>Run to see PCA projecting 4 features into 2D</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, labels = make_blobs(n_samples=300, centers=3,
+                       n_features=4, cluster_std=0.9,
+                       random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+
+pca = PCA(n_components=2)
+X_2d = pca.fit_transform(X_scaled)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+fig.patch.set_facecolor('#0d1117')
+
+colors = ['#10b981', '#f97316', '#6366f1']
+for i, color in enumerate(colors):
+    mask = labels == i
+    ax1.scatter(X_scaled[mask, 0], X_scaled[mask, 1],
+                color=color, s=20, alpha=0.7, label=f'Group {i}')
+    ax2.scatter(X_2d[mask, 0], X_2d[mask, 1],
+                color=color, s=20, alpha=0.7, label=f'Group {i}')
+
+for ax, title in zip([ax1, ax2],
+    ['Original: 2 of 4 features shown', 'After PCA: all 4 features compressed to 2D']):
+    ax.set_title(title, color='#e6edf3', fontsize=10)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+    ax.legend(facecolor='#161b22', labelcolor='white', fontsize=8)
+
+var = pca.explained_variance_ratio_
+ax2.set_xlabel(f'PC1 ({var[0]*100:.0f}% variance)', color='#8b949e')
+ax2.set_ylabel(f'PC2 ({var[1]*100:.0f}% variance)', color='#8b949e')
+plt.tight_layout()
+plt.show()
+
+print(f"Variance explained: PC1={var[0]*100:.1f}%  PC2={var[1]*100:.1f}%")
+print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pre></figure>
+                <div class="callout info" role="note"><div class="callout-icon">PCA</div><div><div class="callout-title">PCA does not find clusters</div><p>PCA and K-Means are two different tools that work well together. K-Means finds the clusters. PCA lets you visualize them. Always run K-Means on the original scaled features, not on the PCA-reduced version, unless the dataset is very large and speed is a concern.</p></div></div>
               </section>
+
               <section id="kmeans" class="section-card observe" data-title="4.2 K-Means Deep Dive">
                 <h3>4.2 K-Means Deep Dive</h3>
                 <div class="grid-4">
-                  <div class="card"><h4>1. Random init</h4><p class="mini muted">Place K centroids randomly.</p></div>
-                  <div class="card"><h4>2. Assign</h4><p class="mini muted">Assign each point to the nearest centroid.</p></div>
-                  <div class="card"><h4>3. Recompute</h4><p class="mini muted">Move each centroid to the average of its assigned points.</p></div>
-                  <div class="card"><h4>4. Converge</h4><p class="mini muted">Repeat until assignments stop changing.</p></div>
+                  <div class="card"><h4>1. Random initialization</h4><p>Place K centroids at random positions in feature space. These starting positions are guesses: the algorithm corrects them over the next steps. The quality of the final result can depend on where centroids start, which is why most implementations run K-Means multiple times with different random starts and keep the best result. scikit-learn's <code>n_init="auto"</code> handles this automatically.</p></div>
+                  <div class="card"><h4>2. Assign</h4><p>Calculate the distance from every data point to every centroid. Assign each point to its closest centroid. All points assigned to the same centroid form one cluster. After this step every point belongs to exactly one cluster.</p></div>
+                  <div class="card"><h4>3. Recompute</h4><p>Move each centroid to the mean position of all points currently assigned to it. If cluster 1 contains 50 points, its new centroid is the average position of those 50 points. This is where the word Means in K-Means comes from.</p></div>
+                  <div class="card"><h4>4. Converge</h4><p>Repeat assign and recompute until no point changes its cluster between iterations. At this point centroids have settled and the algorithm has converged. This is guaranteed to happen but is not guaranteed to find the globally best solution: only a local one.</p></div>
                 </div>
-                <p>Use the <strong>Elbow Method</strong> to choose K: plot inertia for K=1 to 10. The elbow is where extra clusters stop helping much. Use <strong>DBSCAN</strong> when clusters are odd shapes or when you do not know K.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="kmeans_converge_step_by_step.py"><figcaption>Run to see K-Means converge step by step</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, _ = make_blobs(n_samples=150, centers=3,
+                  cluster_std=0.7, random_state=42)
+K = 3
+
+# Manual K-Means for visualization
+centroids = X[np.random.choice(len(X), K, replace=False)]
+steps = []
+
+for iteration in range(6):
+    dists  = np.linalg.norm(X[:, None] - centroids[None, :], axis=2)
+    labels = dists.argmin(axis=1)
+    steps.append((centroids.copy(), labels.copy()))
+    new_centroids = np.array([X[labels == k].mean(axis=0)
+                              for k in range(K)])
+    if np.allclose(centroids, new_centroids):
+        break
+    centroids = new_centroids
+
+n_steps = min(len(steps), 4)
+fig, axes = plt.subplots(1, n_steps, figsize=(4*n_steps, 4))
+fig.patch.set_facecolor('#0d1117')
+colors = ['#10b981', '#f97316', '#6366f1']
+
+for i, ax in enumerate(axes):
+    c, l = steps[i]
+    for k, color in enumerate(colors):
+        mask = l == k
+        ax.scatter(X[mask, 0], X[mask, 1], color=color,
+                   s=15, alpha=0.6)
+        ax.scatter(c[k, 0], c[k, 1], color=color,
+                   s=200, marker='*', edgecolors='white', linewidths=0.8)
+    ax.set_title(f'Iteration {i+1}', color='#e6edf3', fontsize=10)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+plt.suptitle("K-Means converging — stars are centroids",
+             color='#e6edf3', fontsize=11)
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <h4>Elbow Method</h4>
+                <p>K-Means requires you to choose K before running — but how do you know the right number? The elbow method gives a data-driven answer.</p>
+                <p>Run K-Means for K=1 through 10. For each K record the inertia: the total squared distance from every point to its centroid. As K increases, inertia always decreases. The useful question is: where does adding another cluster stop helping significantly?</p>
+                <p>The elbow is where the curve bends. Beyond that point, extra clusters reduce inertia only slightly and add complexity without insight.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="elbow_method_sample_data.py"><figcaption>Run to see the elbow method on sample data</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, _ = make_blobs(n_samples=300, centers=3,
+                  cluster_std=0.8, random_state=42)
+
+ks       = range(1, 11)
+inertias = []
+for k in ks:
+    km = KMeans(n_clusters=k, random_state=42, n_init='auto')
+    km.fit(X)
+    inertias.append(km.inertia_)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+
+ax.plot(list(ks), inertias, 'o-', color='#6366f1', linewidth=2,
+        markersize=7, markerfacecolor='white')
+ax.axvline(x=3, color='#ef4444', linestyle='--', linewidth=1.5,
+           label='Elbow at K=3')
+ax.annotate('Elbow — adding more\nclusters helps less here',
+            xy=(3, inertias[2]), xytext=(5, inertias[2]*1.3),
+            color='#ef4444', fontsize=9,
+            arrowprops=dict(arrowstyle='->', color='#ef4444'))
+
+ax.set_xlabel('Number of clusters K', color='#8b949e')
+ax.set_ylabel('Inertia', color='#8b949e')
+ax.set_title('Elbow Method — finding the right K', color='#e6edf3')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+ax.legend(facecolor='#161b22', labelcolor='white')
+plt.tight_layout()
+plt.show()
+
+print("Inertia values:")
+for k, inertia in zip(ks, inertias):
+    bar = '█' * int(inertia / inertias[0] * 30)
+    print(f"  K={k:2d}: {bar} {inertia:.0f}")</code></pre></figure>
+                <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The elbow is not always obvious</div><p>On real data the elbow is often a gentle curve rather than a sharp bend. If you cannot see a clear elbow, try silhouette score as a second opinion — it measures how well-separated the clusters are. Higher silhouette score is better.</p></div></div>
+                <h4>DBSCAN: When Clusters Are Not Round</h4>
+                <p>K-Means assumes clusters are roughly round and requires you to specify K in advance. DBSCAN (Density-Based Spatial Clustering of Applications with Noise) has neither limitation. It defines a cluster as a dense region of points and marks sparse points as noise (<code>-1</code>) rather than forcing them into a cluster.</p>
+                <p>DBSCAN is powerful when clusters have irregular shapes, when outliers need to be identified explicitly, or when the number of clusters is unknown. The tradeoff: it is sensitive to two parameters: <code>eps</code>, the neighborhood radius, and <code>min_samples</code>, the minimum points to form a cluster. Finding good values requires experimentation.</p>
               </section>
+
               <section id="sensor-cluster-project" class="section-card observe" data-title="4.3 Project: Clustering Vibration Readings">
                 <h3>4.3 ★ Project: Clustering Robot Sensor Readings</h3>
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
-                <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
+                <div class="callout download" role="note"><div class="callout-icon">DL</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft" target="_blank" rel="noreferrer">vibration-analysis-on-rotating-shaft</a>.</p></div></div>
                 <a class="colab-btn" href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Open in Colab</a>
                 <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 1: Kaggle download"><figcaption>Cell 1: Kaggle download</figcaption><pre><code class="language-python">!pip -q install kaggle
 import json
@@ -137,100 +322,136 @@ with open("/root/.kaggle/kaggle.json", "w") as f:
 os.chmod("/root/.kaggle/kaggle.json", 0o600)
 !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
 !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration data into Colab. If it fails, generate synthetic data in Cell 2.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 2: Load and inspect"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
-      import pandas as pd
-      import matplotlib.pyplot as plt
-      from pathlib import Path
-      
-      files = list(Path("vibration_data").glob("*.csv"))
-      if files:
-          df = pd.read_csv(files[0])
-      else:
-          t = np.linspace(0, 60, 6000)
-          signal = np.r_[np.sin(12*t[:2000]), 1.5*np.sin(18*t[:2000]), np.sin(12*t[:2000]) + .4*np.sin(45*t[:2000])]
-          df = pd.DataFrame({"time": t, "vibration": signal})
-      
-      display(df.head())
-      print(df.shape)</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The code is robust: it uses Kaggle data when present and synthetic vibration data when unavailable.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 3: EDA - raw time-series vibration signal"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
-      plt.figure(figsize=(12, 3))
-      plt.plot(df[signal_col].values[:2000])
-      plt.title("Raw vibration signal")
-      plt.xlabel("Sample")
-      plt.ylabel("Amplitude")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Always look at raw sensor data before feature engineering. Bad units or flat lines show up immediately.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 4: Feature engineering per window"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
-      window = 256
-      features = []
-      
-      for start in range(0, len(values) - window, window):
-          chunk = values[start:start + window]
-          fft = np.abs(np.fft.rfft(chunk))
-          features.append({
-              "mean": chunk.mean(),
-              "std": chunk.std(),
-              "max": chunk.max(),
-              "fft_peak": fft[1:].argmax() + 1
-          })
-      
-      feature_df = pd.DataFrame(features)
-      display(feature_df.head())</code></pre></figure>
-                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>ML models do not understand raw waves automatically. Window statistics and FFT peaks summarize behavior.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 5: Scale features"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
-      
-      scaler = StandardScaler()
-      X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>K-Means uses distance. Scaling keeps a large numeric column from dominating the distance calculation.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 6: Elbow Method"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
-      
-      ks = range(1, 11)
-      inertias = []
-      for k in ks:
-          kmeans = KMeans(n_clusters=k, random_state=42, n_init="auto")
-          kmeans.fit(X_scaled)
-          inertias.append(kmeans.inertia_)
-      
-      plt.plot(list(ks), inertias, marker="o")
-      plt.xlabel("K")
-      plt.ylabel("Inertia")
-      plt.title("Elbow Method")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>The elbow suggests a reasonable number of clusters before improvements flatten out.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 7: Fit K-Means"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
-      cluster_labels = kmeans.fit_predict(X_scaled)
-      feature_df["cluster"] = cluster_labels
-      display(feature_df.groupby("cluster").mean())</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>Cluster averages help you give engineering names to groups, such as normal or high-vibration.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 8: PCA 2D scatter plot"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
-      
-      pca = PCA(n_components=2, random_state=42)
-      points_2d = pca.fit_transform(X_scaled)
-      
-      plt.scatter(points_2d[:, 0], points_2d[:, 1], c=cluster_labels, cmap="viridis")
-      plt.xlabel("PC1")
-      plt.ylabel("PC2")
-      plt.title("K-Means clusters in PCA space")
-      plt.colorbar(label="Cluster")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why this step?</div><p>PCA compresses the feature table into two axes so you can inspect whether clusters separate visually.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 9: Interpret clusters"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
-      display(summary)
-      
-      for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
-          print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
-                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">🤖</div><div><div class="callout-title">Why this step?</div><p>The ML output is only useful after you translate it into engineering language.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
-                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="Cell 10: Challenge - DBSCAN comparison"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
-      
-      dbscan = DBSCAN(eps=0.8, min_samples=5)
-      db_labels = dbscan.fit_predict(X_scaled)
-      
-      plt.scatter(points_2d[:, 0], points_2d[:, 1], c=db_labels, cmap="tab10")
-      plt.title("DBSCAN clusters in PCA space")
-      plt.show()</code></pre></figure>
-                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">Why this step?</div><p>DBSCAN can mark outliers as <code>-1</code> and find non-round clusters, but it is sensitive to <code>eps</code>.</p></div></div><div class="expected"><strong>Expected output</strong>A second cluster plot, sometimes with outliers.</div></div>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>Downloads the vibration dataset from Kaggle to your Colab session. The <code>getpass()</code> call hides your API token from the notebook output so it cannot be seen if you share the notebook. The unzip command extracts CSV files from the downloaded archive. If the download fails, Cell 2 generates synthetic data with the same statistical properties.</p></div></div><div class="expected"><strong>Expected output</strong>Extracted CSV files or a clear Kaggle error to use fallback.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 2: Load and inspect"><figcaption>Cell 2: Load and inspect</figcaption><pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from pathlib import Path
+
+files = list(Path("vibration_data").glob("*.csv"))
+if files:
+    df = pd.read_csv(files[0])
+else:
+    t = np.linspace(0, 60, 6000)
+    normal = np.sin(2 * np.pi * 10 * t[:2000]) * 0.5
+    imbalanced = np.sin(2 * np.pi * 18 * t[:2000]) * 1.2
+    loose = np.sin(2 * np.pi * 10 * t[:2000]) + 0.4 * np.sin(2 * np.pi * 45 * t[:2000])
+    signal = np.r_[normal, imbalanced, loose]
+    df = pd.DataFrame({"time": t, "vibration": signal})
+
+display(df.head())
+print(df.shape)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>The if/else block makes the notebook resilient. If the Kaggle download fails or the file structure changes, synthetic vibration data is generated instead. The synthetic data represents three operating modes with different frequencies, so the clustering exercise teaches the same concepts regardless of whether real or synthetic data is used.</p></div></div><div class="expected"><strong>Expected output</strong>A table with time and vibration-like columns.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 3: EDA - raw time-series vibration signal"><figcaption>Cell 3: EDA - raw time-series vibration signal</figcaption><pre><code class="language-python">signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
+
+fig, ax = plt.subplots(figsize=(12, 3))
+fig.patch.set_facecolor('#0d1117')
+ax.plot(df[signal_col].values[:2000], color='#10b981', linewidth=1.2)
+ax.set_title("Raw vibration signal", color='#e6edf3')
+ax.set_xlabel("Sample", color='#8b949e')
+ax.set_ylabel("Amplitude", color='#8b949e')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>Plotting the raw waveform before any processing is the first thing a signal processing engineer does. It immediately reveals problems: a flat line means the sensor is not recording, sudden huge spikes suggest electrical noise, and visibly different sections hint at operating mode changes. You cannot see any of this from a summary table.</p></div></div><div class="expected"><strong>Expected output</strong>A waveform plot.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 4: Feature engineering per window"><figcaption>Cell 4: Feature engineering per window</figcaption><pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+window = 256
+features = []
+
+for start in range(0, len(values) - window, window):
+    chunk = values[start:start + window]
+    fft = np.abs(np.fft.rfft(chunk))
+    features.append({
+        "mean": chunk.mean(),
+        "std": chunk.std(),
+        "max": chunk.max(),
+        "fft_peak": fft[1:].argmax() + 1
+    })
+
+feature_df = pd.DataFrame(features)
+display(feature_df.head())</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>Raw vibration data is a time series — a sequence of amplitude values sampled many times per second. K-Means cannot cluster raw time series directly because two windows from the same operating mode may look different sample-by-sample due to phase differences. Instead we compute four statistical features per window: mean captures average amplitude, std captures variability, max captures peak intensity, and the FFT peak captures the dominant frequency. These four numbers summarize each window's behavior regardless of phase, so windows from the same operating mode produce similar feature vectors that K-Means can group correctly.</p></div></div><div class="expected"><strong>Expected output</strong>A feature table with mean, std, max, and FFT peak.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 5: Scale features"><figcaption>Cell 5: Scale features</figcaption><pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(feature_df)</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>K-Means uses Euclidean distance to assign points to centroids. If one feature has values in the thousands, such as FFT peak index, and another has values near zero, such as mean amplitude, the large feature dominates the distance calculation and the algorithm effectively ignores the small one. <code>StandardScaler</code> centers every feature at zero with equal spread, so all four features contribute equally to the distance.</p></div></div><div class="expected"><strong>Expected output</strong>A scaled numeric array.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 6: Elbow Method"><figcaption>Cell 6: Elbow Method</figcaption><pre><code class="language-python">from sklearn.cluster import KMeans
+
+ks = range(1, 11)
+inertias = []
+for k in ks:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init="auto")
+    kmeans.fit(X_scaled)
+    inertias.append(kmeans.inertia_)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+ax.plot(list(ks), inertias, marker="o", color='#6366f1', linewidth=2)
+ax.set_xlabel("K", color='#8b949e')
+ax.set_ylabel("Inertia", color='#8b949e')
+ax.set_title("Elbow Method", color='#e6edf3')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>Read the plot left to right: at K=1 all points are in one cluster and inertia is maximum. As K increases, inertia drops quickly then levels off. The elbow — where the curve stops dropping steeply — is your suggested K. For this vibration dataset expect an elbow near K=3, matching the three physical operating modes: normal, imbalanced, and loose bearing.</p></div></div><div class="expected"><strong>Expected output</strong>An inertia curve with a visible bend near K=3.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 7: Fit K-Means"><figcaption>Cell 7: Fit K-Means</figcaption><pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
+cluster_labels = kmeans.fit_predict(X_scaled)
+feature_df["cluster"] = cluster_labels
+display(feature_df.groupby("cluster").mean())</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>After fitting, each window is assigned a cluster label 0, 1, or 2. The <code>groupby().mean()</code> table shows average feature values per cluster. Use this table to interpret what each cluster represents. A cluster with high std and high fft_peak likely corresponds to the imbalanced or loose mode. A cluster with low std and a consistent fft_peak likely corresponds to normal operation. The numeric labels are arbitrary — you give them engineering meaning.</p></div></div><div class="expected"><strong>Expected output</strong>Mean feature values per cluster.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 8: PCA 2D scatter plot"><figcaption>Cell 8: PCA 2D scatter plot</figcaption><pre><code class="language-python">from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+points_2d = pca.fit_transform(X_scaled)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+scatter = ax.scatter(points_2d[:, 0], points_2d[:, 1],
+                     c=cluster_labels, cmap="viridis", s=25, alpha=0.8)
+ax.set_xlabel("PC1", color='#8b949e')
+ax.set_ylabel("PC2", color='#8b949e')
+ax.set_title("K-Means clusters in PCA space", color='#e6edf3')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+cbar = plt.colorbar(scatter, label="Cluster")
+cbar.ax.yaxis.label.set_color('#8b949e')
+cbar.ax.tick_params(colors='#8b949e')
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout tip" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>Each dot in this scatter plot is one 256-sample window of vibration data. Its position is determined by PCA — the axes represent the two directions of greatest variation in the four-feature space. Color shows the K-Means cluster assignment. If clusters separate cleanly in this 2D view, K-Means found real structure. If they overlap heavily, try different features or a different K before interpreting results.</p></div></div><div class="expected"><strong>Expected output</strong>A colored scatter plot.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 9: Interpret clusters"><figcaption>Cell 9: Interpret clusters</figcaption><pre><code class="language-python">summary = feature_df.groupby("cluster").agg(["mean", "std"])
+display(summary)
+
+for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
+    print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")</code></pre></figure>
+                <div class="why-output"><div class="callout robotics" role="note"><div class="callout-icon">WHY</div><div><div class="callout-title">Why this step?</div><p>This is the most important step in an unsupervised learning project. The algorithm gave you numbers. Your job is to translate those numbers into engineering insight. Look at the mean feature values per cluster and ask: does the high-std cluster correspond to a physical fault mode? Does the high fft_peak cluster match a known resonance frequency? The ML output is only useful after you connect it back to the physical system it came from.</p></div></div><div class="expected"><strong>Expected output</strong>Cluster summaries you can label manually.</div></div>
+                <figure class="code-card" data-runnable="false" data-chapter="4" data-filename="Cell 10: Challenge - DBSCAN comparison"><figcaption>Cell 10: Challenge - DBSCAN comparison</figcaption><pre><code class="language-python">from sklearn.cluster import DBSCAN
+
+dbscan = DBSCAN(eps=0.8, min_samples=5)
+db_labels = dbscan.fit_predict(X_scaled)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+scatter = ax.scatter(points_2d[:, 0], points_2d[:, 1],
+                     c=db_labels, cmap="tab10", s=25, alpha=0.8)
+ax.set_title("DBSCAN clusters in PCA space", color='#e6edf3')
+ax.set_xlabel("PC1", color='#8b949e')
+ax.set_ylabel("PC2", color='#8b949e')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+cbar = plt.colorbar(scatter, label="DBSCAN label")
+cbar.ax.yaxis.label.set_color('#8b949e')
+cbar.ax.tick_params(colors='#8b949e')
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <div class="why-output"><div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Why this step?</div><p>DBSCAN may label some points as <code>-1</code>, meaning noise: points in sparse regions that do not belong to any dense cluster. These outliers often correspond to transient events or sensor glitches. Try adjusting <code>eps</code> between 0.3 and 1.5 and watch how the cluster boundaries change. A very small <code>eps</code> produces many small clusters and many noise points. A very large <code>eps</code> merges everything into one cluster. The right value sits between these extremes.</p></div></div><div class="expected"><strong>Expected output</strong>A second cluster plot, sometimes with outliers.</div></div>
               </section>
               <div class="chapter-nav">
                 <a class="breadcrumb" href="chapter-3-supervised.html#supervised">← Previous Chapter</a>
