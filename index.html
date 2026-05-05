@@ -95,10 +95,10 @@
 <a class="lesson-link" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span>6.4 Gradient Descent</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link is-exercise" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span>* 6.5 Watch Gradient Descent</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span>6.6 The Three Knobs</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link is-exercise" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span>* 6.7 Break It Then Fix It</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span>* 6.7 Teach sin(x)</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-activations" data-lesson-link="ch6-activations"><span>6.8 Activation Functions</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-overfitting" data-lesson-link="ch6-overfitting"><span>6.9 Overfitting</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link is-exercise" href="?lesson=ch6-keras" data-lesson-link="ch6-keras"><span>* 6.10 First Keras Network</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch6-keras" data-lesson-link="ch6-keras"><span>* 6.10 From NumPy to Keras</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-training-curves" data-lesson-link="ch6-training-curves"><span>6.11 Training Curves</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-when-to-use" data-lesson-link="ch6-when-to-use"><span>6.12 When to Use Neural Networks</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
@@ -2500,149 +2500,525 @@ print(&quot;True minimum:   x=2.0000, y=1.0000&quot;)</code></pre></figure>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-knobs">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.5 Watch Gradient Descent</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.7 Break It Then Fix It &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.7 Teach sin(x) &rarr;</span></a>
 </nav>
 </article>
 
 <article class="lesson-content exercise-lesson" data-lesson="ch6-break-fix" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.7 Experiment: Break It Then Fix It</div>
-<h1>6.7 Experiment: Break It Then Fix It</h1>
-<div class="lesson-meta"><span>Experiment</span><span>25 min</span></div>
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.7 Experiment: Teach a Network to Learn sin(x)</div>
+<h1>6.7 &#9733; Experiment: Teach a Network to Learn sin(x)</h1>
+<div class="lesson-meta"><span>Colab</span><span>35 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.7 Experiment: Break It Then Fix It</h3>
-<p>This is the central experiment. The starting configuration is intentionally broken: learning rate too high, epochs too low, and architecture too small.</p>
-<div class="step-list">
-<div class="step"><div><strong>Step 1: Run the broken baseline.</strong><br /><code>LEARNING_RATE = 5.0</code>, <code>EPOCHS = 5</code>, <code>HIDDEN_SIZES = [2]</code>.</div></div>
-<div class="step"><div><strong>Step 2: Fix learning rate.</strong><br />Change <code>5.0</code> to <code>0.1</code>. Loss should decrease more smoothly.</div></div>
-<div class="step"><div><strong>Step 3: Add epochs.</strong><br />Change <code>5</code> to <code>100</code>. Accuracy improves, but the boundary is still too simple.</div></div>
-<div class="step"><div><strong>Step 4: Fix architecture.</strong><br />Change <code>[2]</code> to <code>[16, 16]</code>. The network can now draw a curved boundary.</div></div>
-<div class="step"><div><strong>Step 5: Over-engineer it.</strong><br />Try <code>[256, 256, 256]</code>. It is slower without a meaningful gain.</div></div>
+<h3>6.7 &#9733; Experiment: Teach a Network to Learn sin(x)</h3>
+<p>You know what sin(x) looks like: a smooth wave that rises and falls between -1 and +1. A neural network knows nothing. It starts with random weights and has no concept of waves, curves, or math.</p>
+<p>In this experiment you will watch it figure out sin(x) from scratch, purely by being shown <code>(x, sin(x))</code> pairs thousands of times and correcting itself each time.</p>
+<p>The twist: we train on x from 0 to 2&pi;, then test on 0 to 4&pi;, a range the network has never seen. This directly shows whether the network truly learned the sin function or just memorized the training data.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">COLAB</div><div><div class="callout-title">Run this experiment in Google Colab</div><p>The training loop is intentionally written from scratch in NumPy. It is too slow for the browser runtime, so use the notebook.</p></div></div>
+<a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch6-sin-experiment.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+<div class="steps">
+<div class="step"><div><strong>Challenge 1: Minimum viable network</strong><br />Find the smallest <code>HIDDEN_DIM1</code> and <code>HIDDEN_DIM2</code> that still accurately approximates sin(x) on the training range. How few neurons can learn a sine wave?</div></div>
+<div class="step"><div><strong>Challenge 2: Generalization limits</strong><br />Set <code>TRAIN_RANGE=2</code>, <code>TEST_RANGE=8</code>. Does the network generalize to 4x the training range? What about 6x?</div></div>
+<div class="step"><div><strong>Challenge 3: Too many epochs</strong><br />Set <code>EPOCHS=50000</code>. Does accuracy keep improving? What happens to the generalization plot? This is overfitting in action.</div></div>
+<div class="step"><div><strong>Challenge 4: Learning rate extremes</strong><br />Try <code>LEARNING_RATE=0.5</code> and <code>LEARNING_RATE=0.000001</code>. What does the loss curve look like in each case?</div></div>
 </div>
-<figure class="code-card" data-runnable="true" data-chapter="6" data-filename="break_it_then_fix_it_numpy_network.py"><figcaption>break_it_then_fix_it_numpy_network.py</figcaption><pre><code class="language-python">import numpy as np
+<h4>Cell 1: Setup and Data Generation</h4>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Setup and data generation"><figcaption>Cell 1: Setup and data generation</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
-LEARNING_RATE = 5.0
-EPOCHS = 5
-HIDDEN_SIZES = [2]
-
+# -----------------------------------------
+# 1. Generate Dataset: Approximating sin(x)
+# -----------------------------------------
 np.random.seed(42)
+# Create 100 data points between 0 and 2 * pi
+x = np.linspace(0, 2 * np.pi, 1000).reshape(-1, 1)
+y = np.sin(x)  # True function values
+</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Line</th><th>Meaning</th></tr></thead><tbody><tr><td><code>np.linspace(0, 2*np.pi, 1000)</code></td><td>Creates 1000 evenly spaced x values from 0 to 2&pi;. This is the training range: the network only sees this interval.</td></tr><tr><td><code>.reshape(-1, 1)</code></td><td>Neural networks expect a 2D array where each row is one example. <code>-1</code> means Python figures out that dimension automatically, giving shape <code>(1000, 1)</code>.</td></tr><tr><td><code>y = np.sin(x)</code></td><td>The true labels. For each x value, the correct output is sin(x). The network learns this mapping from scratch.</td></tr></tbody></table></div>
+<h4>Cell 2: Network Architecture</h4>
+<p>The architecture is: <code>1 input -> 20 neurons -> 10 neurons -> 1 output</code>.</p>
+<p>Why these sizes? This is a 1D regression problem: one number in, one number out. The hidden layers need enough neurons to represent a curved wave. Too few neurons and the network cannot capture the shape of sin(x).</p>
+<p>Weight initialization matters enormously. We multiply by <code>0.1</code> to start with small weights rather than large random ones. Large initial weights can make gradients unstable in the first few training steps.</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Network architecture"><figcaption>Cell 2: Network architecture</figcaption><pre><code class="language-python"># -----------------------------------------
+# 2. Define the Neural Network Architecture
+# -----------------------------------------
+# Network dimensions: 1 input, hidden neurons in first layer, hidden neurons in second layer, 1 output
+input_dim = 1
+hidden_dim1 = 20 # First hidden layer size
+hidden_dim2 = 10 # Second hidden layer size
+output_dim = 1
 
-def make_moons(n=300, noise=0.15):
-    t1 = np.linspace(0, np.pi, n // 2)
-    t2 = np.linspace(0, np.pi, n // 2)
-    X1 = np.column_stack([np.cos(t1), np.sin(t1)])
-    X2 = np.column_stack([1 - np.cos(t2), 1 - np.sin(t2) - 0.5])
-    X = np.vstack([X1, X2]) + np.random.randn(n, 2) * noise
-    y = np.array([0] * (n // 2) + [1] * (n // 2))
-    return X, y
+# Initialize weights and biases (small random values and zeros)
+W1 = np.random.randn(input_dim, hidden_dim1) * 0.1
+b1 = np.zeros((1, hidden_dim1))
+W2 = np.random.randn(hidden_dim1, hidden_dim2) * 0.1 # Weights for second hidden layer
+b2 = np.zeros((1, hidden_dim2)) # Biases for second hidden layer
+W3 = np.random.randn(hidden_dim2, output_dim) * 0.1 # Weights for output layer
+b3 = np.zeros((1, output_dim)) # Biases for output layer
+</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Parameter</th><th>Shape</th><th>Meaning</th></tr></thead><tbody><tr><td><code>W1</code></td><td><code>(1, 20)</code></td><td>1 input connects to 20 hidden neurons</td></tr><tr><td><code>W2</code></td><td><code>(20, 10)</code></td><td>20 first-layer neurons connect to 10 second-layer neurons</td></tr><tr><td><code>W3</code></td><td><code>(10, 1)</code></td><td>10 second-layer neurons connect to 1 output</td></tr><tr><td><code>b1</code></td><td><code>(1, 20)</code></td><td>one bias per neuron in layer 1</td></tr><tr><td><strong>Total</strong></td><td><code>271</code></td><td><code>1x20 + 20 + 20x10 + 10 + 10x1 + 1</code> parameters</td></tr></tbody></table></div>
+<h4>Cell 3: Activation Functions</h4>
+<p>Why ReLU for hidden layers but linear for the output?</p>
+<p>ReLU gives the network the ability to learn non-linear shapes. Without it, the 20-neuron hidden layer collapses to the same as one neuron: just a weighted sum, which is a straight line. No straight line fits sin(x).</p>
+<p>Linear output is used because sin(x) can be any value between -1 and +1. Sigmoid would clamp outputs to 0-1. ReLU could not go negative. Linear output lets the network predict any real number.</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3: Activation functions"><figcaption>Cell 3: Activation functions</figcaption><pre><code class="language-python"># -----------------------------------------
+# 3. Define Activation Functions and Their Derivatives
+# -----------------------------------------
+def relu(x):
+    return np.maximum(0, x)
 
-def sigmoid(z):
-    return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
+def relu_derivative(x):
+    return (x &gt; 0).astype(float)
 
-def relu(z):
-    return np.maximum(0, z)
+def linear(x):
+    # Identity function for regression output
+    return x
 
-def init_weights(layer_sizes):
-    weights, biases = [], []
-    for i in range(len(layer_sizes) - 1):
-        scale = np.sqrt(2.0 / layer_sizes[i])
-        weights.append(np.random.randn(layer_sizes[i], layer_sizes[i + 1]) * scale)
-        biases.append(np.zeros(layer_sizes[i + 1]))
-    return weights, biases
+def linear_derivative(x):
+    # Derivative of a linear function is 1
+    return 1
+</code></pre></figure>
+<h4>Cell 4: Adam Optimizer and Training Loop</h4>
+<p>This is the most important cell. It performs the forward pass, computes loss, sends the gradient backward through every layer, and updates every weight with Adam.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Adam parameter</th><th>Meaning</th></tr></thead><tbody><tr><td><code>beta1 = 0.9</code></td><td>Momentum: keep 90% of the previous gradient direction and mix in 10% of the new gradient.</td></tr><tr><td><code>beta2 = 0.999</code></td><td>Tracks a moving average of squared gradients, which Adam uses to scale each parameter update.</td></tr><tr><td><code>epsilon = 1e-8</code></td><td>A tiny number that prevents division by zero.</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Forward-pass line</th><th>Meaning</th></tr></thead><tbody><tr><td><code>z1 = np.dot(x, W1) + b1</code></td><td>Weighted sum for layer 1.</td></tr><tr><td><code>a1 = relu(z1)</code></td><td>Apply non-linearity.</td></tr><tr><td><code>z2 = np.dot(a1, W2) + b2</code></td><td>Weighted sum for layer 2.</td></tr><tr><td><code>a2 = relu(z2)</code></td><td>Second hidden activation.</td></tr><tr><td><code>z3 = np.dot(a2, W3) + b3</code></td><td>Final weighted sum.</td></tr><tr><td><code>a3 = linear(z3)</code></td><td>Regression output with no activation.</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Backprop line</th><th>Meaning</th></tr></thead><tbody><tr><td><code>d_loss_a3 = 2*(a3-y)/len(x)</code></td><td>Gradient of MSE with respect to the prediction. It points uphill, so updates move the opposite way.</td></tr><tr><td><code>delta3 = d_loss_a3 * linear_derivative(a3)</code></td><td>Chain rule at the output layer. Since the derivative of a linear function is 1, this is included for clarity.</td></tr><tr><td><code>dW3 = np.dot(a2.T, delta3)</code></td><td>Gradient for the third-layer weights.</td></tr><tr><td><code>delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)</code></td><td>Error signal propagated backward through layer 3, then through layer 2 ReLU.</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Adam update line</th><th>Meaning</th></tr></thead><tbody><tr><td><code>m_W1 = beta1*m_W1 + (1-beta1)*dW1</code></td><td>Update the moving average of the gradient. This is Adam momentum.</td></tr><tr><td><code>v_W1 = beta2*v_W1 + (1-beta2)*(dW1**2)</code></td><td>Update the moving average of squared gradients. Large recent gradients slow future updates.</td></tr><tr><td><code>m_W1_hat = m_W1 / (1-beta1**epoch)</code><br /><code>v_W1_hat = v_W1 / (1-beta2**epoch)</code></td><td>Bias correction. Early moment estimates start near zero, so Adam corrects them.</td></tr><tr><td><code>W1 -= learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)</code></td><td>The actual adaptive update: learning rate scaled by momentum and squared-gradient history.</td></tr></tbody></table></div>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 4: Adam optimizer and training loop"><figcaption>Cell 4: Adam optimizer and training loop</figcaption><pre><code class="language-python"># -------------------------------
+# 4. Define the Loss Function (MSE)
+# -------------------------------
+def mse_loss(y_true, y_pred):
+    return np.mean((y_true - y_pred)**2)
 
-def forward(X, weights, biases):
-    a = X
-    activations = [a]
-    for i, (w, b) in enumerate(zip(weights, biases)):
-        z = a @ w + b
-        a = sigmoid(z) if i == len(weights) - 1 else relu(z)
-        activations.append(a)
-    return activations
+# -------------------------------
+# 5. Training the Neural Network with Adam Optimizer
+# -------------------------------
+# Adam optimizer parameters
+adam_learning_rate = 0.001 # Base learning rate for Adam
+beta1 = 0.9
+beta2 = 0.999
+epsilon = 1e-8
 
-def compute_loss(y_pred, y_true):
-    eps = 1e-8
-    return -np.mean(y_true * np.log(y_pred + eps) + (1 - y_true) * np.log(1 - y_pred + eps))
+# Initialize Adam&#x27;s first and second moment vectors for each parameter
+m_W1, v_W1 = np.zeros_like(W1), np.zeros_like(W1)
+m_b1, v_b1 = np.zeros_like(b1), np.zeros_like(b1)
+m_W2, v_W2 = np.zeros_like(W2), np.zeros_like(W2) # Moments for W2
+m_b2, v_b2 = np.zeros_like(b2), np.zeros_like(b2) # Moments for b2
+m_W3, v_W3 = np.zeros_like(W3), np.zeros_like(W3) # Moments for W3
+m_b3, v_b3 = np.zeros_like(b3), np.zeros_like(b3) # Moments for b3
 
-def backward(activations, weights, biases, y_true):
-    m = y_true.shape[0]
-    dW, db = [], []
-    delta = activations[-1] - y_true.reshape(-1, 1)
-    for i in reversed(range(len(weights))):
-        dW.insert(0, activations[i].T @ delta / m)
-        db.insert(0, delta.mean(axis=0))
-        if i &gt; 0:
-            delta = (delta @ weights[i].T) * (activations[i] &gt; 0)
-    return dW, db
+epochs = 5000       # Number of training epochs
+loss_history = []
 
-X, y = make_moons()
-split = int(0.8 * len(X))
-X_train, X_val = X[:split], X[split:]
-y_train, y_val = y[:split], y[split:]
+for epoch in range(1, epochs + 1): # Start epoch from 1 for Adam bias correction
+    # ---- Forward Pass ----
+    z1 = np.dot(x, W1) + b1        # Linear combination for first hidden layer
+    a1 = relu(z1)                 # Activation using relu
+    z2 = np.dot(a1, W2) + b2        # Linear combination for second hidden layer
+    a2 = relu(z2)                 # Activation using relu for second hidden layer
+    z3 = np.dot(a2, W3) + b3        # Linear combination for output layer
+    a3 = linear(z3)               # Output (prediction)
 
-layer_sizes = [2] + HIDDEN_SIZES + [1]
-weights, biases = init_weights(layer_sizes)
-train_losses, val_losses, val_accs = [], [], []
+    # ---- Compute Loss ----
+    loss = mse_loss(y, a3) # Use a3 for loss computation
+    loss_history.append(loss)
 
-for epoch in range(EPOCHS):
-    acts = forward(X_train, weights, biases)
-    loss = compute_loss(acts[-1].flatten(), y_train)
-    dW, db = backward(acts, weights, biases, y_train)
-    weights = [w - LEARNING_RATE * dw for w, dw in zip(weights, dW)]
-    biases = [b - LEARNING_RATE * db_ for b, db_ in zip(biases, db)]
+    # ---- Backward Pass ----
+    # Compute gradient of loss with respect to output predictions
+    d_loss_a3 = 2 * (a3 - y) / len(x)
 
-    val_acts = forward(X_val, weights, biases)
-    val_loss = compute_loss(val_acts[-1].flatten(), y_val)
-    val_acc = ((val_acts[-1].flatten() &gt;= 0.5) == y_val).mean()
-    train_losses.append(loss)
-    val_losses.append(val_loss)
-    val_accs.append(val_acc)
+    # For the output layer:
+    delta3 = d_loss_a3 * linear_derivative(a3)
+    dW3 = np.dot(a2.T, delta3)
+    db3 = np.sum(delta3, axis=0, keepdims=True)
 
-fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-fig.patch.set_facecolor(&quot;#0d1117&quot;)
+    # Backpropagate to second hidden layer
+    delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+    dW2 = np.dot(a1.T, delta2)
+    db2 = np.sum(delta2, axis=0, keepdims=True)
 
-ax = axes[0]
-ax.plot(train_losses, color=&quot;#6366f1&quot;, label=&quot;Train loss&quot;, linewidth=2)
-ax.plot(val_losses, color=&quot;#f97316&quot;, label=&quot;Val loss&quot;, linewidth=2, linestyle=&quot;--&quot;)
-ax.set_title(&quot;Loss Curves&quot;, color=&quot;#e6edf3&quot;)
-ax.set_xlabel(&quot;Epoch&quot;, color=&quot;#8b949e&quot;)
-ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;)
-ax.set_facecolor(&quot;#0d1117&quot;)
-ax.tick_params(colors=&quot;#8b949e&quot;)
-for spine in ax.spines.values():
-    spine.set_color(&quot;#30363d&quot;)
+    # Backpropagate to first hidden layer
+    delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+    dW1 = np.dot(x.T, delta1)
+    db1 = np.sum(delta1, axis=0, keepdims=True)
 
-ax = axes[1]
-ax.plot(val_accs, color=&quot;#10b981&quot;, linewidth=2)
-ax.axhline(0.5, color=&quot;#30363d&quot;, linestyle=&quot;--&quot;, label=&quot;Chance&quot;)
-ax.set_ylim(0, 1)
-ax.set_title(f&quot;Val Accuracy (final: {val_accs[-1]*100:.1f}%)&quot;, color=&quot;#e6edf3&quot;)
-ax.set_xlabel(&quot;Epoch&quot;, color=&quot;#8b949e&quot;)
-ax.set_facecolor(&quot;#0d1117&quot;)
-ax.tick_params(colors=&quot;#8b949e&quot;)
-for spine in ax.spines.values():
-    spine.set_color(&quot;#30363d&quot;)
+    # ---- Update parameters using Adam ----
+    # Update W1
+    m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
+    v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)
+    m_W1_hat = m_W1 / (1 - beta1 ** epoch)
+    v_W1_hat = v_W1 / (1 - beta2 ** epoch)
+    W1 -= adam_learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)
 
-ax = axes[2]
-xx, yy = np.meshgrid(np.linspace(-2, 3, 200), np.linspace(-1.5, 2.5, 200))
-grid = np.c_[xx.ravel(), yy.ravel()]
-Z = forward(grid, weights, biases)[-1].reshape(xx.shape)
-ax.contourf(xx, yy, Z, levels=[0, 0.5, 1], colors=[&quot;#3b82f6&quot;, &quot;#ef4444&quot;], alpha=0.3)
-ax.contour(xx, yy, Z, levels=[0.5], colors=[&quot;white&quot;], linewidths=2)
-ax.scatter(X[y == 0, 0], X[y == 0, 1], c=&quot;#3b82f6&quot;, s=20, edgecolors=&quot;none&quot;, alpha=0.7)
-ax.scatter(X[y == 1, 0], X[y == 1, 1], c=&quot;#ef4444&quot;, s=20, edgecolors=&quot;none&quot;, alpha=0.7)
-ax.set_title(&quot;Decision Boundary&quot;, color=&quot;#e6edf3&quot;)
-ax.set_facecolor(&quot;#0d1117&quot;)
-ax.tick_params(colors=&quot;#8b949e&quot;)
-for spine in ax.spines.values():
-    spine.set_color(&quot;#30363d&quot;)
+    # Update b1
+    m_b1 = beta1 * m_b1 + (1 - beta1) * db1
+    v_b1 = beta2 * v_b1 + (1 - beta2) * (db1 ** 2)
+    m_b1_hat = m_b1 / (1 - beta1 ** epoch)
+    v_b1_hat = v_b1 / (1 - beta2 ** epoch)
+    b1 -= adam_learning_rate * m_b1_hat / (np.sqrt(v_b1_hat) + epsilon)
 
-total_params = sum(w.size + b.size for w, b in zip(weights, biases))
-fig.suptitle(f&quot;LR={LEARNING_RATE} Epochs={EPOCHS} Architecture={layer_sizes} Params={total_params}&quot;,
-             color=&quot;#8b949e&quot;, fontsize=10)
+    # Update W2
+    m_W2 = beta1 * m_W2 + (1 - beta1) * dW2
+    v_W2 = beta2 * v_W2 + (1 - beta2) * (dW2 ** 2)
+    m_W2_hat = m_W2 / (1 - beta1 ** epoch)
+    v_W2_hat = v_W2 / (1 - beta2 ** epoch)
+    W2 -= adam_learning_rate * m_W2_hat / (np.sqrt(v_W2_hat) + epsilon)
+
+    # Update b2
+    m_b2 = beta1 * m_b2 + (1 - beta1) * db2
+    v_b2 = beta2 * v_b2 + (1 - beta2) * (db2 ** 2)
+    m_b2_hat = m_b2 / (1 - beta1 ** epoch)
+    v_b2_hat = v_b2 / (1 - beta2 ** epoch)
+    b2 -= adam_learning_rate * m_b2_hat / (np.sqrt(v_b2_hat) + epsilon)
+
+    # Update W3
+    m_W3 = beta1 * m_W3 + (1 - beta1) * dW3
+    v_W3 = beta2 * v_W3 + (1 - beta2) * (dW3 ** 2)
+    m_W3_hat = m_W3 / (1 - beta1 ** epoch)
+    v_W3_hat = v_W3 / (1 - beta2 ** epoch)
+    W3 -= adam_learning_rate * m_W3_hat / (np.sqrt(v_W3_hat) + epsilon)
+
+    # Update b3
+    m_b3 = beta1 * m_b3 + (1 - beta1) * db3
+    v_b3 = beta2 * v_b3 + (1 - beta2) * (db3 ** 2)
+    m_b3_hat = m_b3 / (1 - beta1 ** epoch)
+    v_b3_hat = v_b3 / (1 - beta2 ** epoch)
+    b3 -= adam_learning_rate * m_b3_hat / (np.sqrt(v_b3_hat) + epsilon)
+
+    # Optionally print the loss every 500 epochs
+    if epoch % 500 == 0:
+        print(f&quot;Epoch {epoch}/{epochs}, Loss: {loss:.5f}&quot;)
+
+# -------------------------------
+# 6. Visualizing Training Loss and Predictions
+# -------------------------------
+# Plot the loss curve
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(loss_history)
+plt.title(&quot;Training Loss (MSE) with Adam (2 Hidden Layers, ReLU)&quot;)
+plt.xlabel(&quot;Epoch&quot;)
+plt.ylabel(&quot;Loss&quot;)
+
+# Plot the actual sine function vs. the network&#x27;s predictions
+plt.subplot(1, 2, 2)
+plt.scatter(x, y, label=&quot;Actual sin(x)&quot;, color=&#x27;blue&#x27;)
+plt.scatter(x, a3, label=&quot;Predicted&quot;, color=&#x27;red&#x27;, marker=&#x27;x&#x27;) # Use a3 for predictions
+plt.title(&quot;Neural Network Regression with Adam (2 Hidden Layers, ReLU)&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.tight_layout()
+plt.show()
+</code></pre></figure>
+<h4>Cell 5: Generalization Test from 0 to 4&pi;</h4>
+<p>The network was trained on x from 0 to 2&pi;. Now we ask it to predict sin(x) for x from 0 to 4&pi;: values it has never seen.</p>
+<p>This is the most important test in the chapter. Good generalization means the prediction follows sin(x) for the full 4&pi; range. Bad generalization means it matches well from 0 to 2&pi; then diverges beyond 2&pi;.</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5a: Wider range evaluation"><figcaption>Cell 5a: Wider range evaluation</figcaption><pre><code class="language-python"># -----------------------------------------------------
+# 7. Evaluate and Visualize Predictions on a Wider Range
+# -----------------------------------------------------
+
+# Create a new, wider range for evaluation
+x_plot = np.linspace(0, 4 * np.pi, 1000).reshape(-1, 1)
+
+# True sine values for the wider range
+y_true_plot = np.sin(x_plot)
+
+# Perform forward pass with the trained weights on the new range
+z1_plot = np.dot(x_plot, W1) + b1
+a1_plot = relu(z1_plot)
+z2_plot = np.dot(a1_plot, W2) + b2
+a2_plot = relu(z2_plot)
+z3_plot = np.dot(a2_plot, W3) + b3
+y_pred_plot = linear(z3_plot)
+
+print(&quot;Generated predictions for the wider range [0, 4 * pi].&quot;)</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5b: Wider range plot"><figcaption>Cell 5b: Wider range plot</figcaption><pre><code class="language-python"># Plot the actual sine function vs. the network&#x27;s predictions for the wider range
+plt.figure(figsize=(10, 6))
+plt.scatter(x_plot, y_true_plot, label=&quot;Actual sin(x) (Wider Range)&quot;, color=&#x27;blue&#x27;, alpha=0.7, s=5)
+plt.scatter(x_plot, y_pred_plot, label=&quot;Predicted (Wider Range)&quot;, color=&#x27;red&#x27;, marker=&#x27;.&#x27;, alpha=0.7, s=5)
+plt.title(&quot;Neural Network Regression on Wider Range [0, 4ʹ]&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.grid(True)
 plt.tight_layout()
 plt.show()</code></pre></figure>
-<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Your target</div><p>Find the smallest network, measured by total parameters, that reaches 90%+ validation accuracy.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Challenge</div><p>Can you make it generalize even further? Try training on 0 to 2&pi; and testing on 0 to 6&pi;. What is the smallest network that still generalizes correctly? Does adding more epochs help or hurt beyond the training range?</p></div></div>
+<h4>Cell 6: Learning Rate Comparison</h4>
+<p>The three learning rates, <code>0.0001</code>, <code>0.001</code>, and <code>0.01</code>, are all reasonable values. But they produce very different behavior.</p>
+<p>Before running, predict what will happen: Is <code>0.0001</code> fast or slow? Is <code>0.01</code> stable or unstable? Which reaches the lowest loss after 5000 epochs?</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 6a: Learning-rate training helper"><figcaption>Cell 6a: Learning-rate training helper</figcaption><pre><code class="language-python">def train_with_learning_rate(learning_rate, epochs, x, y, input_dim, hidden_dim1, hidden_dim2, output_dim):
+    # Re-initialize weights and biases for each run
+    W1 = np.random.randn(input_dim, hidden_dim1) * 0.1
+    b1 = np.zeros((1, hidden_dim1))
+    W2 = np.random.randn(hidden_dim1, hidden_dim2) * 0.1
+    b2 = np.zeros((1, hidden_dim2))
+    W3 = np.random.randn(hidden_dim2, output_dim) * 0.1
+    b3 = np.zeros((1, output_dim))
+
+    # Adam optimizer parameters (re-initialize moments)
+    beta1 = 0.9
+    beta2 = 0.999
+    epsilon = 1e-8
+
+    m_W1, v_W1 = np.zeros_like(W1), np.zeros_like(W1)
+    m_b1, v_b1 = np.zeros_like(b1), np.zeros_like(b1)
+    m_W2, v_W2 = np.zeros_like(W2), np.zeros_like(W2)
+    m_b2, v_b2 = np.zeros_like(b2), np.zeros_like(b2)
+    m_W3, v_W3 = np.zeros_like(W3), np.zeros_like(W3)
+    m_b3, v_b3 = np.zeros_like(b3), np.zeros_like(b3)
+
+    loss_history_lr = []
+
+    for epoch in range(1, epochs + 1):
+        # Forward Pass
+        z1 = np.dot(x, W1) + b1
+        a1 = relu(z1)
+        z2 = np.dot(a1, W2) + b2
+        a2 = relu(z2)
+        z3 = np.dot(a2, W3) + b3
+        a3 = linear(z3)
+
+        # Compute Loss
+        loss = mse_loss(y, a3)
+        loss_history_lr.append(loss)
+
+        # Backward Pass
+        d_loss_a3 = 2 * (a3 - y) / len(x)
+        delta3 = d_loss_a3 * linear_derivative(a3)
+        dW3 = np.dot(a2.T, delta3)
+        db3 = np.sum(delta3, axis=0, keepdims=True)
+
+        delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+        dW2 = np.dot(a1.T, delta2)
+        db2 = np.sum(delta2, axis=0, keepdims=True)
+
+        delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+        dW1 = np.dot(x.T, delta1)
+        db1 = np.sum(delta1, axis=0, keepdims=True)
+
+        # Update parameters using Adam
+        # Update W1
+        m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
+        v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)
+        m_W1_hat = m_W1 / (1 - beta1 ** epoch)
+        v_W1_hat = v_W1 / (1 - beta2 ** epoch)
+        W1 -= learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)
+
+        # Update b1
+        m_b1 = beta1 * m_b1 + (1 - beta1) * db1
+        v_b1 = beta2 * v_b1 + (1 - beta2) * (db1 ** 2)
+        m_b1_hat = m_b1 / (1 - beta1 ** epoch)
+        v_b1_hat = v_b1 / (1 - beta2 ** epoch)
+        b1 -= learning_rate * m_b1_hat / (np.sqrt(v_b1_hat) + epsilon)
+
+        # Update W2
+        m_W2 = beta1 * m_W2 + (1 - beta1) * dW2
+        v_W2 = beta2 * v_W2 + (1 - beta2) * (dW2 ** 2)
+        m_W2_hat = m_W2 / (1 - beta1 ** epoch)
+        v_W2_hat = v_W2 / (1 - beta2 ** epoch)
+        W2 -= learning_rate * m_W2_hat / (np.sqrt(v_W2_hat) + epsilon)
+
+        # Update b2
+        m_b2 = beta1 * m_b2 + (1 - beta1) * db2
+        v_b2 = beta2 * v_b2 + (1 - beta2) * (db2 ** 2)
+        m_b2_hat = m_b2 / (1 - beta1 ** epoch)
+        v_b2_hat = v_b2 / (1 - beta2 ** epoch)
+        b2 -= learning_rate * m_b2_hat / (np.sqrt(v_b2_hat) + epsilon)
+
+        # Update W3
+        m_W3 = beta1 * m_W3 + (1 - beta1) * dW3
+        v_W3 = beta2 * v_W3 + (1 - beta2) * (dW3 ** 2)
+        m_W3_hat = m_W3 / (1 - beta1 ** epoch)
+        v_W3_hat = v_W3 / (1 - beta2 ** epoch)
+        W3 -= learning_rate * m_W3_hat / (np.sqrt(v_W3_hat) + epsilon)
+
+        # Update b3
+        m_b3 = beta1 * m_b3 + (1 - beta1) * db3
+        v_b3 = beta2 * v_b3 + (1 - beta2) * (db3 ** 2)
+        m_b3_hat = m_b3 / (1 - beta1 ** epoch)
+        v_b3_hat = v_b3 / (1 - beta2 ** epoch)
+        b3 -= learning_rate * m_b3_hat / (np.sqrt(v_b3_hat) + epsilon)
+
+    return loss_history_lr, W1, b1, W2, b2, W3, b3</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 6b: Compare learning rates"><figcaption>Cell 6b: Compare learning rates</figcaption><pre><code class="language-python"># Define the learning rates to test
+learning_rates_to_test = [0.0001, 0.001, 0.01]
+epochs_for_test = 5000 # Increased epochs for longer training
+
+plt.figure(figsize=(10, 6))
+
+for lr in learning_rates_to_test:
+    print(f&quot;Training with learning rate: {lr}&quot;)
+    loss_history_current_lr, W1_final, b1_final, W2_final, b2_final, W3_final, b3_final = train_with_learning_rate(lr, epochs_for_test, x, y, input_dim, hidden_dim1, hidden_dim2, output_dim)
+    plt.plot(loss_history_current_lr, label=f&#x27;LR = {lr}&#x27;)
+
+plt.title(&quot;Training Loss Curves for Different Learning Rates (Adam Optimizer)&quot;)
+plt.xlabel(&quot;Epoch&quot;)
+plt.ylabel(&quot;Loss&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+# Plot the predicted sine function for each learning rate
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, label=&quot;Actual sin(x)&quot;, color=&#x27;blue&#x27;, alpha=0.7, s=5)
+
+for lr in learning_rates_to_test:
+    # Retrain to get the final weights for this LR (or store them from the previous loop)
+    _, W1_final, b1_final, W2_final, b2_final, W3_final, b3_final = train_with_learning_rate(lr, epochs_for_test, x, y, input_dim, hidden_dim1, hidden_dim2, output_dim)
+
+    # Perform forward pass with the trained weights
+    z1_pred = np.dot(x, W1_final) + b1_final
+    a1_pred = relu(z1_pred)
+    z2_pred = np.dot(a1_pred, W2_final) + b2_final
+    a2_pred = relu(z2_pred)
+    z3_pred = np.dot(a2_pred, W3_final) + b3_final
+    y_pred_lr = linear(z3_pred)
+
+    plt.plot(x, y_pred_lr, label=f&#x27;Predicted (LR = {lr})&#x27;, linestyle=&#x27;--&#x27;)
+
+plt.title(&quot;Predicted Sine Function for Different Learning Rates&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">OBS</div><div><div class="callout-title">What you should observe</div><p><code>0.0001</code> converges very slowly. <code>0.001</code>, Adam's default, converges cleanly and usually follows sin(x) closely. <code>0.01</code> often improves quickly at first but can be noisier or overshoot the minimum.</p></div></div>
+<h4>Cell 7: Your Turn</h4>
+<p>This final cell lets you modify architecture, learning rate, epochs, training range, and test range in one place. It trains a fresh network and shows both the loss curve and the generalization plot.</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 7: Student experiment cell"><figcaption>Cell 7: Student experiment cell</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# -- YOUR TURN - CHANGE THESE AND RE-RUN ----------------------------
+HIDDEN_DIM1   = 20      # try: 2, 5, 20, 100
+HIDDEN_DIM2   = 10      # try: 2, 5, 10, 50
+LEARNING_RATE = 0.001   # try: 0.0001, 0.001, 0.01, 0.1
+EPOCHS        = 3000    # try: 100, 500, 3000, 10000
+TRAIN_RANGE   = 2       # multiples of pi - try: 1, 2, 4
+TEST_RANGE    = 4       # multiples of pi - try: 4, 6, 8
+# -------------------------------------------------------------------
+
+np.random.seed(42)
+x = np.linspace(0, TRAIN_RANGE * np.pi, 1000).reshape(-1, 1)
+y = np.sin(x)
+
+input_dim = 1
+output_dim = 1
+
+W1 = np.random.randn(input_dim, HIDDEN_DIM1) * 0.1
+b1 = np.zeros((1, HIDDEN_DIM1))
+W2 = np.random.randn(HIDDEN_DIM1, HIDDEN_DIM2) * 0.1
+b2 = np.zeros((1, HIDDEN_DIM2))
+W3 = np.random.randn(HIDDEN_DIM2, output_dim) * 0.1
+b3 = np.zeros((1, output_dim))
+
+def relu(x):
+    return np.maximum(0, x)
+
+def relu_derivative(x):
+    return (x &gt; 0).astype(float)
+
+def linear(x):
+    return x
+
+def linear_derivative(x):
+    return 1
+
+def mse_loss(y_true, y_pred):
+    return np.mean((y_true - y_pred)**2)
+
+beta1 = 0.9
+beta2 = 0.999
+epsilon = 1e-8
+
+m_W1, v_W1 = np.zeros_like(W1), np.zeros_like(W1)
+m_b1, v_b1 = np.zeros_like(b1), np.zeros_like(b1)
+m_W2, v_W2 = np.zeros_like(W2), np.zeros_like(W2)
+m_b2, v_b2 = np.zeros_like(b2), np.zeros_like(b2)
+m_W3, v_W3 = np.zeros_like(W3), np.zeros_like(W3)
+m_b3, v_b3 = np.zeros_like(b3), np.zeros_like(b3)
+
+loss_history = []
+
+for epoch in range(1, EPOCHS + 1):
+    z1 = np.dot(x, W1) + b1
+    a1 = relu(z1)
+    z2 = np.dot(a1, W2) + b2
+    a2 = relu(z2)
+    z3 = np.dot(a2, W3) + b3
+    a3 = linear(z3)
+
+    loss = mse_loss(y, a3)
+    loss_history.append(loss)
+
+    d_loss_a3 = 2 * (a3 - y) / len(x)
+    delta3 = d_loss_a3 * linear_derivative(a3)
+    dW3 = np.dot(a2.T, delta3)
+    db3 = np.sum(delta3, axis=0, keepdims=True)
+
+    delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+    dW2 = np.dot(a1.T, delta2)
+    db2 = np.sum(delta2, axis=0, keepdims=True)
+
+    delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+    dW1 = np.dot(x.T, delta1)
+    db1 = np.sum(delta1, axis=0, keepdims=True)
+
+    m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
+    v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)
+    W1 -= LEARNING_RATE * (m_W1 / (1 - beta1 ** epoch)) / (np.sqrt(v_W1 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_b1 = beta1 * m_b1 + (1 - beta1) * db1
+    v_b1 = beta2 * v_b1 + (1 - beta2) * (db1 ** 2)
+    b1 -= LEARNING_RATE * (m_b1 / (1 - beta1 ** epoch)) / (np.sqrt(v_b1 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_W2 = beta1 * m_W2 + (1 - beta1) * dW2
+    v_W2 = beta2 * v_W2 + (1 - beta2) * (dW2 ** 2)
+    W2 -= LEARNING_RATE * (m_W2 / (1 - beta1 ** epoch)) / (np.sqrt(v_W2 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_b2 = beta1 * m_b2 + (1 - beta1) * db2
+    v_b2 = beta2 * v_b2 + (1 - beta2) * (db2 ** 2)
+    b2 -= LEARNING_RATE * (m_b2 / (1 - beta1 ** epoch)) / (np.sqrt(v_b2 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_W3 = beta1 * m_W3 + (1 - beta1) * dW3
+    v_W3 = beta2 * v_W3 + (1 - beta2) * (dW3 ** 2)
+    W3 -= LEARNING_RATE * (m_W3 / (1 - beta1 ** epoch)) / (np.sqrt(v_W3 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_b3 = beta1 * m_b3 + (1 - beta1) * db3
+    v_b3 = beta2 * v_b3 + (1 - beta2) * (db3 ** 2)
+    b3 -= LEARNING_RATE * (m_b3 / (1 - beta1 ** epoch)) / (np.sqrt(v_b3 / (1 - beta2 ** epoch)) + epsilon)
+
+x_test = np.linspace(0, TEST_RANGE * np.pi, 1000).reshape(-1, 1)
+y_test = np.sin(x_test)
+
+z1_test = np.dot(x_test, W1) + b1
+a1_test = relu(z1_test)
+z2_test = np.dot(a1_test, W2) + b2
+a2_test = relu(z2_test)
+z3_test = np.dot(a2_test, W3) + b3
+y_pred_test = linear(z3_test)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 4))
+ax1.plot(loss_history)
+ax1.set_title(&quot;Training Loss&quot;)
+ax1.set_xlabel(&quot;Epoch&quot;)
+ax1.set_ylabel(&quot;MSE&quot;)
+
+ax2.plot(x_test, y_test, label=&quot;Actual sin(x)&quot;)
+ax2.plot(x_test, y_pred_test, label=&quot;Network prediction&quot;, linestyle=&quot;--&quot;)
+ax2.axvline(TRAIN_RANGE * np.pi, color=&quot;gray&quot;, linestyle=&quot;:&quot;, label=&quot;End of training range&quot;)
+ax2.set_title(f&quot;Train: 0 to {TRAIN_RANGE}pi | Test: 0 to {TEST_RANGE}pi&quot;)
+ax2.set_xlabel(&quot;x&quot;)
+ax2.set_ylabel(&quot;sin(x)&quot;)
+ax2.legend()
+plt.tight_layout()
+plt.show()
+
+print(f&quot;Final training loss: {loss_history[-1]:.6f}&quot;)
+print(f&quot;Total parameters: {input_dim*HIDDEN_DIM1 + HIDDEN_DIM1 + HIDDEN_DIM1*HIDDEN_DIM2 + HIDDEN_DIM2 + HIDDEN_DIM2*output_dim + output_dim}&quot;)
+</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-break-fix">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2701,7 +3077,7 @@ plt.show()</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-activations">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.7 Break It Then Fix It</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.7 Teach sin(x)</span></a>
 <a class="lesson-nav-btn next" href="?lesson=ch6-overfitting" data-lesson-link="ch6-overfitting"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.9 Overfitting &rarr;</span></a>
 </nav>
 </article>
@@ -2756,98 +3132,145 @@ plt.show()</code></pre></figure>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-overfitting">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=ch6-activations" data-lesson-link="ch6-activations"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.8 Activation Functions</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-keras" data-lesson-link="ch6-keras"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.10 First Keras Network &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-keras" data-lesson-link="ch6-keras"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.10 From NumPy to Keras &rarr;</span></a>
 </nav>
 </article>
 
 <article class="lesson-content exercise-lesson" data-lesson="ch6-keras" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.10 Build Your First Network in Keras</div>
-<h1>6.10 Build Your First Network in Keras</h1>
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.10 From NumPy to Keras</div>
+<h1>6.10 From NumPy to Keras</h1>
 <div class="lesson-meta"><span>Colab</span><span>25 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.10 Build Your First Network in Keras</h3>
-<p>TensorFlow cannot run in Pyodide, so this section opens a prefilled Colab notebook. It repeats the two-moons experiment using the Keras API.</p>
-<a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Compile option</th><th>Meaning</th></tr></thead><tbody><tr><td><code>Adam</code></td><td>Adaptive optimizer that adjusts learning rates per parameter.</td></tr><tr><td><code>binary_crossentropy</code></td><td>Loss for two-class classification.</td></tr><tr><td><code>accuracy</code></td><td>Metric printed while training so you can watch learning improve.</td></tr></tbody></table></div>
-<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Generate two-moons data"><figcaption>Cell 1: Generate two-moons data</figcaption><pre><code class="language-python">from sklearn.datasets import make_moons
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-import numpy as np
+<h3>6.10 From NumPy to Keras</h3>
+<p>The math is identical to the sin(x) experiment. Only the syntax changes.</p>
+<div class="language-compare">
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="NumPy forward pass and Adam update"><figcaption>sin.ipynb NumPy version</figcaption><pre><code class="language-python"># Forward pass
+z1 = np.dot(x, W1) + b1
+a1 = relu(z1)
+z2 = np.dot(a1, W2) + b2
+a2 = relu(z2)
+z3 = np.dot(a2, W3) + b3
+a3 = linear(z3)
 
-X, y = make_moons(n_samples=1000, noise=0.2, random_state=42)
-X = StandardScaler().fit_transform(X)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
-print(f&quot;Train: {X_train.shape}  Val: {X_val.shape}&quot;)</code></pre></figure>
-<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Build the intentionally bad baseline"><figcaption>Cell 2: Build the intentionally bad baseline</figcaption><pre><code class="language-python">import tensorflow as tf
+# Manual weight update (Adam)
+m_W1 = beta1*m_W1 + (1-beta1)*dW1
+...
+</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Keras equivalent"><figcaption>Keras equivalent</figcaption><pre><code class="language-python"># Define the network
+model = keras.Sequential([
+    keras.layers.Dense(20, activation=&#x27;relu&#x27;, input_shape=(1,)),
+    keras.layers.Dense(10, activation=&#x27;relu&#x27;),
+    keras.layers.Dense(1)    # linear = no activation
+])
+
+# Compile (Adam is built in)
+model.compile(optimizer=keras.optimizers.Adam(0.001),
+              loss=&#x27;mse&#x27;)
+
+# Train (forward + backward + update all automatic)
+model.fit(x, y, epochs=3000, verbose=0)
+</code></pre></figure>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">API</div><div><div class="callout-title">What Keras hides</div><p>Keras does everything in <code>sin.ipynb</code>'s training loop automatically. The architecture is the same. The Adam optimizer is the same. The MSE loss is the same. Keras hides the implementation so you can focus on the design rather than the math.</p><p>Now that you have implemented Adam by hand and watched the gradient flow backward through the layers, you know what Keras is doing under the hood. That understanding separates someone who uses Keras from someone who understands it.</p></div></div>
+<a class="colab-btn" href="https://colab.research.google.com/github/neel429/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Keras piece</th><th>Manual NumPy equivalent</th></tr></thead><tbody><tr><td><code>Dense(20, activation="relu")</code></td><td><code>W1</code>, <code>b1</code>, <code>np.dot</code>, and <code>relu</code></td></tr><tr><td><code>loss="mse"</code></td><td><code>mse_loss(y, a3)</code></td></tr><tr><td><code>Adam(0.001)</code></td><td>The full Adam moment, bias-correction, and update block from lesson 6.7</td></tr><tr><td><code>model.fit(...)</code></td><td>Forward pass, loss, backpropagation, update, repeat</td></tr></tbody></table></div>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 1: Generate sin(x) data"><figcaption>Cell 1: Generate sin(x) data</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+np.random.seed(42)
+x = np.linspace(0, 2 * np.pi, 1000).reshape(-1, 1)
+y = np.sin(x)
+
+X_train, X_val, y_train, y_val = train_test_split(
+    x, y, test_size=0.2, random_state=42
+)
+
+print(f&quot;Train: {X_train.shape}  Val: {X_val.shape}&quot;)
+</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 2: Build the Keras sine network"><figcaption>Cell 2: Build the Keras sine network</figcaption><pre><code class="language-python">import tensorflow as tf
 from tensorflow import keras
 
-LEARNING_RATE = 5.0
-EPOCHS = 5
-HIDDEN_UNITS = 2
-NUM_LAYERS = 1
+LEARNING_RATE = 0.001
+EPOCHS = 3000
+HIDDEN_DIM1 = 20
+HIDDEN_DIM2 = 10
 
-model = keras.Sequential()
-model.add(keras.layers.Input(shape=(2,)))
-for _ in range(NUM_LAYERS):
-    model.add(keras.layers.Dense(HIDDEN_UNITS, activation=&quot;relu&quot;))
-model.add(keras.layers.Dense(1, activation=&quot;sigmoid&quot;))
+model = keras.Sequential([
+    keras.layers.Input(shape=(1,)),
+    keras.layers.Dense(HIDDEN_DIM1, activation=&quot;relu&quot;),
+    keras.layers.Dense(HIDDEN_DIM2, activation=&quot;relu&quot;),
+    keras.layers.Dense(1),
+])
 
 model.compile(
     optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
-    loss=&quot;binary_crossentropy&quot;,
-    metrics=[&quot;accuracy&quot;],
+    loss=&quot;mse&quot;,
+    metrics=[&quot;mae&quot;],
 )
 
-model.summary()</code></pre></figure>
-<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3: Train and plot curves"><figcaption>Cell 3: Train and plot curves</figcaption><pre><code class="language-python">history = model.fit(
+model.summary()
+</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 3: Train and plot generalization"><figcaption>Cell 3: Train and plot generalization</figcaption><pre><code class="language-python">history = model.fit(
     X_train, y_train,
     validation_data=(X_val, y_val),
     epochs=EPOCHS,
     batch_size=32,
-    verbose=1,
+    verbose=0,
 )
 
-import matplotlib.pyplot as plt
+x_plot = np.linspace(0, 4 * np.pi, 1000).reshape(-1, 1)
+y_true_plot = np.sin(x_plot)
+y_pred_plot = model.predict(x_plot, verbose=0)
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 4))
+
 ax1.plot(history.history[&quot;loss&quot;], label=&quot;Train loss&quot;)
 ax1.plot(history.history[&quot;val_loss&quot;], label=&quot;Val loss&quot;, linestyle=&quot;--&quot;)
-ax1.set_title(&quot;Loss&quot;)
+ax1.set_title(&quot;MSE Loss&quot;)
+ax1.set_xlabel(&quot;Epoch&quot;)
 ax1.legend()
 
-ax2.plot(history.history[&quot;accuracy&quot;], label=&quot;Train acc&quot;)
-ax2.plot(history.history[&quot;val_accuracy&quot;], label=&quot;Val acc&quot;, linestyle=&quot;--&quot;)
-ax2.set_title(&quot;Accuracy&quot;)
-ax2.set_ylim(0, 1)
+ax2.plot(x_plot, y_true_plot, label=&quot;Actual sin(x)&quot;)
+ax2.plot(x_plot, y_pred_plot, label=&quot;Keras prediction&quot;, linestyle=&quot;--&quot;)
+ax2.axvline(2 * np.pi, color=&quot;gray&quot;, linestyle=&quot;:&quot;, label=&quot;End of training range&quot;)
+ax2.set_title(&quot;Generalization: 0 to 4pi&quot;)
+ax2.set_xlabel(&quot;x&quot;)
+ax2.set_ylabel(&quot;sin(x)&quot;)
 ax2.legend()
-plt.suptitle(f&quot;LR={LEARNING_RATE} | Epochs={EPOCHS} | {NUM_LAYERS}x{HIDDEN_UNITS} hidden units&quot;)
+
+plt.tight_layout()
 plt.show()
 
-print(f&quot;Final val accuracy: {history.history[&#x27;val_accuracy&#x27;][-1]*100:.1f}%&quot;)</code></pre></figure>
-<div class="callout exercise-note" role="note"><div class="callout-icon">4</div><div><div class="callout-title">Cell 4: Fix it progressively</div><p>Change the configuration block and rerun Cells 2 and 3: first learning rate, then epochs, then architecture.</p></div></div>
+print(f&quot;Final val loss: {history.history[&#x27;val_loss&#x27;][-1]:.6f}&quot;)
+print(f&quot;Final val MAE:  {history.history[&#x27;val_mae&#x27;][-1]:.6f}&quot;)
+</code></pre></figure>
+<div class="callout exercise-note" role="note"><div class="callout-icon">4</div><div><div class="callout-title">Cell 4: Fix it progressively</div><p>Change the configuration in Cell 2 and rerun Cells 2 and 3. Try fewer neurons, more neurons, shorter training, longer training, and different learning rates. Compare the Keras behavior to the pure NumPy version.</p></div></div>
 <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Cell 5: Add dropout and early stopping"><figcaption>Cell 5: Add dropout and early stopping</figcaption><pre><code class="language-python">LEARNING_RATE = 0.001
-EPOCHS = 200
-HIDDEN_UNITS = 64
-NUM_LAYERS = 2
-DROPOUT_RATE = 0.3
+EPOCHS = 5000
+HIDDEN_DIM1 = 64
+HIDDEN_DIM2 = 32
+DROPOUT_RATE = 0.1
 
-model2 = keras.Sequential()
-model2.add(keras.layers.Input(shape=(2,)))
-for _ in range(NUM_LAYERS):
-    model2.add(keras.layers.Dense(HIDDEN_UNITS, activation=&quot;relu&quot;))
-    model2.add(keras.layers.Dropout(DROPOUT_RATE))
-model2.add(keras.layers.Dense(1, activation=&quot;sigmoid&quot;))
+model2 = keras.Sequential([
+    keras.layers.Input(shape=(1,)),
+    keras.layers.Dense(HIDDEN_DIM1, activation=&quot;relu&quot;),
+    keras.layers.Dropout(DROPOUT_RATE),
+    keras.layers.Dense(HIDDEN_DIM2, activation=&quot;relu&quot;),
+    keras.layers.Dropout(DROPOUT_RATE),
+    keras.layers.Dense(1),
+])
 
 model2.compile(
     optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
-    loss=&quot;binary_crossentropy&quot;,
-    metrics=[&quot;accuracy&quot;],
+    loss=&quot;mse&quot;,
+    metrics=[&quot;mae&quot;],
 )
 
 early_stop = keras.callbacks.EarlyStopping(
     monitor=&quot;val_loss&quot;,
-    patience=15,
+    patience=150,
     restore_best_weights=True,
 )
 
@@ -2862,7 +3285,23 @@ history2 = model2.fit(
 
 stopped_at = len(history2.history[&quot;loss&quot;])
 print(f&quot;Stopped at epoch {stopped_at} / {EPOCHS}&quot;)
-print(f&quot;Final val accuracy: {history2.history[&#x27;val_accuracy&#x27;][-1]*100:.1f}%&quot;)</code></pre></figure>
+print(f&quot;Final val loss: {history2.history[&#x27;val_loss&#x27;][-1]:.6f}&quot;)
+print(f&quot;Final val MAE:  {history2.history[&#x27;val_mae&#x27;][-1]:.6f}&quot;)
+
+x_plot = np.linspace(0, 4 * np.pi, 1000).reshape(-1, 1)
+y_true_plot = np.sin(x_plot)
+y_pred_plot = model2.predict(x_plot, verbose=0)
+
+plt.figure(figsize=(10, 5))
+plt.plot(x_plot, y_true_plot, label=&quot;Actual sin(x)&quot;)
+plt.plot(x_plot, y_pred_plot, label=&quot;Dropout + early stopping prediction&quot;, linestyle=&quot;--&quot;)
+plt.axvline(2 * np.pi, color=&quot;gray&quot;, linestyle=&quot;:&quot;, label=&quot;End of training range&quot;)
+plt.title(&quot;Regularized Keras Model&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.show()
+</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-keras">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
@@ -2891,7 +3330,7 @@ print(f&quot;Final val accuracy: {history2.history[&#x27;val_accuracy&#x27;][-1]
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-training-curves">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-keras" data-lesson-link="ch6-keras"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.10 First Keras Network</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-keras" data-lesson-link="ch6-keras"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.10 From NumPy to Keras</span></a>
 <a class="lesson-nav-btn next" href="?lesson=ch6-when-to-use" data-lesson-link="ch6-when-to-use"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.12 When to Use Neural Networks &rarr;</span></a>
 </nav>
 </article>
@@ -10425,7 +10864,7 @@ RIGHT    | L:+11  R:  0</script></figure>
 </nav>
 </article>
   </main>
-  <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"6.0 What Is a Neural Network?","title":"What Is a Neural Network?","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-neuron","label":"6.1 Anatomy of a Neuron","title":"6.1 Anatomy of a Neuron","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-perceptron","label":"6.2 Perceptron Playground","title":"6.2 Experiment: The Perceptron Playground","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-layers","label":"6.3 Layers","title":"6.3 From One Neuron to Many: Layers","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gradient-descent","label":"6.4 Gradient Descent","title":"6.4 How Networks Learn: Gradient Descent","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gd-live","label":"6.5 Watch Gradient Descent","title":"6.5 Experiment: Watch Gradient Descent Live","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-knobs","label":"6.6 The Three Knobs","title":"6.6 The Three Knobs","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-break-fix","label":"6.7 Break It Then Fix It","title":"6.7 Experiment: Break It Then Fix It","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-activations","label":"6.8 Activation Functions","title":"6.8 Activation Functions","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-overfitting","label":"6.9 Overfitting","title":"6.9 Overfitting and How to Fight It","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-keras","label":"6.10 First Keras Network","title":"6.10 Build Your First Network in Keras","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-training-curves","label":"6.11 Training Curves","title":"6.11 Reading Training Curves","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-when-to-use","label":"6.12 When to Use Neural Networks","title":"6.12 When to Use Neural Networks","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch7-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-why-vision","label":"7.1 Why Vision Matters","title":"7.1 Why Vision Matters in Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-opencv","label":"7.2 OpenCV","title":"7.2 Tools: OpenCV","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-tensorflow","label":"7.3 TensorFlow/Keras","title":"7.3 Tools: TensorFlow/Keras","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-cnn","label":"7.4 CNNs","title":"7.4 How CNNs See","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-project","label":"7.5 Traffic Sign Project","title":"7.5 Project: Traffic Sign Classifier","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":true},{"id":"ch8-overview","label":"What's Next?","title":"What's Next?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-decision-guide","label":"8.1 Decision Guide","title":"8.1 Which ML Technique Should I Use?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-roadmap","label":"8.2 Roadmap","title":"8.2 Recommended Learning Roadmap","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-papers","label":"8.3 Papers","title":"8.3 Real Robotics ML Papers to Read","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Neural Networks","lessonIds":["ch6-overview","ch6-neuron","ch6-perceptron","ch6-layers","ch6-gradient-descent","ch6-gd-live","ch6-knobs","ch6-break-fix","ch6-activations","ch6-overfitting","ch6-keras","ch6-training-curves","ch6-when-to-use"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: Computer Vision for Robotics","lessonIds":["ch7-overview","ch7-why-vision","ch7-opencv","ch7-tensorflow","ch7-cnn","ch7-project"],"firstLesson":"ch7-overview"},{"key":"ch8","title":"Chapter 8: What's Next?","lessonIds":["ch8-overview","ch8-decision-guide","ch8-roadmap","ch8-papers"],"firstLesson":"ch8-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
+  <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"6.0 What Is a Neural Network?","title":"What Is a Neural Network?","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-neuron","label":"6.1 Anatomy of a Neuron","title":"6.1 Anatomy of a Neuron","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-perceptron","label":"6.2 Perceptron Playground","title":"6.2 Experiment: The Perceptron Playground","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-layers","label":"6.3 Layers","title":"6.3 From One Neuron to Many: Layers","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gradient-descent","label":"6.4 Gradient Descent","title":"6.4 How Networks Learn: Gradient Descent","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gd-live","label":"6.5 Watch Gradient Descent","title":"6.5 Experiment: Watch Gradient Descent Live","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-knobs","label":"6.6 The Three Knobs","title":"6.6 The Three Knobs","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-break-fix","label":"6.7 Teach sin(x)","title":"6.7 \u2605 Experiment: Teach a Network to Learn sin(x)","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-activations","label":"6.8 Activation Functions","title":"6.8 Activation Functions","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-overfitting","label":"6.9 Overfitting","title":"6.9 Overfitting and How to Fight It","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-keras","label":"6.10 From NumPy to Keras","title":"6.10 From NumPy to Keras","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-training-curves","label":"6.11 Training Curves","title":"6.11 Reading Training Curves","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-when-to-use","label":"6.12 When to Use Neural Networks","title":"6.12 When to Use Neural Networks","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch7-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-why-vision","label":"7.1 Why Vision Matters","title":"7.1 Why Vision Matters in Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-opencv","label":"7.2 OpenCV","title":"7.2 Tools: OpenCV","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-tensorflow","label":"7.3 TensorFlow/Keras","title":"7.3 Tools: TensorFlow/Keras","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-cnn","label":"7.4 CNNs","title":"7.4 How CNNs See","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-project","label":"7.5 Traffic Sign Project","title":"7.5 Project: Traffic Sign Classifier","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":true},{"id":"ch8-overview","label":"What's Next?","title":"What's Next?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-decision-guide","label":"8.1 Decision Guide","title":"8.1 Which ML Technique Should I Use?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-roadmap","label":"8.2 Roadmap","title":"8.2 Recommended Learning Roadmap","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-papers","label":"8.3 Papers","title":"8.3 Real Robotics ML Papers to Read","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Neural Networks","lessonIds":["ch6-overview","ch6-neuron","ch6-perceptron","ch6-layers","ch6-gradient-descent","ch6-gd-live","ch6-knobs","ch6-break-fix","ch6-activations","ch6-overfitting","ch6-keras","ch6-training-curves","ch6-when-to-use"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: Computer Vision for Robotics","lessonIds":["ch7-overview","ch7-why-vision","ch7-opencv","ch7-tensorflow","ch7-cnn","ch7-project"],"firstLesson":"ch7-overview"},{"key":"ch8","title":"Chapter 8: What's Next?","lessonIds":["ch8-overview","ch8-decision-guide","ch8-roadmap","ch8-papers"],"firstLesson":"ch8-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
   <script>
     const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
