@@ -489,7 +489,6 @@ _result
   function renderCodeBlock(block, details) {
     const { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename } = details;
     block.classList.toggle("is-runnable", runnable);
-    block.classList.toggle("is-colab-only", colabOnly);
     block.dataset.runnable = String(runnable);
     block.dataset.chapter = chapter;
     block.dataset.session = session;
