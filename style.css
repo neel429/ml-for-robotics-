@@ -791,6 +791,53 @@ pre code {
       border-color: #fde047;
       width: fit-content;
     }
+    .colab-btn.playground-btn {
+      background: var(--chapter-accent, var(--ch6));
+      color: #ffffff;
+      border-color: color-mix(in srgb, var(--chapter-accent, var(--ch6)) 72%, #ffffff);
+      margin: 0.35rem 0 1rem;
+    }
+    .playground-wireframe {
+      min-width: 640px;
+      display: grid;
+      gap: 0.55rem;
+      color: var(--text-primary, #e6edf3);
+    }
+    .playground-toolbar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(100px, 1fr));
+      gap: 0.4rem;
+      align-items: stretch;
+    }
+    .playground-chip,
+    .playground-panel {
+      border: 1px solid color-mix(in srgb, var(--chapter-accent, var(--ch6)) 45%, var(--border));
+      background: color-mix(in srgb, var(--chapter-accent, var(--ch6)) 10%, transparent);
+      border-radius: 7px;
+      padding: 0.65rem;
+      text-align: center;
+    }
+    .playground-chip strong,
+    .playground-panel strong {
+      display: block;
+      color: var(--text-primary, #ffffff);
+      font-size: 0.84rem;
+    }
+    .playground-chip span,
+    .playground-panel span {
+      color: var(--text-secondary, #8b949e);
+      font-size: 0.76rem;
+    }
+    .playground-main {
+      display: grid;
+      grid-template-columns: minmax(130px, 0.9fr) minmax(220px, 2.1fr) minmax(130px, 0.9fr);
+      gap: 0.55rem;
+    }
+    .playground-panel {
+      min-height: 86px;
+      display: grid;
+      place-items: center;
+    }
     .code-card pre {
       margin: 0;
       padding: 1rem;

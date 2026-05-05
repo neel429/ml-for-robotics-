@@ -89,12 +89,12 @@
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>Ch 6: Neural Networks</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
 <a class="lesson-link" href="?lesson=ch6-overview" data-lesson-link="ch6-overview"><span>6.0 What Is a Neural Network?</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span>6.1 Anatomy of a Neuron</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link is-exercise" href="?lesson=ch6-perceptron" data-lesson-link="ch6-perceptron"><span>* 6.2 Perceptron Playground</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=ch6-layers" data-lesson-link="ch6-layers"><span>6.3 Layers</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span>6.4 Gradient Descent</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link is-exercise" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span>* 6.5 Watch Gradient Descent</span><span class="completion-dot" aria-hidden="true"></span></a>
-<a class="lesson-link" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span>6.6 The Three Knobs</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span>6.1 Meet TF Playground</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-perceptron" data-lesson-link="ch6-perceptron"><span>6.2 Anatomy of a Neuron</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch6-layers" data-lesson-link="ch6-layers"><span>* 6.3 One Neuron Fails</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span>6.4 Layers: The Fix</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span>6.5 How Networks Learn</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link is-exercise" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span>* 6.6 Watch It Learn</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link is-exercise" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span>* 6.7 Teach sin(x)</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-activations" data-lesson-link="ch6-activations"><span>6.8 Activation Functions</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=ch6-overfitting" data-lesson-link="ch6-overfitting"><span>6.9 Overfitting</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -2622,42 +2622,92 @@ plt.show()</code></pre></figure>
 <header class="chapter-header">
 <span class="chapter-badge">Chapter 6 / 8</span>
 <a class="breadcrumb" href="?lesson=ch5-overview" data-lesson-link="ch5-overview">&larr; Previous Chapter: Reinforcement Learning</a>
-<div class="chapter-kicker">Experiment-first intuition</div>
-<h2>Neural Networks: <span>Break Them, Then Fix Them</span></h2>
-<p class="lead">Neural networks learn by adjusting numbers over and over until their answers get better.</p>
+<div class="chapter-kicker">Build intuition before writing code</div>
+<h2>Neural Networks: <span>See Them Learn</span></h2>
+<p class="lead">You will build intuition through interactive experiments before writing a single line of neural network code.</p>
 </header>
-<p>In Chapter 3 you trained a Random Forest to predict machine failure. The Random Forest learned rules like "if temperature is above X and torque is above Y, flag as failure." It works well, but the rules are fixed once training is done. A neural network learns differently: instead of rules, it learns adjustable numbers that it keeps tuning until its answers are correct.</p>
-<p>Think of it like learning to cook. A recipe book gives you fixed rules: 200 degrees, 30 minutes, 2 cups of flour. A neural network is more like a chef who keeps tasting and adjusting: a pinch more salt here, two minutes less heat there, until the dish is right. The adjustments are the learning.</p>
+<p>In Chapter 3 you trained a Random Forest to predict machine failure. The Random Forest learned a set of if-then rules from the data. Clear, interpretable, fast to train. For many problems it is the right tool and you should use it.</p>
+<p>A neural network learns differently. Instead of rules, it learns numbers — thousands or millions of adjustable numbers called weights. Training is the process of tuning those numbers until the network's output matches the correct answer. The rules are never written down explicitly. The pattern lives entirely in the weights.</p>
+<p>Think of learning to ride a bike. A rulebook says: lean left to turn left, pedal faster to accelerate, squeeze brakes to stop. A neural network is more like your body after hours of practice — it just knows, without being able to explain every adjustment it makes. That inability to explain is both the power and the limitation.</p>
 <div class="grid-2">
-<div class="definition-card"><span class="def-term">What is a neural network really?</span><p>A mathematical function with thousands of adjustable knobs called weights. Training is the process of turning those knobs until the function's output matches the correct answer for every training example.</p></div>
-<div class="definition-card"><span class="def-term">What is it good for?</span><p>Neural networks shine when the relationship between inputs and outputs is too complex for simple rules. Recognizing a face, understanding speech, and detecting objects in images are examples. For simpler problems like the Chapter 3 failure dataset, Random Forest is often just as good and much simpler.</p></div>
+<div class="definition-card"><span class="def-term">What a neural network actually is</span><p>A chain of matrix multiplications and simple math functions. That is all. The word "neural" is a metaphor. There is no brain, no understanding, no consciousness — just math that happens to learn patterns from examples.</p></div>
+<div class="definition-card"><span class="def-term">When to use it vs when not to</span><p>Use neural networks when the relationship between inputs and outputs is too complex for simple rules — images, audio, text, complex sensor combinations. For clean tabular data like the Chapter 3 failure dataset, Random Forest is simpler and often just as accurate. You will return to this question in lesson 6.12.</p></div>
 </div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>You already saw machine learning find patterns in data in Chapter 3. Think of one prediction problem from daily life where the relationship is too complex for simple rules. Write it down. You will refer back to it at the end of this chapter.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What comes next</div><p>You will build intuition for neural networks in the next few lessons using a free interactive tool called TensorFlow Playground — no code required yet.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=ch5-q-learning" data-lesson-link="ch5-q-learning"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 5.2 Q-Learning</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.1 Anatomy of a Neuron &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.1 Meet TF Playground &rarr;</span></a>
 </nav>
 </article>
 
 <article class="lesson-content" data-lesson="ch6-neuron" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.1 Anatomy of a Neuron</div>
-<h1>6.1 Anatomy of a Neuron</h1>
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.1 Meet TensorFlow Playground</div>
+<h1>6.1 Meet TensorFlow Playground</h1>
+<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p>TensorFlow Playground is a neural network that runs live in your browser. You set the architecture, hit play, and watch the network train in real time. The decision boundary — the boundary between classes — updates every few milliseconds as the network learns. This makes concepts that are invisible in code completely visible.</p>
+<a class="colab-btn playground-btn" href="https://playground.tensorflow.org" target="_blank" rel="noreferrer">Open TensorFlow Playground</a>
+<h3>What you are looking at</h3>
+<div class="diagram" aria-label="TensorFlow Playground interface layout">
+  <div class="playground-wireframe">
+    <div class="playground-toolbar" aria-hidden="true">
+      <div class="playground-chip"><strong>Dataset</strong><span>selector</span></div>
+      <div class="playground-chip"><strong>Features</strong><span>checkboxes</span></div>
+      <div class="playground-chip"><strong>Hidden Layers</strong><span>+ / - neurons</span></div>
+      <div class="playground-chip"><strong>Output</strong><span>preview</span></div>
+      <div class="playground-chip"><strong>Loss</strong><span>graph</span></div>
+    </div>
+    <div class="playground-main">
+      <div class="playground-panel"><div><strong>DATA</strong><span>left</span></div></div>
+      <div class="playground-panel"><div><strong>NETWORK ARCHITECTURE</strong><span>center</span></div></div>
+      <div class="playground-panel"><div><strong>OUTPUT</strong><span>right</span></div></div>
+    </div>
+  </div>
+</div>
+<ul>
+  <li><strong>Data panel (left):</strong> choose your dataset and how noisy it is.</li>
+  <li><strong>Features (above network):</strong> which input columns the network sees.</li>
+  <li><strong>Hidden layers (center):</strong> the heart of the network — add layers and neurons by clicking + and -.</li>
+  <li><strong>Output panel (right):</strong> the decision boundary — blue = predicted class 0, orange = predicted class 1. Darker color = higher confidence.</li>
+  <li><strong>Loss graph (top right):</strong> how wrong the network is over time.</li>
+  <li><strong>Training controls (top):</strong> learning rate, activation, batch size, and the play/pause/reset buttons.</li>
+</ul>
+<h3>Your first 60 seconds in Playground</h3>
+<p>Do these steps before reading any further:</p>
+<div class="steps">
+  <div class="step"><div><strong>Open Playground at the link above.</strong></div></div>
+  <div class="step"><div><strong>Select the Circle dataset.</strong><br />Look for four small icons below "DATA" on the left — pick the one showing two concentric circles.</div></div>
+  <div class="step"><div><strong>Click the play button &#9654; at the top left.</strong></div></div>
+  <div class="step"><div><strong>Watch for 10 seconds.</strong></div></div>
+  <div class="step"><div><strong>Click the reset button &#8634; and watch again from the start.</strong></div></div>
+</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Write your answer before moving on</div><p>What shape is the decision boundary trying to form? Is it a straight line or a curve? Does it succeed? Write down what you see — you will compare this to what a single neuron can do in the next lesson.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-neuron">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-overview" data-lesson-link="ch6-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.0 What Is a Neural Network?</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-perceptron" data-lesson-link="ch6-perceptron"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.2 Anatomy of a Neuron &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="ch6-perceptron" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.2 Anatomy of a Neuron</div>
+<h1>6.2 Anatomy of a Neuron</h1>
 <div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.1 Anatomy of a Neuron</h3>
-<p>A neuron is the smallest building block of a neural network. Understanding one neuron completely means understanding the foundation of everything that follows.</p>
-<div class="card"><h4>The exam scorer</h4><p>Imagine scoring a student's exam performance using three things: homework average, midterm score, and attendance. You might decide homework matters most, so you give it weight 0.5; midterm gets weight 0.4; attendance gets weight 0.1. You multiply each input by its weight, add them up, and get a performance score. A neuron does exactly this: multiply each input by its weight and add them all up.</p></div>
-<p>The only difference from the exam scorer is one extra step: after adding everything up, the neuron passes the result through an activation function. This is what makes neural networks powerful. Without it, no matter how many neurons you stack, the whole thing collapses into one simple weighted sum, and you are back to linear regression.</p>
-<h4>Step by step: what one neuron computes</h4>
+<p>Before understanding a network of hundreds of neurons, understand one. A single neuron is just arithmetic — three steps, no mystery.</p>
+<div class="card"><h4>The exam scorer</h4><p>Imagine scoring a student's performance using three things: homework (weight 0.5), exam score (weight 0.4), attendance (weight 0.1). You multiply each by its weight, add them up, and get a score. A neuron does exactly this — it is a weighted sum of its inputs. The only extra step is squashing the result through a function so it stays in a useful range.</p></div>
+<h3>Three steps every neuron takes</h3>
 <div class="steps">
-<div class="step"><div><strong>Step 1: Multiply each input by its weight</strong><br /><code>temperature x 0.8 = 0.72</code><br /><code>vibration x 0.3 = 0.21</code><br /><code>speed x -0.2 = -0.10</code></div></div>
-<div class="step"><div><strong>Step 2: Add everything including the bias</strong><br /><code>z = 0.72 + 0.21 + (-0.10) + (-0.40) = 0.43</code><br />The bias <code>-0.40</code> shifts the result. It is like a base score before any inputs are considered.</div></div>
-<div class="step"><div><strong>Step 3: Pass through the activation function</strong><br /><code>sigmoid(0.43) = 0.606</code><br />Sigmoid squashes any number into a value between 0 and 1. Here: 60.6% confident something is abnormal.</div></div>
+<div class="step"><div><strong>Weighted sum</strong><p><code>z = w1*x1 + w2*x2 + ... + wn*xn + b</code></p><p>Each input <code>x</code> is multiplied by its weight <code>w</code>. All results are added together. The bias <code>b</code> is added last — it shifts the output regardless of inputs.</p></div></div>
+<div class="step"><div><strong>Activation function</strong><p><code>a = f(z)</code></p><p>The function <code>f</code> squashes <code>z</code> into a useful range. Without it, stacking neurons is useless — the whole network collapses into one weighted sum, which is just a straight line.</p></div></div>
+<div class="step"><div><strong>Pass the result forward</strong><p><code>a</code> becomes an input to the next layer's neurons. This is how information flows from left to right through the network.</p></div></div>
 </div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>If you increase the vibration weight from <code>0.3</code> to <code>0.9</code>, making vibration more important, will the confidence go up or down? Write your prediction, then run.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>The code below computes what one neuron outputs given three sensor readings. Before running, predict: if temperature (<code>x[0]</code>) is very high (<code>0.9</code> out of <code>1.0</code>) and its weight is <code>0.8</code>, will the output confidence be above 50% or below 50%?</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="single_neuron_sensor_confidence.py"><figcaption>single_neuron_sensor_confidence.py</figcaption><pre><code class="language-python">import numpy as np
 
 def sigmoid(z):
@@ -2678,121 +2728,69 @@ print(f&quot;After sigmoid:  {a:.4f}&quot;)
 print(f&quot;Interpretation: {a*100:.1f}% confidence of abnormality&quot;)
 
 # Try changing w[1]. What happens if vibration matters more than temperature?</code></pre></figure>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Exercise</div><p>1. Change <code>w[1]</code> from <code>0.3</code> to <code>0.9</code>. What does the confidence become? Was your prediction correct?</p><p>2. Change <code>b</code> from <code>-0.4</code> to <code>0.0</code>. What happens and why?</p><p>3. What combination of weights and bias gives you exactly 50% confidence? Hint: <code>sigmoid(0) = 0.5</code>. What must <code>z</code> equal?</p></div></div>
-<div class="callout tip" role="note"><div class="callout-icon">TIP</div><div><div class="callout-title">Training finds the numbers</div><p>The network does not decide these weights by hand, and you do not either. Training finds them automatically by trying thousands of adjustments and keeping the ones that produce correct outputs.</p></div></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-neuron">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-overview" data-lesson-link="ch6-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.0 What Is a Neural Network?</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-perceptron" data-lesson-link="ch6-perceptron"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.2 Perceptron Playground &rarr;</span></a>
-</nav>
-</article>
-
-<article class="lesson-content exercise-lesson" data-lesson="ch6-perceptron" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.2 Experiment: The Perceptron Playground</div>
-<h1>6.2 Experiment: The Perceptron Playground</h1>
-<div class="lesson-meta"><span>Experiment</span><span>15 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<h3>6.2 Experiment: The Perceptron Playground</h3>
-<p>You just saw one neuron compute a single number. Now let it make a decision: given two input features, classify a data point as red or blue. The neuron draws a boundary: everything on one side is red, everything on the other is blue.</p>
-<p>The boundary is always a straight line. That is the fundamental limit of one neuron. For some problems a straight line is enough; for others it is completely useless. This experiment shows you both cases so you feel the limit before you understand why it exists.</p>
-<h4>What to do</h4>
-<ol>
-<li>Run the cell with <code>DATASET = "linear"</code>. Move <code>W1</code>, <code>W2</code>, and <code>B</code> until the line separates red from blue. This is solvable: a straight line works here.</li>
-<li>Change to <code>DATASET = "xor"</code>. Now try to separate them. Spend two minutes genuinely trying. You cannot do it. A straight line will always leave some red on the blue side.</li>
-<li>Change to <code>DATASET = "circles"</code>. Same problem: the boundary you need is a circle, not a line.</li>
-</ol>
-<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>After trying XOR: what shape of boundary would actually work? A curve? Two lines? This question has a real answer, and lesson 6.3 gives it to you.</p></div></div>
-<figure class="code-card" data-runnable="true" data-chapter="6" data-filename="perceptron_playground.py"><figcaption>perceptron_playground.py</figcaption><pre><code class="language-python">import numpy as np
-import matplotlib.pyplot as plt
-
-np.random.seed(42)
-
-def get_dataset(name):
-    if name == &quot;linear&quot;:
-        X1 = np.random.randn(50, 2) + np.array([2, 2])
-        X2 = np.random.randn(50, 2) + np.array([-2, -2])
-        X = np.vstack([X1, X2])
-        y = np.array([1]*50 + [0]*50)
-    elif name == &quot;xor&quot;:
-        X1 = np.random.randn(25, 2) * 0.5 + np.array([2, 2])
-        X2 = np.random.randn(25, 2) * 0.5 + np.array([-2, -2])
-        X3 = np.random.randn(25, 2) * 0.5 + np.array([2, -2])
-        X4 = np.random.randn(25, 2) * 0.5 + np.array([-2, 2])
-        X = np.vstack([X1, X2, X3, X4])
-        y = np.array([1]*50 + [0]*50)
-    elif name == &quot;circles&quot;:
-        t = np.linspace(0, 2*np.pi, 50)
-        X1 = np.column_stack([np.cos(t)*0.5 + np.random.randn(50)*0.1,
-                              np.sin(t)*0.5 + np.random.randn(50)*0.1])
-        X2 = np.column_stack([np.cos(t)*2.0 + np.random.randn(50)*0.2,
-                              np.sin(t)*2.0 + np.random.randn(50)*0.2])
-        X = np.vstack([X1, X2])
-        y = np.array([1]*50 + [0]*50)
-    return X, y
-
-def sigmoid(z):
-    return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
-
-def plot_neuron(dataset=&quot;xor&quot;, w1=1.0, w2=1.0, b=0.0):
-    X, y = get_dataset(dataset)
-    w = np.array([w1, w2])
-
-    xx, yy = np.meshgrid(np.linspace(-4, 4, 200), np.linspace(-4, 4, 200))
-    Z = sigmoid(np.c_[xx.ravel(), yy.ravel()] @ w + b).reshape(xx.shape)
-    pred = (sigmoid(X @ w + b) &gt;= 0.5).astype(int)
-    acc = (pred == y).mean() * 100
-
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.contourf(xx, yy, Z, levels=[0, 0.5, 1], colors=[&quot;#3b82f6&quot;, &quot;#ef4444&quot;], alpha=0.25)
-    ax.contour(xx, yy, Z, levels=[0.5], colors=[&quot;white&quot;], linewidths=2)
-    ax.scatter(X[y == 1, 0], X[y == 1, 1], c=&quot;#ef4444&quot;, s=40,
-               edgecolors=&quot;white&quot;, linewidths=0.5, label=&quot;Class 1&quot;)
-    ax.scatter(X[y == 0, 0], X[y == 0, 1], c=&quot;#3b82f6&quot;, s=40,
-               edgecolors=&quot;white&quot;, linewidths=0.5, label=&quot;Class 0&quot;)
-    ax.set_title(f&quot;Dataset: {dataset} | Accuracy: {acc:.1f}%&quot;, fontsize=12, color=&quot;white&quot;, pad=10)
-    ax.set_facecolor(&quot;#0d1117&quot;)
-    fig.patch.set_facecolor(&quot;#0d1117&quot;)
-    ax.tick_params(colors=&quot;gray&quot;)
-    for spine in ax.spines.values():
-        spine.set_color(&quot;#30363d&quot;)
-    ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;)
-    plt.tight_layout()
-    plt.show()
-    print(f&quot;Accuracy: {acc:.1f}%&quot;)
-
-DATASET = &quot;xor&quot;   # options: &quot;linear&quot;, &quot;xor&quot;, &quot;circles&quot;
-W1 = 1.0
-W2 = 1.0
-B = 0.0
-
-plot_neuron(DATASET, W1, W2, B)</code></pre></figure>
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">The limit of one neuron</div><p>A single neuron can only draw a straight line. XOR and circles are not linearly separable, which is why useful neural networks need layers.</p></div></div>
-<h4>Why does this matter?</h4>
-<p>When you built the failure predictor in Chapter 3, the data was roughly linearly separable — normal operation and failure formed groups that a line could mostly separate. That is why simple algorithms worked well. Neural networks become valuable when your data looks more like the XOR or circles problem — when the pattern you are trying to find cannot be captured by a straight line. Real robotics data (camera images, audio signals, complex sensor combinations) almost always looks like circles, not like two clean blobs.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Exercise</div><p>Run the code, then try each change and note what happens:</p><ol><li>Change <code>w[0]</code> from <code>0.8</code> to <code>-0.8</code>. What happens to confidence? Why does making a weight negative reverse its effect?</li><li>Change <code>b</code> from <code>-0.4</code> to <code>0.4</code>. What happens? The bias shifts the baseline — what does a positive bias mean in terms of the neuron's "default assumption"?</li><li>Set all weights to <code>0.0</code>. What is the output and why?</li></ol></div></div>
+<h3>Weights are not set by you</h3>
+<p>In the code above, the weights are hand-picked numbers. In a real network, training finds these numbers automatically by trying to minimize the loss. The network starts with random weights and adjusts them thousands of times until the output is correct. You will see this process in lesson 6.6.</p>
+<div class="callout tip" role="note"><div class="callout-icon">TIP</div><div><div class="callout-title">TensorFlow Playground connection</div><p>Every connection between neurons in TensorFlow Playground is one weight — hover over any connection and you can see its current value updating as the network trains.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-perceptron">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.1 Anatomy of a Neuron</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-layers" data-lesson-link="ch6-layers"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.3 Layers &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-neuron" data-lesson-link="ch6-neuron"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.1 Meet TensorFlow Playground</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-layers" data-lesson-link="ch6-layers"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.3 One Neuron Fails &rarr;</span></a>
 </nav>
 </article>
 
-<article class="lesson-content" data-lesson="ch6-layers" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.3 From One Neuron to Many: Layers</div>
-<h1>6.3 From One Neuron to Many: Layers</h1>
-<div class="lesson-meta"><span>Beginner</span><span>10 min</span></div>
+<article class="lesson-content exercise-lesson" data-lesson="ch6-layers" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.3 Playground: One Neuron Fails</div>
+<h1>6.3 &#9733; Playground: One Neuron Fails</h1>
+<div class="lesson-meta"><span>Experiment</span><span>15 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.3 From One Neuron to Many: Layers</h3>
-<p>The perceptron playground proved one neuron cannot solve XOR. But what if you used three neurons? The trick is that each neuron draws its own line, and three lines together can carve out shapes that one line cannot.</p>
-<div class="card"><h4>The committee decision</h4><p>One judge gives one opinion. Three judges can together make a more nuanced decision: one might care about speed, another about accuracy, a third about style. Their combined vote can capture patterns no single judge could see. A hidden layer is a committee of neurons voting together.</p></div>
-<h4>What a layer actually does</h4>
-<p>Each neuron in the hidden layer gets the same inputs but has different weights, so each neuron learns to notice a different aspect of the data. The outputs of all those neurons become the inputs to the next layer. By the time data reaches the output layer, it has been transformed so many times that previously impossible separations can become simple.</p>
-<h4>Counting the knobs</h4>
-<p>Every connection between neurons is one weight: one knob to tune. Every neuron also has one bias. The total number of these knobs is the number of parameters. More parameters means more capacity to learn complex patterns, but also more data needed and more risk of memorizing instead of learning.</p>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>For the network <code>3 inputs -> 4 neurons -> 1 output</code>, how many weights are there? How many biases? Calculate it before running the code.</p></div></div>
+<p>A single neuron draws one straight line. That is its only tool. Some problems can be solved with a straight line. Others cannot. This experiment shows you both — and the moment you add a second layer, the impossible becomes trivial.</p>
+<a class="colab-btn playground-btn" href="https://playground.tensorflow.org" target="_blank" rel="noreferrer">Open TensorFlow Playground</a>
+<h3>Part 1 — Set up the impossible problem</h3>
+<div class="steps">
+<div class="step"><div><strong>Open Playground.</strong><br /><a href="https://playground.tensorflow.org" target="_blank" rel="noreferrer">https://playground.tensorflow.org</a></div></div>
+<div class="step"><div><strong>Dataset:</strong> click the XOR dataset.<br />It is the checkerboard pattern: orange top-right and bottom-left, blue top-left and bottom-right.</div></div>
+<div class="step"><div><strong>Features:</strong> make sure only <code>X1</code> and <code>X2</code> are checked.</div></div>
+<div class="step"><div><strong>Hidden layers:</strong> click the minus button until there are zero hidden layers — just inputs going straight to output.</div></div>
+<div class="step"><div><strong>Learning rate:</strong> set to <code>0.03</code>.</div></div>
+<div class="step"><div><strong>Activation:</strong> set to <code>ReLU</code>.</div></div>
+<div class="step"><div><strong>Train:</strong> click &#9654; and watch for 30 seconds.</div></div>
+</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>What accuracy does it reach? Does the boundary ever successfully separate the orange from the blue? Why do you think a straight line cannot solve this problem? Think geometrically: is there any straight line that puts all orange on one side and all blue on the other?</p></div></div>
+<h3>Part 2 — Add one hidden layer</h3>
+<div class="steps">
+<div class="step"><div><strong>Click &#8634; to reset.</strong></div></div>
+<div class="step"><div><strong>Add one hidden layer with 2 neurons.</strong><br />Click + next to Hidden Layers, then set the layer to 2 neurons.</div></div>
+<div class="step"><div><strong>Keep everything else the same.</strong></div></div>
+<div class="step"><div><strong>Click &#9654; to train.</strong><br />Watch until the test loss drops below <code>0.05</code>.</div></div>
+</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>How long did it take? What does the decision boundary look like now? The two neurons together created a boundary that one neuron could not. Watch the two neurons on the left — each one is drawing its own line. Their combination creates the curved boundary you see on the right.</p></div></div>
+<h3>Why layers work</h3>
+<p>Each neuron in the hidden layer learns a different view of the data — one might learn "is this point in the top half?" while another learns "is this point in the right half?" Neither answer alone is enough. But combined, they can describe "top-right AND bottom-left," which is exactly what XOR needs.</p>
+<p>This is why deep networks can learn complex patterns. Each layer transforms the data into a new representation. By the final layer a pattern that was impossible to separate has been transformed into something simple. The network learned to see the data differently at each stage.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Challenge</div><p>After solving XOR with 2 neurons in one layer, try to solve the spiral dataset, the hardest one with two interleaved spirals. How many hidden layers and neurons does it take? Can you solve it with just 1 hidden layer?</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-layers">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch6-perceptron" data-lesson-link="ch6-perceptron"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.2 Anatomy of a Neuron</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.4 Layers: The Fix &rarr;</span></a>
+</nav>
+</article>
+
+<article class="lesson-content" data-lesson="ch6-gradient-descent" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.4 Layers: The Fix</div>
+<h1>6.4 Layers: The Fix</h1>
+<div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p>Lesson 6.3 showed the problem empirically — one neuron fails on XOR, a hidden layer fixes it. This lesson explains why mathematically without requiring calculus.</p>
+<div class="card"><h4>The committee vote</h4><p>One judge scores a gymnastics routine: 7.2. That is a single number capturing a complex performance. Three judges each notice different things — difficulty, execution, artistry. Their combined scores are richer than any single judge's opinion. A hidden layer is a committee of neurons, each noticing a different aspect of the input. Their combined output gives the next layer richer information to work with.</p></div>
+<h3>What a layer actually does to data</h3>
+<p>Each layer takes the outputs from the previous layer and transforms them. The first hidden layer transforms raw input features into a new representation. The second layer transforms that representation into an even more abstract one. By the final layer the data has been transformed enough that a single neuron can make the final decision.</p>
+<p>In Playground you can see this happening. Click on any neuron in a hidden layer during training. The small square inside it shows what that neuron has learned to detect — a gradient of orange and blue showing which parts of the input space activate it strongly. Each neuron is a feature detector. Together they decompose the problem into parts that the output neuron can combine.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>Before running, predict the parameter count for a network with <code>2 inputs -> 3 neurons -> 3 neurons -> 1 output</code>. Then run <code>count_params([2, 3, 3, 1])</code> to check.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="count_network_parameters.py"><figcaption>count_network_parameters.py</figcaption><pre><code class="language-python">def count_params(layer_sizes):
     total = 0
     for i in range(len(layer_sizes) - 1):
@@ -2809,40 +2807,37 @@ print()
 count_params([3, 64, 64, 1])
 print()
 count_params([3, 4, 4, 4, 1])</code></pre></figure>
-<p><strong>Layer 1 (3->4):</strong> Each of the 3 inputs connects to each of the 4 neurons. That is <code>3 x 4 = 12</code> weights. Each of the 4 neurons also has 1 bias. Total: 16 parameters.</p>
-<p><strong>Layer 2 (4->4):</strong> Each of the 4 neurons from layer 1 connects to each of the 4 neurons in layer 2. That is <code>4 x 4 = 16</code> weights plus 4 biases. Total: 20 parameters.</p>
-<p><strong>Layer 3 (4->1):</strong> 4 connections to the output neuron plus 1 bias. Total: 5 parameters.</p>
-<p><strong>Grand total: 41 parameters.</strong> This network can be trained on a laptop in seconds. YOLO26n has 3.5 million. GPT-4 has roughly 1 trillion. The math is the same — just way more of it.</p>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Challenge</div><p>What is the smallest network, with the fewest parameters, that has at least one hidden layer and takes 2 inputs to produce 1 output? Calculate it before reading the answer.</p><p><strong>Answer:</strong> <code>2 -> 1 -> 1</code> has <code>(2 x 1 + 1) + (1 x 1 + 1) = 5</code> parameters.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">TIP</div><div><div class="callout-title">Counting rule</div><p>Every connection is one weight, and every neuron has one bias. That is why bigger layers quickly create many more trainable numbers.</p></div></div>
+<h3>How deep should you go?</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Architecture</th><th>Parameters</th><th>Good for</th></tr></thead><tbody><tr><td><code>2->4->1</code></td><td>13</td><td>Very simple patterns</td></tr><tr><td><code>2->16->16->1</code></td><td>321</td><td>Most common starting point</td></tr><tr><td><code>2->64->64->64->1</code></td><td>8,513</td><td>Complex patterns, needs more data</td></tr><tr><td><code>2->256->256->1</code></td><td>66,305</td><td>Often overkill for small datasets</td></tr></tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">TIP</div><div><div class="callout-title">Practical default</div><p>Start with two hidden layers of 16 neurons each. Only go bigger if the network clearly cannot learn the pattern after proper tuning.</p></div></div>
 </div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-layers">Mark as Complete</button></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-gradient-descent">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-perceptron" data-lesson-link="ch6-perceptron"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.2 Perceptron Playground</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.4 Gradient Descent &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-layers" data-lesson-link="ch6-layers"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.3 One Neuron Fails</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.5 How Networks Learn &rarr;</span></a>
 </nav>
 </article>
 
-<article class="lesson-content" data-lesson="ch6-gradient-descent" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.4 How Networks Learn: Gradient Descent</div>
-<h1>6.4 How Networks Learn: Gradient Descent</h1>
+<article class="lesson-content" data-lesson="ch6-gd-live" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.5 How Networks Learn</div>
+<h1>6.5 How Networks Learn</h1>
 <div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.4 How Networks Learn: Gradient Descent</h3>
-<p>Networks have tens to millions of weights, and training has to find good values for all of them simultaneously. It does not try every combination because there are too many. Instead, training makes small improvements over and over until the network is good enough. This process is called gradient descent.</p>
-<div class="card"><h4>The blindfolded hiker</h4><p>You are blindfolded on a hilly landscape. Your goal is to find the lowest valley. You cannot see anything, but you can feel the slope under your feet. At each step you feel which direction slopes downward and take one step that way.</p><p>After enough steps you reach a valley. Gradient descent is this process, but the landscape has many dimensions instead of two.</p></div>
-<h4>What is the loss?</h4>
-<p>The height in the hiking analogy is the loss: a number that measures how wrong the network is. When the network predicts 0.9 failure probability and the true label is 0, meaning no failure, that is a large loss. When it predicts 0.05 and the label is 0, the loss is small. Training minimizes this number.</p>
-<p>The most common loss for classification is called cross-entropy. For regression it is mean squared error: the average of <code>(prediction - true value)^2</code> across all training examples. You do not need to derive these. Just know that loss means how wrong the network is, and training makes it smaller.</p>
-<h4>The five steps of one training iteration</h4>
+<p>You have seen what a network is and that adding layers helps. Now: how does a network actually improve? How do 41 random numbers become 41 carefully tuned numbers that solve a problem?</p>
+<div class="card"><h4>The blindfolded hiker</h4><p>You are blindfolded on a hilly landscape trying to find the lowest valley. You cannot see anything but you can feel the slope under your feet. Each step you take one step in the downhill direction. After enough steps you reach a valley. This is gradient descent — navigating a landscape you cannot see by following the local slope downward.</p></div>
+<h3>The loss — your altitude</h3>
+<p>The height in the hiking analogy is the loss. It measures how wrong the network is right now. When predictions are far from the true labels, loss is high. When predictions are close, loss is low. Training is the process of walking downhill on the loss surface until you reach a valley — a set of weights where the network is as accurate as possible.</p>
+<h3>The five steps of training</h3>
 <div class="steps">
-<div class="step"><div><strong>Step 1: Forward pass</strong><p>Feed one batch of training examples, say 32 rows, through the network from left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each of the 32 examples.</p></div></div>
-<div class="step"><div><strong>Step 2: Compute loss</strong><p>Compare the 32 predictions to the 32 true labels. Compute the average error. This single number tells you how wrong the network is right now.</p></div></div>
-<div class="step"><div><strong>Step 3: Backward pass (backpropagation)</strong><p>Figure out which weights caused the most error. Calculus tells us how much each weight contributed to the loss: this is the gradient. The gradient points in the direction that increases loss. We want to go the opposite direction.</p></div></div>
-<div class="step"><div><strong>Step 4: Update weights</strong><p>Move every weight a small step in the direction that reduces loss.</p><p><code>new weight = old weight - learning rate x gradient</code></p><p>The learning rate controls how big the step is. Too large and the network overshoots. Too small and training takes forever.</p></div></div>
-<div class="step"><div><strong>Step 5: Repeat</strong><p>Do this for every batch in the training set. When you have gone through every batch once, that is one epoch. Training runs for many epochs until the loss stops improving.</p></div></div>
+<div class="step"><div><strong>Forward pass</strong><p>Feed a batch of training examples through the network left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each example in the batch.</p></div></div>
+<div class="step"><div><strong>Compute loss</strong><p>Compare predictions to true labels. The loss is a single number — the average error across the batch. Large loss means the network is very wrong. Small loss means it is close. In Playground you see this number updating live in the top right.</p></div></div>
+<div class="step"><div><strong>Backward pass (backpropagation)</strong><p>Calculate how much each weight contributed to the loss. This uses the chain rule from calculus — the network works backward from the output, spreading blame to each weight proportionally. You do not need to understand the calculus. The key insight is: every weight gets a score saying "increase me" or "decrease me."</p></div></div>
+<div class="step"><div><strong>Update weights</strong><p>Move every weight a small step in the direction that reduces loss:</p><p><code>new_weight = old_weight - learning_rate * gradient</code></p><p>The learning rate controls how big the step is. Too large: overshoots the valley. Too small: takes forever.</p></div></div>
+<div class="step"><div><strong>Repeat</strong><p>Do this for every batch in the training set. One complete pass through all training data = one epoch. Typical networks train for 10 to 500 epochs.</p></div></div>
 </div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>The code below simulates a loss curve over 50 epochs. What shape do you expect the curve to have: flat, always decreasing, or noisy? Predict it, then run.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>Before running, predict — what shape will the loss curve have over 50 epochs? Flat? Always going down? Bumpy? Sketch your prediction on paper, then run.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="healthy_training_curve.py"><figcaption>healthy_training_curve.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -2864,117 +2859,63 @@ for spine in ax.spines.values():
 ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;)
 plt.tight_layout()
 plt.show()</code></pre></figure>
-<p>The loss started high because the network was randomly wrong, then decreased toward a floor called the irreducible error: the minimum possible loss on this data. The small wiggles in the curve come from randomness in which training examples each batch contains. A smooth curve means large batches. A noisy curve means small ones.</p>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Change the random seed on line 4 from 42 to any other number and rerun. The curve has different wiggles each time but always the same general shape. This is because the wiggles are random noise but the downward trend is the real learning signal.</p></div></div>
-</div>
-<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-gradient-descent">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-layers" data-lesson-link="ch6-layers"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.3 Layers</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.5 Watch Gradient Descent &rarr;</span></a>
-</nav>
-</article>
-
-<article class="lesson-content exercise-lesson" data-lesson="ch6-gd-live" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.5 Experiment: Watch Gradient Descent Live</div>
-<h1>6.5 Experiment: Watch Gradient Descent Live</h1>
-<div class="lesson-meta"><span>Experiment</span><span>15 min</span></div>
-<hr class="lesson-divider" />
-<div class="lesson-body">
-<h3>6.5 Experiment: Watch Gradient Descent Live</h3>
-<p>The hiking analogy is clearer when you can see the landscape. This experiment shows gradient descent as an actual path on a 2D loss surface. You control the learning rate and watch the path crawl, converge, wobble, or fly off the edge.</p>
-<h4>What you are looking at</h4>
-<p>The left plot is the loss surface: a bowl shape where the center is the minimum. The orange path is gradient descent navigating toward that minimum. The right plot shows the loss at each step. A healthy run looks like this: the path moves inward and the loss drops smoothly.</p>
-<p>Run the cell with <code>LEARNING_RATE = 0.1</code> first so you know what good looks like. Then try each value and observe:</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Learning rate</th><th>What happens</th></tr></thead><tbody><tr><td><code>0.01</code></td><td>Path takes tiny steps and needs many more steps to converge.</td></tr><tr><td><code>0.1</code></td><td>Smooth convergence. This is the sweet spot here.</td></tr><tr><td><code>0.9</code></td><td>Path overshoots the minimum and zigzags.</td></tr><tr><td><code>1.5</code></td><td>Path diverges completely. Loss goes up.</td></tr></tbody></table></div>
-<figure class="code-card" data-runnable="true" data-chapter="6" data-filename="watch_gradient_descent_live.py"><figcaption>watch_gradient_descent_live.py</figcaption><pre><code class="language-python">import numpy as np
-import matplotlib.pyplot as plt
-
-def loss(x, y):
-    return (x - 2)**2 + 2 * (y - 1)**2
-
-def grad(x, y):
-    return np.array([2 * (x - 2), 4 * (y - 1)])
-
-LEARNING_RATE = 0.1  # try 0.01, 0.1, 0.5, 0.9, 1.5
-STEPS = 30
-START = np.array([-2.0, -2.0])
-
-pos = START.copy()
-path = [pos.copy()]
-losses = [loss(*pos)]
-
-for _ in range(STEPS):
-    g = grad(*pos)
-    pos = pos - LEARNING_RATE * g
-    path.append(pos.copy())
-    losses.append(loss(*pos))
-
-path = np.array(path)
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-fig.patch.set_facecolor(&quot;#0d1117&quot;)
-
-x = np.linspace(-3, 5, 200)
-y = np.linspace(-3, 4, 200)
-X, Y = np.meshgrid(x, y)
-Z = loss(X, Y)
-
-ax1.contourf(X, Y, Z, levels=30, cmap=&quot;Blues_r&quot;, alpha=0.8)
-ax1.contour(X, Y, Z, levels=15, colors=&quot;white&quot;, alpha=0.3, linewidths=0.5)
-ax1.plot(path[:, 0], path[:, 1], &quot;o-&quot;, color=&quot;#f97316&quot;, markersize=4, linewidth=2, label=&quot;GD path&quot;)
-ax1.plot(2, 1, &quot;*&quot;, color=&quot;#10b981&quot;, markersize=15, label=&quot;Minimum&quot;)
-ax1.plot(START[0], START[1], &quot;s&quot;, color=&quot;#ef4444&quot;, markersize=10, label=&quot;Start&quot;)
-ax1.set_title(f&quot;Loss Surface (LR={LEARNING_RATE})&quot;, color=&quot;#e6edf3&quot;, fontsize=11)
-ax1.set_facecolor(&quot;#0d1117&quot;)
-ax1.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;, fontsize=9)
-ax1.tick_params(colors=&quot;#8b949e&quot;)
-for spine in ax1.spines.values():
-    spine.set_color(&quot;#30363d&quot;)
-
-ax2.plot(losses, color=&quot;#6366f1&quot;, linewidth=2)
-ax2.set_xlabel(&quot;Step&quot;, color=&quot;#8b949e&quot;)
-ax2.set_ylabel(&quot;Loss&quot;, color=&quot;#8b949e&quot;)
-ax2.set_title(&quot;Loss vs Steps&quot;, color=&quot;#e6edf3&quot;, fontsize=11)
-ax2.set_facecolor(&quot;#0d1117&quot;)
-ax2.tick_params(colors=&quot;#8b949e&quot;)
-for spine in ax2.spines.values():
-    spine.set_color(&quot;#30363d&quot;)
-
-plt.tight_layout()
-plt.show()
-
-print(f&quot;Final loss: {losses[-1]:.6f}&quot;)
-print(f&quot;Final position: x={path[-1,0]:.4f}, y={path[-1,1]:.4f}&quot;)
-print(&quot;True minimum:   x=2.0000, y=1.0000&quot;)</code></pre></figure>
-<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>After running <code>LEARNING_RATE = 1.5</code> and seeing divergence, answer this: in the hiking analogy, what does a learning rate of 1.5 represent physically? What would happen to a blindfolded hiker who took giant leaps instead of careful steps?</p></div></div>
-<div class="callout tip" role="note"><div class="callout-icon">LR</div><div><div class="callout-title">Key insight</div><p>The learning rate is the most sensitive hyperparameter in neural network training. The default value in Adam optimizer, the most common optimizer, is <code>0.001</code>. This is usually a safe starting point for real networks. Only change it if training is clearly too slow or clearly unstable.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>The curve has small random wiggles but a clear downward trend. The wiggles come from randomness in which training examples each batch contains. What do you think would happen to the wiggles if you used all training data in every batch instead of small random batches? Would they get bigger or smaller? Answer: smaller — but each step would be much slower to compute.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-gd-live">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.4 Gradient Descent</span></a>
-<a class="lesson-nav-btn next" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.6 The Three Knobs &rarr;</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-gradient-descent" data-lesson-link="ch6-gradient-descent"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.4 Layers: The Fix</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.6 Watch It Learn &rarr;</span></a>
 </nav>
 </article>
 
-<article class="lesson-content" data-lesson="ch6-knobs" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
-<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.6 The Three Knobs</div>
-<h1>6.6 The Three Knobs</h1>
-<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<article class="lesson-content exercise-lesson" data-lesson="ch6-knobs" data-chapter="ch6" data-chapter-title="Chapter 6: Neural Networks" style="--chapter-accent:var(--ch6)">
+<div class="lesson-kicker">Chapter 6: Neural Networks <span>&rsaquo;</span> 6.6 Playground: Watch It Learn</div>
+<h1>6.6 &#9733; Playground: Watch It Learn</h1>
+<div class="lesson-meta"><span>Experiment</span><span>18 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.6 The Three Knobs</h3>
-<p>Every neural network training run has three settings you choose before anything starts. These are the three knobs. Getting them right is more art than science, but you can develop intuition by understanding what each one does and watching what happens when you get it wrong. The next lesson is entirely about that.</p>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>Before reading the cards, rank these from most dangerous to least dangerous if set badly: learning rate, epochs, architecture. Keep your ranking nearby and revise it after lesson 6.7.</p></div></div>
-<div class="grid-3 knob-grid">
-<div class="card"><div class="dial-icon"></div><h4>Learning Rate</h4><p>Controls the step size during gradient descent. Too small and training crawls: it might take 10,000 epochs to converge. Too large and the network overshoots the minimum, bounces around, or diverges entirely. You just saw this in lesson 6.5.</p><p>The safe default with the Adam optimizer is <code>0.001</code>. In the next experiment you will use plain gradient descent where <code>0.1</code> is the sweet spot.</p></div>
-<div class="card"><div class="dial-icon"></div><h4>Epochs</h4><p>One epoch means one complete pass through all your training data. Too few epochs and the network has not seen enough examples to learn the pattern: this is called underfitting. Too many epochs and the network memorizes the training examples instead of learning the general pattern: this is called overfitting. You will see both of these failures in lesson 6.9.</p></div>
-<div class="card"><div class="dial-icon"></div><h4>Architecture</h4><p>Architecture means how many layers and how many neurons per layer. A network that is too small does not have enough parameters to represent the pattern in the data. A network that is too large has so many parameters it may memorize every training example instead of generalizing. A common starting architecture for simple problems is two hidden layers with 16 or 32 neurons each.</p></div>
+<p>Lesson 6.5 described gradient descent in words. Now watch it happen. Playground shows the loss graph updating in real time and the decision boundary changing as weights shift. You will run three experiments — each breaks one thing and shows exactly why that setting matters.</p>
+<a class="colab-btn playground-btn" href="https://playground.tensorflow.org" target="_blank" rel="noreferrer">Open TensorFlow Playground</a>
+<h3>Experiment 1 — A healthy training run</h3>
+<p>Set up this exact configuration:</p>
+<div class="steps">
+<div class="step"><div><strong>Dataset:</strong> Circle, the two concentric rings.</div></div>
+<div class="step"><div><strong>Features:</strong> <code>X1</code> and <code>X2</code> only.</div></div>
+<div class="step"><div><strong>Hidden layers:</strong> 1 layer, 4 neurons.</div></div>
+<div class="step"><div><strong>Activation:</strong> <code>ReLU</code>.</div></div>
+<div class="step"><div><strong>Learning rate:</strong> <code>0.03</code>.</div></div>
+<div class="step"><div><strong>Batch size:</strong> <code>10</code>.</div></div>
+<div class="step"><div><strong>Regularization:</strong> None.</div></div>
+<div class="step"><div><strong>Train:</strong> click &#9654; and watch until test loss is below <code>0.05</code>.</div></div>
 </div>
-<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this</div><p>After reading the cards, revise your ranking. Which knob can make training fail immediately? Which knob can look good at first but fail later?</p></div></div>
-<div class="callout tip" role="note"><div class="callout-icon">NEXT</div><div><div class="callout-title">What comes next</div><p>The next lesson gives you a network to fix. Learning rate, epochs, and architecture all change what the model learns. Your job is to adjust one knob at a time and watch the network improve. Predict now: which of the three do you think matters most?</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">OBS</div><div><div class="callout-title">Watch three things simultaneously</div><ol><li>The decision boundary on the right — does it form a circle?</li><li>The loss graph at the top right — does it decrease smoothly?</li><li>The neuron weights in the center — do the line thicknesses change?</li></ol><p>Each of these is showing you a different view of the same process.</p></div></div>
+<h3>Experiment 2 — Learning rate too high</h3>
+<div class="steps">
+<div class="step"><div><strong>Click &#8634; to reset.</strong></div></div>
+<div class="step"><div><strong>Change only the learning rate to <code>3</code>.</strong><br />That is 100x larger than the healthy run.</div></div>
+<div class="step"><div><strong>Click &#9654; and watch for 10 seconds.</strong></div></div>
+</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>What happens to the loss graph? Does it decrease smoothly or oscillate wildly? What does the decision boundary look like? This is the hiking analogy — taking steps so large you leap over the valley and land on the other side.</p></div></div>
+<h3>Experiment 3 — Learning rate too low</h3>
+<div class="steps">
+<div class="step"><div><strong>Click &#8634; to reset.</strong></div></div>
+<div class="step"><div><strong>Change only the learning rate to <code>0.0001</code>.</strong><br />That is 300x smaller than the healthy run.</div></div>
+<div class="step"><div><strong>Click &#9654; and watch for 30 seconds.</strong></div></div>
+</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>How far does the loss decrease after 30 seconds compared to Experiment 1? The network is learning — just extremely slowly. This is why <code>0.0001</code> is rarely used as a starting learning rate.</p></div></div>
+<h3>Experiment 4 — Batch size effect</h3>
+<div class="steps">
+<div class="step"><div><strong>Click &#8634; to reset and restore learning rate to <code>0.03</code>.</strong></div></div>
+<div class="step"><div><strong>Change batch size to <code>1</code>.</strong><br />The network now trains from one example at a time.</div></div>
+<div class="step"><div><strong>Click &#9654; and watch the loss graph specifically.</strong></div></div>
+</div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>The loss graph is now much noisier. Why? Each step is based on only one example instead of 10. One example gives a noisy estimate of the true gradient. How does this compare to the hiking analogy — is this like taking careful measured steps or like stumbling in a random direction each time?</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">KEY</div><div><div class="callout-title">What you just learned</div><p>Learning rate and batch size both affect how gradient descent walks down the loss surface. Learning rate controls step size. Batch size controls how accurately the slope is measured at each step. Neither has a universally correct value — they depend on your specific problem, dataset size, and architecture.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">NEXT</div><div><div class="callout-title">Transition</div><p>The next lesson moves from Playground to a real experiment: training a network from scratch in Python to learn the sin function. You will control all three knobs — learning rate, epochs, and architecture — and watch the effect directly in the training curves and the learned function shape.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-knobs">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.5 Watch Gradient Descent</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-gd-live" data-lesson-link="ch6-gd-live"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.5 How Networks Learn</span></a>
 <a class="lesson-nav-btn next" href="?lesson=ch6-break-fix" data-lesson-link="ch6-break-fix"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.7 Teach sin(x) &rarr;</span></a>
 </nav>
 </article>
@@ -3497,7 +3438,7 @@ print(f&quot;Total parameters: {input_dim*HIDDEN_DIM1 + HIDDEN_DIM1 + HIDDEN_DIM
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-break-fix">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.6 The Three Knobs</span></a>
+<a class="lesson-nav-btn" href="?lesson=ch6-knobs" data-lesson-link="ch6-knobs"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 6.6 Watch It Learn</span></a>
 <a class="lesson-nav-btn next" href="?lesson=ch6-activations" data-lesson-link="ch6-activations"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">6.8 Activation Functions &rarr;</span></a>
 </nav>
 </article>
@@ -11339,7 +11280,7 @@ RIGHT    | L:+11  R:  0</script></figure>
 </nav>
 </article>
   </main>
-  <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"6.0 What Is a Neural Network?","title":"What Is a Neural Network?","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-neuron","label":"6.1 Anatomy of a Neuron","title":"6.1 Anatomy of a Neuron","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-perceptron","label":"6.2 Perceptron Playground","title":"6.2 Experiment: The Perceptron Playground","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-layers","label":"6.3 Layers","title":"6.3 From One Neuron to Many: Layers","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gradient-descent","label":"6.4 Gradient Descent","title":"6.4 How Networks Learn: Gradient Descent","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gd-live","label":"6.5 Watch Gradient Descent","title":"6.5 Experiment: Watch Gradient Descent Live","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-knobs","label":"6.6 The Three Knobs","title":"6.6 The Three Knobs","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-break-fix","label":"6.7 Teach sin(x)","title":"6.7 \u2605 Experiment: Teach a Network to Learn sin(x)","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-activations","label":"6.8 Activation Functions","title":"6.8 Activation Functions","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-overfitting","label":"6.9 Overfitting","title":"6.9 Overfitting and How to Fight It","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-keras","label":"6.10 From NumPy to Keras","title":"6.10 From NumPy to Keras","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-training-curves","label":"6.11 Training Curves","title":"6.11 Reading Training Curves","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-when-to-use","label":"6.12 When to Use Neural Networks","title":"6.12 When to Use Neural Networks","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch7-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-why-vision","label":"7.1 Why Vision Matters","title":"7.1 Why Vision Matters in Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-opencv","label":"7.2 OpenCV","title":"7.2 Tools: OpenCV","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-tensorflow","label":"7.3 TensorFlow/Keras","title":"7.3 Tools: TensorFlow/Keras","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-cnn","label":"7.4 CNNs","title":"7.4 How CNNs See","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-project","label":"7.5 Traffic Sign Project","title":"7.5 Project: Traffic Sign Classifier","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":true},{"id":"ch8-overview","label":"What's Next?","title":"What's Next?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-decision-guide","label":"8.1 Decision Guide","title":"8.1 Which ML Technique Should I Use?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-roadmap","label":"8.2 Roadmap","title":"8.2 Recommended Learning Roadmap","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-papers","label":"8.3 Papers","title":"8.3 Real Robotics ML Papers to Read","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Neural Networks","lessonIds":["ch6-overview","ch6-neuron","ch6-perceptron","ch6-layers","ch6-gradient-descent","ch6-gd-live","ch6-knobs","ch6-break-fix","ch6-activations","ch6-overfitting","ch6-keras","ch6-training-curves","ch6-when-to-use"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: Computer Vision for Robotics","lessonIds":["ch7-overview","ch7-why-vision","ch7-opencv","ch7-tensorflow","ch7-cnn","ch7-project"],"firstLesson":"ch7-overview"},{"key":"ch8","title":"Chapter 8: What's Next?","lessonIds":["ch8-overview","ch8-decision-guide","ch8-roadmap","ch8-papers"],"firstLesson":"ch8-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
+  <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.7 Libraries & Imports","title":"1.7 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.8 Checkpoint Exercise","title":"1.8 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"6.0 What Is a Neural Network?","title":"What Is a Neural Network?","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-neuron","label":"6.1 Meet TF Playground","title":"6.1 Meet TensorFlow Playground","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-perceptron","label":"6.2 Anatomy of a Neuron","title":"6.2 Anatomy of a Neuron","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-layers","label":"6.3 One Neuron Fails","title":"6.3 ★ Playground: One Neuron Fails","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-gradient-descent","label":"6.4 Layers: The Fix","title":"6.4 Layers: The Fix","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gd-live","label":"6.5 How Networks Learn","title":"6.5 How Networks Learn","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-knobs","label":"6.6 Watch It Learn","title":"6.6 ★ Playground: Watch It Learn","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-break-fix","label":"6.7 Teach sin(x)","title":"6.7 \u2605 Experiment: Teach a Network to Learn sin(x)","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-activations","label":"6.8 Activation Functions","title":"6.8 Activation Functions","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-overfitting","label":"6.9 Overfitting","title":"6.9 Overfitting and How to Fight It","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-keras","label":"6.10 From NumPy to Keras","title":"6.10 From NumPy to Keras","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-training-curves","label":"6.11 Training Curves","title":"6.11 Reading Training Curves","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-when-to-use","label":"6.12 When to Use Neural Networks","title":"6.12 When to Use Neural Networks","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch7-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-why-vision","label":"7.1 Why Vision Matters","title":"7.1 Why Vision Matters in Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-opencv","label":"7.2 OpenCV","title":"7.2 Tools: OpenCV","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-tensorflow","label":"7.3 TensorFlow/Keras","title":"7.3 Tools: TensorFlow/Keras","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-cnn","label":"7.4 CNNs","title":"7.4 How CNNs See","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-project","label":"7.5 Traffic Sign Project","title":"7.5 Project: Traffic Sign Classifier","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":true},{"id":"ch8-overview","label":"What's Next?","title":"What's Next?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-decision-guide","label":"8.1 Decision Guide","title":"8.1 Which ML Technique Should I Use?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-roadmap","label":"8.2 Roadmap","title":"8.2 Recommended Learning Roadmap","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-papers","label":"8.3 Papers","title":"8.3 Real Robotics ML Papers to Read","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"project-archive","label":"Student Projects","title":"Student Project Archive","chapter":"projects","chapterTitle":"Student Project Archive","exercise":true}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Neural Networks","lessonIds":["ch6-overview","ch6-neuron","ch6-perceptron","ch6-layers","ch6-gradient-descent","ch6-gd-live","ch6-knobs","ch6-break-fix","ch6-activations","ch6-overfitting","ch6-keras","ch6-training-curves","ch6-when-to-use"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: Computer Vision for Robotics","lessonIds":["ch7-overview","ch7-why-vision","ch7-opencv","ch7-tensorflow","ch7-cnn","ch7-project"],"firstLesson":"ch7-overview"},{"key":"ch8","title":"Chapter 8: What's Next?","lessonIds":["ch8-overview","ch8-decision-guide","ch8-roadmap","ch8-papers"],"firstLesson":"ch8-overview"},{"key":"projects","title":"Student Project Archive","lessonIds":["project-archive"],"firstLesson":"project-archive"}];</script>
   <script>
     const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Project A: Train Your First Detector","exercise":false}];
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-android","label":"PB.1 Android Setup","title":"PB.1 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.2 iPhone Setup","title":"PB.2 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.3 Phone IP Address","title":"PB.3 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.4 Browser Test","title":"PB.4 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.5 Stream Detection","title":"PB.5 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.6 Stream Code","title":"PB.6 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.7 Connect to Project 1","title":"PB.7 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Project B: Your Phone as a Robot Camera","exercise":false}];
