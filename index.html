@@ -3502,8 +3502,12 @@ plt.show()</code></pre></figure>
 <div class="lesson-meta"><span>Beginner</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.9 Overfitting and How to Fight It</h3>
-<p>Training curves tell you whether the network is too weak, about right, or memorizing the training set.</p>
+<p>Imagine you are studying for an exam. You have 10 past papers. You memorize every single answer to every single question on all 10 papers. On exam day the teacher uses a new paper with slightly different questions. You fail - not because you are bad at the subject, but because you memorized instead of understanding.</p>
+<p>Overfitting is exactly this. The network memorizes the training data - every detail, every quirk, every piece of noise - instead of learning the underlying pattern. It performs brilliantly on training examples and terribly on new ones. The training loss drops to near zero. The validation loss gets worse. The network has learned nothing useful.</p>
+<p>Underfitting is the opposite problem. The network is too simple to capture the pattern at all. Both training and validation loss stay high. The network is not even good at the training data. In between these two failure modes is the good fit - where the network has learned the real pattern and generalizes to new data.</p>
+<h3>Seeing the three cases</h3>
+<p>Run the code below. It generates simulated training curves for all three cases side by side. You are looking at loss over epochs: purple is training loss, orange is validation loss.</p>
+<div class="callout exercise-note" role="note"><div class="callout-icon">TRY</div><div><div class="callout-title">Try this before running</div><p>Before running, predict what the overfitting curve looks like. If the network is memorizing the training data, what happens to training loss over time? What about validation loss? Write your prediction, then run.</p></div></div>
 <figure class="code-card" data-runnable="true" data-chapter="6" data-filename="underfit_goodfit_overfit_curves.py"><figcaption>underfit_goodfit_overfit_curves.py</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -3537,11 +3541,38 @@ for ax, (tl, vl), title in zip(
 
 plt.tight_layout()
 plt.show()</code></pre></figure>
+<h3>How to read each curve</h3>
+<p><strong>Underfitting panel:</strong> Both training and validation loss are high and barely decreasing. The network is too simple - it does not have enough parameters to represent the pattern in the data. The cure is a larger network, more epochs, or a higher learning rate. This looks like a student who did not study enough.</p>
+<p><strong>Good Fit panel:</strong> Training loss decreases and levels off. Validation loss follows closely and also levels off at a slightly higher value. The gap between train and validation loss is small and stable. This is what you want. The network learned the real pattern, not the noise.</p>
+<p><strong>Overfitting panel:</strong> Training loss keeps decreasing toward zero - the network is getting better and better on the training data. But validation loss starts decreasing, then turns around and starts going up. This is the signature of overfitting. The moment the validation curve turns upward is when the network stopped learning patterns and started memorizing training examples.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Watch the validation loss</div><p>The validation loss turning upward is the most important signal in all of machine learning. When you see this in your own training runs, stop training immediately and use the weights from before the upturn.</p></div></div>
+<h3>Why does overfitting happen?</h3>
+<p>A network with many parameters has enormous capacity. Given enough training time, it can memorize every individual training example perfectly - including the random noise in the data. A network with 10,000 parameters trained on 100 examples is almost guaranteed to overfit. The network has 100 examples to explain with 10,000 numbers. It has no difficulty at all finding weights that fit the training data exactly.</p>
+<p>Overfitting gets worse as your network gets bigger relative to your dataset size. A good rule of thumb: you need at least 10 to 100 training examples per parameter. A 41-parameter network needs at least a few hundred training examples. A network with 100,000 parameters needs tens of thousands.</p>
+<div class="callout info" role="note"><div class="callout-icon">INFO</div><div><div class="callout-title">The train/val split exists for this reason</div><p>Remember splitting data 80/20 in Chapter 3? The 20% validation set exists specifically to catch overfitting. If you only looked at training loss, you would never know the network was memorizing instead of learning. Validation loss on data the network has never seen is the only honest measure of whether training is working.</p></div></div>
+<h3>Three ways to fight overfitting</h3>
 <div class="grid-3">
-<div class="card"><h4>Dropout</h4><p>Randomly zeros some neurons during training so the model cannot rely on one fragile path. In Keras: <code>Dropout(0.3)</code>.</p></div>
-<div class="card"><h4>Early stopping</h4><p>Stop when validation loss stops improving. The best weights are restored automatically.</p></div>
-<div class="card"><h4>More data</h4><p>Usually the strongest cure if collecting or generating more examples is possible.</p></div>
+<div class="card"><h4>Dropout</h4><p>During training, dropout randomly switches off a percentage of neurons on each forward pass. The network cannot rely on any single neuron because it might be off in the next pass. This forces the network to learn redundant, robust representations instead of fragile memorized paths.</p><p>Think of it like training a sports team where random players sit out each practice. The team cannot rely on one star player - everyone has to be capable.</p><p>In Keras: <code>model.add(Dropout(0.3))</code>. The number <code>0.3</code> means 30% of neurons are randomly zeroed each training step. Use <code>0.2</code> to <code>0.5</code> for hidden layers. Never on the output layer.</p></div>
+<div class="card"><h4>Early Stopping</h4><p>Train until validation loss starts getting worse, then stop and use the weights from the best validation epoch. This is the simplest and often most effective technique.</p><pre><code>early_stop = EarlyStopping(
+    monitor='val_loss',
+    patience=15,
+    restore_best_weights=True
+)
+model.fit(..., callbacks=[early_stop])</code></pre><p><code>patience=15</code> means: wait 15 epochs without improvement before stopping. <code>restore_best_weights=True</code> means the model reverts to its best state automatically - not the final state.</p></div>
+<div class="card"><h4>More Data</h4><p>The most reliable cure. More diverse training examples means the network has to learn the real pattern - it cannot memorize 300 unique examples the way it could memorize 50.</p><p>When you cannot collect more real data, data augmentation creates variations of existing examples: flip, rotate, add noise, scale. This is why YOLO training uses augmentation - it multiplies the effective dataset size without collecting new images.</p><p>Sometimes more data is not possible. Then dropout and early stopping are your best tools.</p></div>
 </div>
+<h3>Watch overfitting happen in Playground</h3>
+<div class="steps">
+<div class="step"><div><strong>Open TensorFlow Playground.</strong><br /><a href="https://playground.tensorflow.org" target="_blank" rel="noreferrer">https://playground.tensorflow.org</a></div></div>
+<div class="step"><div><strong>Dataset:</strong> Circle.</div></div>
+<div class="step"><div><strong>Hidden layers:</strong> 3 layers, 8 neurons each. This is overkill for the circle problem - intentionally too large.</div></div>
+<div class="step"><div><strong>Noise:</strong> set to <code>50</code> to add noise to the data.</div></div>
+<div class="step"><div><strong>Training to test ratio:</strong> set to <code>10</code>. This means only 10% training data, a very small dataset for such a large network.</div></div>
+<div class="step"><div><strong>Train:</strong> click &#9654; and train for several hundred epochs.</div></div>
+</div>
+<div class="callout tip" role="note"><div class="callout-icon">OBS</div><div><div class="callout-title">Observe</div><p>Watch the test loss, the orange line on the graph. Does it decrease steadily, or does it decrease then start rising? The boundary in the right panel probably fits the training data very tightly - too tightly. It is wrapping itself around individual training points, including the noisy ones.</p></div></div>
+<div class="callout exercise-note" role="note"><div class="callout-icon">?</div><div><div class="callout-title">Question</div><p>Now reduce the network to 1 hidden layer with 4 neurons and reset. Does the test loss behave differently? The smaller network cannot memorize - it only has enough capacity to learn the rough circular pattern.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">KEY</div><div><div class="callout-title">The central tension in all of machine learning</div><p>Every neural network sits somewhere on the spectrum from underfitting to overfitting. Too simple and it cannot learn. Too complex and it memorizes. Finding the right point is the core challenge of building ML models. The tools in this lesson - validation loss, dropout, early stopping - are how you navigate that tension in practice.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch6-overfitting">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
