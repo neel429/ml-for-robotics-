@@ -2144,13 +2144,39 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
 <div class="lesson-meta"><span>Beginner</span><span>18 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>4.2 K-Means Deep Dive</h3>
-                <div class="grid-4">
-                  <div class="card"><h4>1. Random initialization</h4><p>Place K centroids at random positions in feature space. These starting positions are guesses: the algorithm corrects them over the next steps. The quality of the final result can depend on where centroids start, which is why most implementations run K-Means multiple times with different random starts and keep the best result. scikit-learn's <code>n_init="auto"</code> handles this automatically.</p></div>
-                  <div class="card"><h4>2. Assign</h4><p>Calculate the distance from every data point to every centroid. Assign each point to its closest centroid. All points assigned to the same centroid form one cluster. After this step every point belongs to exactly one cluster.</p></div>
-                  <div class="card"><h4>3. Recompute</h4><p>Move each centroid to the mean position of all points currently assigned to it. If cluster 1 contains 50 points, its new centroid is the average position of those 50 points. This is where the word Means in K-Means comes from.</p></div>
-                  <div class="card"><h4>4. Converge</h4><p>Repeat assign and recompute until no point changes its cluster between iterations. At this point centroids have settled and the algorithm has converged. This is guaranteed to happen but is not guaranteed to find the globally best solution: only a local one.</p></div>
-                </div>
+
+  <!-- ── What is K-Means ──────────────────────────────────────────── -->
+  <h3>What is K-Means?</h3>
+  <p>K-Means is an algorithm that automatically groups data points into <strong>K clusters</strong> — where each cluster contains points that are similar to each other and different from the other groups. You do not tell it what the groups mean; it finds the groupings on its own just from the numbers.</p>
+
+  <div class="callout tip" role="note">
+    <div class="callout-icon">💡</div>
+    <div><div class="callout-title">Real-world analogy</div>
+    <p>Imagine you tip a bag of mixed marbles onto a table — red, blue, and green ones all mixed together. You do not know how many colours are in the bag, so you pick 3 spots on the table as starting piles and then slide each marble to whichever pile it is closest to. After one pass you recalculate the centre of each pile and repeat. After a few passes the marbles have naturally sorted themselves by colour. That is K-Means.</p>
+    </div>
+  </div>
+
+  <p>In robotics this is useful whenever you have sensor readings but no labels — for example, grouping vibration patterns to discover which ones tend to precede a failure, without anyone having hand-labelled the data first.</p>
+
+  <div class="diagram" aria-label="K-Means concept overview">
+    <div class="flow-row">
+      <div class="flow-node">Unlabelled<br/>sensor data</div><div class="arrow">→</div>
+      <div class="flow-node">K-Means<br/>(you choose K)</div><div class="arrow">→</div>
+      <div class="flow-node">K groups of<br/>similar readings</div><div class="arrow">→</div>
+      <div class="flow-node">Inspect &amp;<br/>interpret</div>
+    </div>
+  </div>
+
+  <!-- ── How it works ─────────────────────────────────────────────── -->
+  <h3>How K-Means works — step by step</h3>
+  <p>The algorithm repeats two simple operations until nothing changes. You choose <strong>K</strong> (the number of clusters) before it starts — the rest is automatic.</p>
+
+  <div class="grid-4">
+    <div class="card"><h4>1. Random initialization</h4><p>Place K centroids at random positions in feature space. These starting positions are guesses: the algorithm corrects them over the next steps. The quality of the final result can depend on where centroids start, which is why most implementations run K-Means multiple times with different random starts and keep the best result. scikit-learn's <code>n_init="auto"</code> handles this automatically.</p></div>
+    <div class="card"><h4>2. Assign</h4><p>Calculate the distance from every data point to every centroid. Assign each point to its closest centroid. All points assigned to the same centroid form one cluster. After this step every point belongs to exactly one cluster.</p></div>
+    <div class="card"><h4>3. Recompute</h4><p>Move each centroid to the mean position of all points currently assigned to it. If cluster 1 contains 50 points, its new centroid is the average position of those 50 points. This is where the word <em>Means</em> in K-Means comes from.</p></div>
+    <div class="card"><h4>4. Converge</h4><p>Repeat assign and recompute until no point changes its cluster between iterations. At this point centroids have settled and the algorithm has converged. This is guaranteed to happen but is not guaranteed to find the globally best solution: only a local one.</p></div>
+  </div>
                 <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="kmeans_converge_step_by_step.py"><figcaption>Run to see K-Means converge step by step</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
