@@ -2,7 +2,6 @@
   let pyodide = null;
   const chapterNamespaces = {};
   const resetSessions = new Set();
-  const colabUrl = "https://colab.research.google.com/";
   const colabOnlyPatterns = [
     /import\s+tensorflow/i,
     /from\s+tensorflow/i,
@@ -505,7 +504,7 @@ _result
           ${downloadFilename ? `<button class="download-code-btn" type="button" data-download-filename="${escapeHtml(downloadFilename)}" title="Download code">Download</button>` : ""}
           ${runnable ? `<button class="reset-code-btn" type="button" title="Reset this code cell to the original example">↺ Reset</button>` : ""}
           ${runnable ? `<button class="run-btn" type="button" data-chapter="${escapeHtml(chapter)}" data-session="${escapeHtml(session)}">Run</button>` : ""}
-          ${colabOnly ? `<a class="colab-inline-btn" href="${colabUrl}" target="_blank" rel="noreferrer"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a><span class="colab-reason" title="This cell needs Google Colab or unsupported browser packages.">Run in Colab</span>` : ""}
+          ${colabOnly ? `<span class="colab-reason" title="This cell needs Google Colab or unsupported browser packages.">Colab-only code</span>` : ""}
         </div>
       </div>
       ${

@@ -3067,8 +3067,7 @@ body.lesson-app .copy-btn,
 body.lesson-app .download-code-btn,
 body.lesson-app .run-btn,
 body.lesson-app .reset-code-btn,
-body.lesson-app .reset-chapter-btn,
-body.lesson-app .colab-inline-btn {
+body.lesson-app .reset-chapter-btn {
   border-radius: 6px;
   padding: 4px 10px;
   font-size: 0.8rem;
@@ -3120,19 +3119,6 @@ body.lesson-app .run-btn:disabled {
   background: #1e2a1e;
   color: #6e7f6e;
   cursor: not-allowed;
-}
-
-body.lesson-app .colab-inline-btn {
-  display: inline-flex;
-  align-items: center;
-  background: transparent;
-  border: 0;
-  padding: 0;
-}
-
-body.lesson-app .colab-inline-btn img {
-  height: 22px;
-  vertical-align: middle;
 }
 
 body.lesson-app .editor-shell,
