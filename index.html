@@ -1729,13 +1729,13 @@ print("After: ", X_train_scaled[0].round(3))</code></pre></figure>
 
   <!-- ── Kaggle setup ────────────────────────────────────────────── -->
   <h3>Step 0 — Get the data (Kaggle setup)</h3>
-  <p>The dataset lives on Kaggle, a free platform that hosts machine learning datasets. You need a free account and a one-time token so that Colab can download it for you. This only takes two minutes.</p>
+  <p>The dataset lives on Kaggle, a free platform that hosts machine learning datasets. You need a free account and a one-time legacy API key so that Colab can download it for you. This only takes two minutes.</p>
   <div class="steps">
     <div class="step"><div><strong>Go to Kaggle and sign in.</strong><br />Open <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a> and sign in (or create a free account).</div></div>
     <div class="step"><div><strong>Open Settings.</strong><br />Click your profile picture in the top-right corner, then click <strong>Settings</strong>.</div></div>
-    <div class="step"><div><strong>Create a token.</strong><br />Scroll down to the <strong>API</strong> section and click <strong>Create New Token</strong>. A small dialog will appear.</div></div>
-    <div class="step"><div><strong>Copy the token text.</strong><br />The dialog shows a short block of text that looks like <code>{"username":"…","key":"…"}</code>. Click <strong>Copy</strong>.</div></div>
-    <div class="step"><div><strong>Keep it ready.</strong><br />You will paste this text into the first Colab cell. The notebook will ask for it with a password-style prompt.</div></div>
+    <div class="step"><div><strong>Create a Legacy API Key.</strong><br />Scroll down to the <strong>API</strong> section. Look for the <strong>Legacy API</strong> sub-section and click <strong>Create New Legacy API Key</strong>. This is important — a regular API key does not download a JSON file, and the JSON is what the Kaggle CLI needs.</div></div>
+    <div class="step"><div><strong>Open the downloaded file.</strong><br />Your browser automatically downloads a file called <code>kaggle.json</code>. Open it in any text editor — it contains a short line that looks like <code>{"username":"…","key":"…"}</code>. Select and copy that entire line.</div></div>
+    <div class="step"><div><strong>Keep it ready.</strong><br />You will paste that copied text into the first Colab cell. The notebook will ask for it with a password-style prompt.</div></div>
   </div>
   <div class="callout tip" role="note">
     <div class="callout-icon">💡</div>
