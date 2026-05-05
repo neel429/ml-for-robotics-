@@ -3558,7 +3558,10 @@ plt.show()</code></pre></figure>
     patience=15,
     restore_best_weights=True
 )
-model.fit(..., callbacks=[early_stop])</code></pre><p><code>patience=15</code> means: wait 15 epochs without improvement before stopping. <code>restore_best_weights=True</code> means the model reverts to its best state automatically - not the final state.</p></div>
+model.fit(
+    X_train, y_train,
+    callbacks=[early_stop]
+)</code></pre><p><code>patience=15</code> means: wait 15 epochs without improvement before stopping. <code>restore_best_weights=True</code> means the model reverts to its best state automatically - not the final state.</p></div>
 <div class="card"><h4>More Data</h4><p>The most reliable cure. More diverse training examples means the network has to learn the real pattern - it cannot memorize 300 unique examples the way it could memorize 50.</p><p>When you cannot collect more real data, data augmentation creates variations of existing examples: flip, rotate, add noise, scale. This is why YOLO training uses augmentation - it multiplies the effective dataset size without collecting new images.</p><p>Sometimes more data is not possible. Then dropout and early stopping are your best tools.</p></div>
 </div>
 <h3>Watch overfitting happen in Playground</h3>
