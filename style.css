@@ -1785,6 +1785,29 @@ body.lesson-app .data-table {
   border: 1px solid #30363d;
 }
 
+body.lesson-app .card {
+  min-width: 0;
+}
+
+body.lesson-app .card pre {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: pre;
+  font-size: 0.68rem;
+  line-height: 1.55;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.lesson-app .card pre code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  white-space: pre;
+  font-size: inherit;
+}
+
 html.light-mode body.lesson-app .card,
 html.light-mode body.lesson-app .toc-group,
 html.light-mode body.lesson-app .expected,

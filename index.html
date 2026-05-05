@@ -3553,14 +3553,15 @@ plt.show()</code></pre></figure>
 <h3>Three ways to fight overfitting</h3>
 <div class="grid-3">
 <div class="card"><h4>Dropout</h4><p>During training, dropout randomly switches off a percentage of neurons on each forward pass. The network cannot rely on any single neuron because it might be off in the next pass. This forces the network to learn redundant, robust representations instead of fragile memorized paths.</p><p>Think of it like training a sports team where random players sit out each practice. The team cannot rely on one star player - everyone has to be capable.</p><p>In Keras: <code>model.add(Dropout(0.3))</code>. The number <code>0.3</code> means 30% of neurons are randomly zeroed each training step. Use <code>0.2</code> to <code>0.5</code> for hidden layers. Never on the output layer.</p></div>
-<div class="card"><h4>Early Stopping</h4><p>Train until validation loss starts getting worse, then stop and use the weights from the best validation epoch. This is the simplest and often most effective technique.</p><pre><code>early_stop = EarlyStopping(
+<div class="card"><h4>Early Stopping</h4><p>Train until validation loss starts getting worse, then stop and use the weights from the best validation epoch. This is the simplest and often most effective technique.</p><pre><code>stop = EarlyStopping(
     monitor='val_loss',
     patience=15,
     restore_best_weights=True
 )
 model.fit(
-    X_train, y_train,
-    callbacks=[early_stop]
+    X_train,
+    y_train,
+    callbacks=[stop]
 )</code></pre><p><code>patience=15</code> means: wait 15 epochs without improvement before stopping. <code>restore_best_weights=True</code> means the model reverts to its best state automatically - not the final state.</p></div>
 <div class="card"><h4>More Data</h4><p>The most reliable cure. More diverse training examples means the network has to learn the real pattern - it cannot memorize 300 unique examples the way it could memorize 50.</p><p>When you cannot collect more real data, data augmentation creates variations of existing examples: flip, rotate, add noise, scale. This is why YOLO training uses augmentation - it multiplies the effective dataset size without collecting new images.</p><p>Sometimes more data is not possible. Then dropout and early stopping are your best tools.</p></div>
 </div>
