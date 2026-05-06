@@ -1554,7 +1554,8 @@ print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</cod
 
 <div class="lesson-body">
 <h3>3.1 Concept: Classification & Regression</h3>
-                <p>In <strong>classification</strong>, the model predicts a category, such as <code>failure</code> or <code>normal</code>. In <strong>regression</strong>, the model predicts a number, such as remaining useful life in hours.</p>
+                <p>Every supervised learning problem falls into one of two types. <strong>Classification</strong> predicts a category - the machine either failed or it did not, the email is spam or it is not, the image shows a cat or a dog. The answer is always one choice from a fixed list. <strong>Regression</strong> predicts a number - how many hours until the machine fails, what the temperature will be tomorrow, how fast the robot should move. The answer can be any value on a continuous scale.</p>
+                <p>In this chapter the problem is classification: given five sensor readings from a CNC machine, predict whether the machine is about to fail. The correct answer for each row of training data is already known - an engineer labeled it. The model learns by seeing thousands of <strong>sensor readings &rarr; failure/normal</strong> pairs and adjusting its internal numbers until it can predict the label from the sensors alone.</p>
                 <div class="diagram">
                   <div class="flow-row" aria-label="Supervised learning loop">
                     <div class="flow-node">Input features</div><div class="arrow">→</div>
@@ -1563,16 +1564,28 @@ print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</cod
                   </div>
                 </div>
                 <div class="grid-2">
-                  <div class="card"><h4>Features</h4><p class="muted">The inputs: air temperature, process temperature, rotational speed, torque, and tool wear.</p></div>
-                  <div class="card"><h4>Labels</h4><p class="muted">The answer we want to predict: failure or no failure.</p></div>
+                  <div class="card"><h4>Features</h4><p class="muted">The five input columns the model uses to make its prediction: air temperature (K), process temperature (K), rotational speed (rpm), torque (Nm), and tool wear (min). Each row in the dataset is one moment in time - a snapshot of what the machine was doing. These are the inputs. The model sees these numbers and must output a prediction.</p></div>
+                  <div class="card"><h4>Labels</h4><p class="muted">The column the model is trying to predict: Machine failure (0 = normal, 1 = failed). This is what a human engineer already knows for every row in the training set. The model learns by comparing its prediction to this true label and adjusting until the two agree. At prediction time on new data, this column does not exist - the model must infer it from the features alone.</p></div>
                 </div>
-                <p>We split training and test data because the model must prove it can handle examples it did not memorize. Overfitting is like memorizing exam answers instead of understanding the material.</p>
+                <h3>Why we split into training and test sets</h3>
+                <p>You cannot evaluate a model on the same data it learned from. A student who memorizes every past exam paper will score 100% when given those same papers again - but will fail on a new exam because they memorized answers instead of understanding the subject. A model has the same failure mode. If you train and evaluate on the same data, the model looks perfect. On new real-world data it fails completely.</p>
+                <p>The solution is to hide some data before training starts. The training set (typically 80% of the data) is what the model learns from. The test set (20%) is sealed away and only used once at the very end to evaluate true performance. The test score is the only honest measure of whether the model actually learned the pattern or just memorized the training examples.</p>
+                <div class="callout info" role="note"><div class="callout-icon">INFO</div><div><div class="callout-title">The 80/20 split is a starting point, not a rule</div><p>With 10,000 rows, like the AI4I dataset, 2,000 test rows gives a reliable estimate. With only 200 rows, you might use 90/10. With millions of rows you might use 99/1 - 10,000 test rows is already plenty for a reliable estimate. Match the split to your dataset size, not to a fixed percentage.</p></div></div>
+                <h3>How do you measure if a model is good?</h3>
+                <p>The obvious answer is accuracy - what percentage of predictions were correct? But accuracy is dangerously misleading for imbalanced datasets. The AI4I dataset has about 3.4% failures and 96.6% normal readings. A model that always predicts <code>normal</code> achieves 96.6% accuracy - while catching exactly zero failures. That model is completely useless. You need better metrics.</p>
                 <div class="grid-4">
-                  <div class="card"><h4>Accuracy</h4><p class="mini muted">Overall percent correct.</p></div>
-                  <div class="card"><h4>Precision</h4><p class="mini muted">When the model says failure, how often is it right?</p></div>
-                  <div class="card"><h4>Recall</h4><p class="mini muted">Of all true failures, how many did it catch?</p></div>
-                  <div class="card"><h4>F1-score</h4><p class="mini muted">A balance between precision and recall.</p></div>
+                  <div class="card"><h4>Accuracy</h4><p class="mini muted"><code>Accuracy = correct predictions / total predictions</code></p><p class="mini muted">Correct predictions means: predicted normal and was normal, or predicted failure and was failure. Misleading when one class is much rarer than the other. A model predicting <code>normal</code> every time on AI4I gets 96.6% accuracy with zero engineering value. Use accuracy only when your classes are roughly balanced.</p></div>
+                  <div class="card"><h4>Precision</h4><p class="mini muted"><code>Precision = TP / (TP + FP)</code></p><p class="mini muted">Of every time the model said <code>failure</code>, how often was it actually a failure? High precision means few false alarms. A factory floor wants high precision: if the model constantly cries wolf, engineers stop trusting it and ignore real alerts. Low precision means the maintenance team gets called out for nothing.</p></div>
+                  <div class="card"><h4>Recall</h4><p class="mini muted"><code>Recall = TP / (TP + FN)</code></p><p class="mini muted">Of every actual failure that happened, how many did the model catch? High recall means few missed failures. A factory wants high recall: missing a real failure means an unexpected breakdown, downtime, and cost. Low recall means failures slip through undetected. Also called sensitivity or true positive rate.</p></div>
+                  <div class="card"><h4>F1-score</h4><p class="mini muted"><code>F1 = 2 &times; (precision &times; recall) / (precision + recall)</code></p><p class="mini muted">The harmonic mean of precision and recall. It is low if either precision or recall is low - you cannot fake a good F1 score by sacrificing one for the other. For imbalanced classification problems like failure prediction, F1 is the headline metric. A model with F1 = 0.85 is genuinely catching most failures without too many false alarms. Use this as your primary target.</p></div>
                 </div>
+                <h3>The precision-recall tradeoff</h3>
+                <p>Precision and recall pull in opposite directions. If you lower the model's decision threshold - predicting <code>failure</code> more aggressively - you catch more real failures, so recall goes up, but also trigger more false alarms, so precision goes down. If you raise the threshold - predicting <code>failure</code> only when very confident - false alarms drop, so precision goes up, but some real failures are missed, so recall goes down.</p>
+                <p>Which matters more depends on the cost of each mistake. For a medical diagnosis, missing a real disease is far worse than a false alarm that leads to an unnecessary test. For a spam filter, a false alarm, meaning a real email marked as spam, might be worse than missing some spam. For predictive maintenance, most engineers weight recall more heavily - a missed breakdown costs more than an unnecessary maintenance check.</p>
+                <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Do not optimize accuracy alone</div><p>Never optimize for accuracy alone on an imbalanced dataset. Always report precision, recall, and F1.</p></div></div>
+                <h3>The confusion matrix</h3>
+                <p>The confusion matrix shows all four possible outcomes of a binary classifier in one table. Every prediction the model makes falls into exactly one of the four cells. Reading the matrix tells you not just how accurate the model is but exactly what kind of mistakes it makes - and the two types of mistakes have very different consequences.</p>
+                <p>Rows represent what actually happened. Columns represent what the model predicted. The diagonal, top-left and bottom-right, is where the model was right. The off-diagonal, top-right and bottom-left, is where it was wrong.</p>
                 <div class="table-wrap">
                   <table class="data-table" aria-label="Confusion matrix diagram">
                     <thead><tr><th></th><th>Predicted Normal</th><th>Predicted Failure</th></tr></thead>
@@ -1582,6 +1595,21 @@ print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</cod
                     </tbody>
                   </table>
                 </div>
+                <h3>Reading metrics from the matrix</h3>
+                <div class="definition-card metric-formula-list" aria-label="Metric formulas from a confusion matrix">
+                  <span class="def-term">Let:</span>
+                  <p><code>TP</code> = True Positives (bottom-right cell)</p>
+                  <p><code>TN</code> = True Negatives (top-left cell)</p>
+                  <p><code>FP</code> = False Positives (top-right cell - false alarm)</p>
+                  <p><code>FN</code> = False Negatives (bottom-left cell - missed failure)</p>
+                  <span class="def-term">Then:</span>
+                  <p><code>Accuracy</code> = (<code>TP</code> + <code>TN</code>) / (<code>TP</code> + <code>TN</code> + <code>FP</code> + <code>FN</code>)</p>
+                  <p><code>Precision</code> = <code>TP</code> / (<code>TP</code> + <code>FP</code>)</p>
+                  <p><code>Recall</code> = <code>TP</code> / (<code>TP</code> + <code>FN</code>)</p>
+                  <p><code>F1</code> = 2 &times; <code>TP</code> / (2 &times; <code>TP</code> + <code>FP</code> + <code>FN</code>)</p>
+                </div>
+                <div class="callout tip" role="note"><div class="callout-icon">NUM</div><div><div class="callout-title">Concrete numbers</div><p>Say your model evaluates on 2,000 test rows: 1,932 normal readings and 68 failure readings.</p><p>The model predicts: <code>TN = 1920</code> correctly said normal, <code>TP = 45</code> correctly caught failures, <code>FP = 12</code> false alarms, and <code>FN = 23</code> missed failures.</p><p>Then: <code>Accuracy = (1920+45) / 2000 = 98.25%</code>, which looks great but is misleading. <code>Precision = 45 / (45+12) = 78.9%</code>. <code>Recall = 45 / (45+23) = 66.2%</code>, meaning the model catches only about two-thirds of failures. <code>F1 = 2&times;45 / (90+35) = 72.0%</code>.</p><p>The accuracy of 98.25% sounds excellent. But the recall of 66.2% means one in three real failures is being missed completely. This is why you always look at the full confusion matrix.</p></div></div>
+                <div class="callout robotics" role="note"><div class="callout-icon">BOT</div><div><div class="callout-title">Why this matters for robot maintenance</div><p>A robot that breaks down unexpectedly stops production. An engineer who gets 50 false alarms per day stops trusting the system and turns it off. The precision-recall tradeoff is not an abstract mathematical concept - it is a real engineering decision with real costs on both sides. The model you build in the next section will need to balance these two failure modes for the specific cost structure of your use case.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-classification-regression">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">

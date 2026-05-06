@@ -1834,6 +1834,25 @@ body.lesson-app .def-term {
   color: var(--text-primary);
 }
 
+body.lesson-app .metric-formula-list {
+  display: grid;
+  gap: 0.35rem;
+  overflow-x: auto;
+}
+
+body.lesson-app .metric-formula-list .def-term {
+  margin-top: 0.7rem;
+}
+
+body.lesson-app .metric-formula-list .def-term:first-child {
+  margin-top: 0;
+}
+
+body.lesson-app .metric-formula-list p {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
 body.lesson-app .step {
   display: flex;
   gap: 16px;
