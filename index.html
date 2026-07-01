@@ -247,6 +247,10 @@
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 4: Pan-Tilt Ball Tracker</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body"><a class="lesson-link is-exercise" href="?lesson=proj4-overview" data-lesson-link="proj4-overview"><span>* P4.0 What You Are Building</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-servo" data-lesson-link="proj4-servo"><span>P4.1 Servo Motors</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-mechanism" data-lesson-link="proj4-mechanism"><span>P4.2 Pan-Tilt Mechanism</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-get-code" data-lesson-link="proj4-get-code"><span>P4.3 Get the Code</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-arduino" data-lesson-link="proj4-arduino"><span>P4.4 Arduino Sketch</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-protocol" data-lesson-link="proj4-protocol"><span>P4.5 SERVO Protocol</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-config" data-lesson-link="proj4-config"><span>P4.6 Configuration</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-velocity-pid" data-lesson-link="proj4-velocity-pid"><span>P4.7 Velocity PID</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-tracker-class" data-lesson-link="proj4-tracker-class"><span>P4.8 PanTiltTracker</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-dual-pid" data-lesson-link="proj4-dual-pid"><span>P4.9 Two PIDs</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-main-loop" data-lesson-link="proj4-main-loop"><span>P4.10 Main Loop</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-running" data-lesson-link="proj4-running"><span>P4.11 Running</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj4-dots" data-lesson-link="proj4-dots"><span>P4.12 Connecting Dots</span><span class="completion-dot" aria-hidden="true"></span></a></div>
 </div>
+<div class="lesson-group" data-chapter="proj5" style="--chapter-accent:#22c55e">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 5: Color-Seeking Robot</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body"><a class="lesson-link is-exercise" href="?lesson=proj5-overview" data-lesson-link="proj5-overview"><span>* P5.0 What You Are Building</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj5-get-code" data-lesson-link="proj5-get-code"><span>P5.0b Get the Code</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj5-hsv" data-lesson-link="proj5-hsv"><span>P5.1 HSV Color Detection</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj5-state" data-lesson-link="proj5-state"><span>P5.2 Seek-and-Approach</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj5-main" data-lesson-link="proj5-main"><span>P5.3 Config and Main Loop</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj5-running" data-lesson-link="proj5-running"><span>P5.4 Running and Tuning</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=proj5-dots" data-lesson-link="proj5-dots"><span>P5.5 Connecting the Dots</span><span class="completion-dot" aria-hidden="true"></span></a></div>
+</div>
 </nav>
 </aside>
   <main class="content-panel" id="contentPanel" tabindex="-1">
@@ -401,6 +405,14 @@
 <p>Use YOLO and two velocity-mode PID loops to center a ball by rotating a camera with servos.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="proj4">0 / 13 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=proj4-overview" data-lesson-link="proj4-overview">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="proj5" style="--chapter-accent:#22c55e">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Project 5</span><span>7 lessons</span></div>
+<h2>Color-Seeking Robot</h2>
+<p>Find an object by its color with OpenCV sliders, then drive up to it and stop &mdash; reusing Exercises B, C, and D.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="proj5">0 / 7 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=proj5-overview" data-lesson-link="proj5-overview">Start</a>
 </article>
 </section>
 </article>
@@ -14163,7 +14175,496 @@ sock.close()</script></figure>
 </div>
 <div class="callout robotics" role="note"><div class="callout-icon">BOT</div><div><div class="callout-title">Robotics connection</div><p>The same architecture appears in security cameras, telescope mounts, drone gimbals, and target-tracking camera systems: detect the target, compute image error, update angles, repeat.</p></div></div></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj4-dots">Mark as Complete</button></div>
-<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj4-running" data-lesson-link="proj4-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P4.11 Running</span></a><span></span></nav>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj4-running" data-lesson-link="proj4-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P4.11 Running</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-overview" data-lesson-link="proj5-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 5 &rarr;</span></a></nav>
+</article>
+
+<article class="lesson-content exercise-lesson" data-lesson="proj5-overview" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.0 What You Are Building</div>
+<h1>P5.0 What You Are Building</h1>
+<div class="lesson-meta"><span>Project</span><span>OpenCV + UDP</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">This project ties Exercises B, C, and D into one autonomous behavior: a two-wheel robot with a phone camera scans the room for an object of a chosen color, drives toward it, and stops a safe distance away. You pick the object purely by its color, tuning the match live with sliders.</p>
+<div class="diagram" aria-label="Color seeking pipeline">
+<div class="flow-row">
+<div class="flow-node">Phone camera<br /><small>MJPEG (Exercise B)</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">HSV threshold<br /><small>sliders pick the color</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">State machine<br /><small>search / center / approach</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">MOTOR commands<br /><small>UDP (Exercise D)</small></div>
+</div>
+</div>
+<h3>What It Does</h3>
+<div class="diagram" aria-label="State machine">
+<div class="flow-row">
+<div class="flow-node">SEARCH<br /><small>spin, scan the room</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">CENTER<br /><small>turn to face it</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">APPROACH<br /><small>drive forward</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">ARRIVED<br /><small>stop at a safe distance</small></div>
+</div>
+</div>
+<h3>What It Reuses From Exercises A&ndash;D</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>From</th><th>What you reuse</th></tr></thead><tbody>
+<tr><td>Exercise B</td><td>The phone MJPEG stream and the threaded <code>MobileVideoStream</code> reader.</td></tr>
+<tr><td>Exercise C</td><td>The two-wheel encoder-motor robot, driven differentially (turn = wheels opposite; forward = wheels together).</td></tr>
+<tr><td>Exercise D</td><td>The unchanged <code>robot_udp.ino</code> firmware and the <code>MOTOR,left,right</code> / <code>STOP</code> UDP protocol.</td></tr>
+</tbody></table></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Where is Exercise A?</div><p>Exercise A trained a YOLO model to recognize an object. Here we instead find the object by <strong>color</strong> using classical OpenCV (the same family of tools as Project 2&apos;s lane follower). It is simpler and needs no training &mdash; but if you want, the detector is a single function you could later swap for your YOLO model from Exercise A.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Safety first</div><p>This robot drives itself. Test in an open area, keep speeds low, and keep the wheels lifted until you have confirmed the color match and the STOP behavior.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj4-dots" data-lesson-link="proj4-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P4.12 Connecting Dots</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-get-code" data-lesson-link="proj5-get-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.0b Get the Code &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="proj5-get-code" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.0b Get the Code</div>
+<h1>P5.0b Get the Code</h1>
+<div class="lesson-meta"><span>Setup</span><span>Files</span><span>6 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">You need one new Python file plus the Arduino setup you already built in Exercise D. Nothing on the robot changes.</p>
+<div class="grid-2">
+<article class="card"><h3>color_seeker.py</h3><p>The new brain: phone stream, HSV detection, state machine, and UDP commands. You will build it across the next three lessons.</p></article>
+<article class="card"><h3>robot_udp.ino + wifi_helper.h + arduino_secrets.h</h3><p>Unchanged from Exercise D. Keep them uploaded to the UNO R4 WiFi exactly as they are.</p></article>
+</div>
+<h3>Install the Python Libraries</h3>
+<figure class="code-card" data-runnable="false" data-chapter="proj5" data-filename="terminal" data-lang="text"><figcaption><span>Terminal</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">pip install opencv-python numpy requests</script></figure>
+<h3>Before You Start, Confirm</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="proj5-phone" />The phone stream opens in a browser (Exercise B), and you know its <code>/video</code> URL.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj5-arduino" />The Exercise D robot drives from <code>robot_keyboard.py</code> over UDP.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="proj5-ip" />You know the Arduino IP (Serial Monitor) and the phone stream URL.</label></div>
+</div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-get-code">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-overview" data-lesson-link="proj5-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.0 What You Are Building</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-hsv" data-lesson-link="proj5-hsv"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.1 HSV Color Detection &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="proj5-hsv" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.1 Detecting Color with HSV Sliders</div>
+<h1>P5.1 Detecting Color with HSV Sliders</h1>
+<div class="lesson-meta"><span>OpenCV</span><span>HSV</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">A color is hard to describe in the usual Blue-Green-Red (BGR) values a camera gives, because brightness changes all three numbers at once. <strong>HSV</strong> &mdash; Hue, Saturation, Value &mdash; separates the actual color (hue) from how vivid it is (saturation) and how bright it is (value), which makes a single color far easier to isolate.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Channel</th><th>Meaning</th><th>Range (OpenCV)</th></tr></thead><tbody>
+<tr><td><strong>H</strong>ue</td><td>The color itself (red, green, blue&hellip;)</td><td>0&ndash;179</td></tr>
+<tr><td><strong>S</strong>aturation</td><td>How pure / vivid the color is</td><td>0&ndash;255</td></tr>
+<tr><td><strong>V</strong>alue</td><td>How bright it is</td><td>0&ndash;255</td></tr>
+</tbody></table></div>
+<p>We convert each frame to HSV, then keep only the pixels whose H, S, and V fall between a lower and upper bound. Six sliders let you tune those bounds live until only your object lights up.</p>
+<figure class="code-card" data-runnable="false" data-chapter="proj5" data-filename="color_seeker.py" data-lang="python"><figcaption><span>HSV sliders and the detector</span><span class="local-run-badge">Run locally</span></figcaption><script type="text/plain" class="code-source">def _noop(_):
+    pass
+
+# Create the three windows and arrange them so they do not overlap.
+cv2.namedWindow("Controls", cv2.WINDOW_NORMAL); cv2.resizeWindow("Controls", 330, 360); cv2.moveWindow("Controls", 0, 0)
+cv2.namedWindow("Robot View", cv2.WINDOW_NORMAL); cv2.resizeWindow("Robot View", 520, 390); cv2.moveWindow("Robot View", 350, 0)
+cv2.namedWindow("Mask", cv2.WINDOW_NORMAL); cv2.resizeWindow("Mask", 520, 390); cv2.moveWindow("Mask", 350, 450)
+
+# Six HSV sliders (yellow defaults), plus a Lock toggle: 0 = tune, 1 = lock and go.
+cv2.createTrackbar("H min", "Controls", 20, 179, _noop)
+cv2.createTrackbar("H max", "Controls", 35, 179, _noop)
+cv2.createTrackbar("S min", "Controls", 100, 255, _noop)
+cv2.createTrackbar("S max", "Controls", 255, 255, _noop)
+cv2.createTrackbar("V min", "Controls", 100, 255, _noop)
+cv2.createTrackbar("V max", "Controls", 255, 255, _noop)
+cv2.createTrackbar("Lock", "Controls", 0, 1, _noop)
+
+def hsv_bounds():
+    g = lambda n: cv2.getTrackbarPos(n, "Controls")
+    return (np.array([g("H min"), g("S min"), g("V min")]),
+            np.array([g("H max"), g("S max"), g("V max")]))
+
+def find_object(frame, lower, upper):
+    """Largest blob within the HSV range -> (cx, area, box, mask)."""
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower, upper)
+    mask = cv2.erode(mask, None, iterations=2)
+    mask = cv2.dilate(mask, None, iterations=2)
+
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return None, 0, None, mask
+
+    biggest = max(contours, key=cv2.contourArea)   # the one object we track
+    area = cv2.contourArea(biggest)
+    if area < MIN_AREA:
+        return None, 0, None, mask
+
+    x, y, w, h = cv2.boundingRect(biggest)
+    return x + w // 2, area, (x, y, w, h), mask</script></figure>
+<table class="code-anatomy">
+  <thead><tr><th>Line</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>cv2.createTrackbar(...)</code></td><td>Adds a slider to the "Controls" window. Six of them give a live lower/upper bound for H, S, V.</td></tr>
+    <tr><td><code>cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)</code></td><td>Converts the camera frame from BGR to HSV so color can be separated from brightness.</td></tr>
+    <tr><td><code>cv2.inRange(hsv, lower, upper)</code></td><td>Builds a black-and-white mask: white where the pixel color is inside your slider range.</td></tr>
+    <tr><td><code>erode</code> then <code>dilate</code></td><td>Cleans the mask: erode removes stray speckles, dilate fills small gaps in the blob.</td></tr>
+    <tr><td><code>findContours</code> + <code>max(..., key=cv2.contourArea)</code></td><td>Finds blobs and keeps the largest one &mdash; assumed to be your object.</td></tr>
+    <tr><td><code>boundingRect</code> &rarr; <code>cx</code>, <code>area</code></td><td>The box gives the object&apos;s horizontal center (for steering) and its area (for distance).</td></tr>
+  </tbody>
+</table>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Tune, then lock on</div><p>While the <code>Lock</code> slider is <code>0</code> the robot stays still and the mask updates live &mdash; drag the sliders until only your object (say, a yellow ducky) is white. Set <code>Lock</code> to <code>1</code> (or press <code>l</code>) to freeze those H/S/V values and start seeking. The Controls, Robot View, and Mask windows are positioned automatically so they do not overlap.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Two key numbers</div><p>Everything downstream needs just two outputs from the camera: <code>cx</code> (is the object left or right?) and <code>area</code> (is it near or far?). Steering uses <code>cx</code>; stopping uses <code>area</code>.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-hsv">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-get-code" data-lesson-link="proj5-get-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.0b Get the Code</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-state" data-lesson-link="proj5-state"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.2 Seek-and-Approach &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="proj5-state" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.2 The Seek-and-Approach State Machine</div>
+<h1>P5.2 The Seek-and-Approach State Machine</h1>
+<div class="lesson-meta"><span>Control</span><span>State machine</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">With <code>cx</code> and <code>area</code> in hand, the robot&apos;s behavior is a tiny four-state machine. Each frame, one function turns the detection into two wheel speeds.</p>
+<figure class="code-card" data-runnable="false" data-chapter="proj5" data-filename="color_seeker.py" data-lang="python"><figcaption><span>The decide() function</span><span class="local-run-badge">Run locally</span></figcaption><script type="text/plain" class="code-source">def reached(area, box, frame_w, frame_h):
+    """True when the object is close enough to stop: big blob, OR it now
+    fills the whole frame (which is what happens just before it overflows
+    the view and detection drops out)."""
+    if area >= STOP_AREA:
+        return True
+    if box is not None:
+        x, y, bw, bh = box
+        m = 5
+        spans_height = (y <= m and y + bh >= frame_h - m)
+        spans_width  = (x <= m and x + bw >= frame_w - m)
+        if spans_height or spans_width:
+            return True
+    return False
+
+def decide(cx, area, box, frame_w, frame_h):
+    """Turn a detection into wheel speeds (left, right) and a named state."""
+    if cx is None:
+        return -SCAN_SPEED, SCAN_SPEED, "SEARCH"      # nothing seen: scan the room
+
+    if reached(area, box, frame_w, frame_h):
+        return 0, 0, "ARRIVED"                        # close enough: stop
+
+    error = (cx - frame_w / 2) / (frame_w / 2)        # -1 .. 1
+    if abs(error) > TURN_TOL:
+        turn = CENTER_SPEED if error > 0 else -CENTER_SPEED
+        return turn, -turn, "CENTER"                  # far off-center: rotate in place
+
+    trim = int(STEER_STRENGTH * error)
+    return FORWARD_SPEED + trim, FORWARD_SPEED - trim, "APPROACH"   # drive + steer</script></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>State</th><th>Condition</th><th>Wheels</th></tr></thead><tbody>
+<tr><td><strong>SEARCH</strong></td><td>No object visible</td><td>Spin in place (left/right opposite) to scan the room.</td></tr>
+<tr><td><strong>CENTER</strong></td><td>Object far off to one side (beyond <code>TURN_TOL</code>)</td><td>Rotate in place toward it until it is roughly ahead.</td></tr>
+<tr><td><strong>APPROACH</strong></td><td>Object roughly ahead, still small (far)</td><td>Keep driving forward, steering a little &mdash; it does not stop to perfectly center.</td></tr>
+<tr><td><strong>ARRIVED</strong></td><td>Blob area &ge; <code>STOP_AREA</code>, or the object fills the frame</td><td>Stop and <strong>hold</strong> &mdash; it stays put even if the object briefly vanishes at very close range.</td></tr>
+</tbody></table></div>
+<div class="callout robotics" role="note"><div class="callout-icon">&#129302;</div><div><div class="callout-title">Stopping by apparent size</div><p>The robot has no distance sensor, so it judges distance by how big the object looks. As it drives closer, the blob area grows; when the area crosses <code>STOP_AREA</code>, the object is close, so the robot stops. Tune <code>STOP_AREA</code> for the distance you want. If the object gets so close that it fills the frame and detection momentarily drops out, the robot treats that as arrival and <strong>holds position</strong> rather than hunting for it again.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Differential steering, again</div><p>This is the same idea as PD.1c: equal speeds drive straight, opposite speeds turn in place, and a small left/right difference curves the path. <code>error = cx - frame_w/2</code> is the steering signal &mdash; the same "image error drives the wheels" pattern Project 1 uses with PID.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-state">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-hsv" data-lesson-link="proj5-hsv"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.1 HSV Color Detection</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-main" data-lesson-link="proj5-main"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.3 Config and Main Loop &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="proj5-main" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.3 Configuration and the Main Loop</div>
+<h1>P5.3 Configuration and the Main Loop</h1>
+<div class="lesson-meta"><span>Code</span><span>Main loop</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The configuration block at the top is the only part you must edit, and the main loop wires everything together: read a frame, detect, decide, send. Here is the complete program.</p>
+<p>Fill in your three values at the top &mdash; the Arduino IP, the phone stream URL, and (later) the stop distance:</p>
+<figure class="code-card" data-runnable="false" data-chapter="proj5" data-filename="color_seeker.py" data-lang="python"><figcaption><span>color_seeker.py (complete)</span><span class="local-run-badge">Run locally</span></figcaption><script type="text/plain" class="code-source">import socket
+import time
+import threading
+import cv2
+import numpy as np
+import requests
+
+# ===================== CONFIGURATION =====================
+ARDUINO_IP = "192.168.6.92"      # Arduino IP from the Serial Monitor
+CMD_PORT   = 5001               # must match robot_udp.ino
+PHONE_URL  = "http://192.168.5.148:8080/video"   # phone MJPEG stream
+
+# Motion speeds (PWM 0-255)
+SCAN_SPEED     = 120    # rotation speed while searching the room
+CENTER_SPEED   = 120    # rotation speed while turning to face the object
+FORWARD_SPEED  = 190    # forward speed while approaching (raise if still too slow)
+
+# Behavior thresholds
+MIN_AREA       = 800    # ignore blobs smaller than this (noise), in pixels
+STOP_AREA      = 45000  # object is "close enough" when its blob area exceeds this
+                        #   (read area= on the HUD at your safe distance, then set it)
+TURN_TOL       = 0.35   # rotate in place only if the object is beyond this
+                        #   fraction of the half-width from center; otherwise drive
+STEER_STRENGTH = 70     # how hard to steer while driving forward
+LOST_GRACE     = 8      # frames the object may be missing before we go back to SEARCH
+
+
+# ===================== PHONE CAMERA (Exercise B) =====================
+class MobileVideoStream:
+    """Reads MJPEG frames from the phone in a background thread (Exercise B)."""
+
+    def __init__(self, url):
+        self.url = url
+        self.frame = None
+        self.running = True
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                resp = requests.get(self.url, stream=True, timeout=10)
+                buf = b""
+                for chunk in resp.iter_content(4096):
+                    if not self.running:
+                        break
+                    buf += chunk
+                    while True:
+                        start = buf.find(b"\xff\xd8")          # SOI marker
+                        if start == -1:
+                            break
+                        end = buf.find(b"\xff\xd9", start + 2)  # EOI marker AFTER the SOI
+                        if end == -1:
+                            buf = buf[start:]                   # drop junk before SOI; wait for more
+                            break
+                        jpg = buf[start:end + 2]
+                        buf = buf[end + 2:]
+                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        if img is not None:
+                            self.frame = img
+            except Exception:
+                time.sleep(1.0)
+
+    def read(self):
+        return self.frame
+
+    def stop(self):
+        self.running = False
+
+
+# ===================== UDP COMMANDS (Exercise D) =====================
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+def send_motors(left, right):
+    cmd_sock.sendto(f"MOTOR,{int(left)},{int(right)}".encode(), (ARDUINO_IP, CMD_PORT))
+
+def stop_motors():
+    cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
+
+
+# ===================== WINDOWS + HSV SLIDERS =====================
+def _noop(_):
+    pass
+
+cv2.namedWindow("Controls", cv2.WINDOW_NORMAL); cv2.resizeWindow("Controls", 330, 360); cv2.moveWindow("Controls", 0, 0)
+cv2.namedWindow("Robot View", cv2.WINDOW_NORMAL); cv2.resizeWindow("Robot View", 520, 390); cv2.moveWindow("Robot View", 350, 0)
+cv2.namedWindow("Mask", cv2.WINDOW_NORMAL); cv2.resizeWindow("Mask", 520, 390); cv2.moveWindow("Mask", 350, 450)
+
+cv2.createTrackbar("H min", "Controls", 20, 179, _noop)
+cv2.createTrackbar("H max", "Controls", 35, 179, _noop)
+cv2.createTrackbar("S min", "Controls", 100, 255, _noop)
+cv2.createTrackbar("S max", "Controls", 255, 255, _noop)
+cv2.createTrackbar("V min", "Controls", 100, 255, _noop)
+cv2.createTrackbar("V max", "Controls", 255, 255, _noop)
+cv2.createTrackbar("Lock", "Controls", 0, 1, _noop)
+
+def hsv_bounds():
+    g = lambda n: cv2.getTrackbarPos(n, "Controls")
+    return (np.array([g("H min"), g("S min"), g("V min")]),
+            np.array([g("H max"), g("S max"), g("V max")]))
+
+def find_object(frame, lower, upper):
+    """Largest blob within the HSV range -> (cx, area, box, mask)."""
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower, upper)
+    mask = cv2.erode(mask, None, iterations=2)
+    mask = cv2.dilate(mask, None, iterations=2)
+
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return None, 0, None, mask
+
+    biggest = max(contours, key=cv2.contourArea)   # the one object we track
+    area = cv2.contourArea(biggest)
+    if area < MIN_AREA:
+        return None, 0, None, mask
+
+    x, y, w, h = cv2.boundingRect(biggest)
+    return x + w // 2, area, (x, y, w, h), mask
+
+
+# ===================== STATE MACHINE =====================
+def reached(area, box, frame_w, frame_h):
+    """Close enough to stop: big blob, OR the object now fills the frame."""
+    if area >= STOP_AREA:
+        return True
+    if box is not None:
+        x, y, bw, bh = box
+        m = 5
+        if (y <= m and y + bh >= frame_h - m) or (x <= m and x + bw >= frame_w - m):
+            return True
+    return False
+
+def decide(cx, area, box, frame_w, frame_h):
+    if cx is None:
+        return -SCAN_SPEED, SCAN_SPEED, "SEARCH"
+
+    if reached(area, box, frame_w, frame_h):
+        return 0, 0, "ARRIVED"
+
+    error = (cx - frame_w / 2) / (frame_w / 2)
+    if abs(error) > TURN_TOL:
+        turn = CENTER_SPEED if error > 0 else -CENTER_SPEED
+        return turn, -turn, "CENTER"
+
+    trim = int(STEER_STRENGTH * error)
+    return FORWARD_SPEED + trim, FORWARD_SPEED - trim, "APPROACH"
+
+
+# ===================== MAIN LOOP =====================
+video = MobileVideoStream(PHONE_URL)
+print("Waiting for phone stream...")
+while video.read() is None:
+    time.sleep(0.1)
+
+print("TUNING: adjust the sliders until only your object is white in the Mask window.")
+print("Then set 'Lock' to 1 (or press 'l') to lock the color and start seeking. 'q' quits.")
+
+locked = False
+locked_lower = None
+locked_upper = None
+arrived = False        # latched once we are at the object
+lost = 0               # consecutive frames with no detection
+last_area = 0          # area of the most recent detection
+
+try:
+    while True:
+        frame = video.read()
+        if frame is None:
+            continue
+        h, w = frame.shape[:2]
+
+        lock_on = cv2.getTrackbarPos("Lock", "Controls") == 1
+        if lock_on and not locked:
+            locked_lower, locked_upper = hsv_bounds()   # freeze the tuned color
+            locked = True
+        elif not lock_on and locked:
+            locked = False
+            arrived, lost, last_area = False, 0, 0       # reset when we unlock
+
+        lower, upper = (locked_lower, locked_upper) if locked else hsv_bounds()
+        cx, area, box, mask = find_object(frame, lower, upper)
+
+        if not locked:
+            state = "TUNING"
+            stop_motors()
+        else:
+            if cx is not None:
+                lost, last_area = 0, area
+            else:
+                lost += 1
+
+            left, right, state = decide(cx, area, box, w, h)
+
+            # If it vanished right after being close, it just filled the camera:
+            # treat that as arrival and hold, instead of hunting for it again.
+            if state == "SEARCH" and lost <= LOST_GRACE and last_area >= STOP_AREA * 0.5:
+                left, right, state = 0, 0, "ARRIVED"
+
+            # Latch: once arrived, stay stopped until the object clearly recedes.
+            if arrived and not (cx is not None and area < STOP_AREA * 0.6):
+                left, right, state = 0, 0, "ARRIVED"
+            arrived = (state == "ARRIVED")
+
+            if state == "ARRIVED":
+                stop_motors()
+            else:
+                send_motors(left, right)
+
+        # ---- HUD ----
+        if box is not None:
+            x, y, bw, bh = box
+            color = (0, 255, 0) if locked else (170, 170, 170)
+            cv2.rectangle(frame, (x, y), (x + bw, y + bh), color, 2)
+            cv2.circle(frame, (cx, y + bh // 2), 5, (0, 0, 255), -1)
+        cv2.line(frame, (w // 2, 0), (w // 2, h), (255, 255, 255), 1)
+        banner = f"{'LOCKED' if locked else 'TUNING'} | {state} | area={int(area)}"
+        cv2.putText(frame, banner, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+        if not locked:
+            cv2.putText(frame, "Set 'Lock' to 1 (or press l) to start", (10, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 200, 255), 2)
+
+        cv2.imshow("Robot View", frame)
+        cv2.imshow("Mask", mask)
+
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord("q"):
+            break
+        if key == ord("l"):
+            cur = cv2.getTrackbarPos("Lock", "Controls")
+            cv2.setTrackbarPos("Lock", "Controls", 0 if cur == 1 else 1)
+
+finally:
+    stop_motors()
+    video.stop()
+    cmd_sock.close()
+    cv2.destroyAllWindows()
+    print("Stopped.")</script></figure>
+<h3>How the Main Loop Flows</h3>
+<div class="steps">
+<div class="step"><div><strong>Read</strong> the newest frame from the phone (Exercise B stream).</div></div>
+<div class="step"><div><strong>Detect</strong> the colored object &rarr; <code>cx</code>, <code>area</code>.</div></div>
+<div class="step"><div><strong>Decide</strong> wheel speeds and state with <code>decide()</code>.</div></div>
+<div class="step"><div><strong>Send</strong> <code>MOTOR,left,right</code> (or <code>STOP</code> when ARRIVED) over UDP (Exercise D).</div></div>
+<div class="step"><div><strong>Draw</strong> the HUD &mdash; box, center dot, frame-center line, and state &mdash; and show the mask.</div></div>
+</div>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Watch the Mask window</div><p>Keep the "Mask" window open while you tune the sliders: your object should be solid white and everything else black. If other things glow white, tighten the bounds; if your object has holes, loosen them.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-main">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-state" data-lesson-link="proj5-state"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.2 Seek-and-Approach</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-running" data-lesson-link="proj5-running"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.4 Running and Tuning &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="proj5-running" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.4 Running and Tuning</div>
+<h1>P5.4 Running and Tuning</h1>
+<div class="lesson-meta"><span>Run locally</span><span>Tuning</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Bring it up in layers so a bad color match or a wiring issue never turns into a runaway robot.</p>
+<h3>Step 1: Tune and Lock the Color (Wheels Lifted)</h3>
+<div class="steps">
+<div class="step"><div>Put the Exercise D robot on a stand so the wheels spin freely.</div></div>
+<div class="step"><div>Set <code>ARDUINO_IP</code> and <code>PHONE_URL</code> at the top of <code>color_seeker.py</code>.</div></div>
+<div class="step"><div>Run <code>python color_seeker.py</code>. The three windows arrange themselves automatically. The robot stays still (<strong>TUNING</strong>) while the <code>Lock</code> slider is 0.</div></div>
+<div class="step"><div>Hold your object in view and adjust the six sliders until <em>only</em> the object is white in the <strong>Mask</strong> window.</div></div>
+<div class="step"><div>Set the <code>Lock</code> slider to <strong>1</strong> (or press <code>l</code>) to freeze that color. The HUD switches to <strong>LOCKED</strong> and the robot begins seeking. Drag it back to 0 anytime to stop and re-tune.</div></div>
+</div>
+<h3>Step 2: Set the Stop Distance</h3>
+<p>Hold the object at the distance where you want the robot to stop and read the <code>area=</code> value printed on the HUD. Put that number into <code>STOP_AREA</code>. Larger area = robot stops closer.</p>
+<h3>Step 3: Drive for Real</h3>
+<figure class="code-card" data-runnable="false" data-chapter="proj5" data-filename="terminal" data-lang="text"><figcaption><span>Terminal</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">python color_seeker.py</script></figure>
+<p>Place the object across the room, put the robot on the floor, and run it. It should spin to find the color, turn to face it, drive over, and stop.</p>
+<h3>Common Issues</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Spins forever, never sees it</td><td>Color bounds too tight, or object too small</td><td>Loosen the sliders; lower <code>MIN_AREA</code>; improve lighting.</td></tr>
+<tr><td>Chases the wrong thing</td><td>Another object shares the color</td><td>Tighten saturation/value bounds; remove distractors.</td></tr>
+<tr><td>Turns the wrong way</td><td>Left/right motors reversed</td><td>Swap the wheel speeds in <code>send_motors</code>, or flip motor wiring.</td></tr>
+<tr><td>Stops too far / too close</td><td><code>STOP_AREA</code> not tuned</td><td>Re-read <code>area=</code> at your target distance and set it.</td></tr>
+<tr><td>Overshoots while centering</td><td>Turn speed too high</td><td>Lower <code>CENTER_SPEED</code> and <code>SCAN_SPEED</code>.</td></tr>
+<tr><td>Approaches too slowly</td><td>Forward speed low, or it keeps stopping to center</td><td>Raise <code>FORWARD_SPEED</code>; raise <code>TURN_TOL</code> so it steers while driving instead of rotating in place.</td></tr>
+<tr><td><code>Corrupt JPEG data...</code> warnings</td><td>Normal MJPEG glitches over WiFi</td><td>Harmless &mdash; bad frames are skipped. If frequent, lower the phone camera resolution or reduce WiFi congestion.</td></tr>
+<tr><td>Loses the object up close, then re-hunts</td><td><code>STOP_AREA</code> too high, so it overshoots before stopping</td><td>Lower <code>STOP_AREA</code> (read <code>area=</code> on the HUD at your safe distance). The robot also now stops and holds when the object fills the frame.</td></tr>
+</tbody></table></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-running">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-main" data-lesson-link="proj5-main"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.3 Config and Main Loop</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-dots" data-lesson-link="proj5-dots"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.5 Connecting the Dots &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="proj5-dots" data-chapter="proj5" data-chapter-title="★ Project 5: Color-Seeking Robot" style="--chapter-accent:#22c55e;--chapter-color:#22c55e">
+<div class="lesson-kicker">★ Project 5: Color-Seeking Robot <span>&rsaquo;</span> P5.5 Connecting the Dots</div>
+<h1>P5.5 Connecting the Dots</h1>
+<div class="lesson-meta"><span>Summary</span><span>Architecture</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">You built an autonomous behavior out of pieces you already had &mdash; the camera, the robot, and the radio link &mdash; with one new idea: classical color detection.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Piece</th><th>Where it came from</th></tr></thead><tbody>
+<tr><td>Phone video stream</td><td>Exercise B (<code>MobileVideoStream</code>)</td></tr>
+<tr><td>Two-wheel differential robot</td><td>Exercise C (encoder-motor base)</td></tr>
+<tr><td>UDP <code>MOTOR</code> / <code>STOP</code> control</td><td>Exercise D (<code>robot_udp.ino</code>)</td></tr>
+<tr><td>HSV color detection + sliders</td><td>New here (classical OpenCV)</td></tr>
+<tr><td>Search / center / approach / stop</td><td>New here (state machine)</td></tr>
+</tbody></table></div>
+<div class="grid-3">
+<article class="card"><h3>Perception &rarr; action</h3><p>Two numbers from the camera (<code>cx</code>, <code>area</code>) drive every wheel command. That is the core loop of almost every vision robot.</p></article>
+<article class="card"><h3>Stop without a sensor</h3><p>Apparent size stands in for distance &mdash; a cheap, camera-only way to keep a safe gap.</p></article>
+<article class="card"><h3>Swappable detector</h3><p><code>find_object()</code> is the only color-specific part. Replace it with your Exercise A YOLO model and the same robot chases a trained object instead of a color.</p></article>
+</div>
+<div class="callout robotics" role="note"><div class="callout-icon">&#129302;</div><div><div class="callout-title">Where to take it next</div><p>Add encoder telemetry (Exercise D) to log how far it drove, use a PID controller (Project 1) for smoother centering instead of fixed turn speeds, or mount the camera on the Project 4 pan-tilt head so it can look around without spinning the whole robot.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-dots">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-running" data-lesson-link="proj5-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.4 Running and Tuning</span></a><span></span></nav>
 </article>
   </main>
   <script>window.COURSE_LESSONS=[{"id":"ch0-welcome","label":"Welcome","title":"Welcome & How to Use This Guide","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-build","label":"What You Will Build","title":"What You Will Build","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-tools","label":"Tools You Need","title":"Tools You Need","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch0-reading-tips","label":"Reading Tips","title":"Reading Tips","chapter":"ch0","chapterTitle":"Chapter 0: Welcome & How to Use This Guide","exercise":false},{"id":"ch1-overview","label":"Python Fundamentals","title":"Python Programming Fundamentals","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-colab","label":"1.1 Why Python & Colab","title":"1.1 Why Python & Setting Up Colab","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-variables","label":"1.2 Variables & Data Types","title":"1.2 Variables & Data Types","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-data-structures","label":"1.3 Data Structures","title":"1.3 Data Structures","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-control-flow","label":"1.4 Control Flow","title":"1.4 Control Flow","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-loops","label":"1.5 Loops","title":"1.5 Loops","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-functions","label":"1.6 Functions","title":"1.6 Functions","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-classes","label":"1.7 Classes","title":"1.7 Classes","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-libraries","label":"1.8 Libraries & Imports","title":"1.8 Libraries & Imports","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":false},{"id":"ch1-checkpoint","label":"1.9 Checkpoint Exercise","title":"1.9 Checkpoint Exercise: Sensor Data Parser","chapter":"ch1","chapterTitle":"Chapter 1: Python Programming Fundamentals","exercise":true},{"id":"ch2-overview","label":"What is ML?","title":"What is Machine Learning?","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-traditional","label":"2.1 Traditional vs ML","title":"2.1 Traditional Programming vs ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-types","label":"2.2 Three Flavors","title":"2.2 Three Flavors of ML","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch2-when-to-use","label":"2.3 When to Use Which","title":"2.3 When to Use Which","chapter":"ch2","chapterTitle":"Chapter 2: What is Machine Learning?","exercise":false},{"id":"ch3-overview","label":"Supervised Learning","title":"Supervised Learning: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-classification-regression","label":"3.1 Classification & Regression","title":"3.1 Classification & Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-algorithms","label":"3.2 Key Algorithms","title":"3.2 Key Algorithms","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-logistic-regression","label":"3.2a Logistic Regression","title":"3.2a Logistic Regression","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-decision-tree","label":"3.2b Decision Tree","title":"3.2b Decision Tree","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-random-forest","label":"3.2c Random Forest","title":"3.2c Random Forest","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-svm","label":"3.2d Support Vector Machine","title":"3.2d Support Vector Machine","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-pipeline","label":"3.3 ML Pipeline","title":"3.3 The ML Pipeline","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":false},{"id":"ch3-project","label":"3.4 Failure Project","title":"3.4 Project: Robot Arm Failure Prediction","chapter":"ch3","chapterTitle":"Chapter 3: Supervised Learning","exercise":true},{"id":"ch4-overview","label":"Unsupervised Learning","title":"Unsupervised Learning: Industrial Vibration Clustering","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-clustering","label":"4.1 Clustering & PCA","title":"4.1 Clustering & Dimensionality Reduction","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-kmeans","label":"4.2 K-Means","title":"4.2 K-Means Deep Dive","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":false},{"id":"ch4-project","label":"4.3 Vibration Project","title":"4.3 Project: Clustering Robot Sensor Readings","chapter":"ch4","chapterTitle":"Chapter 4: Unsupervised Learning","exercise":true},{"id":"ch5-overview","label":"Reinforcement Learning","title":"Reinforcement Learning: Teach a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-loop","label":"5.1 Agent & Reward","title":"5.1 Agent, Environment, Reward","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-q-learning","label":"5.2 Q-Learning","title":"5.2 Q-Learning Explained with a Grid","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":false},{"id":"ch5-project","label":"5.3 Maze Project","title":"5.3 Project: Teaching a Robot to Navigate a Maze","chapter":"ch5","chapterTitle":"Chapter 5: Reinforcement Learning","exercise":true},{"id":"ch6-overview","label":"6.0 What Is a Neural Network?","title":"What Is a Neural Network?","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-neuron","label":"6.1 Meet TF Playground","title":"6.1 Meet TensorFlow Playground","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-perceptron","label":"6.2 Anatomy of a Neuron","title":"6.2 Anatomy of a Neuron","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-layers","label":"6.3 One Neuron Fails","title":"6.3 ★ Playground: One Neuron Fails","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-gradient-descent","label":"6.4 Layers: The Fix","title":"6.4 Layers: The Fix","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-gd-live","label":"6.5 How Networks Learn","title":"6.5 How Networks Learn","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-knobs","label":"6.6 Watch It Learn","title":"6.6 ★ Playground: Watch It Learn","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-break-fix","label":"6.7 Teach sin(x)","title":"6.7 \u2605 Experiment: Teach a Network to Learn sin(x)","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-activations","label":"6.8 Activation Functions","title":"6.8 Activation Functions","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-overfitting","label":"6.9 Overfitting","title":"6.9 Overfitting and How to Fight It","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-keras","label":"6.10 From NumPy to Keras","title":"6.10 From NumPy to Keras","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":true},{"id":"ch6-training-curves","label":"6.11 Training Curves","title":"6.11 Reading Training Curves","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch6-when-to-use","label":"6.12 When to Use Neural Networks","title":"6.12 When to Use Neural Networks","chapter":"ch6","chapterTitle":"Chapter 6: Neural Networks","exercise":false},{"id":"ch7-overview","label":"Computer Vision","title":"Computer Vision for Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-why-vision","label":"7.1 Why Vision Matters","title":"7.1 Why Vision Matters in Robotics","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-opencv","label":"7.2 OpenCV","title":"7.2 Tools: OpenCV","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-tensorflow","label":"7.3 TensorFlow/Keras","title":"7.3 Tools: TensorFlow/Keras","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-cnn","label":"7.4 CNNs","title":"7.4 How CNNs See","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":false},{"id":"ch7-project","label":"7.5 Traffic Sign Project","title":"7.5 Project: Traffic Sign Classifier","chapter":"ch7","chapterTitle":"Chapter 7: Computer Vision for Robotics","exercise":true},{"id":"ch8-overview","label":"What's Next?","title":"What's Next?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-decision-guide","label":"8.1 Decision Guide","title":"8.1 Which ML Technique Should I Use?","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-roadmap","label":"8.2 Roadmap","title":"8.2 Recommended Learning Roadmap","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false},{"id":"ch8-papers","label":"8.3 Papers","title":"8.3 Real Robotics ML Papers to Read","chapter":"ch8","chapterTitle":"Chapter 8: What's Next?","exercise":false}];window.COURSE_CHAPTERS=[{"key":"ch0","title":"Chapter 0: Welcome & How to Use This Guide","lessonIds":["ch0-welcome","ch0-build","ch0-tools","ch0-reading-tips"],"firstLesson":"ch0-welcome"},{"key":"ch1","title":"Chapter 1: Python Programming Fundamentals","lessonIds":["ch1-overview","ch1-colab","ch1-variables","ch1-data-structures","ch1-control-flow","ch1-loops","ch1-functions","ch1-classes","ch1-libraries","ch1-checkpoint"],"firstLesson":"ch1-overview"},{"key":"ch2","title":"Chapter 2: What is Machine Learning?","lessonIds":["ch2-overview","ch2-traditional","ch2-types","ch2-when-to-use"],"firstLesson":"ch2-overview"},{"key":"ch3","title":"Chapter 3: Supervised Learning","lessonIds":["ch3-overview","ch3-classification-regression","ch3-algorithms","ch3-logistic-regression","ch3-decision-tree","ch3-random-forest","ch3-svm","ch3-pipeline","ch3-project"],"firstLesson":"ch3-overview"},{"key":"ch4","title":"Chapter 4: Unsupervised Learning","lessonIds":["ch4-overview","ch4-clustering","ch4-kmeans","ch4-project"],"firstLesson":"ch4-overview"},{"key":"ch5","title":"Chapter 5: Reinforcement Learning","lessonIds":["ch5-overview","ch5-loop","ch5-q-learning","ch5-project"],"firstLesson":"ch5-overview"},{"key":"ch6","title":"Chapter 6: Neural Networks","lessonIds":["ch6-overview","ch6-neuron","ch6-perceptron","ch6-layers","ch6-gradient-descent","ch6-gd-live","ch6-knobs","ch6-break-fix","ch6-activations","ch6-overfitting","ch6-keras","ch6-training-curves","ch6-when-to-use"],"firstLesson":"ch6-overview"},{"key":"ch7","title":"Chapter 7: Computer Vision for Robotics","lessonIds":["ch7-overview","ch7-why-vision","ch7-opencv","ch7-tensorflow","ch7-cnn","ch7-project"],"firstLesson":"ch7-overview"},{"key":"ch8","title":"Chapter 8: What's Next?","lessonIds":["ch8-overview","ch8-decision-guide","ch8-roadmap","ch8-papers"],"firstLesson":"ch8-overview"}];</script>
@@ -14176,8 +14677,9 @@ sock.close()</script></figure>
     const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-get-code","label":"P2.0b Get the Code","title":"P2.0b Get the Code","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-config","label":"P2.3 Configuration","title":"P2.3 Configuration: Fill In Your Values","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-detect-lane","label":"P2.4 The detect_lane Function","title":"P2.4 The detect_lane Function","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.5 LaneFollower Class","title":"P2.5 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-main-loop","label":"P2.6 Main Loop","title":"P2.6 The Main Loop","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.7 Visualisation","title":"P2.7 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.8 Running and Tuning","title":"P2.8 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.9 Connecting the Dots","title":"P2.9 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
     const project3Lessons = [{"id":"proj3-mediapipe","label":"P3.0 What Is MediaPipe?","title":"P3.0 What Is MediaPipe?","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":true},{"id":"proj3-landmark-detection","label":"P3.1 Hand Landmarks","title":"P3.1 How Hand Landmark Detection Works","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-mediapipe-colab","label":"P3.2 MediaPipe Colab","title":"P3.2 The MediaPipe Colab Notebook","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-understanding-landmarks","label":"P3.3 Understanding Landmarks","title":"P3.3 Understanding Landmarks","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-open-closed","label":"P3.4 Open vs Closed","title":"P3.4 Open vs Closed: Reading Finger State","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-two-hand-logic","label":"P3.5 Two-Hand Logic","title":"P3.5 Two-Hand Gesture Logic","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-get-code","label":"P3.6 Get the Robot Code","title":"P3.6 Get the Robot Code","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-what-changes","label":"P3.7 What Changes","title":"P3.7 What Changes from Projects 1 and 2","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-detector-class","label":"P3.8 HandGestureDetector","title":"P3.8 The HandGestureDetector Class","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-main-loop","label":"P3.9 Main Loop","title":"P3.9 The Main Loop","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-running","label":"P3.10 Running and Testing","title":"P3.10 Running and Testing","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-dots","label":"P3.11 Connecting the Dots","title":"P3.11 Connecting the Dots","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false}];
     const project4Lessons = [{"id": "proj4-overview", "label": "P4.0 What You Are Building", "title": "P4.0 What You Are Building", "exercise": true, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-servo", "label": "P4.1 Servo Motors", "title": "P4.1 What Is a Servo Motor?", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-mechanism", "label": "P4.2 Pan-Tilt Mechanism", "title": "P4.2 The Pan-Tilt Mechanism", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-get-code", "label": "P4.3 Get the Code", "title": "P4.3 Get the Code", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-arduino", "label": "P4.4 Arduino Sketch", "title": "P4.4 The Arduino Sketch: Servos Over WiFi", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-protocol", "label": "P4.5 SERVO Protocol", "title": "P4.5 Understanding the SERVO Command Protocol", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-config", "label": "P4.6 Configuration", "title": "P4.6 Configuration: Your Variables", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-velocity-pid", "label": "P4.7 Velocity PID", "title": "P4.7 Velocity-Mode PID", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-tracker-class", "label": "P4.8 PanTiltTracker", "title": "P4.8 The PanTiltTracker Class", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-dual-pid", "label": "P4.9 Two PIDs", "title": "P4.9 Two PIDs at Once", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-main-loop", "label": "P4.10 Main Loop", "title": "P4.10 The Main Loop", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-running", "label": "P4.11 Running", "title": "P4.11 Running and Testing", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}, {"id": "proj4-dots", "label": "P4.12 Connecting Dots", "title": "P4.12 Connecting the Dots", "exercise": false, "chapter": "proj4", "chapterTitle": "★ Project 4: Pan-Tilt Ball Tracker"}];
+    const project5Lessons = [{"id": "proj5-overview", "label": "P5.0 What You Are Building", "title": "P5.0 What You Are Building", "exercise": true, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}, {"id": "proj5-get-code", "label": "P5.0b Get the Code", "title": "P5.0b Get the Code", "exercise": false, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}, {"id": "proj5-hsv", "label": "P5.1 HSV Color Detection", "title": "P5.1 Detecting Color with HSV Sliders", "exercise": false, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}, {"id": "proj5-state", "label": "P5.2 Seek-and-Approach", "title": "P5.2 The Seek-and-Approach State Machine", "exercise": false, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}, {"id": "proj5-main", "label": "P5.3 Config and Main Loop", "title": "P5.3 Configuration and the Main Loop", "exercise": false, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}, {"id": "proj5-running", "label": "P5.4 Running and Tuning", "title": "P5.4 Running and Tuning", "exercise": false, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}, {"id": "proj5-dots", "label": "P5.5 Connecting the Dots", "title": "P5.5 Connecting the Dots", "exercise": false, "chapter": "proj5", "chapterTitle": "\u2605 Project 5: Color-Seeking Robot"}];
     const archiveLessonIndex = window.COURSE_LESSONS.length;
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons, ...project3Lessons, ...project4Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons, ...project3Lessons, ...project4Lessons, ...project5Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.length,
       0,
@@ -14188,7 +14690,8 @@ sock.close()</script></figure>
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-shared","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
       {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"},
       {"key":"proj3","title":"* Project 3: Gesture Controlled Robot","lessonIds":["proj3-mediapipe","proj3-landmark-detection","proj3-mediapipe-colab","proj3-understanding-landmarks","proj3-open-closed","proj3-two-hand-logic","proj3-get-code","proj3-what-changes","proj3-detector-class","proj3-main-loop","proj3-running","proj3-dots"],"firstLesson":"proj3-mediapipe"},
-      {"key": "proj4", "title": "★ Project 4: Pan-Tilt Ball Tracker", "lessonIds": ["proj4-overview", "proj4-servo", "proj4-mechanism", "proj4-get-code", "proj4-arduino", "proj4-protocol", "proj4-config", "proj4-velocity-pid", "proj4-tracker-class", "proj4-dual-pid", "proj4-main-loop", "proj4-running", "proj4-dots"], "firstLesson": "proj4-overview"}
+      {"key": "proj4", "title": "★ Project 4: Pan-Tilt Ball Tracker", "lessonIds": ["proj4-overview", "proj4-servo", "proj4-mechanism", "proj4-get-code", "proj4-arduino", "proj4-protocol", "proj4-config", "proj4-velocity-pid", "proj4-tracker-class", "proj4-dual-pid", "proj4-main-loop", "proj4-running", "proj4-dots"], "firstLesson": "proj4-overview"},
+      {"key": "proj5", "title": "\u2605 Project 5: Color-Seeking Robot", "lessonIds": ["proj5-overview", "proj5-get-code", "proj5-hsv", "proj5-state", "proj5-main", "proj5-running", "proj5-dots"], "firstLesson": "proj5-overview"}
     );
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
