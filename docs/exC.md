@@ -218,7 +218,7 @@ Type What it stores Example int Whole numbers from about -32768 to 32767 int cou
 
 ### Constants: #define and const
 In Python, constants are usually written in all caps by convention. In Arduino C++, you will see two common styles.
-#define
+define
 ```cpp
 #define MAX_SPEED 255
 #define LED_PIN   13
@@ -341,7 +341,7 @@ void loop() {
 ```
 
 ### Anatomy Table
-#define LED_PIN 13 Creates a named constant by text substitution. No type and no semicolon. const int BLINK_SPEED = 500; Creates a typed named constant. Prefer this for values that have a clear type. int loopCount = 0; A global variable declared outside any function. It is accessible from both setup() and loop() . delay(BLINK_SPEED) Pauses execution for 500 ms. During delay() , the Arduino does nothing else. Later sketches use millis() when they need to respond to sensors continuously. loopCount % 5 == 0 The % operator is modulo, the remainder after division. This condition is true when loopCount is exactly divisible by 5.
+`#define LED_PIN 13` Creates a named constant by text substitution. No type and no semicolon. const int BLINK_SPEED = 500; Creates a typed named constant. Prefer this for values that have a clear type. int loopCount = 0; A global variable declared outside any function. It is accessible from both setup() and loop() . delay(BLINK_SPEED) Pauses execution for 500 ms. During delay() , the Arduino does nothing else. Later sketches use millis() when they need to respond to sensors continuously. loopCount % 5 == 0 The % operator is modulo, the remainder after division. This condition is true when loopCount is exactly divisible by 5.
 Upload this sketch, open Serial Monitor at `115200`, and verify that the LED blinks and the loop count prints every five blinks. When this works, you are ready for the hardware sketches.
 
 ---

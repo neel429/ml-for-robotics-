@@ -22,13 +22,13 @@ nav:
 
 plugins:
   - search
-  # - enumerate-headings:
-  #     strict: false
-  #     start_level: 1
-  #     toc_depth: 3
-  #     exclude:
-  #       - index.md
-  #       - ch0.md
+  - enumerate-headings:
+      strict: false
+      start_level: 1
+      toc_depth: 3
+      exclude:
+        - index.md
+        - ch0.md
 
 theme: readthedocs
 markdown_extensions:

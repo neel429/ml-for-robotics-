@@ -18,6 +18,68 @@ The best.pt file from Exercise A. Your phone and laptop on the same WiFi network
 
 ---
 
+## phonesense (No App Required)
+
+---
+
+[phonesense](https://github.com/snappyxo/phonesense) is a third option that requires nothing on your phone at all. Instead of installing an app, you run a small server on your laptop and open its URL in your phone's browser. The laptop serves the streaming page; the phone's browser sends the camera feed back over your local WiFi.
+
+This is the fastest way to get started if you do not have IP Webcam or Simple IP Camera installed, or if you want to skip the manual URL-finding step entirely.
+
+### Install phonesense
+
+Install it into your virtual environment the same way you installed other packages in Exercise A:
+```bash
+pip install phonesense
+```
+If you prefer to keep it isolated from your project, `uvx` and `pipx` also work:
+```bash
+uvx phonesense
+# or
+pipx run phonesense
+```
+
+### Start the Standalone Server
+
+<!-- TODO: add screenshot here -->
+
+Open a **second terminal** alongside your normal VS Code terminal and run:
+```bash
+phonesense
+```
+If you used `uvx` or `pipx` instead of `pip install`, run `uvx phonesense` or `pipx run phonesense` instead.
+
+phonesense starts a server and prints one or more stream URLs, for example:
+```
+Phone page	https://192.168.1.10:8080/phone
+```
+Open the first URL in your phone's browser. Leave this terminal running the whole time you are working on the exercise.
+
+The URL you just opened on your phone but with `camera/stream` (e.g. `https://192.168.1.10:8080/camera/stream`) is your stream URL. You will paste it into `STREAM_URL` in `detect_stream.py` exactly the same way you would paste an IP Webcam or Simple IP Camera URL.
+<!-- TODO: change this language -->
+!!! tip "phonesense uses HTTPS"
+    phonesense generates a self-signed certificate and serves over HTTPS. Your phone browser will show a security warning the first time you open the URL. This is expected and safe on a local network. Tap past it with your browser:
+
+    | Browser | Steps |
+    |---|---|
+    | Chrome (Android / Windows / Linux) | Tap **Advanced** → **Proceed to ... (unsafe)** |
+    | Safari (iOS / macOS) | Tap **Show Details** → **visit this website** |
+    | Edge (Windows) | Tap **Advanced** → **Continue to ... (unsafe)** |
+    | Firefox (any platform) | Tap **Advanced** → **Accept the Risk and Continue** |
+
+
+### What phonesense Gives You
+
+| | IP Webcam / Simple IP Camera | phonesense |
+|---|---|---|
+| Phone-side setup | Install an app | Open a URL in the phone browser |
+| Stream URL | Copy from the app screen | Printed in the terminal |
+
+If you are using phonesense, skip to "Running Detection on the Stream" and follow the same steps as other users, using your phonesense URL.
+
+
+---
+
 ## Android Setup: IP Webcam
 
 
@@ -67,65 +129,6 @@ iOS / Simple IP Camera stream URL
 http://PHONE_IP:8080/live
 ```
 
-
----
-
-## Option 3: phonesense (No App Required)
-
-
----
-
-[phonesense](https://github.com/snappyxo/phonesense) is a third option that requires nothing on your phone at all. Instead of installing an app, you run a small server on your laptop and open its URL in your phone's browser. The laptop serves the streaming page; the phone's browser sends the camera feed back over your local WiFi.
-
-This is the fastest way to get started if you do not have IP Webcam or Simple IP Camera installed, or if you want to skip the manual URL-finding step entirely.
-
-### Install phonesense
-
-Install it into your virtual environment the same way you installed other packages in Exercise A:
-```bash
-pip install phonesense
-```
-If you prefer to keep it isolated from your project, `uvx` and `pipx` also work:
-```bash
-uvx phonesense
-# or
-pipx run phonesense
-```
-
-### Start the Standalone Server
-
-Open a **second terminal** alongside your normal VS Code terminal and run:
-```bash
-phonesense
-```
-If you used `uvx` or `pipx` instead of `pip install`, run `uvx phonesense` or `pipx run phonesense` instead.
-
-phonesense starts a server and prints one or more stream URLs, for example:
-```
-Phone page	https://192.168.1.10:8080/phone
-```
-Open the first URL in your phone's browser. Leave this terminal running the whole time you are working on the exercise.
-
-The URL you just opened on your phone but with `camera/stream` (e.g. `https://192.168.1.10:8080/camera/stream`) is your stream URL. You will paste it into `STREAM_URL` in `detect_stream.py` exactly the same way you would paste an IP Webcam or Simple IP Camera URL.
-!!! tip "phonesense uses HTTPS"
-    phonesense generates a self-signed certificate and serves over HTTPS. Your phone browser will show a security warning the first time you open the URL. This is expected and safe on a local network. Tap past it with your browser:
-
-    | Browser | Steps |
-    |---|---|
-    | Chrome (Android / Windows / Linux) | Tap **Advanced** → **Proceed to ... (unsafe)** |
-    | Safari (iOS / macOS) | Tap **Show Details** → **visit this website** |
-    | Edge (Windows) | Tap **Advanced** → **Continue to ... (unsafe)** |
-    | Firefox (any platform) | Tap **Advanced** → **Accept the Risk and Continue** |
-
-
-### What phonesense Gives You
-
-| | IP Webcam / Simple IP Camera | phonesense |
-|---|---|---|
-| Phone-side setup | Install an app | Open a URL in the phone browser |
-| Stream URL | Copy from the app screen | Printed in the terminal |
-
-If you are using phonesense, skip to "Running Detection on the Stream" and follow the same steps as other users, using your phonesense URL.
 
 ---
 
@@ -193,6 +196,7 @@ from ultralytics import YOLO
 # Android (IP Webcam):      "http://192.168.x.x:8080/video"
 # iOS (Simple IP Camera): "http://192.168.x.x:8080/live"
 STREAM_URL = "http://YOUR_PHONE_IP:8080/video"
+# TODO: add phonesense url
 
 # Path to your trained model from Exercise A
 MODEL_PATH = "best.pt"
@@ -294,6 +298,7 @@ Android (IP Webcam):        STREAM_URL = "http://192.168.1.47:8080/video"
 iOS (Simple IP Camera):     STREAM_URL = "http://192.168.1.52:8080/live"
 phonesense:                 STREAM_URL = "https://192.168.1.10:8765/video"
 ```
+<!-- TODO: fix phonesense line -->
 
 ### Step 2 : Make Sure best.pt Is In The Same Folder
 Your trained model file from Exercise A must be in the `my-detector` folder alongside `detect_stream.py`. If you named it something else like `ball_detector.pt`, update the `MODEL_PATH` line accordingly.

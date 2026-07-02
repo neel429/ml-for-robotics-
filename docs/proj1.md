@@ -1,4 +1,17 @@
 #  Project 1: Object Tracker
+<!-- TODO: Tell claude to insert this into old index.html -->
+<!-- add links to old exercises -->
+
+<!-- TODO: new things -->
+<!-- add servos for tilt, -->
+<!-- convert proj1 to old format, -->
+<!-- convert proj2-4 to new code if possible -->
+
+TODO: get from wei
+shield
+uno r4
+better battery snaps
+
 
 ---
 
