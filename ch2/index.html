@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Chapter 2: What is Machine Learning? - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Chapter 2: What is Machine Learning?";
+        var mkdocs_page_input_path = "ch2.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Chapter 2: What is Machine Learning?</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#traditional-programming-vs-ml">Traditional Programming vs ML</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#traditional-programming-vs-ml_1">Traditional Programming vs ML</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#three-flavors-of-ml">Three Flavors of ML</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#three-flavors-of-ml_1">Three Flavors of ML</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#when-to-use-which">When to Use Which</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#when-to-use-which_1">When to Use Which</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Chapter 2: What is Machine Learning?</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapter-2-what-is-machine-learning">Chapter 2: What is Machine Learning?</h1>
+<hr />
+<p><strong>Machine Learning</strong> — A way to build programs that learn patterns from examples instead of following only hand-written rules.</p>
+<p><strong>Instead of programming rules, you feed the robot examples and let it figure out the rules itself.</strong> Show it 10,000 throws. It watches, finds patterns, and builds its own internal model of how to catch. That's machine learning: computers learning from data, not from explicit instructions.</p>
+<div class="admonition tip">
+<p class="admonition-title">The Robotics Angle</p>
+<p>Almost every modern robot uses ML in some form: walking over rough terrain, recognizing tissue types, detecting pedestrians, sorting packages, or spotting defects on a factory line.</p>
+</div>
+<p>Projects You Will Build Later
+Once you understand the concepts in this chapter and the chapters that follow, you will turn them into applied robotics notebooks like these.</p>
+<p>⚙️
+Robot Failure Predictor
+Predict whether a machine is likely to fail from temperature, torque, speed, and wear readings.
+<strong>Stack:</strong> Pandas, scikit-learn, Logistic Regression, Random Forest</p>
+<p>📈
+Sensor Cluster Analyzer
+Group vibration windows into operating modes without labels, then interpret what each group means.
+<strong>Stack:</strong> NumPy, FFT features, K-Means, PCA, DBSCAN</p>
+<p>🚦
+Traffic Sign Classifier
+Train a convolutional neural network that recognizes real traffic signs for mobile robots.
+<strong>Stack:</strong> OpenCV, TensorFlow/Keras, CNNs, GTSRB</p>
+<hr />
+<h2 id="traditional-programming-vs-ml">Traditional Programming vs ML</h2>
+<hr />
+<h3 id="traditional-programming-vs-ml_1">Traditional Programming vs ML</h3>
+<p><strong>Traditional Programming</strong>
+<strong>Input:</strong> data + rules
+<strong>Output:</strong> answers
+You write the logic. The computer follows it exactly.
+<strong>Machine Learning</strong>
+<strong>Input:</strong> data + answers
+<strong>Output:</strong> rules, also called a model
+The computer learns the logic from examples.</p>
+<hr />
+<h2 id="three-flavors-of-ml">Three Flavors of ML</h2>
+<hr />
+<h3 id="three-flavors-of-ml_1">Three Flavors of ML</h3>
+<p><strong>Supervised Learning</strong>
+Learn from labeled examples. Example: sensor readings labeled as failed or healthy.
+<strong>Unsupervised Learning</strong>
+Find hidden structure without labels. Example: group vibration patterns into operating modes.
+<strong>Reinforcement Learning</strong>
+Learn through actions and rewards. Example: a robot learns a navigation policy by trial and error.</p>
+<hr />
+<h2 id="when-to-use-which">When to Use Which</h2>
+<hr />
+<h3 id="when-to-use-which_1">When to Use Which</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Question</th>
+<th style="text-align: left;">Use</th>
+<th style="text-align: left;">Robotics Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Do you have labeled answers?</td>
+<td style="text-align: left;">Supervised learning</td>
+<td style="text-align: left;">Predict failure from known historical failures.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Do you have raw data but no labels?</td>
+<td style="text-align: left;">Unsupervised learning</td>
+<td style="text-align: left;">Cluster sensor behavior into normal and unusual modes.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Does the system learn by acting?</td>
+<td style="text-align: left;">Reinforcement learning</td>
+<td style="text-align: left;">Teach a robot to navigate a maze.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Is the input an image or video?</td>
+<td style="text-align: left;">Computer vision</td>
+<td style="text-align: left;">Classify signs, detect parts, follow lanes.</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ch1/" class="btn btn-neutral float-left" title="Chapter 1: Python Programming Fundamentals"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ch3/" class="btn btn-neutral float-right" title="Chapter 3: Supervised Learning">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ch1/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ch3/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

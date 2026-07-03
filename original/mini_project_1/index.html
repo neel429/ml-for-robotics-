@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>project_A_design.md - ML for Robotics</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/dark-mode.css" rel="stylesheet" />
+        <link href="../../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "project_A_design.md";
+        var mkdocs_page_input_path = "original/mini_project_1.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">project_A_design.md</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="project_a_designmd">project_A_design.md</h1>
+<h3 id="instruction-document-for-coding-agent">Instruction document for coding agent</h3>
+<h3 id="build-project-a-train-your-first-object-detector">Build Project A: "Train Your First Object Detector"</h3>
+<h3 id="this-is-the-prerequisite-project-that-must-be-completed-before-project-1">This is the prerequisite project that must be completed before Project 1</h3>
+<hr />
+<h2 id="overview">OVERVIEW</h2>
+<p>Create a new set of lessons accessible via <code>?lesson=projA-*</code> in the SPA.
+Add it to the sidebar BEFORE Project 1, labeled clearly as a prerequisite.</p>
+<p>This project teaches the student to:
+1. Understand what YOLO is and how object detection works
+2. Collect their own image data using Roboflow
+3. Label that data with bounding boxes
+4. Train a YOLO26n model in Google Colab
+5. Read and understand the training metrics
+6. Run inference on their own webcam locally using VS Code</p>
+<p>By the end they have a working <code>best.pt</code> file they trained themselves
+from data they collected themselves. This is the file used in Project 1.</p>
+<p><strong>Model choice throughout this project: YOLO26n (nano)</strong>
+YOLO26 is the latest Ultralytics model, purpose-built for edge and
+low-power devices. The nano variant is the smallest and fastest.
+It runs well on CPU-only laptops and still achieves strong accuracy
+on simple single-class detection tasks like tracking a ball or mug.
+Reference: https://docs.ultralytics.com/models/yolo26/</p>
+<hr />
+<h2 id="sidebar-entry">SIDEBAR ENTRY</h2>
+<p>Add this group to the sidebar ABOVE the existing Project 1 group:</p>
+<pre><code>★ Project A: Train Your First Detector    ← prerequisite badge style
+   PA.0  What is Object Detection?
+   PA.1  Introducing YOLO26
+   PA.2  Setting Up VS Code &amp; Dependencies
+   PA.3  Collecting Your Data with Roboflow
+   PA.4  Labeling Your Images
+   PA.5  Exporting the Dataset
+   PA.6  Training in Google Colab
+   PA.7  Reading the Training Results
+   PA.8  Running Inference Locally
+   PA.9  Understanding the Model Output
+   PA.10 Preparing for Project 1
+</code></pre>
+<p>Chapter accent color: #10b981 (emerald green — distinct from Project 1's orange).</p>
+<p>Add a banner at the top of the Project 1 sidebar group that says:
+"Complete Project A first — it produces the best.pt file used here."
+Style it as a small amber warning chip, not a full callout box.</p>
+<hr />
+<h2 id="lesson-pa0-what-is-object-detection">LESSON PA.0 — WHAT IS OBJECT DETECTION?</h2>
+<p><strong>Purpose:</strong> Establish the concept clearly before any tools are introduced.
+A student who doesn't understand what a model is trying to do will
+not understand why any of the steps matter.</p>
+<h3 id="content">Content:</h3>
+<p><strong>Opening — three kinds of "seeing":</strong></p>
+<p>Write this as three definition cards side by side (or stacked on mobile),
+using the existing definition-card component:</p>
+<p>Card 1 — Image Classification:
+"Given an image, output one label. Is this a cat or a dog?
+The model looks at the whole image and gives one answer."</p>
+<p>Card 2 — Object Detection:
+"Given an image, find every instance of target objects and draw a
+box around each one. Output: a list of boxes, each with a class name
+and a confidence score. This is what YOLO does."</p>
+<p>Card 3 — Instance Segmentation:
+"Like detection but instead of a box, draw the exact pixel outline
+of each object. More precise, much slower."</p>
+<p>Then a ROBOTICS callout:
+"For robot tracking, detection is the right choice. You need to know
+WHERE the object is (bounding box center) and how big it appears
+(box area = proxy for distance). Classification alone can't give you
+position. Segmentation is overkill and too slow for real-time control."</p>
+<p><strong>What a bounding box actually is:</strong></p>
+<p>Explain that every detection is a rectangle defined by four numbers.
+Show two coordinate formats because students will see both:</p>
+<p>Format 1 — xyxy (corner format):
+[x_top_left, y_top_left, x_bottom_right, y_bottom_right]
+Example: [120, 45, 380, 290]</p>
+<p>Format 2 — xywh (center format, used in YOLO training labels):
+[x_center, y_center, width, height] — all normalized 0 to 1
+Example: [0.5, 0.3, 0.18, 0.24]</p>
+<p>Draw a simple HTML/CSS diagram of a frame with a box inside it,
+labeled with both formats on the same image so students see the
+relationship visually.</p>
+<p><strong>What a confidence score is:</strong></p>
+<p>Explain that every detection also comes with a number from 0 to 1.
+YOLO produces many candidate boxes and the confidence score is how
+sure the model is that this box contains the target object.
+Boxes below the threshold (default 0.5) are discarded.</p>
+<p>Show this visually as a slider diagram: 0.0 → lots of false positives,
+1.0 → only the most obvious detections pass, 0.5-0.6 is the sweet spot.</p>
+<hr />
+<h2 id="lesson-pa1-introducing-yolo26">LESSON PA.1 — INTRODUCING YOLO26</h2>
+<p><strong>Purpose:</strong> Explain YOLO conceptually and specifically why YOLO26n is
+the right choice for this course. Students should understand what they
+are using, not just copy-paste model names.</p>
+<h3 id="content_1">Content:</h3>
+<p><strong>What is YOLO?</strong></p>
+<p>YOLO stands for You Only Look Once. Before YOLO, object detection
+systems looked at a frame multiple times using a sliding window —
+slow and computationally expensive. YOLO processes the whole image
+in a single forward pass through the network and produces all
+detections at once. That is why it is fast enough for real-time use.</p>
+<p><strong>The YOLO family — brief history (keep this short, 1 paragraph):</strong>
+YOLO has been through many versions — v1 through v8, then v9, v10,
+v11, and now YOLO26. Each generation improved speed and accuracy.
+YOLO26 is the latest as of 2026 and is specifically designed for
+edge devices — meaning low-power hardware like a laptop CPU or a
+small microcontroller.</p>
+<p><strong>Why YOLO26 nano specifically:</strong></p>
+<p>Show this as a comparison table (display only, not interactive):</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Size</th>
+<th>Speed (CPU)</th>
+<th>Good for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yolo26n</td>
+<td>3.5 MB</td>
+<td>Very fast</td>
+<td>This course ✓</td>
+</tr>
+<tr>
+<td>yolo26s</td>
+<td>11 MB</td>
+<td>Fast</td>
+<td>When nano isn't accurate enough</td>
+</tr>
+<tr>
+<td>yolo26m</td>
+<td>30 MB</td>
+<td>Medium</td>
+<td>Good GPU available</td>
+</tr>
+<tr>
+<td>yolo26l</td>
+<td>59 MB</td>
+<td>Slow on CPU</td>
+<td>Server/cloud deployment</td>
+</tr>
+</tbody>
+</table>
+<p>Add a TIP callout:
+"For a simple task like detecting one object type against a clear
+background — a ball, a mug, a cone — nano is genuinely enough.
+The limitation of a small model is not usually accuracy on simple
+tasks. It is accuracy on crowded, complex scenes. Your use case
+is neither of those."</p>
+<p><strong>What end-to-end means (YOLO26 specific):</strong></p>
+<p>Older YOLO versions needed a post-processing step called Non-Maximum
+Suppression (NMS) to remove duplicate boxes. YOLO26 eliminates this
+step — it produces one clean prediction per object directly.
+In practice this means: slightly faster inference, slightly simpler
+code, and easier deployment on hardware with no post-processing support.</p>
+<p><strong>ROBOTICS callout:</strong>
+"YOLO26 was specifically designed for edge deployment — the same
+category as microcontrollers and embedded systems that power real
+robots. Learning it now means the skills transfer directly to
+deploying ML on physical hardware later."</p>
+<hr />
+<h2 id="lesson-pa2-setting-up-vs-code-dependencies">LESSON PA.2 — SETTING UP VS CODE &amp; DEPENDENCIES</h2>
+<p><strong>Purpose:</strong> Same setup as Project 1's P1.1 and P1.2 but condensed,
+since Project A comes first and Project 1 will reference back to this.</p>
+<h3 id="content_2">Content:</h3>
+<p>If the student already completed P1.1 and P1.2, add a callout at the
+top: "Already set up VS Code from Project 1? Skip to PA.3."</p>
+<p>Otherwise, include the full setup:</p>
+<p><strong>VS Code install</strong> — same as P1.1 steps 1-6.</p>
+<p><strong>Create a new project folder</strong> called <code>my-detector</code> (separate from
+the object tracker folder).</p>
+<p><strong>Create and activate a virtual environment</strong> — same as P1.2 steps 1-2.</p>
+<p><strong>Install dependencies for Project A:</strong></p>
+<pre><code>pip install ultralytics roboflow opencv-python
+</code></pre>
+<p>Explain each:</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Role in this project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ultralytics</td>
+<td>Loads YOLO26, runs training, runs inference</td>
+</tr>
+<tr>
+<td>roboflow</td>
+<td>Downloads your labeled dataset from Roboflow in the right format</td>
+</tr>
+<tr>
+<td>opencv-python</td>
+<td>Opens your webcam and displays the detection results</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verify installation:</strong></p>
+<p>Tell the student to create <code>test_setup.py</code> and type:</p>
+<pre><code class="language-python">from ultralytics import YOLO
+import cv2
+import roboflow
+print(&quot;All good!&quot;)
+</code></pre>
+<p>Run it. If "All good!" prints, setup is complete.</p>
+<p><strong>Download YOLO26n weights:</strong></p>
+<p>Create <code>download_model.py</code>:</p>
+<pre><code class="language-python">from ultralytics import YOLO
+model = YOLO(&quot;yolo26n.pt&quot;)  # downloads automatically on first run
+print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.parameters()):,}&quot;)
+</code></pre>
+<p>Run it. Ultralytics will download <code>yolo26n.pt</code> (~3.5 MB) automatically.
+The parameter count will print — explain what a parameter is:
+each number the model learned during its original training on COCO dataset.</p>
+<p><strong>INFO callout — what is COCO?</strong>
+"YOLO26n comes pre-trained on COCO — a dataset of 118,000 images
+covering 80 common object categories (people, cars, chairs, animals etc.).
+We will fine-tune this pre-trained model on your custom data.
+Fine-tuning means: keep most of what it already learned, adapt the
+last layers to recognize your specific object. This is why you only
+need 100-150 images instead of 100,000."</p>
+<hr />
+<h2 id="lesson-pa3-collecting-your-data-with-roboflow">LESSON PA.3 — COLLECTING YOUR DATA WITH ROBOFLOW</h2>
+<p><strong>Purpose:</strong> Teach the student how to gather good training images.
+Data quality is more important than model architecture — emphasize this.</p>
+<h3 id="content_3">Content:</h3>
+<p><strong>Step 1 — Create a free Roboflow account</strong>
+Go to roboflow.com. Sign up. Free tier is sufficient for this project.</p>
+<p><strong>Step 2 — Create a new project</strong>
+- Click "Create New Project"
+- Project type: Object Detection
+- Give it a name matching your target object (e.g. "tennis-ball-detector")
+- Annotation group: your class name, lowercase, no spaces (e.g. "ball")</p>
+<p><strong>Step 3 — Decide what to detect</strong></p>
+<p>Before collecting images, decide on one object. Guidelines:</p>
+<p>GOOD choices for this project:
+- A brightly colored ball (tennis ball, orange ball, colored ping-pong ball)
+- A specific mug or water bottle you own
+- A toy or object with a distinctive shape/color
+- A colored cone or marker</p>
+<p>AVOID for first project:
+- Human faces (too complex, ethical considerations)
+- Multiple similar-looking objects
+- Anything that changes shape significantly (cloth, paper)</p>
+<p>ROBOTICS callout:
+"The ball is the classic choice for a reason. It is roughly spherical
+so every angle looks similar — the model doesn't need to learn many
+different poses. It often has a distinctive color that separates it
+from backgrounds. These properties mean you need fewer images."</p>
+<p><strong>Step 4 — How to capture images</strong></p>
+<p>Target: 150 images minimum, 300 is better.</p>
+<p>Capture from multiple:
+- Distances (close, medium, far)
+- Angles (straight on, from left, from right, from above)
+- Backgrounds (different rooms, floors, surfaces)
+- Lighting conditions (bright room, dim room, window light)
+- Partial occlusion (half the object behind something)</p>
+<p>WARNING callout:
+"The single biggest mistake beginners make is collecting all images
+in one location with one background. The model will learn the
+background as part of the object and fail completely in a new room.
+Vary your backgrounds deliberately."</p>
+<p><strong>Step 5 — Upload images to Roboflow</strong>
+Drag and drop images into your Roboflow project, or use the
+Roboflow mobile app to capture directly to the project.</p>
+<hr />
+<h2 id="lesson-pa4-labeling-your-images">LESSON PA.4 — LABELING YOUR IMAGES</h2>
+<p><strong>Purpose:</strong> Teach bounding box annotation. This is the most time-consuming
+part. Set expectations and teach good labeling habits.</p>
+<h3 id="content_4">Content:</h3>
+<p><strong>What labeling means:</strong>
+For every image, you draw a rectangle tightly around every instance
+of your object. Roboflow's web annotation tool is a simple drag-to-draw
+interface.</p>
+<p><strong>Step-by-step in Roboflow:</strong>
+1. Open your project → click "Annotate"
+2. Click the first image
+3. Press B (or click the box tool)
+4. Click and drag to draw a rectangle around your object
+5. Type the class name (it will autocomplete after the first time)
+6. Press Enter to confirm
+7. Press the right arrow key to go to the next image</p>
+<p><strong>Good labeling rules — explain each with a why:</strong></p>
+<p>Rule 1: Draw the box tightly around the object.
+Why: loose boxes include background pixels that confuse the model.</p>
+<p>Rule 2: Label every instance in the image, not just the prominent one.
+Why: if you miss an instance, the model is punished during training
+for detecting something you left unlabeled. This is called a false
+negative in the loss function.</p>
+<p>Rule 3: If the object is less than 20% visible, skip it.
+Why: a heavily occluded object provides little useful signal and
+the inconsistency hurts more than the extra data helps.</p>
+<p>Rule 4: Be consistent with box tightness throughout your dataset.
+Why: inconsistent labels create noise that reduces final accuracy.</p>
+<p><strong>Time estimate callout (INFO):</strong>
+"Labeling 150 images takes roughly 30-45 minutes if your object
+appears once per image. Put on a podcast. It is repetitive but
+there is no shortcut — label quality is the ceiling on model quality."</p>
+<p><strong>Roboflow auto-label feature (mention but don't rely on):</strong>
+Roboflow has an AI auto-labeling feature. It works well once you
+have a few dozen manually labeled images to seed it. For the first
+50 images, label manually. Then try auto-label and correct its
+mistakes for the rest. This hybrid approach is what professionals use.</p>
+<hr />
+<h2 id="lesson-pa5-exporting-the-dataset">LESSON PA.5 — EXPORTING THE DATASET</h2>
+<p><strong>Purpose:</strong> Explain train/val/test splits, augmentation, and how to
+get the dataset into the format YOLO26 expects.</p>
+<h3 id="content_5">Content:</h3>
+<p><strong>Train / validation / test split:</strong></p>
+<p>Explain with a clear analogy:
+- Training set: the practice problems you study from
+- Validation set: the practice exam you check yourself with during studying
+- Test set: the final exam, only looked at once at the very end</p>
+<p>Standard split for small datasets: 80% train / 15% validation / 5% test.
+Roboflow handles this automatically.</p>
+<p>Show a simple visual: 150 images → 120 train / 22 val / 8 test.</p>
+<p><strong>Augmentation:</strong></p>
+<p>Explain what augmentation is: artificially increasing your dataset
+size by applying random transformations to existing images.
+Each transformation teaches the model to be robust to that variation.</p>
+<p>In Roboflow, enable these augmentations (and explain each):
+- Flip horizontal: the model learns the object looks the same mirrored
+- Rotation ±15°: handles camera tilt
+- Brightness ±25%: handles different lighting
+- Blur up to 1.5px: handles slight focus issues</p>
+<p>WARNING callout:
+"Do not enable too many augmentations on a small dataset. Each
+augmentation multiplies your dataset size, which sounds good,
+but if the augmentations are too extreme (e.g. 90° rotation of a
+ball on a floor) the model learns impossible scenarios."</p>
+<p><strong>Exporting in YOLOv8 format:</strong></p>
+<p>In Roboflow:
+1. Click "Generate" to create a dataset version with your augmentations
+2. Click "Export Dataset"
+3. Format: YOLOv8 (this format also works for YOLO26)
+4. Choose "Get download code" — Roboflow gives you a Python snippet</p>
+<p>The snippet looks like:</p>
+<pre><code class="language-python">from roboflow import Roboflow
+rf = Roboflow(api_key=&quot;YOUR_KEY_HERE&quot;)
+project = rf.workspace(&quot;YOUR_WORKSPACE&quot;).project(&quot;YOUR_PROJECT&quot;)
+version = project.version(1)
+dataset = version.download(&quot;yolov8&quot;)
+</code></pre>
+<p>Tell the student to save this snippet — they will paste it into
+the Colab notebook in the next lesson.</p>
+<p><strong>INFO callout — why YOLOv8 format for YOLO26:</strong>
+"YOLO26 uses the same dataset format as YOLOv8. The format is just
+a folder structure with images and matching .txt label files.
+Ultralytics kept this consistent across model generations."</p>
+<hr />
+<h2 id="lesson-pa6-training-in-google-colab">LESSON PA.6 — TRAINING IN GOOGLE COLAB</h2>
+<p><strong>Purpose:</strong> Run the actual training. Use Colab for GPU access.
+Walk through every cell of the training notebook.</p>
+<h3 id="content_6">Content:</h3>
+<p><strong>Why Colab for training:</strong>
+Training on a CPU for 50 epochs on 150 images would take 2-4 hours.
+Colab's free T4 GPU does it in 8-12 minutes. Use the right tool
+for the right job — inference runs locally, training runs in the cloud.</p>
+<p><strong>How to get GPU in Colab:</strong>
+Runtime menu → Change runtime type → T4 GPU → Save.
+Tell the student to check: Runtime → View resources — should show GPU memory.</p>
+<p>WARNING callout:
+"Colab free tier gives you GPU access for roughly 2-4 hours per day.
+Training this project takes about 10 minutes so free tier is more
+than enough. Do not leave the notebook idle — Colab disconnects after
+90 minutes of inactivity and you lose your session."</p>
+<p><strong>Full training notebook — cell by cell:</strong></p>
+<p>Tell the agent to build this as the training Colab notebook
+(<code>notebooks/projA-training.ipynb</code>) and link it from the lesson.
+Show every cell on the site page with explanation, same as Project 1.</p>
+<hr />
+<p>Cell 1 — Install dependencies:</p>
+<pre><code class="language-python">!pip install ultralytics roboflow -q
+</code></pre>
+<p>Explanation: <code>-q</code> means quiet — suppresses the long install log.</p>
+<hr />
+<p>Cell 2 — Check GPU:</p>
+<pre><code class="language-python">import torch
+print(f&quot;CUDA available: {torch.cuda.is_available()}&quot;)
+print(f&quot;GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'None — check runtime type'}&quot;)
+</code></pre>
+<p>Explanation: If this prints "None", the student forgot to switch to GPU runtime.</p>
+<hr />
+<p>Cell 3 — Download dataset from Roboflow:
+Show the Roboflow snippet from PA.5 here. Tell the student to paste
+their own snippet (api_key, workspace, project will differ per student).</p>
+<hr />
+<p>Cell 4 — Inspect the dataset structure:</p>
+<pre><code class="language-python">import os
+dataset_path = &quot;YOUR-PROJECT-NAME-1&quot;  # folder Roboflow created
+for split in [&quot;train&quot;, &quot;valid&quot;, &quot;test&quot;]:
+    images = len(os.listdir(f&quot;{dataset_path}/{split}/images&quot;))
+    labels = len(os.listdir(f&quot;{dataset_path}/{split}/labels&quot;))
+    print(f&quot;{split}: {images} images, {labels} labels&quot;)
+</code></pre>
+<p>Explanation: teaches students to verify their data before training.
+A mismatch between images and labels means something went wrong in export.</p>
+<hr />
+<p>Cell 5 — Look at one label file:</p>
+<pre><code class="language-python">import random
+label_files = os.listdir(f&quot;{dataset_path}/train/labels&quot;)
+sample = random.choice(label_files)
+with open(f&quot;{dataset_path}/train/labels/{sample}&quot;) as f:
+    content = f.read()
+print(f&quot;File: {sample}&quot;)
+print(f&quot;Contents:\n{content}&quot;)
+print(&quot;\nFormat: class_id  x_center  y_center  width  height (all normalized 0-1)&quot;)
+</code></pre>
+<p>Explanation: demystifies the label format. Students see the raw numbers
+they created during labeling. Connect back to the xywh explanation from PA.0.</p>
+<hr />
+<p>Cell 6 — Visualize a training image with its label:</p>
+<pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+
+img_dir = f&quot;{dataset_path}/train/images&quot;
+lbl_dir = f&quot;{dataset_path}/train/labels&quot;
+
+img_file = random.choice(os.listdir(img_dir))
+lbl_file = img_file.replace(&quot;.jpg&quot;, &quot;.txt&quot;).replace(&quot;.png&quot;, &quot;.txt&quot;)
+
+img = cv2.imread(f&quot;{img_dir}/{img_file}&quot;)
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+h, w = img.shape[:2]
+
+with open(f&quot;{lbl_dir}/{lbl_file}&quot;) as f:
+    for line in f:
+        parts = list(map(float, line.strip().split()))
+        cx, cy, bw, bh = parts[1]*w, parts[2]*h, parts[3]*w, parts[4]*h
+        x1, y1 = int(cx - bw/2), int(cy - bh/2)
+        x2, y2 = int(cx + bw/2), int(cy + bh/2)
+        cv2.rectangle(img, (x1,y1), (x2,y2), (0,255,0), 2)
+
+plt.imshow(img)
+plt.title(f&quot;Sample: {img_file}&quot;)
+plt.axis(&quot;off&quot;)
+plt.show()
+</code></pre>
+<p>Explanation: before training, always visualize your data to confirm
+labels look correct. If the box is in the wrong place, the label
+is wrong, not the model.</p>
+<hr />
+<p>Cell 7 — Train YOLO26n:</p>
+<pre><code class="language-python">from ultralytics import YOLO
+
+model = YOLO(&quot;yolo26n.pt&quot;)   # start from pretrained nano weights
+
+results = model.train(
+    data=f&quot;{dataset_path}/data.yaml&quot;,
+    epochs=50,
+    imgsz=416,
+    batch=16,
+    name=&quot;my_detector&quot;,
+    patience=15,          # stop early if val loss stops improving
+    save=True,
+    device=0              # GPU device 0 — auto-falls back to CPU
+)
+</code></pre>
+<p>Explain every argument in an anatomy table:</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Value</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>data.yaml</td>
+<td>The config file Roboflow generated — lists your class names and folder paths</td>
+</tr>
+<tr>
+<td>epochs</td>
+<td>50</td>
+<td>How many times to loop through the full training set. 50 is enough for small datasets</td>
+</tr>
+<tr>
+<td>imgsz</td>
+<td>416</td>
+<td>Resize all images to 416×416 during training. Larger = more accurate but slower</td>
+</tr>
+<tr>
+<td>batch</td>
+<td>16</td>
+<td>Process 16 images at once. Reduce to 8 if Colab runs out of GPU memory</td>
+</tr>
+<tr>
+<td>patience</td>
+<td>15</td>
+<td>If validation accuracy doesn't improve for 15 epochs, stop early</td>
+</tr>
+<tr>
+<td>device</td>
+<td>0</td>
+<td>Use GPU 0. Falls back to CPU automatically</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>Cell 8 — Find the trained weights:</p>
+<pre><code class="language-python">import glob
+weights = glob.glob(&quot;runs/detect/my_detector/weights/best.pt&quot;)
+print(f&quot;Best weights saved at: {weights[0]}&quot;)
+</code></pre>
+<p>Explanation: best.pt is saved at the epoch where validation accuracy
+was highest — NOT necessarily the last epoch. This is why patience
+and early stopping matter.</p>
+<hr />
+<h2 id="lesson-pa7-reading-the-training-results">LESSON PA.7 — READING THE TRAINING RESULTS</h2>
+<p><strong>Purpose:</strong> Teach the student to interpret training metrics.
+This is where many tutorials skip crucial understanding.</p>
+<h3 id="content_7">Content:</h3>
+<p><strong>The training output folder:</strong>
+After training, Ultralytics saves everything to <code>runs/detect/my_detector/</code>.
+Show the folder structure with an explanation of each file:</p>
+<pre><code>runs/detect/my_detector/
+├── weights/
+│   ├── best.pt      ← USE THIS — best validation accuracy
+│   └── last.pt      ← last epoch weights, not necessarily best
+├── results.csv      ← all metrics per epoch as numbers
+├── results.png      ← charts of all metrics over time
+├── confusion_matrix.png
+├── PR_curve.png
+└── val_batch0_pred.jpg  ← sample predictions on validation images
+</code></pre>
+<p><strong>Key metrics — explain each one clearly:</strong></p>
+<p>mAP50 (most important):
+Mean Average Precision at 50% IoU threshold. This is the headline
+accuracy number. For a single-class detector on simple backgrounds,
+expect 0.85-0.97. Below 0.7 means your data or labels need work.
+Explain IoU briefly: how much the predicted box overlaps with the
+true box, as a fraction. 50% overlap = IoU of 0.5.</p>
+<p>Precision:
+Of all the boxes the model predicted, what fraction were correct?
+High precision = few false positives (model doesn't hallucinate objects).</p>
+<p>Recall:
+Of all the real objects in the images, what fraction did the model find?
+High recall = few missed objects.</p>
+<p>The precision-recall tradeoff callout (TIP):
+"Lowering the confidence threshold increases recall but decreases
+precision — you catch more real objects but also accept more false
+positives. Raising it does the opposite. The confidence setting in
+your inference code (default 0.5) is where you set this tradeoff
+for your application."</p>
+<p>Box loss and class loss:
+These should decrease steadily over epochs. If they plateau early,
+the model has converged. If they decrease then suddenly spike,
+the learning rate may be too high or your labels have errors.</p>
+<p><strong>Show training curve diagram:</strong>
+Describe what a healthy training curve looks like vs. an overfit one:
+- Healthy: train loss and val loss both decrease together
+- Overfit: train loss keeps decreasing but val loss stops or increases
+- Underfit: both losses are high and barely decreasing (need more epochs or data)</p>
+<hr />
+<h2 id="lesson-pa8-running-inference-locally">LESSON PA.8 — RUNNING INFERENCE LOCALLY</h2>
+<p><strong>Purpose:</strong> Download best.pt and run it on a live webcam in VS Code.</p>
+<h3 id="content_8">Content:</h3>
+<p><strong>Download best.pt from Colab:</strong>
+In Colab, Files panel (left sidebar folder icon) → navigate to
+<code>runs/detect/my_detector/weights/</code> → right-click <code>best.pt</code> → Download.
+Move it to your <code>my-detector</code> VS Code project folder.</p>
+<p><strong>Create <code>detect_webcam.py</code>:</strong></p>
+<p>Show this full script on the page (display only, not browser-runnable):</p>
+<pre><code class="language-python">import cv2
+from ultralytics import YOLO
+
+# Load your trained model
+model = YOLO(&quot;best.pt&quot;)
+
+# Open webcam (0 = default webcam)
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print(&quot;Error: Could not open webcam&quot;)
+    exit()
+
+print(&quot;Press Q to quit&quot;)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Run detection
+    results = model(frame, imgsz=416, conf=0.5, verbose=False)
+
+    # Draw results on the frame
+    annotated = results[0].plot()
+
+    # Show FPS
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    cv2.putText(annotated, f&quot;Model: yolo26n (your data)&quot;,
+                (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,0), 2)
+
+    cv2.imshow(&quot;My Detector&quot;, annotated)
+
+    if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+</code></pre>
+<p>Anatomy table for key lines:
+- <code>results[0].plot()</code> — Ultralytics built-in method that draws all
+  boxes, class names, and confidence scores onto the frame
+- <code>conf=0.5</code> — minimum confidence to show a detection
+- <code>verbose=False</code> — suppresses per-frame terminal output (otherwise floods terminal)
+- <code>cv2.VideoCapture(0)</code> — 0 means the default camera. Try 1 if you
+  have multiple cameras and the wrong one opens</p>
+<p><strong>Run it:</strong></p>
+<pre><code>python detect_webcam.py
+</code></pre>
+<p><strong>Tuning on the fly callout (TIP):</strong>
+"If you see too many false positives (wrong detections), increase
+conf to 0.65 or 0.7. If the model misses the real object often,
+decrease conf to 0.4. You can also try imgsz=320 if the laptop
+feels slow — smaller image = faster but slightly less accurate."</p>
+<hr />
+<h2 id="lesson-pa9-understanding-the-model-output">LESSON PA.9 — UNDERSTANDING THE MODEL OUTPUT</h2>
+<p><strong>Purpose:</strong> Look at the raw YOLO output before <code>.plot()</code> hides it.
+This is critical because Project 1 uses the raw output directly.</p>
+<h3 id="content_9">Content:</h3>
+<p><strong>Why this lesson:</strong>
+The tracker in Project 1 does not use <code>.plot()</code>. It reads
+<code>box.xyxy</code>, <code>box.conf</code>, and <code>box.cls</code> directly to compute motor
+commands. A student who only ever called <code>.plot()</code> will be lost
+when they see those attribute names. This lesson bridges the gap.</p>
+<p><strong>Show this script (display only):</strong></p>
+<pre><code class="language-python">import cv2
+from ultralytics import YOLO
+
+model = YOLO(&quot;best.pt&quot;)
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    results = model(frame, imgsz=416, conf=0.5, verbose=False)
+
+    # Look at the raw output — don't use .plot() yet
+    for r in results:
+        print(f&quot;\nFrame detections: {len(r.boxes)}&quot;)
+
+        for i, box in enumerate(r.boxes):
+            # Bounding box in pixel coordinates (x1,y1,x2,y2)
+            x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+
+            # Center of the box
+            cx = (x1 + x2) / 2
+            cy = (y1 + y2) / 2
+
+            # Area of the box (proxy for distance)
+            area = (x2 - x1) * (y2 - y1)
+
+            # Confidence score
+            confidence = float(box.conf[0])
+
+            # Class index and name
+            class_id   = int(box.cls[0])
+            class_name = model.names[class_id]
+
+            print(f&quot;  Detection {i}: {class_name} ({confidence:.0%} confident)&quot;)
+            print(f&quot;    Box:    ({x1:.0f}, {y1:.0f}) to ({x2:.0f}, {y2:.0f})&quot;)
+            print(f&quot;    Center: ({cx:.0f}, {cy:.0f})&quot;)
+            print(f&quot;    Area:   {area:.0f} px²&quot;)
+
+    if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+</code></pre>
+<p><strong>Anatomy table for every new attribute:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>What it contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>r.boxes</code></td>
+<td>list</td>
+<td>All detections in this frame. Empty list = nothing detected</td>
+</tr>
+<tr>
+<td><code>box.xyxy[0]</code></td>
+<td>tensor</td>
+<td>[x1, y1, x2, y2] in pixel coordinates. [0] because there's one box per entry</td>
+</tr>
+<tr>
+<td><code>.cpu().numpy()</code></td>
+<td>conversion</td>
+<td>Moves the tensor from GPU memory to CPU and converts to a NumPy array so you can do math with it</td>
+</tr>
+<tr>
+<td><code>box.conf[0]</code></td>
+<td>float tensor</td>
+<td>Confidence score 0-1. float() converts it to a plain Python number</td>
+</tr>
+<tr>
+<td><code>box.cls[0]</code></td>
+<td>int tensor</td>
+<td>Index of the detected class. Use model.names[index] to get the string name</td>
+</tr>
+<tr>
+<td><code>model.names</code></td>
+<td>dict</td>
+<td>Maps class index → class name. e.g. {0: "ball"} for your single-class model</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Connect to Project 1 callout (ROBOTICS box):</strong>
+"Look at the <code>_detect()</code> method in <code>obj_track_adv.py</code>. It does
+exactly this — loops through <code>r.boxes</code>, checks the class name,
+computes the area, and returns the bounding box coordinates.
+Now that you understand what each line reads, that method
+should make complete sense."</p>
+<hr />
+<h2 id="lesson-pa10-preparing-for-project-1">LESSON PA.10 — PREPARING FOR PROJECT 1</h2>
+<p><strong>Purpose:</strong> Checklist and bridge. Confirm readiness for the tracker project.</p>
+<h3 id="content_10">Content:</h3>
+<p><strong>What you now have:</strong>
+- A trained <code>best.pt</code> file specific to your target object
+- Understanding of what the model outputs and how to read it
+- A working local Python environment with all packages installed
+- Intuition for confidence thresholds and bounding box coordinates</p>
+<p><strong>Rename your weights for clarity:</strong>
+Rename <code>best.pt</code> to something descriptive like <code>ball_detector.pt</code>
+or <code>mug_detector.pt</code>. In Project 1, update the Tracker initialization:</p>
+<pre><code class="language-python">tracker = Tracker(&quot;ball_detector.pt&quot;, &quot;ball&quot;)
+</code></pre>
+<p>The second argument must match the class name you used in Roboflow exactly.</p>
+<p><strong>Verify your model is ready (checklist — interactive, localStorage):</strong>
+□ best.pt is in the my-detector folder and webcam detection works
+□ The model correctly detects your target object from at least 1 meter away
+□ The model runs at acceptable speed (even 5 fps is enough for Project 1)
+□ You understand what box.xyxy, box.conf, and box.cls contain
+□ mAP50 on the validation set was above 0.75</p>
+<p><strong>If mAP50 is below 0.75 callout (WARNING):</strong>
+"Don't move to Project 1 with a weak model — the tracker will
+behave erratically and it will be impossible to tell if the problem
+is the model or the control code. Add 50-100 more images with
+more varied backgrounds and retrain. This almost always fixes it."</p>
+<p><strong>What's next:</strong>
+Link to Project 1 with a framing sentence:
+"You have the model. Project 1 connects it to real motors."</p>
+<hr />
+<h2 id="technical-notes-for-the-agent">TECHNICAL NOTES FOR THE AGENT</h2>
+<ul>
+<li>
+<p>All code blocks in this project are DISPLAY ONLY except the Colab
+  notebook cells, which are in the .ipynb file and not on the page.
+  Use the VS Code badge (purple #007acc) for local scripts.
+  Use the Colab badge for training cells.</p>
+</li>
+<li>
+<p>The Colab notebook must be created at:
+  <code>notebooks/projA-training.ipynb</code>
+  with all cells from PA.6 in order, pre-run output cleared,
+  and a markdown header linking back to the course site.</p>
+</li>
+<li>
+<p>Every code block that shows a local Python script must include the
+  suggested filename as the code block's data-filename attribute
+  (e.g., data-filename="detect_webcam.py").</p>
+</li>
+<li>
+<p>Lesson completion tracking, prev/next navigation, and mark-as-complete
+  all work exactly the same as existing lessons.</p>
+</li>
+<li>
+<p>The sidebar group for Project A must appear ABOVE Project 1 and carry
+  an "(A)" prefix or "Prerequisite" chip so students understand ordering.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of project_A_design.md</em></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/dark-mode.js"></script>
+      <script src="../../js/copy-code.js"></script>
+      <script src="../../js/width-toggle.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

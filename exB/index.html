@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Exercise B: Your Phone as a Robot Camera - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Exercise B: Your Phone as a Robot Camera";
+        var mkdocs_page_input_path = "exB.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Exercise B: Your Phone as a Robot Camera</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#why-a-phone-and-not-a-webcam">Why a Phone and Not a Webcam</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-need">What You Need</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#android-setup-ip-webcam">Android Setup: IP Webcam</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#keep-the-app-open">Keep The App Open</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#stream-url-format-for-android">Stream URL Format For Android</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ios-setup-simpleipcamera">iOS Setup: SimpleIPCamera</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#keep-the-app-open_1">Keep The App Open</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#stream-url-format-for-ios">Stream URL Format For iOS</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#option-3-phonesense-no-app-required">Option 3: phonesense (No App Required)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#install-phonesense">Install phonesense</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#start-the-standalone-server">Start the Standalone Server</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-phonesense-gives-you">What phonesense Gives You</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#finding-your-phones-ip-address">Finding Your Phone's IP Address</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-the-ip-address-means">What The IP Address Means</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#testing-the-stream-in-a-browser">Testing the Stream in a Browser</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-detection-on-the-stream">Running Detection on the Stream</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#step-1-edit-the-stream_url-line">Step 1 : Edit The STREAM_URL Line</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-2-make-sure-bestpt-is-in-the-same-folder">Step 2 : Make Sure best.pt Is In The Same Folder</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-3-run-the-script">Step 3 : Run The Script</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-should-see">What You Should See</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#understanding-the-stream-code">Understanding the Stream Code</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-configuration-block">The Configuration Block</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-open_stream-function">The open_stream Function</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-read_frame-function">The read_frame Function</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-cv2imdecode-instead-of-cv2videocapture">Why cv2.imdecode Instead Of cv2.VideoCapture</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-detection-line">The Detection Line</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#connecting-the-dots-to-project-1">Connecting the Dots to Project 1</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-is-different-in-project-1">What Is Different In Project 1?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#final-checklist-before-moving-to-exercise-c">Final Checklist Before Moving To Exercise C</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Exercise B: Your Phone as a Robot Camera</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="exercise-b-your-phone-as-a-robot-camera">* Exercise B: Your Phone as a Robot Camera</h1>
+<hr />
+<h2 id="why-a-phone-and-not-a-webcam">Why a Phone and Not a Webcam</h2>
+<hr />
+<p>In Exercise A you ran detection on a webcam plugged into your laptop. That works for a desktop demo but it is useless for a robot. A robot moves. It cannot drag a USB cable behind it unless you mount the whole computer on the robot, which sometimes may be impractical. The camera must be wireless.
+A phone is the perfect solution for learning. It already has a high quality camera, a battery, WiFi, and a screen. Both apps we use turn the phone into a network camera that streams live video over your local WiFi. Your laptop connects to that stream over the network exactly the way a browser loads a video: no cable, no Bluetooth, no special hardware.
+This is also exactly how Project 1's robot works. The <code>MobileVideoStream</code> class in <code>shared.py</code> connects to a phone stream using the same URL format you will set up in this exercise. By the end of Exercise B you will understand every line of that class.</p>
+<div class="admonition tip">
+<p class="admonition-title">Same architecture, smaller scale</p>
+<p>Professional mobile robots use the same concept at a higher level. A drone streams its camera feed over WiFi or 4G to a ground station running detection algorithms. An autonomous vehicle streams from multiple cameras to an onboard computer. The architecture is identical to what you are building here: the difference is bandwidth and latency.</p>
+</div>
+<h3 id="what-you-need">What You Need</h3>
+<p>The best.pt file from Exercise A. Your phone and laptop on the same WiFi network. Android phone: IP Webcam app, free from the Play Store. iOS: Simple IP Camera app, free from the App Store. The my-detector VS Code folder from Exercise A with the virtual environment active.</p>
+<hr />
+<h2 id="android-setup-ip-webcam">Android Setup: IP Webcam</h2>
+<hr />
+<p>Install IP Webcam. Open the Play Store on your Android phone. Search for IP Webcam by Thyoni Tech (used to be by Pavel Khlebovich before). Install it. It is free with no required account, but shows ads in the beginning. There is a paid, ad-free version available as well. Open the app. Open IP Webcam. You will see a long list of settings. Leave everything at the default for now. Scroll all the way to the bottom of the settings list. Start the server. Tap Start server at the very bottom of the screen. The phone screen turns into a live camera preview.
+At the bottom of the preview screen you will see two URLs printed in white text. They look like this:
+Example Android URLs</p>
+<pre><code class="language-bash">http://192.168.1.47:8080
+http://10.0.0.3:8080
+</code></pre>
+<p>These are the addresses your laptop uses to connect to the stream. Write down both of them. You will test which one works in PB.4.</p>
+<div class="admonition info">
+<p class="admonition-title">Why two URLs?</p>
+<p>Your phone may have two network interfaces active at once: your home WiFi and a mobile hotspot or VPN. Each interface gets a different IP address. Only one of those addresses is on the same network as your laptop. You will test both to find the right one in PB.4.</p>
+</div>
+<h3 id="keep-the-app-open">Keep The App Open</h3>
+<p>Do not close IP Webcam or let the phone screen turn off while testing. The stream only works while the app is running in the foreground. Go to your phone settings and set screen timeout to <strong>Never</strong> or the longest available option while you are working on this exercise.</p>
+<div class="admonition tip">
+<p class="admonition-title">Keep the phone charging</p>
+<p>Keep your phone plugged into a charger while running IP Webcam. Streaming video over WiFi drains the battery significantly faster than normal use.</p>
+</div>
+<h3 id="stream-url-format-for-android">Stream URL Format For Android</h3>
+<p>Android / IP Webcam stream URL</p>
+<pre><code class="language-bash">http://PHONE_IP:8080/video
+</code></pre>
+<p>The <code>/video</code> path returns a continuous MJPEG stream: a sequence of JPEG images sent one after another over a single HTTP connection.</p>
+<hr />
+<h2 id="ios-setup-simpleipcamera">iOS Setup: SimpleIPCamera</h2>
+<hr />
+<p>Install SimpleIPCamera Open the App Store on your iPhone. Search for SimpleIPCamera by CIT.CZ (formerly, Rune Funch). Install it. It is free. Open the app and start streaming. Open SimpleIPCamera. Tap the large Start button on the main screen. Write down the stream URL. The app begins streaming immediately and shows you the stream URL at the top of the screen. It looks like http://192.168.1.52:8080/live .
+This is what you paste into Python.</p>
+<h3 id="keep-the-app-open_1">Keep The App Open</h3>
+<p>Same requirement as Android: keep the app running in the foreground and plug your phone in to prevent the screen from locking.</p>
+<div class="admonition info">
+<p class="admonition-title">Simple IP Camera vs IP Webcam</p>
+<p>Simple IP Camera uses the same MJPEG format as IP Webcam on Android. The stream URL path is slightly different, <code>/live</code> instead of <code>/video</code>, but the Python code handles it identically. The only change between Android and iOS is the URL you paste into the script.</p>
+</div>
+<h3 id="stream-url-format-for-ios">Stream URL Format For iOS</h3>
+<p>iOS / Simple IP Camera stream URL</p>
+<pre><code class="language-bash">http://PHONE_IP:8080/live
+</code></pre>
+<hr />
+<h2 id="option-3-phonesense-no-app-required">Option 3: phonesense (No App Required)</h2>
+<hr />
+<p><a href="https://github.com/snappyxo/phonesense">phonesense</a> is a third option that requires nothing on your phone at all. Instead of installing an app, you run a small server on your laptop and open its URL in your phone's browser. The laptop serves the streaming page; the phone's browser sends the camera feed back over your local WiFi.</p>
+<p>This is the fastest way to get started if you do not have IP Webcam or Simple IP Camera installed, or if you want to skip the manual URL-finding step entirely.</p>
+<h3 id="install-phonesense">Install phonesense</h3>
+<p>Install it into your virtual environment the same way you installed other packages in Exercise A:</p>
+<pre><code class="language-bash">pip install phonesense
+</code></pre>
+<p>If you prefer to keep it isolated from your project, <code>uvx</code> and <code>pipx</code> also work:</p>
+<pre><code class="language-bash">uvx phonesense
+# or
+pipx run phonesense
+</code></pre>
+<h3 id="start-the-standalone-server">Start the Standalone Server</h3>
+<p>Open a <strong>second terminal</strong> alongside your normal VS Code terminal and run:</p>
+<pre><code class="language-bash">phonesense
+</code></pre>
+<p>If you used <code>uvx</code> or <code>pipx</code> instead of <code>pip install</code>, run <code>uvx phonesense</code> or <code>pipx run phonesense</code> instead.</p>
+<p>phonesense starts a server and prints one or more stream URLs, for example:</p>
+<pre><code>Phone page  https://192.168.1.10:8080/phone
+</code></pre>
+<p>Open the first URL in your phone's browser. Leave this terminal running the whole time you are working on the exercise.</p>
+<p>The URL you just opened on your phone but with <code>camera/stream</code> (e.g. <code>https://192.168.1.10:8080/camera/stream</code>) is your stream URL. You will paste it into <code>STREAM_URL</code> in <code>detect_stream.py</code> exactly the same way you would paste an IP Webcam or Simple IP Camera URL.</p>
+<div class="admonition tip">
+<p class="admonition-title">phonesense uses HTTPS</p>
+<p>phonesense generates a self-signed certificate and serves over HTTPS. Your phone browser will show a security warning the first time you open the URL. This is expected and safe on a local network. Tap past it with your browser:</p>
+<table>
+<thead>
+<tr>
+<th>Browser</th>
+<th>Steps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrome (Android / Windows / Linux)</td>
+<td>Tap <strong>Advanced</strong> → <strong>Proceed to ... (unsafe)</strong></td>
+</tr>
+<tr>
+<td>Safari (iOS / macOS)</td>
+<td>Tap <strong>Show Details</strong> → <strong>visit this website</strong></td>
+</tr>
+<tr>
+<td>Edge (Windows)</td>
+<td>Tap <strong>Advanced</strong> → <strong>Continue to ... (unsafe)</strong></td>
+</tr>
+<tr>
+<td>Firefox (any platform)</td>
+<td>Tap <strong>Advanced</strong> → <strong>Accept the Risk and Continue</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="what-phonesense-gives-you">What phonesense Gives You</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>IP Webcam / Simple IP Camera</th>
+<th>phonesense</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phone-side setup</td>
+<td>Install an app</td>
+<td>Open a URL in the phone browser</td>
+</tr>
+<tr>
+<td>Stream URL</td>
+<td>Copy from the app screen</td>
+<td>Printed in the terminal</td>
+</tr>
+</tbody>
+</table>
+<p>If you are using phonesense, skip to "Running Detection on the Stream" and follow the same steps as other users, using your phonesense URL.</p>
+<hr />
+<h2 id="finding-your-phones-ip-address">Finding Your Phone's IP Address</h2>
+<hr />
+<p>On your iPhone go to Settings, tap WiFi, and check that you are connected to the same network name as your laptop.
+If your laptop is on ethernet and your phone is on WiFi they are usually on the same network. This is fine.</p>
+<div class="admonition warning">
+<p class="admonition-title">Mobile data will not work</p>
+<p>If your phone is on mobile data, 4G, or 5G and not on WiFi, the stream will not work. Connect your phone to the same WiFi as your laptop before continuing.</p>
+</div>
+<p>Both apps display the IP address on screen when the stream is running. If you need to find it manually, use the steps below.
+<strong>Android</strong>
+Go to Settings, tap Connections or Network, tap WiFi. Tap the network name you are connected to. Scroll down to find <strong>IP address</strong>. It looks like <code>192.168.x.x</code> or <code>10.x.x.x</code>.
+<strong>iPhone</strong>
+Go to Settings, tap WiFi. Tap the small <strong>i</strong> icon next to the network name you are connected to. The IP address is shown under the IPv4 Address section.</p>
+<h3 id="what-the-ip-address-means">What The IP Address Means</h3>
+<p>An IP address is a unique number assigned to your phone on the local network. It tells your laptop exactly where to send requests when it wants to fetch the video stream. It looks like four numbers separated by dots: <code>192.168.1.47</code>.
+The first two or three groups of numbers will match between your phone and laptop if they are on the same network.
+Device IP address Meaning Laptop 192.168.1.10 Same 192.168.1 prefix. Phone 192.168.1.47 Same network: should work. Phone 172.20.10.3 Different prefix: usually a different network, will not work.</p>
+<div class="admonition warning">
+<p class="admonition-title">IP addresses can change</p>
+<p>IP addresses on a home or university WiFi network are not permanent. Your phone gets a new address each time it reconnects to WiFi. If your Python script suddenly cannot connect, check that the IP address in your script still matches the one shown in the app.</p>
+</div>
+<hr />
+<h2 id="testing-the-stream-in-a-browser">Testing the Stream in a Browser</h2>
+<hr />
+<p>Before writing any Python code, confirm the stream works using your browser. This takes 30 seconds and immediately tells you if the network connection is working.
+Open your laptop browser. Open Chrome, Firefox, or Safari on your laptop. Type the stream URL in the address bar. For Android use http://PHONE_IP:8080/video . For iOS use http://PHONE_IP:8080/live . Replace PHONE_IP with the address shown in your app. Press Enter. If the connection works, your browser will show a live video feed from your phone camera with a small delay of roughly half a second.
+Browser test examples</p>
+<pre><code class="language-bash">http://192.168.1.47:8080/video
+http://192.168.1.52:8080/live
+</code></pre>
+<p>If you see a live video, your stream is working. Move to PB.5. If the page does not load or times out, work through the troubleshooting table.
+What you see What to try Page times out immediately Phone and laptop are on different networks. Connect the phone to the same WiFi as the laptop. Connection refused Wrong port. Confirm the URL matches exactly what the app shows on screen. Page loads but no video Try the other URL if Android showed two. Force-close and reopen the app. Video loads very slowly Move phone and laptop closer to the WiFi router. Streaming needs a decent connection. Works in browser, fails in Python Firewall on laptop may be blocking the connection. Temporarily disable the laptop firewall for testing.</p>
+<div class="admonition tip">
+<p class="admonition-title">Browser test first</p>
+<p>The browser test is the most important debugging step in this entire exercise. If the stream does not work in a browser it will not work in Python. Fix the network connection before touching any code.</p>
+</div>
+<hr />
+<h2 id="running-detection-on-the-stream">Running Detection on the Stream</h2>
+<hr />
+<p>The stream works in your browser. Now open VS Code, activate your virtual environment from Exercise A, and create a new file called <code>detect_stream.py</code> in your <code>my-detector</code> folder.
+Paste the following code:
+detect_stream.py</p>
+<pre><code class="language-python">import cv2
+import numpy as np
+import requests
+import time
+from ultralytics import YOLO
+
+# -- CONFIGURATION----------------------------------------------------
+# Paste your phone stream URL here
+# Android (IP Webcam):      &quot;http://192.168.x.x:8080/video&quot;
+# iOS (Simple IP Camera): &quot;http://192.168.x.x:8080/live&quot;
+STREAM_URL = &quot;http://YOUR_PHONE_IP:8080/video&quot;
+
+# Path to your trained model from Exercise A
+MODEL_PATH = &quot;best.pt&quot;
+
+# Only show detections above this confidence level (0.0 to 1.0)
+CONFIDENCE = 0.5
+# --------------------------------------------------------------------
+
+def open_stream(url):
+    print(f&quot;Connecting to stream: {url}&quot;)
+    response = requests.get(url, stream=True, timeout=10)
+    if response.status_code != 200:
+        raise ConnectionError(f&quot;Could not connect. Status: {response.status_code}&quot;)
+    print(&quot;Stream connected.&quot;)
+    return response
+
+def read_frame(stream_response):
+    buf = b&quot;&quot;
+    for chunk in stream_response.iter_content(4096):
+        if not chunk:
+            continue
+
+        buf += chunk
+        start = buf.find(b&quot;\xff\xd8&quot;)
+        if start == -1:
+            # Keep one byte in case the JPEG marker is split across chunks.
+            buf = buf[-1:]
+            continue
+
+        end = buf.find(b&quot;\xff\xd9&quot;, start + 2)
+        if end == -1:
+            # Keep the partial JPEG and wait for more bytes.
+            buf = buf[start:]
+            continue
+
+        jpg = buf[start:end + 2]
+        buf = buf[end + 2:]
+
+        if len(jpg) &lt;= 2:
+            continue
+
+        frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+        if frame is not None:
+            return frame
+    return None
+
+def main():
+    # Load the trained model
+    print(&quot;Loading model...&quot;)
+    model = YOLO(MODEL_PATH)
+    print(&quot;Model loaded.&quot;)
+
+    # Connect to the phone stream
+    stream = open_stream(STREAM_URL)
+
+    print(&quot;Press Q to quit.&quot;)
+    fps_timer = time.time()
+    frame_count = 0
+
+    while True:
+        frame = read_frame(stream)
+        if frame is None:
+            continue
+
+        # Run detection on the frame
+        results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
+
+        # Draw boxes on the frame
+        annotated = results[0].plot()
+
+        # Calculate and display FPS
+        frame_count += 1
+        elapsed = time.time() - fps_timer
+        if elapsed &gt;= 1.0:
+            fps = frame_count / elapsed
+            frame_count = 0
+            fps_timer = time.time()
+            cv2.putText(annotated, f&quot;FPS: {fps:.1f}&quot;, (10, 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
+        cv2.imshow(&quot;Phone Stream - YOLO26n Detection&quot;, annotated)
+
+        if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+            break
+
+    stream.close()
+    cv2.destroyAllWindows()
+    print(&quot;Stopped.&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h3 id="step-1-edit-the-stream_url-line">Step 1 : Edit The STREAM_URL Line</h3>
+<p>Change <code>YOUR_PHONE_IP</code> to the IP address shown in your phone app. If you are using phonesense, paste the URL that phonesense printed in your terminal.
+STREAM_URL examples</p>
+<pre><code class="language-bash">Android (IP Webcam):        STREAM_URL = &quot;http://192.168.1.47:8080/video&quot;
+iOS (Simple IP Camera):     STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;
+phonesense:                 STREAM_URL = &quot;https://192.168.1.10:8765/video&quot;
+</code></pre>
+<h3 id="step-2-make-sure-bestpt-is-in-the-same-folder">Step 2 : Make Sure best.pt Is In The Same Folder</h3>
+<p>Your trained model file from Exercise A must be in the <code>my-detector</code> folder alongside <code>detect_stream.py</code>. If you named it something else like <code>ball_detector.pt</code>, update the <code>MODEL_PATH</code> line accordingly.</p>
+<h3 id="step-3-run-the-script">Step 3 : Run The Script</h3>
+<p>In the VS Code terminal with the virtual environment active:
+Run detect_stream.py</p>
+<pre><code class="language-bash">python detect_stream.py
+</code></pre>
+<h3 id="what-you-should-see">What You Should See</h3>
+<p>A window opens showing your phone camera feed live. When you hold your trained object in front of the phone camera, a bounding box appears around it with the class name and confidence score. The FPS counter in the top left shows how fast the detection is running.
+4 to 12 fps depending on your laptop. This is usable for object tracking.
+20 to 40 fps. This feels much smoother, but is not required.</p>
+<hr />
+<h2 id="understanding-the-stream-code">Understanding the Stream Code</h2>
+<hr />
+<p>This lesson explains every meaningful section of <code>detect_stream.py</code> so there are no black boxes. This understanding is required for Project 1 where the same concepts appear in a more complex form.</p>
+<h3 id="the-configuration-block">The Configuration Block</h3>
+<p><code>STREAM_URL</code>, <code>MODEL_PATH</code>, and <code>CONFIDENCE</code> are defined at the top of the file as constants rather than buried inside functions. This is deliberate. Any value you might want to change when testing or deploying belongs at the top of the file where it is easy to find. This pattern appears throughout Project 1's code.</p>
+<h3 id="the-open_stream-function">The open_stream Function</h3>
+<p>requests.get with streaming</p>
+<pre><code class="language-python">requests.get(url, stream=True, timeout=10)
+</code></pre>
+<p><code>requests.get</code> is the same function used to load a webpage, but with <code>stream=True</code> it does not download the full response at once. Instead it keeps the HTTP connection open and lets you read data piece by piece. This is how MJPEG streaming works: the server never closes the connection, it just keeps sending JPEG frames one after another.
+<code>timeout=10</code> means: if the phone does not respond within 10 seconds, raise an error instead of hanging forever. Without a timeout, a failed connection would freeze your script with no feedback.</p>
+<h3 id="the-read_frame-function">The read_frame Function</h3>
+<p>MJPEG is not a video format. It is a stream of individual JPEG images sent back to back over a single HTTP connection. To extract frames from this stream you need to find where each JPEG starts and ends.
+Every JPEG file starts with <code>0xFF 0xD8</code>.
+Every JPEG file ends with <code>0xFF 0xD9</code>.
+Read a chunk of bytes from the stream into a buffer. Search the buffer for the start marker 0xFF 0xD8 . Search the buffer for the end marker 0xFF 0xD9 , but only after the start marker. When both are found, everything between them is one complete JPEG. Decode that JPEG into an image array using OpenCV. Return the image and clear the processed bytes from the buffer.
+JPEG marker extraction</p>
+<pre><code class="language-python">start = buf.find(b&quot;\\xff\\xd8&quot;)          # find the JPEG start marker
+end = buf.find(b&quot;\\xff\\xd9&quot;, start + 2) # find the next end marker
+jpg = buf[start:end + 2]              # slice out the complete JPEG
+frame = cv2.imdecode(...)             # decode bytes into an image array
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Do not decode an empty JPEG</p>
+<p>The end marker must be searched <em>after</em> the start marker. If the code finds an old end marker first, the slice can be empty and OpenCV raises <code>(-215:Assertion failed) !buf.empty()</code> inside <code>cv2.imdecode</code>.</p>
+</div>
+<p>This exact pattern is used in the <code>MobileVideoStream</code> class in <code>shared.py</code>. Now you know exactly why it is there.</p>
+<h3 id="why-cv2imdecode-instead-of-cv2videocapture">Why cv2.imdecode Instead Of cv2.VideoCapture</h3>
+<p>In Exercise A you used <code>cv2.VideoCapture(0)</code> to open a webcam. <code>VideoCapture</code> handles USB and some network cameras using built-in drivers. However it does not reliably handle MJPEG streams from phone apps. <code>imdecode</code> works on raw bytes directly, which gives us full control over how frames are read and handles connection drops and reconnects cleanly.</p>
+<h3 id="the-detection-line">The Detection Line</h3>
+<p>YOLO inference line</p>
+<pre><code class="language-python">results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
+</code></pre>
+<p>This is identical to what you wrote in Exercise A's <code>detect_webcam.py</code>. The only difference is the source of the frame: instead of coming from <code>VideoCapture</code>, it comes from the phone stream via <code>read_frame</code>. The model does not know or care where the frame came from. It receives a NumPy array of pixels and returns detections.</p>
+<div class="admonition tip">
+<p class="admonition-title">Separate model from data source</p>
+<p>Keep your model separate from your data source. The same model file runs on a webcam, a phone stream, a saved video file, or a single image with no changes.</p>
+</div>
+<hr />
+<h2 id="connecting-the-dots-to-project-1">Connecting the Dots to Project 1</h2>
+<hr />
+<p>Project 1's robot uses a class called <code>MobileVideoStream</code> (in a file named <code>shared.py</code>) to pull frames from the phone. You have not started Project 1 yet, so here is that exact class printed below. Read through it now : you will recognize every concept from this exercise. When you reach Project 1, this file will already be familiar instead of new.
+MobileVideoStream (from Project 1's shared.py)</p>
+<pre><code class="language-python">class MobileVideoStream:
+    &quot;&quot;&quot;Continuously pulls MJPEG frames from a phone camera in a background thread.&quot;&quot;&quot;
+
+    def __init__(self, url):
+        self.url       = url
+        self.frame     = None
+        self.fid       = 0
+        self.connected = False
+        self.running   = True
+        self._lock     = threading.Lock()
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                response = requests.get(self.url, stream=True, timeout=10)
+                if response.status_code != 200:
+                    raise ConnectionError(&quot;Non-200 status&quot;)
+
+                self.connected = True
+                backoff = 1.0
+                buf = b&quot;&quot;
+
+                for chunk in response.iter_content(1024):
+                    buf += chunk
+                    start = buf.find(b&quot;\xff\xd8&quot;)
+                    end   = buf.find(b&quot;\xff\xd9&quot;)
+
+                    if start != -1 and end != -1:
+                        jpg = buf[start : end + 2]
+                        buf = buf[end + 2 :]
+                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid  += 1
+
+                    if not self.running:
+                        break
+
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False
+</code></pre>
+<p>Here is what each part does, mapped to what you already built:
+The <strong>init</strong> method: creates the stream URL and starts a background thread. You now know why a background thread exists: to keep frames flowing without blocking the main detection loop. The _run method: contains the MJPEG parsing loop. The buf.find() calls for 0xff 0xd8 and 0xff 0xd9 are exactly the same as read_frame in your detect_stream.py . The difference is that MobileVideoStream runs this loop in a background thread and stores the latest frame in self.frame , while your simple script reads frames one at a time in the main loop. The read method: returns the latest frame and a frame ID number. The main loop checks whether the frame ID has changed since the last iteration. If it has not, the loop skips processing because there is no point running the model on a frame it has already analyzed. The backoff reconnect logic: if the stream drops, the thread waits 1 second, then 2, then 4, up to 8 seconds before retrying. Your simple script has no reconnect logic, which is fine for testing, but a robot that must run for hours needs this.</p>
+<h3 id="what-is-different-in-project-1">What Is Different In Project 1?</h3>
+<p>Exercise B phone stream → detect → draw boxes → show on screen → Project 1 phone stream → detect → PID → state machine → motors + HUD
+The phone stream handling is identical. The detection call is identical. Project 1 just adds what happens after the detection: instead of drawing a box and stopping, it computes a control response and sends it to a motor controller.
+You are not learning something new in Project 1. You are adding to something you already understand.</p>
+<h3 id="final-checklist-before-moving-to-exercise-c">Final Checklist Before Moving To Exercise C</h3>
+<p>Phone stream opens in the browser without timing out. detect_stream.py runs without errors. The detection window shows your phone camera feed live. Your trained object is detected with a bounding box when held in front of the camera. You understand what 0xff 0xd8 and 0xff 0xd9 are and why the code searches for them. You can explain the difference between read_frame in this exercise and the MobileVideoStream class shown above.
+When all boxes are checked you are ready for Exercise C, where the robot hardware starts moving with encoder feedback.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../exA/" class="btn btn-neutral float-left" title="Exercise A: Train Your First Detector"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../exC/" class="btn btn-neutral float-right" title="Exercise C: Precise Movement with Encoders">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../exA/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../exC/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

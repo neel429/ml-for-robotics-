@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Chapter 4: Unsupervised Learning - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Chapter 4: Unsupervised Learning";
+        var mkdocs_page_input_path = "ch4.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Chapter 4: Unsupervised Learning</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#unsupervised-learning-industrial-vibration-clustering">Unsupervised Learning: Industrial Vibration Clustering</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-is-unsupervised-learning">What Is Unsupervised Learning?</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#clustering-dimensionality-reduction">Clustering &amp; Dimensionality Reduction</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#concept-clustering-dimensionality-reduction">Concept: Clustering &amp; Dimensionality Reduction</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#clustering">Clustering</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pca">PCA</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#k-means-deep-dive">K-Means Deep Dive</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-is-k-means">What is K-Means?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-k-means-works-step-by-step">How K-Means works — step by step</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#elbow-method">Elbow Method</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dbscan-when-clusters-are-not-round">DBSCAN: When Clusters Are Not Round</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#project-clustering-robot-sensor-readings">Project: Clustering Robot Sensor Readings</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#project-clustering-robot-sensor-readings_1">Project: Clustering Robot Sensor Readings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-are-building">What you are building</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Chapter 4: Unsupervised Learning</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapter-4-unsupervised-learning">Chapter 4: Unsupervised Learning</h1>
+<hr />
+<h2 id="unsupervised-learning-industrial-vibration-clustering">Unsupervised Learning: Industrial Vibration Clustering</h2>
+<hr />
+<p><strong>Unsupervised Learning</strong> — Machine learning that searches for structure in data without answer labels.</p>
+<h3 id="what-is-unsupervised-learning">What Is Unsupervised Learning?</h3>
+<p>In supervised learning every row has a label : someone already answered the question for each example. A human looked at 10,000 sensor readings and wrote "failure" or "normal" next to each one. That labeling is expensive, slow, and sometimes impossible.
+Unsupervised learning works without labels. You give the algorithm raw data and ask it to find structure on its own: groups of similar rows, patterns that repeat, dimensions that capture the most variation. Nobody told the algorithm what to look for. It discovers it.
+<strong>Supervised Learning</strong>
+<strong>Data:</strong> rows WITH labels.
+<strong>Question:</strong> predict this label from these features.
+<strong>Example:</strong> sensor readings → failure or no failure.
+The algorithm is told what the answer looks like.
+<strong>Unsupervised Learning</strong>
+<strong>Data:</strong> rows WITHOUT labels.
+<strong>Question:</strong> what structure exists in this data?
+<strong>Example:</strong> sensor readings → how many natural groups?
+The algorithm is told nothing : it finds structure itself.</p>
+<div class="admonition tip">
+<p class="admonition-title">Robotics connection</p>
+<p>A robot mapping an unknown building has no labeled floor plan. It must group sensor readings into wall, open space, and obstacle without anyone teaching it those categories. That is unsupervised learning in the real world.</p>
+</div>
+<hr />
+<h2 id="clustering-dimensionality-reduction">Clustering &amp; Dimensionality Reduction</h2>
+<hr />
+<h3 id="concept-clustering-dimensionality-reduction">Concept: Clustering &amp; Dimensionality Reduction</h3>
+<h4 id="clustering">Clustering</h4>
+<p>Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent : that interpretation is your job as the engineer.
+Three clusters found automatically : the algorithm groups similar points together without being told what the groups mean. Labeling each cluster (normal, imbalanced, loose) is the engineer's job, not the algorithm's.
+A vibrating motor shaft might produce three distinct patterns of sensor readings: one when balanced correctly, one with a slight imbalance, and one with a loose bearing. Clustering discovers these three modes automatically even if no one ever labeled which readings belonged to which state.
+Run to see three vibration modes that K-Means will learn to separate</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 2, 1000)
+normal     = np.sin(2 * np.pi * 10 * t) * 0.5
+imbalanced = np.sin(2 * np.pi * 18 * t) * 1.2
+loose      = np.sin(2 * np.pi * 10 * t) + 0.4 * np.sin(2 * np.pi * 45 * t)
+
+fig, axes = plt.subplots(3, 1, figsize=(10, 6), sharex=True)
+fig.patch.set_facecolor('#0d1117')
+
+for ax, signal, label, color in zip(
+    axes,
+    [normal, imbalanced, loose],
+    ['Normal operation', 'Imbalanced shaft', 'Loose bearing'],
+    ['#10b981', '#f97316', '#ef4444']
+):
+    ax.plot(t, signal, color=color, linewidth=1.2)
+    ax.set_ylabel(label, color='#8b949e', fontsize=9)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+
+axes[-1].set_xlabel(&quot;Time (s)&quot;, color='#8b949e')
+fig.suptitle(&quot;Three vibration modes — same shaft, different faults&quot;,
+             color='#e6edf3', fontsize=11)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<h4 id="pca">PCA</h4>
+<p>Principal Component Analysis (PCA) is not a clustering algorithm. It is a dimensionality reduction technique: it compresses many features into fewer dimensions while preserving as much variation as possible.
+<img alt="pca_plot3_3d_to_2d.png" src="../original/pca_plot3_3d_to_2d.png" /></p>
+<p>PCA projects high-dimensional data onto fewer dimensions. Three features compressed to two : the two directions that capture the most variation in the original data are kept, the rest is discarded.
+Imagine your feature table has 10 columns. You cannot plot 10 dimensions. PCA finds the two directions in that 10-dimensional space that capture the most variation and projects everything onto those two axes. The result is a 2D scatter plot you can actually look at.
+PCA does not label the axes for you. The first principal component is the direction of greatest variance in your data. It might correspond roughly to overall vibration intensity or frequency content, but you interpret that from the data, not from PCA.
+<img alt="pca_plot1_variance_directions.png" src="../original/pca_plot1_variance_directions.png" /></p>
+<p>PC1 points in the direction of greatest variance in the data. PC2 points perpendicular to PC1, capturing the next largest spread. Neither axis is labeled automatically : you read the data to decide what each principal component represents.
+Run to see PCA projecting 4 features into 2D</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, labels = make_blobs(n_samples=300, centers=3,
+                       n_features=4, cluster_std=0.9,
+                       random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+
+pca = PCA(n_components=2)
+X_2d = pca.fit_transform(X_scaled)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+fig.patch.set_facecolor('#0d1117')
+
+colors = ['#10b981', '#f97316', '#6366f1']
+for i, color in enumerate(colors):
+    mask = labels == i
+    ax1.scatter(X_scaled[mask, 0], X_scaled[mask, 1],
+                color=color, s=20, alpha=0.7, label=f'Group {i}')
+    ax2.scatter(X_2d[mask, 0], X_2d[mask, 1],
+                color=color, s=20, alpha=0.7, label=f'Group {i}')
+
+for ax, title in zip([ax1, ax2],
+    ['Original: 2 of 4 features shown', 'After PCA: all 4 features compressed to 2D']):
+    ax.set_title(title, color='#e6edf3', fontsize=10)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+    ax.legend(facecolor='#161b22', labelcolor='white', fontsize=8)
+
+var = pca.explained_variance_ratio_
+ax2.set_xlabel(f'PC1 ({var[0]*100:.0f}% variance)', color='#8b949e')
+ax2.set_ylabel(f'PC2 ({var[1]*100:.0f}% variance)', color='#8b949e')
+plt.tight_layout()
+plt.show()
+
+print(f&quot;Variance explained: PC1={var[0]*100:.1f}%  PC2={var[1]*100:.1f}%&quot;)
+print(f&quot;Total captured: {sum(var)*100:.1f}% of original information&quot;)
+</code></pre>
+<div class="admonition info">
+<p class="admonition-title">PCA does not find clusters</p>
+<p>PCA and K-Means are two different tools that work well together. K-Means finds the clusters. PCA lets you visualize them. Always run K-Means on the original scaled features, not on the PCA-reduced version, unless the dataset is very large and speed is a concern.</p>
+</div>
+<hr />
+<h2 id="k-means-deep-dive">K-Means Deep Dive</h2>
+<hr />
+<h3 id="what-is-k-means">What is K-Means?</h3>
+<p>K-Means is an algorithm that automatically groups data points into <strong>K clusters</strong> — where each cluster contains points that are similar to each other and different from the other groups. You do not tell it what the groups mean; it finds the groupings on its own just from the numbers.</p>
+<div class="admonition tip">
+<p class="admonition-title">Real-world analogy</p>
+<p>Imagine you tip a bag of mixed marbles onto a table — red, blue, and green ones all mixed together. You do not know how many colours are in the bag, so you pick 3 spots on the table as starting piles and then slide each marble to whichever pile it is closest to. After one pass you recalculate the centre of each pile and repeat. After a few passes the marbles have naturally sorted themselves by colour. That is K-Means.</p>
+</div>
+<p>In robotics this is useful whenever you have sensor readings but no labels — for example, grouping vibration patterns to discover which ones tend to precede a failure, without anyone having hand-labelled the data first.</p>
+<h3 id="how-k-means-works-step-by-step">How K-Means works — step by step</h3>
+<p>The algorithm repeats two simple operations until nothing changes. You choose <strong>K</strong> (the number of clusters) before it starts — the rest is automatic.</p>
+<p><strong>1. Random Initialization</strong></p>
+<p>Place K centroids at random positions in feature space. These starting positions are guesses — the algorithm corrects them over the next steps. The quality of the final result can depend on where centroids start, which is why most implementations run K-Means multiple times with different random starts and keep the best result. scikit-learn's <code>n_init="auto"</code> handles this automatically.</p>
+<p><img alt="K-Means step 1: random initialization" src="../original/kmeans_plot1_init.png" /></p>
+<p><strong>2. Assign</strong></p>
+<p>Calculate the distance from every data point to every centroid. Assign each point to its closest centroid. All points assigned to the same centroid form one cluster. After this step every point belongs to exactly one cluster.</p>
+<p><img alt="K-Means step 2: assign points to nearest centroid" src="../original/kmeans_plot2_assign.png" /></p>
+<p><strong>3. Recompute</strong></p>
+<p>Move each centroid to the mean position of all points currently assigned to it. If cluster 1 contains 50 points, its new centroid is the average position of those 50 points. This is where the word <em>Means</em> in K-Means comes from.</p>
+<p><img alt="K-Means step 3: recompute centroids" src="../original/kmeans_plot3_recompute.png" /></p>
+<p><strong>4. Converge</strong></p>
+<p>Repeat assign and recompute until no point changes its cluster between iterations. At this point centroids have settled and the algorithm has converged. This is guaranteed to happen but is not guaranteed to find the globally best solution — only a local one.</p>
+<p><img alt="K-Means step 4: convergence" src="../original/kmeans_plot4_converge.png" /></p>
+<p>Run to see K-Means converge step by step</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, _ = make_blobs(n_samples=150, centers=3,
+                  cluster_std=0.7, random_state=42)
+K = 3
+
+# Manual K-Means for visualization
+centroids = X[np.random.choice(len(X), K, replace=False)]
+steps = []
+
+for iteration in range(6):
+    dists  = np.linalg.norm(X[:, None] - centroids[None, :], axis=2)
+    labels = dists.argmin(axis=1)
+    steps.append((centroids.copy(), labels.copy()))
+    new_centroids = np.array([X[labels == k].mean(axis=0)
+                              for k in range(K)])
+    if np.allclose(centroids, new_centroids):
+        break
+    centroids = new_centroids
+
+n_steps = min(len(steps), 4)
+fig, axes = plt.subplots(1, n_steps, figsize=(4*n_steps, 4))
+fig.patch.set_facecolor('#0d1117')
+colors = ['#10b981', '#f97316', '#6366f1']
+
+for i, ax in enumerate(axes):
+    c, l = steps[i]
+    for k, color in enumerate(colors):
+        mask = l == k
+        ax.scatter(X[mask, 0], X[mask, 1], color=color,
+                   s=15, alpha=0.6)
+        ax.scatter(c[k, 0], c[k, 1], color=color,
+                   s=200, marker='*', edgecolors='white', linewidths=0.8)
+    ax.set_title(f'Iteration {i+1}', color='#e6edf3', fontsize=10)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+plt.suptitle(&quot;K-Means converging — stars are centroids&quot;,
+             color='#e6edf3', fontsize=11)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<h4 id="elbow-method">Elbow Method</h4>
+<p>K-Means requires you to choose K before running : but how do you know the right number? The elbow method gives a data-driven answer.
+Run K-Means for K=1 through 10. For each K record the inertia: the total squared distance from every point to its centroid. As K increases, inertia always decreases. The useful question is: where does adding another cluster stop helping significantly?
+The elbow is where the curve bends. Beyond that point, extra clusters reduce inertia only slightly and add complexity without insight.
+Run to see the elbow method on sample data</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, _ = make_blobs(n_samples=300, centers=3,
+                  cluster_std=0.8, random_state=42)
+
+ks       = range(1, 11)
+inertias = []
+for k in ks:
+    km = KMeans(n_clusters=k, random_state=42, n_init='auto')
+    km.fit(X)
+    inertias.append(km.inertia_)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+
+ax.plot(list(ks), inertias, 'o-', color='#6366f1', linewidth=2,
+        markersize=7, markerfacecolor='white')
+ax.axvline(x=3, color='#ef4444', linestyle='--', linewidth=1.5,
+           label='Elbow at K=3')
+ax.annotate('Elbow — adding more\nclusters helps less here',
+            xy=(3, inertias[2]), xytext=(5, inertias[2]*1.3),
+            color='#ef4444', fontsize=9,
+            arrowprops=dict(arrowstyle='-&gt;', color='#ef4444'))
+
+ax.set_xlabel('Number of clusters K', color='#8b949e')
+ax.set_ylabel('Inertia', color='#8b949e')
+ax.set_title('Elbow Method — finding the right K', color='#e6edf3')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+ax.legend(facecolor='#161b22', labelcolor='white')
+plt.tight_layout()
+plt.show()
+
+print(&quot;Inertia values:&quot;)
+for k, inertia in zip(ks, inertias):
+    bar = '█' * int(inertia / inertias[0] * 30)
+    print(f&quot;  K={k:2d}: {bar} {inertia:.0f}&quot;)
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">The elbow is not always obvious</p>
+<p>On real data the elbow is often a gentle curve rather than a sharp bend. If you cannot see a clear elbow, try silhouette score as a second opinion : it measures how well-separated the clusters are. Higher silhouette score is better.</p>
+</div>
+<h4 id="dbscan-when-clusters-are-not-round">DBSCAN: When Clusters Are Not Round</h4>
+<p>K-Means assumes clusters are roughly round and requires you to specify K in advance. DBSCAN (Density-Based Spatial Clustering of Applications with Noise) has neither limitation. It defines a cluster as a dense region of points and marks sparse points as noise (<code>-1</code>) rather than forcing them into a cluster.
+DBSCAN is powerful when clusters have irregular shapes, when outliers need to be identified explicitly, or when the number of clusters is unknown. The tradeoff: it is sensitive to two parameters: <code>eps</code>, the neighborhood radius, and <code>min_samples</code>, the minimum points to form a cluster. Finding good values requires experimentation.</p>
+<hr />
+<h2 id="project-clustering-robot-sensor-readings">Project: Clustering Robot Sensor Readings</h2>
+<hr />
+<h3 id="project-clustering-robot-sensor-readings_1">Project: Clustering Robot Sensor Readings</h3>
+<p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft">Screw Machine / Rotating Shaft Vibration Data</a>. If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.</p>
+<h3 id="what-you-are-building">What you are building</h3>
+<p>A CNC machine generates vibration data continuously. Over time the shaft develops faults : imbalance, loose bearings, misalignment. Each fault produces a different vibration pattern. The goal of this project is to cluster those patterns automatically without any labeled examples. An engineer can then look at each cluster and give it a name: normal, imbalanced, or loose.
+This is real-world unsupervised learning. The dataset comes from a rotating shaft instrumented with a vibration sensor. You will extract statistical features from the raw signal, run K-Means to find natural groupings, and use PCA to visualize whether the clusters correspond to real physical operating modes.
+1. Download the vibration dataset from Kaggle
+2. Plot the raw signal to understand what you are working with
+3. Extract features from 256-sample windows
+4. Scale the features
+5. Use the elbow method to find K
+6. Fit K-Means and assign cluster labels
+7. Visualize clusters with PCA
+8. Interpret what each cluster means physically
+<a href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch4-vibration-project.ipynb">Open in Colab →</a></p>
+<div class="admonition info">
+<p>All ten cells run in Google Colab : click Open in Colab above to open the pre-filled notebook and run top to bottom.</p>
+</div>
+<p>This cell installs the Kaggle library and uses your API token to download the vibration dataset directly into Colab.
+Cell 1: Kaggle download — expect: dataset files extracted</p>
+<pre><code class="language-python">!pip -q install kaggle
+import json
+import os
+from getpass import getpass
+
+os.makedirs(&quot;/root/.kaggle&quot;, exist_ok=True)
+token = json.loads(getpass(&quot;Paste your Kaggle API token text: &quot;).strip())
+with open(&quot;/root/.kaggle/kaggle.json&quot;, &quot;w&quot;) as f:
+    json.dump(token, f)
+os.chmod(&quot;/root/.kaggle/kaggle.json&quot;, 0o600)
+!kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
+!unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data
+</code></pre>
+<p>Load the downloaded CSV, or generate synthetic vibration data automatically if the download failed : the analysis works either way.
+Cell 2: Load data — expect: table with time and vibration columns</p>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from pathlib import Path
+
+files = list(Path(&quot;vibration_data&quot;).glob(&quot;*.csv&quot;))
+if files:
+    df = pd.read_csv(files[0])
+else:
+    t = np.linspace(0, 60, 6000)
+    normal = np.sin(2 * np.pi * 10 * t[:2000]) * 0.5
+    imbalanced = np.sin(2 * np.pi * 18 * t[:2000]) * 1.2
+    loose = np.sin(2 * np.pi * 10 * t[:2000]) + 0.4 * np.sin(2 * np.pi * 45 * t[:2000])
+    signal = np.r_[normal, imbalanced, loose]
+    df = pd.DataFrame({&quot;time&quot;: t, &quot;vibration&quot;: signal})
+
+display(df.head())
+print(df.shape)
+</code></pre>
+<p>Plot the raw signal before processing anything : a flat line or missing data shows up immediately in a waveform plot.
+Cell 3: Plot signal — expect: waveform chart</p>
+<pre><code class="language-python">signal_col = &quot;vibration&quot; if &quot;vibration&quot; in df.columns else df.select_dtypes(&quot;number&quot;).columns[-1]
+
+fig, ax = plt.subplots(figsize=(12, 3))
+fig.patch.set_facecolor('#0d1117')
+ax.plot(df[signal_col].values[:2000], color='#10b981', linewidth=1.2)
+ax.set_title(&quot;Raw vibration signal&quot;, color='#e6edf3')
+ax.set_xlabel(&quot;Sample&quot;, color='#8b949e')
+ax.set_ylabel(&quot;Amplitude&quot;, color='#8b949e')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>K-Means works on numbers, not raw waves : this cell extracts four statistical features from each 256-sample window.
+Cell 4: Feature engineering — expect: table with mean, std, max, fft_peak</p>
+<pre><code class="language-python">values = df[signal_col].dropna().to_numpy()
+window = 256
+features = []
+
+for start in range(0, len(values) - window, window):
+    chunk = values[start:start + window]
+    fft = np.abs(np.fft.rfft(chunk))
+    features.append({
+        &quot;mean&quot;: chunk.mean(),
+        &quot;std&quot;: chunk.std(),
+        &quot;max&quot;: chunk.max(),
+        &quot;fft_peak&quot;: fft[1:].argmax() + 1
+    })
+
+feature_df = pd.DataFrame(features)
+display(feature_df.head())
+</code></pre>
+<p>Scale features to equal ranges so K-Means does not ignore small-valued columns when computing distances.
+Cell 5: Scale features — expect: no output, silent success</p>
+<pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(feature_df)
+</code></pre>
+<p>Run K-Means for K=1 through 10 and plot the inertia to find the natural number of clusters in the data.
+Cell 6: Elbow method — expect: curve bending near K=3</p>
+<pre><code class="language-python">from sklearn.cluster import KMeans
+
+ks = range(1, 11)
+inertias = []
+for k in ks:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=&quot;auto&quot;)
+    kmeans.fit(X_scaled)
+    inertias.append(kmeans.inertia_)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+ax.plot(list(ks), inertias, marker=&quot;o&quot;, color='#6366f1', linewidth=2)
+ax.set_xlabel(&quot;K&quot;, color='#8b949e')
+ax.set_ylabel(&quot;Inertia&quot;, color='#8b949e')
+ax.set_title(&quot;Elbow Method&quot;, color='#e6edf3')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>Fit K-Means with K=3 and assign every window to a cluster : then look at the average feature values per cluster.
+Cell 7: Fit K-Means — expect: table of mean values per cluster</p>
+<pre><code class="language-python">kmeans = KMeans(n_clusters=3, random_state=42, n_init=&quot;auto&quot;)
+cluster_labels = kmeans.fit_predict(X_scaled)
+feature_df[&quot;cluster&quot;] = cluster_labels
+display(feature_df.groupby(&quot;cluster&quot;).mean())
+</code></pre>
+<p>Compress the four-feature space into two dimensions with PCA so the clusters can be visualized on a scatter plot.
+Cell 8: PCA scatter — expect: three colored clusters</p>
+<pre><code class="language-python">from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+points_2d = pca.fit_transform(X_scaled)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+scatter = ax.scatter(points_2d[:, 0], points_2d[:, 1],
+                     c=cluster_labels, cmap=&quot;viridis&quot;, s=25, alpha=0.8)
+ax.set_xlabel(&quot;PC1&quot;, color='#8b949e')
+ax.set_ylabel(&quot;PC2&quot;, color='#8b949e')
+ax.set_title(&quot;K-Means clusters in PCA space&quot;, color='#e6edf3')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+cbar = plt.colorbar(scatter, label=&quot;Cluster&quot;)
+cbar.ax.yaxis.label.set_color('#8b949e')
+cbar.ax.tick_params(colors='#8b949e')
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>Print the mean and standard deviation of each feature per cluster so you can give each cluster an engineering label.
+Cell 9: Interpret clusters — expect: summary table to label manually</p>
+<pre><code class="language-python">summary = feature_df.groupby(&quot;cluster&quot;).agg([&quot;mean&quot;, &quot;std&quot;])
+display(summary)
+
+for cluster_id, row in feature_df.groupby(&quot;cluster&quot;).mean().iterrows():
+    print(f&quot;Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}&quot;)
+</code></pre>
+<p>Try DBSCAN as an alternative : it finds clusters without needing K specified in advance and marks outliers as -1.
+Cell 10: DBSCAN — expect: scatter plot, some points labeled -1</p>
+<pre><code class="language-python">from sklearn.cluster import DBSCAN
+
+dbscan = DBSCAN(eps=0.8, min_samples=5)
+db_labels = dbscan.fit_predict(X_scaled)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+fig.patch.set_facecolor('#0d1117')
+scatter = ax.scatter(points_2d[:, 0], points_2d[:, 1],
+                     c=db_labels, cmap=&quot;tab10&quot;, s=25, alpha=0.8)
+ax.set_title(&quot;DBSCAN clusters in PCA space&quot;, color='#e6edf3')
+ax.set_xlabel(&quot;PC1&quot;, color='#8b949e')
+ax.set_ylabel(&quot;PC2&quot;, color='#8b949e')
+ax.set_facecolor('#0d1117')
+ax.tick_params(colors='#8b949e')
+ax.spines[:].set_color('#30363d')
+cbar = plt.colorbar(scatter, label=&quot;DBSCAN label&quot;)
+cbar.ax.yaxis.label.set_color('#8b949e')
+cbar.ax.tick_params(colors='#8b949e')
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p><img alt="clustering_image.png" src="../original/clustering_image.png" /></p>
+<p><img alt="kmeans_plot0_concept.png" src="../original/kmeans_plot0_concept.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ch3/" class="btn btn-neutral float-left" title="Chapter 3: Supervised Learning"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ch5/" class="btn btn-neutral float-right" title="Chapter 5: Reinforcement Learning">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ch3/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ch5/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

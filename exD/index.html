@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Exercise D: Talk to Your Robot Over WiFi - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Exercise D: Talk to Your Robot Over WiFi";
+        var mkdocs_page_input_path = "exD.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Exercise D: Talk to Your Robot Over WiFi</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#what-is-udp-and-why-does-a-robot-use-it">What Is UDP and Why Does a Robot Use It?</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#tcp-vs-udp">TCP vs UDP</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-is-a-port">What Is A Port?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-will-build">What You Will Build</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-wifi-works-on-the-uno-r4">How WiFi Works on the UNO R4</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#finding-the-arduino-ip-address">Finding the Arduino IP Address</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#finding-your-laptop-ip-address">Finding Your Laptop IP Address</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#same-network-check">Same Network Check</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#your-first-udp-message-blink-an-led">Your First UDP Message: Blink an LED</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-whole-idea-in-one-picture">The Whole Idea in One Picture</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#a-tiny-command-language">A Tiny Command Language</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-arduino-receiver">The Arduino Receiver</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-python-sender-a-tkinter-gui">The Python Sender (a tkinter GUI)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#understanding-tkinter">Understanding tkinter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run-it-yourself">Run It Yourself</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#driving-motors-and-a-servo-over-udp">Driving Motors and a Servo over UDP</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#recap-the-s-and-m-commands">Recap: the S and M Commands</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#differential-drive-in-one-idea">Differential Drive in One Idea</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-python-controller">The Python Controller</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-tkinter-pieces">New tkinter Pieces</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run-it-yourself_1">Run It Yourself</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-arduino-sketch-connect-listen-drive">The Arduino Sketch: Connect, Listen, Drive</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#upload-steps">Upload Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#anatomy-table">Anatomy Table</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-python-script-send-commands-read-telemetry">The Python Script: Send Commands, Read Telemetry</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#run-it">Run It</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-to-expect">What To Expect</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#anatomy-table_1">Anatomy Table</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#keyboard-control-drive-with-wasd">Keyboard Control: Drive with WASD</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#install-keyboard-input-support">Install Keyboard Input Support</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run-it_1">Run It</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#controls">Controls</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-the-steering-math-works">How The Steering Math Works</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#receiving-encoder-telemetry-in-python">Receiving Encoder Telemetry in Python</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#logging-procedure">Logging Procedure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-read-the-plot">How To Read The Plot</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#understanding-the-full-communication-loop">Understanding the Full Communication Loop</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#why-this-architecture-works">Why This Architecture Works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#packet-formats">Packet Formats</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#connecting-the-dots-to-project-1">Connecting the Dots to Project 1</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-commander-class">The Commander Class</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-telemetry-class">The Telemetry Class</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-changes-in-project-1">What Changes In Project 1?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#final-checklist">Final Checklist</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Exercise D: Talk to Your Robot Over WiFi</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="exercise-d-talk-to-your-robot-over-wifi">* Exercise D: Talk to Your Robot Over WiFi</h1>
+<hr />
+<h2 id="what-is-udp-and-why-does-a-robot-use-it">What Is UDP and Why Does a Robot Use It?</h2>
+<hr />
+<p>Your laptop and your Arduino are two separate computers on the same WiFi network. For them to exchange information, they need a communication protocol: a set of rules for how data is packaged, addressed, sent, received, and interpreted.
+In this exercise, the laptop sends wheel-speed commands to the Arduino. The Arduino drives the motors and sends encoder tick counts back. There is no machine learning and no camera processing here. This is pure embedded networking, and it is the exact foundation used later by Project 1's <code>Commander</code> and <code>Telemetry</code> classes.</p>
+<h3 id="tcp-vs-udp">TCP vs UDP</h3>
+<p>TCP Transmission Control Protocol TCP guarantees that packets arrive and arrive in order. If a packet is lost, the sender waits and retransmits it. This is what you want for web pages, file downloads, email, and anything where missing data would corrupt the result. The tradeoff is latency. Waiting for retransmits takes time, and that delay can be worse than a missing packet in real-time control. UDP User Datagram Protocol UDP sends packets and does not wait for confirmation. If a packet is lost, it is simply gone. There is no retransmit and no ordering guarantee. The benefit is speed. UDP is used for video streaming, online games, DNS lookups, and real-time robot control where fresh information matters more than perfect delivery. An important thing to keep in mind is that Arduino controlling robot actions can be easily flodded with UDP packets and some could go missing, so be careful with the rate of transmission.</p>
+<div class="admonition tip">
+<p class="admonition-title">Why robots use UDP for motor commands</p>
+<p>For motor commands, a dropped packet is far better than a delayed one. If your laptop sends <code>left: 100, right: 80</code> and the packet is lost, the robot keeps doing what it was last told for one extra control cycle, roughly 30 ms. That is acceptable. If TCP waits for a retransmit, the robot can freeze for hundreds of milliseconds while the network sorts itself out. At 1.5 m/s, a 100 ms freeze is 15 cm of motion with no correction.</p>
+</div>
+<h3 id="what-is-a-port">What Is A Port?</h3>
+<p>An IP address identifies a device on the network. A port identifies a specific program running on that device. Think of the IP address as the building address and the port as the apartment number.
+Your Arduino listens for motor commands on one port and sends telemetry to another. Your Python script sends to the Arduino command port and listens on the telemetry port. Use a port number above 1024 and avoid common service ports.
+Role Address / Port Meaning Arduino command listener 5001 The Arduino waits here for packets like MOTOR,150,150 . Arduino telemetry sender 5002 The Arduino sends encoder packets back toward the laptop. Python command sender ARDUINO_IP:5001 The laptop sends each motor command to the Arduino's IP address. Python telemetry listener 0.0.0.0:5002 The laptop accepts telemetry packets on any local network interface.</p>
+<div class="admonition info">
+<p class="admonition-title">The numbers are arbitrary, but the match is not</p>
+<p>Ports <code>5001</code> and <code>5002</code> are just convenient choices. What matters is that the Arduino sketch and Python script agree on the same values.</p>
+</div>
+<h3 id="what-you-will-build">What You Will Build</h3>
+<p>Laptop Python keyboard + UDP sockets → WiFi Router local network → Arduino UNO R4 WiFi motors + encoders Encoder telemetry travels back from Arduino to Python on port 5002 .</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Exercise C is complete and working: motors move, encoders count, and direction detection works. The robot is physically assembled with the custom shield, motors, encoders, wheels, and battery connected. Your laptop and Arduino are on the same WiFi network. Arduino IDE is installed with the UNO R4 board package.</p>
+<hr />
+<h2 id="how-wifi-works-on-the-uno-r4">How WiFi Works on the UNO R4</h2>
+<hr />
+<p>The Arduino UNO R4 WiFi has a separate WiFi module, the ESP-S3 chip, that handles wireless communication. Your sketch talks to that module through the <code>WiFiS3</code> and <code>WiFiUDP</code> libraries.
+The Arduino does not automatically know where your laptop is. It needs a WiFi network name, a WiFi password, and your laptop's IP address so it knows where to send telemetry.</p>
+<div class="admonition info">
+<p class="admonition-title">WiFiS3 is already installed</p>
+<p>The <code>WiFiS3</code> and <code>WiFiUDP</code> libraries are bundled inside the Arduino UNO R4 board package you installed in Exercise C. They are not listed in the Library Manager because they are not separate libraries; they come with the board itself.
+You do not need to install anything. The lines <code>#include &lt;WiFiS3.h&gt;</code> and <code>#include &lt;WiFiUDP.h&gt;</code> will work immediately in any sketch. If Arduino IDE underlines them as errors, it means the wrong board is selected. Check that <strong>Arduino UNO R4 WiFi</strong> is selected in the board dropdown at the top of the IDE.</p>
+</div>
+<h3 id="finding-the-arduino-ip-address">Finding the Arduino IP Address</h3>
+<p>When the Arduino connects to your WiFi network, the router assigns it an IP address automatically using DHCP. The Exercise D sketch prints that address to the Serial Monitor when it starts.</p>
+<div class="admonition warning">
+<p class="admonition-title">The Arduino IP can change</p>
+<p>The Arduino may get a new IP address each time it reconnects to WiFi unless your router has a reserved address for it. If the Python script suddenly cannot reach the robot, open Serial Monitor and check that <code>ARDUINO_IP</code> in Python still matches what the Arduino printed.</p>
+</div>
+<h3 id="finding-your-laptop-ip-address">Finding Your Laptop IP Address</h3>
+<p>The Arduino also needs your laptop's IP address for the return path. That value goes into <code>LAPTOP_IP</code> in the Arduino sketch.
+<strong>Windows</strong>
+Open Command Prompt and run <code>ipconfig</code>. Find <strong>IPv4 Address</strong> under your WiFi adapter. It usually looks like <code>192.168.x.x</code>.
+<strong>macOS</strong>
+Open Terminal and run <code>ipconfig getifaddr en0</code> for WiFi. The command prints your laptop's local IP address.
+<strong>Linux</strong>
+Open Terminal and run <code>ip addr show</code>. Find the <code>inet</code> address under your WiFi interface.</p>
+<h3 id="same-network-check">Same Network Check</h3>
+<p>Both addresses should start with the same network prefix. If the Arduino prints <code>192.168.1.42</code>, your laptop should usually be something like <code>192.168.1.15</code>. If one device is on <code>192.168.1.x</code> and the other is on <code>10.0.0.x</code>, they may not be reachable from each other.
+Arduino 192.168.1.42 Laptop 192.168.1.15 Result Same prefix, likely reachable</p>
+<div class="admonition tip">
+<p class="admonition-title">Use a normal local WiFi network</p>
+<p>School, guest, or public networks sometimes block device-to-device traffic. If UDP packets do not arrive even though both devices are connected, test with a phone hotspot or a home router.</p>
+</div>
+<hr />
+<h2 id="your-first-udp-message-blink-an-led">Your First UDP Message: Blink an LED</h2>
+<hr />
+<p>Before the full robot sketch, let us prove the whole pipeline with the smallest possible example: a Python window with two buttons that turn the Arduino's built-in LED on and off over WiFi. Once a single text packet can light an LED, everything later : motors, servos, telemetry : is just more of the same idea.</p>
+<h3 id="the-whole-idea-in-one-picture">The Whole Idea in One Picture</h3>
+<p>Your laptop and the Arduino are on the same WiFi network. Python sends a tiny text packet such as <code>D 13 1</code> to the Arduino's IP address and port. The Arduino reads it, acts on it, and sends a short reply back.
+Python button click "LED ON" → UDP packet D 13 1 → Arduino :5005 digitalWrite(13, HIGH) → Reply OK digital</p>
+<div class="admonition info">
+<p class="admonition-title">Why UDP?</p>
+<p>UDP is connectionless: Python just throws a packet at an address and port, with no handshake to set up first. It can occasionally drop a packet, but it is tiny, fast, and perfect for short control commands sent many times per second. That is exactly what a robot control loop needs.</p>
+</div>
+<h3 id="a-tiny-command-language">A Tiny Command Language</h3>
+<p>The Arduino sketch understands four one-letter commands. Each is plain text with space-separated numbers, so they are easy to send and easy to read in the Serial Monitor. For the LED you only need the first one.
+Command Format Example What it does Digital D pin value D 13 1 Sets a pin HIGH (1) or LOW (0). Pin 13 is the built-in LED. PWM P pin value P 5 128 Analog output 0–255 (LED brightness, motor speed). Servo S pin angle S 10 90 Moves a servo on that pin to an angle 0–180. Motor M in1 in2 pwm speed M 4 5 6 180 Drives a motor through a driver; negative speed reverses it.
+Blinking the LED is just two messages: <code>D 13 1</code> to turn it on and <code>D 13 0</code> to turn it off.</p>
+<h3 id="the-arduino-receiver">The Arduino Receiver</h3>
+<p>This sketch connects to WiFi, listens on UDP port <code>5005</code>, and runs a command every time a packet arrives. Your WiFi name and password live in a separate file called <code>arduino_secrets.h</code> in the same sketch folder, which keeps your credentials out of the main code. Create it first:
+arduino_secrets.h</p>
+<pre><code class="language-cpp">// arduino_secrets.h header file
+#define SECRET_SSID &quot;yournetwork&quot; //replace yournetwork with your wifi name inside quotes
+#define SECRET_PASS &quot;yourpassword&quot; //replace yourpassword with your wifi password inside quotes
+</code></pre>
+<p>In the Arduino IDE, click the small arrow (the three dots on the right of the tab bar), choose <strong>New Tab</strong>, name it <code>arduino_secrets.h</code>, and paste the lines above with your own network name and password. The main sketch then pulls them in with <code>#include "arduino_secrets.h"</code>.
+The WiFi connection and info code lives in its own header, <code>wifi_helper.h</code>, so the Arduino sketches in this exercise stay short. Add it as another tab (the same way you added <code>arduino_secrets.h</code>):
+wifi_helper.h</p>
+<pre><code class="language-cpp">#pragma once
+#include &lt;WiFiS3.h&gt;
+#include &quot;arduino_secrets.h&quot;
+
+// True once the board has a real IP (not 0.0.0.0 yet).
+bool ipIsValid(IPAddress ip) {
+  return !(ip[0] == 0 &amp;&amp; ip[1] == 0 &amp;&amp; ip[2] == 0 &amp;&amp; ip[3] == 0);
+}
+
+// Connect to WiFi using the credentials in arduino_secrets.h.
+// Blocks until a valid IP is assigned; retries up to 5 times.
+void connectToWiFi() {
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println(&quot;Communication with WiFi module failed!&quot;);
+    while (true) delay(1000);
+  }
+
+  String fv = WiFi.firmwareVersion();
+  if (fv &lt; WIFI_FIRMWARE_LATEST_VERSION) {
+    Serial.println(&quot;Warning: WiFi firmware may need updating.&quot;);
+  }
+
+  Serial.print(&quot;Connecting to WiFi: &quot;);
+  Serial.println(SECRET_SSID);
+
+  WiFi.disconnect();
+  delay(1000);
+
+  int attempts = 0;
+  while (true) {
+    WiFi.begin(SECRET_SSID, SECRET_PASS);
+
+    unsigned long start = millis();
+    while (millis() - start &lt; 20000) {
+      if (WiFi.status() == WL_CONNECTED &amp;&amp; ipIsValid(WiFi.localIP())) {
+        Serial.println(&quot;WiFi connected with valid IP.&quot;);
+        return;
+      }
+      delay(1000);
+    }
+
+    attempts++;
+    Serial.println(&quot;WiFi attempt failed (IP stayed 0.0.0.0). Retrying...&quot;);
+    WiFi.disconnect();
+    delay(2000);
+
+    if (attempts &gt;= 5) {
+      Serial.println(&quot;Could not get a valid IP after 5 attempts.&quot;);
+      Serial.println(&quot;Check SSID, password, router DHCP, and 2.4 GHz WiFi.&quot;);
+      while (true) delay(1000);
+    }
+  }
+}
+
+// Print the assigned IP (paste it into the Python script) and signal strength.
+void printWiFiInfo() {
+  Serial.println();
+  Serial.println(&quot;===== WiFi Info =====&quot;);
+  Serial.print(&quot;SSID: &quot;);
+  Serial.println(WiFi.SSID());
+  Serial.print(&quot;Arduino IP address: &quot;);
+  Serial.println(WiFi.localIP());
+  Serial.print(&quot;Signal strength RSSI: &quot;);
+  Serial.print(WiFi.RSSI());
+  Serial.println(&quot; dBm&quot;);
+  Serial.println(&quot;=====================&quot;);
+}
+</code></pre>
+<p>The main sketch then includes <code>wifi_helper.h</code> and just calls <code>connectToWiFi()</code> and <code>printWiFiInfo()</code> in <code>setup()</code>:
+udp_command_receiver.ino</p>
+<pre><code class="language-cpp">#include &lt;WiFiUdp.h&gt;
+#include &lt;Servo.h&gt;
+#include &quot;wifi_helper.h&quot;   // WiFi connect/info + arduino_secrets.h credentials
+
+WiFiUDP udp;
+const unsigned int UDP_PORT = 5005;
+
+char packet[128];
+
+// Servo object
+Servo myServo;
+int currentServoPin = -1;
+bool servoIsAttached = false;
+
+
+void sendReply(const char* msg) {
+  udp.beginPacket(udp.remoteIP(), udp.remotePort());
+  udp.print(msg);
+  udp.endPacket();
+}
+
+
+int getInt(char* token, bool&amp; ok) {
+  if (token == NULL) {
+    ok = false;
+    return 0;
+  }
+
+  ok = true;
+  return atoi(token);
+}
+
+
+void attachServoIfNeeded(int pin) {
+  if (!servoIsAttached) {
+    myServo.attach(pin);
+    currentServoPin = pin;
+    servoIsAttached = true;
+    Serial.print(&quot;Servo attached to pin &quot;);
+    Serial.println(pin);
+  }
+  else if (pin != currentServoPin) {
+    myServo.detach();
+    myServo.attach(pin);
+    currentServoPin = pin;
+    Serial.print(&quot;Servo moved to pin &quot;);
+    Serial.println(pin);
+  }
+}
+
+
+void handleCommand(char* msg) {
+  char* cmd = strtok(msg, &quot; \t\r\n&quot;);
+
+  if (cmd == NULL) {
+    sendReply(&quot;ERR empty command&quot;);
+    return;
+  }
+
+  // Digital command:
+  // D pin value
+  // Example: D 13 1
+  if (strcmp(cmd, &quot;D&quot;) == 0) {
+    bool ok1, ok2;
+
+    int pin = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok1);
+    int value = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok2);
+
+    if (!ok1 || !ok2) {
+      sendReply(&quot;ERR use: D pin value&quot;);
+      return;
+    }
+
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, value ? HIGH : LOW);
+
+    sendReply(&quot;OK digital&quot;);
+    return;
+  }
+
+  // PWM command:
+  // P pin value
+  // Example: P 5 128
+  if (strcmp(cmd, &quot;P&quot;) == 0) {
+    bool ok1, ok2;
+
+    int pin = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok1);
+    int value = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok2);
+
+    if (!ok1 || !ok2) {
+      sendReply(&quot;ERR use: P pin value&quot;);
+      return;
+    }
+
+    value = constrain(value, 0, 255);
+
+    pinMode(pin, OUTPUT);
+    analogWrite(pin, value);
+
+    sendReply(&quot;OK pwm&quot;);
+    return;
+  }
+
+  // Servo command:
+  // S pin angle
+  // Example: S 10 90
+  if (strcmp(cmd, &quot;S&quot;) == 0) {
+    bool ok1, ok2;
+
+    int pin = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok1);
+    int angle = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok2);
+
+    if (!ok1 || !ok2) {
+      sendReply(&quot;ERR use: S pin angle&quot;);
+      return;
+    }
+
+    if (pin &lt; 0) {
+      sendReply(&quot;ERR bad servo pin&quot;);
+      return;
+    }
+
+    angle = constrain(angle, 0, 180);
+
+    attachServoIfNeeded(pin);
+    myServo.write(angle);
+
+    sendReply(&quot;OK servo&quot;);
+    return;
+  }
+
+  // Motor command:
+  // M in1 in2 pwm speed
+  // Example: M 4 5 6 180
+  // Example: M 4 5 6 -180
+  if (strcmp(cmd, &quot;M&quot;) == 0) {
+    bool ok1, ok2, ok3, ok4;
+
+    int in1 = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok1);
+    int in2 = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok2);
+    int pwm = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok3);
+    int speed = getInt(strtok(NULL, &quot; \t\r\n&quot;), ok4);
+
+    if (!ok1 || !ok2 || !ok3 || !ok4) {
+      sendReply(&quot;ERR use: M in1 in2 pwm speed&quot;);
+      return;
+    }
+
+    speed = constrain(speed, -255, 255);
+
+    pinMode(in1, OUTPUT);
+    pinMode(in2, OUTPUT);
+    pinMode(pwm, OUTPUT);
+
+    if (speed &gt; 0) {
+      digitalWrite(in1, HIGH);
+      digitalWrite(in2, LOW);
+      analogWrite(pwm, speed);
+    }
+    else if (speed &lt; 0) {
+      digitalWrite(in1, LOW);
+      digitalWrite(in2, HIGH);
+      analogWrite(pwm, -speed);
+    }
+    else {
+      digitalWrite(in1, LOW);
+      digitalWrite(in2, LOW);
+      analogWrite(pwm, 0);
+    }
+
+    sendReply(&quot;OK motor&quot;);
+    return;
+  }
+
+  sendReply(&quot;ERR unknown command&quot;);
+}
+
+
+void setup() {
+  Serial.begin(9600);
+  delay(1000);
+
+  connectToWiFi();   // from wifi_helper.h
+  printWiFiInfo();    // from wifi_helper.h
+
+  udp.begin(UDP_PORT);
+
+  Serial.print(&quot;Listening on UDP port &quot;);
+  Serial.println(UDP_PORT);
+}
+
+
+void loop() {
+  int packetSize = udp.parsePacket();
+
+  if (packetSize &gt; 0) {
+    int len = udp.read(packet, sizeof(packet) - 1);
+
+    if (len &gt; 0) {
+      packet[len] = '\0';
+
+      Serial.print(&quot;Received: &quot;);
+      Serial.println(packet);
+
+      handleCommand(packet);
+    }
+  }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Part</th>
+<th style="text-align: left;">What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>WiFiUDP udp;</code> and <code>udp.begin(UDP_PORT)</code></td>
+<td style="text-align: left;">Creates the UDP listener and opens port <code>5005</code> so the Arduino can receive packets.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>udp.parsePacket()</code></td>
+<td style="text-align: left;">In <code>loop()</code>, checks whether a packet has arrived. Returns its size, or 0 if nothing is waiting.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>udp.read(packet, ...)</code> then <code>packet[len] = '\0'</code></td>
+<td style="text-align: left;">Copies the bytes into a buffer and adds a string terminator so it can be treated as text.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>strtok(msg, " \t\r\n")</code></td>
+<td style="text-align: left;">Splits the text on spaces. The first token is the command letter; the rest are its numbers.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>strcmp(cmd, "D") == 0</code></td>
+<td style="text-align: left;">Compares the command letter. If it is <code>D</code>, the sketch reads a pin and value and calls <code>digitalWrite</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sendReply("OK digital")</code></td>
+<td style="text-align: left;">Sends a short confirmation back to whoever sent the packet, using <code>udp.remoteIP()</code> and <code>udp.remotePort()</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>connectToWiFi()</code></td>
+<td style="text-align: left;">Connects and waits until a <em>valid</em> IP (not <code>0.0.0.0</code>) is assigned, retrying if needed. This is why your IP prints reliably in the Serial Monitor.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Note the port and IP</p>
+<p>Upload the sketch, open the Serial Monitor at <strong>9600 baud,</strong> and write down the <strong>Arduino IP address</strong> it prints. You will paste that into the Python script next. The port is <code>5005</code> on both sides : they must match.</p>
+</div>
+<h3 id="the-python-sender-a-tkinter-gui">The Python Sender (a tkinter GUI)</h3>
+<p>On the laptop, a tiny program opens a window with two buttons. Each button sends one UDP command. There is no robot yet : just you, a socket, and the Arduino.
+led_control.py</p>
+<pre><code class="language-python">import socket
+import tkinter as tk
+
+
+ARDUINO_IP = &quot;192.168.6.50&quot; # replace this IP address with what you received in the Serial monitor window of
+ARDUINO_PORT = 5005
+LED_PIN = 13
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.settimeout(1.0)
+
+
+def send(command):
+    print(&quot;Sending:&quot;, command)
+
+    sock.sendto(command.encode(), (ARDUINO_IP, ARDUINO_PORT))
+
+    try:
+        reply, address = sock.recvfrom(1024)
+        print(&quot;Arduino replied:&quot;, reply.decode())
+    except socket.timeout:
+        print(&quot;No reply from Arduino&quot;)
+
+
+def led_on():
+    send(f&quot;D {LED_PIN} 1&quot;)
+
+
+def led_off():
+    send(f&quot;D {LED_PIN} 0&quot;)
+
+
+root = tk.Tk()
+root.title(&quot;LED Control&quot;)
+root.geometry(&quot;250x120&quot;)
+
+on_button = tk.Button(root, text=&quot;LED ON&quot;, width=15, command=led_on)
+on_button.pack(pady=10)
+
+off_button = tk.Button(root, text=&quot;LED OFF&quot;, width=15, command=led_off)
+off_button.pack(pady=5)
+
+root.mainloop()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Line</th>
+<th style="text-align: left;">What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</code></td>
+<td style="text-align: left;">Creates a UDP socket. <code>SOCK_DGRAM</code> means UDP (datagrams); <code>SOCK_STREAM</code> would be TCP.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sock.settimeout(1.0)</code></td>
+<td style="text-align: left;">Waits at most one second for a reply, so the program never freezes if a packet is lost.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sock.sendto(command.encode(), (ARDUINO_IP, ARDUINO_PORT))</code></td>
+<td style="text-align: left;">Sends the command string (converted to bytes) to the Arduino's address and port.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sock.recvfrom(1024)</code></td>
+<td style="text-align: left;">Waits for the Arduino's reply. Wrapped in <code>try/except socket.timeout</code> so a missing reply is handled gracefully.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>send(f"D {LED_PIN} 1")</code></td>
+<td style="text-align: left;">Builds the exact text command the Arduino expects. <code>LED_PIN</code> is 13.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Set ARDUINO_IP</p>
+<p>Change <code>ARDUINO_IP</code> at the top of the Python file to the IP your Arduino printed in the Serial Monitor. If it is wrong, the buttons do nothing and you will see "No reply from Arduino".</p>
+</div>
+<h3 id="understanding-tkinter">Understanding tkinter</h3>
+<p><strong>tkinter</strong> is Python's built-in toolkit for simple desktop windows : it ships with Python, so there is nothing to install. You only need a few pieces to build a button panel like this one.
+Piece What it is root = tk.Tk() Creates the main window. Everything else lives inside it. root.title(...) / root.geometry("250x120") Sets the window title and its size in pixels. tk.Button(root, text="LED ON", command=led_on) Creates a button inside the window. command is the function to run when it is clicked. .pack(pady=10) Places the widget in the window. pack stacks widgets top to bottom; pady adds vertical spacing. root.mainloop() Starts the event loop. The program waits here, watching for clicks, until you close the window.</p>
+<div class="admonition info">
+<p class="admonition-title">command=led_on, not led_on()</p>
+<p>You pass the function <em>itself</em> (<code>command=led_on</code>), with no parentheses. tkinter calls it later, each time the button is clicked. Writing <code>command=led_on()</code> would call it once immediately and store its return value instead : a very common beginner mistake.</p>
+</div>
+<h3 id="run-it-yourself">Run It Yourself</h3>
+<p>Create arduino_secrets.h . Add the arduino_secrets.h file shown above to the sketch folder, filling in your own SECRET_SSID and SECRET_PASS . Upload the sketch. Open udp_command_receiver.ino in the Arduino IDE and upload it to the UNO R4 WiFi. Read the IP. Open the Serial Monitor at 9600 baud. Note the printed Arduino IP address . Edit the Python file. Set ARDUINO_IP to that address. Make sure your laptop is on the same WiFi. Run it. Run python led_control.py . Click LED ON and LED OFF — the Arduino's pin 13 LED should follow, and the terminal should print Arduino replied: OK digital .</p>
+<div class="admonition tip">
+<p class="admonition-title">Where this leads</p>
+<p>You just sent a one-shot command from a GUI. In <strong>PD.2</strong> the Arduino sketch becomes a dedicated robot receiver, and from PD.3 onward Python sends <code>MOTOR</code> commands many times per second instead of on a button press. The transport : a small UDP text packet to an IP and port : never changes.</p>
+</div>
+<hr />
+<h2 id="driving-motors-and-a-servo-over-udp">Driving Motors and a Servo over UDP</h2>
+<hr />
+<p>In PD.1b a single packet lit an LED. Now we send the same kind of packet to do real robot motion: a slider sweeps a servo, and five buttons drive two DC motors forward, backward, and turning. Nothing about the transport changes : only the commands we send.</p>
+<div class="admonition info">
+<p class="admonition-title">The Arduino sketch is unchanged</p>
+<p>Keep running the exact <code>udp_command_receiver.ino</code> from PD.1b. It already understands the <code>S</code> (servo) and <code>M</code> (motor) commands : we just never sent them before. Only the Python side is new.</p>
+</div>
+<h3 id="recap-the-s-and-m-commands">Recap: the S and M Commands</h3>
+<p>Command Format Example What it does Servo S pin angle S 10 90 Moves the servo on that pin to an angle from 0 to 180 degrees. Motor M in1 in2 pwm speed M 4 5 6 180 Drives one motor through a driver. speed ranges from -255 to 255; negative reverses direction.
+A motor driver needs three pins per motor: two direction pins (<code>in1</code>, <code>in2</code>) that set which way it spins, and one PWM pin that sets how fast. The Arduino sets the direction pins from the sign of <code>speed</code> and writes the magnitude to the PWM pin.</p>
+<h3 id="differential-drive-in-one-idea">Differential Drive in One Idea</h3>
+<p>The robot has two driven wheels, one on each side. You steer it purely by spinning those two wheels at different speeds or directions : there is no steering wheel. This is called <strong>differential drive</strong>.
+Action Left motor Right motor Result Forward +speed +speed Both wheels push forward. Backward -speed -speed Both wheels push back. Turn left -speed +speed Wheels spin opposite ways; robot rotates left in place. Turn right +speed -speed Opposite again; robot rotates right in place. Stop 0 0 Both wheels off.</p>
+<h3 id="the-python-controller">The Python Controller</h3>
+<p>Each button or slider movement turns into one or two UDP commands. The servo slider sends an <code>S</code> command as you drag it; each motion button sends two <code>M</code> commands, one per wheel.
+drive_control.py</p>
+<pre><code class="language-python">import socket
+import tkinter as tk
+
+
+ARDUINO_IP = &quot;192.168.6.50&quot;
+ARDUINO_PORT = 5005
+
+# Servo pin
+SERVO_PIN = 10
+
+# Left motor pins
+LEFT_IN1 = 4
+LEFT_IN2 = 5
+LEFT_PWM = 6
+
+# Right motor pins
+RIGHT_IN1 = 12
+RIGHT_IN2 = 13
+RIGHT_PWM = 11
+
+MOTOR_SPEED = 180
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
+def send(command):
+    print(&quot;Sending:&quot;, command)
+    sock.sendto(command.encode(), (ARDUINO_IP, ARDUINO_PORT))
+
+
+# -----------------------------
+# Servo control
+# -----------------------------
+
+def servo_changed(value):
+    angle = int(value)
+    send(f&quot;S {SERVO_PIN} {angle}&quot;)
+
+
+# -----------------------------
+# Motor control
+# -----------------------------
+
+def left_motor(speed):
+    send(f&quot;M {LEFT_IN1} {LEFT_IN2} {LEFT_PWM} {speed}&quot;)
+
+
+def right_motor(speed):
+    send(f&quot;M {RIGHT_IN1} {RIGHT_IN2} {RIGHT_PWM} {speed}&quot;)
+
+
+def forward():
+    left_motor(MOTOR_SPEED)
+    right_motor(MOTOR_SPEED)
+
+
+def backward():
+    left_motor(-MOTOR_SPEED)
+    right_motor(-MOTOR_SPEED)
+
+
+def turn_left():
+    left_motor(-MOTOR_SPEED)
+    right_motor(MOTOR_SPEED)
+
+
+def turn_right():
+    left_motor(MOTOR_SPEED)
+    right_motor(-MOTOR_SPEED)
+
+
+def stop_motors():
+    left_motor(0)
+    right_motor(0)
+
+
+# -----------------------------
+# UI
+# -----------------------------
+
+root = tk.Tk()
+root.title(&quot;Servo and Motor Control&quot;)
+root.geometry(&quot;340x320&quot;)
+
+
+servo_slider = tk.Scale(
+    root,
+    from_=0,
+    to=180,
+    orient=&quot;horizontal&quot;,
+    label=&quot;Servo Angle&quot;,
+    command=servo_changed
+)
+servo_slider.pack(fill=&quot;x&quot;, padx=20, pady=15)
+servo_slider.set(90)
+
+
+motor_label = tk.Label(root, text=&quot;DC Motor Control&quot;)
+motor_label.pack(pady=5)
+
+
+forward_button = tk.Button(root, text=&quot;Forward&quot;, width=15, command=forward)
+forward_button.pack(pady=5)
+
+
+button_row = tk.Frame(root)
+button_row.pack(pady=5)
+
+
+left_button = tk.Button(button_row, text=&quot;Turn Left&quot;, width=12, command=turn_left)
+left_button.grid(row=0, column=0, padx=5)
+
+
+right_button = tk.Button(button_row, text=&quot;Turn Right&quot;, width=12, command=turn_right)
+right_button.grid(row=0, column=1, padx=5)
+
+
+backward_button = tk.Button(root, text=&quot;Backward&quot;, width=15, command=backward)
+backward_button.pack(pady=5)
+
+
+stop_button = tk.Button(root, text=&quot;STOP&quot;, width=15, command=stop_motors)
+stop_button.pack(pady=10)
+
+
+root.mainloop()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Line</th>
+<th style="text-align: left;">What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>def send(command):</code></td>
+<td style="text-align: left;">Sends one UDP packet. Note there is no <code>recvfrom</code> here : this is fire-and-forget (see the note below).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>def servo_changed(value):</code></td>
+<td style="text-align: left;">The slider's callback. tkinter passes the slider's current value in automatically; we convert it to <code>int</code> and send <code>S 10 angle</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>left_motor(speed)</code> / <code>right_motor(speed)</code></td>
+<td style="text-align: left;">Build one <code>M</code> command for a wheel from its three pins plus a speed.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forward()</code>, <code>backward()</code>, <code>turn_left()</code>, <code>turn_right()</code></td>
+<td style="text-align: left;">Combine the two wheels using the differential-drive table above.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>stop_motors()</code></td>
+<td style="text-align: left;">Sends speed 0 to both wheels. Always give yourself a STOP button.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="new-tkinter-pieces">New tkinter Pieces</h3>
+<p>This window uses three widgets you have not seen yet, plus a layout trick for placing buttons side by side.
+Piece What it is tk.Scale(..., from_=0, to=180, command=servo_changed) A slider. It fires its command every time the handle moves, passing the current value. servo_slider.set(90) Sets the slider's starting position (servo centered at 90 degrees). tk.Label(root, text=...) A line of static text, used here as a heading above the motor buttons. tk.Frame(root) An invisible container. Here it groups the two turn buttons so they can sit on one row. .grid(row=0, column=0) Places widgets in a row/column grid inside the frame — that is how Turn Left and Turn Right end up side by side.</p>
+<div class="admonition tip">
+<p class="admonition-title">Scale passes a value, Button does not</p>
+<p>A <code>Button</code>'s <code>command</code> takes no arguments, so its callbacks (<code>forward</code>, <code>stop_motors</code>) have none. A <code>Scale</code>'s <code>command</code> is called <em>with</em> the slider value, which is why <code>servo_changed(value)</code> has a parameter. The value arrives as a string, so we call <code>int(value)</code>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">pack vs grid</p>
+<p>Do not mix <code>pack</code> and <code>grid</code> on the same parent. This program uses <code>pack</code> for the main window (stacking widgets top to bottom) and <code>grid</code> only <em>inside</em> the <code>button_row</code> frame. That separation keeps tkinter happy.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Fire-and-forget</p>
+<p>Unlike PD.1b, this script does not wait for a reply after each command. When you drag the slider it sends dozens of packets per second, and waiting for an acknowledgement on each one would make the controls feel laggy. Dropping the occasional packet is fine : the next one arrives a few milliseconds later. This is exactly why robot control loops use UDP.</p>
+</div>
+<h3 id="run-it-yourself_1">Run It Yourself</h3>
+<p>Keep the PD.1b sketch running. The Arduino should still have udp_command_receiver.ino uploaded and be printing its IP at 9600 baud. Wire the hardware. Connect the servo signal to pin 10, and the motor driver to the pins listed at the top of the script (left: 4, 5, 6; right: 12, 11, and IN2 on 13). Power the motors from their own supply, not the Arduino's 5V. Set ARDUINO_IP . Paste the Arduino's IP from the Serial Monitor into the Python file. Run it. Run python drive_control.py . Drag the slider to sweep the servo, and use the buttons to drive. Watch the terminal print each command as it is sent.</p>
+<div class="admonition warning">
+<p class="admonition-title">Lift the wheels for the first test</p>
+<p>Put the robot on a stand so the wheels spin freely before you let it drive on the floor. Confirm Forward, the turns, and especially STOP behave as expected first.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Where this leads</p>
+<p>You are now sending real motion commands by hand. <strong>PD.2</strong> moves this logic onto the robot as a dedicated sketch, and the later lessons replace your button presses with a program that decides the speeds automatically : the same <code>M</code> packets, just sent by code instead of a click.</p>
+</div>
+<hr />
+<h2 id="the-arduino-sketch-connect-listen-drive">The Arduino Sketch: Connect, Listen, Drive</h2>
+<hr />
+<p>This sketch maintains a WiFi connection, listens for UDP motor command packets from the laptop, drives the motors through the SnappyXO shield, and sends encoder telemetry back every 50 ms.
+Upload this after you have confirmed Exercise C motor and encoder wiring. Leave the robot wheels lifted off the table for the first test.
+This sketch uses the same <code>arduino_secrets.h</code> file you created in <a href="?lesson=projD-led">PD.1b</a> for your WiFi name and password : keep it in this sketch's folder, no need to create it again.
+This sketch uses the same <code>wifi_helper.h</code> header you created in <a href="?lesson=projD-led">PD.1b</a> : it includes the header and calls <code>connectToWiFi()</code> / <code>printWiFiInfo()</code> in <code>setup()</code>. No need to recreate it.
+robot_udp.ino</p>
+<pre><code class="language-cpp">#include &lt;WiFiUDP.h&gt;
+#include &quot;wifi_helper.h&quot;   // WiFi connect/info + arduino_secrets.h credentials
+
+// Your laptop's IP on the same WiFi (telemetry destination). Check with ipconfig.
+const char* LAPTOP_IP  = &quot;192.168.5.245&quot;;   // CHANGE THIS
+const int   CMD_PORT   = 5001;
+const int   TELEM_PORT = 5002;
+
+// Motor pins
+#define LEFT_IN1_PIN    4
+#define LEFT_IN2_PIN    5
+#define LEFT_EN_PIN     6
+#define RIGHT_IN1_PIN   12
+#define RIGHT_IN2_PIN   13
+#define RIGHT_EN_PIN    11
+
+// Encoder pins
+#define ENC_LEFT_A      2
+#define ENC_LEFT_B      A0
+#define ENC_RIGHT_A     3
+#define ENC_RIGHT_B     8
+
+volatile long ticksLeft  = 0;
+volatile long ticksRight = 0;
+
+WiFiUDP udp;
+char packetBuffer[64];
+
+unsigned long lastCmdTime = 0;
+const unsigned long CMD_TIMEOUT_MS = 500;
+
+unsigned long lastTelemTime = 0;
+const unsigned long TELEM_INTERVAL_MS = 50;
+
+void leftEncoderISR() {
+  if (digitalRead(ENC_LEFT_B) == HIGH) ticksLeft++;
+  else ticksLeft--;
+}
+
+void rightEncoderISR() {
+  if (digitalRead(ENC_RIGHT_B) == HIGH) ticksRight++;
+  else ticksRight--;
+}
+
+void setMotors(int leftSpeed, int rightSpeed) {
+  leftSpeed  = constrain(leftSpeed, -255, 255);
+  rightSpeed = constrain(rightSpeed, -255, 255);
+
+  digitalWrite(LEFT_IN1_PIN, leftSpeed &gt;= 0 ? HIGH : LOW);
+  digitalWrite(LEFT_IN2_PIN, leftSpeed &gt;= 0 ? LOW : HIGH);
+  analogWrite(LEFT_EN_PIN, abs(leftSpeed));
+
+  digitalWrite(RIGHT_IN1_PIN, rightSpeed &gt;= 0 ? HIGH : LOW);
+  digitalWrite(RIGHT_IN2_PIN, rightSpeed &gt;= 0 ? LOW : HIGH);
+  analogWrite(RIGHT_EN_PIN, abs(rightSpeed));
+}
+
+void stopMotors() {
+  analogWrite(LEFT_EN_PIN, 0);
+  analogWrite(RIGHT_EN_PIN, 0);
+  digitalWrite(LEFT_IN1_PIN, LOW);
+  digitalWrite(LEFT_IN2_PIN, LOW);
+  digitalWrite(RIGHT_IN1_PIN, LOW);
+  digitalWrite(RIGHT_IN2_PIN, LOW);
+}
+
+void parseCommand(char* packet) {
+  if (strncmp(packet, &quot;STOP&quot;, 4) == 0) {
+    stopMotors();
+    lastCmdTime = millis();
+    return;
+  }
+
+  if (strncmp(packet, &quot;MOTOR,&quot;, 6) == 0) {
+    int leftSpeed = 0;
+    int rightSpeed = 0;
+    int matched = sscanf(packet, &quot;MOTOR,%d,%d&quot;, &amp;leftSpeed, &amp;rightSpeed);
+
+    if (matched == 2) {
+      setMotors(leftSpeed, rightSpeed);
+      lastCmdTime = millis();
+
+      Serial.print(&quot;Motor command: &quot;);
+      Serial.print(leftSpeed);
+      Serial.print(&quot;, &quot;);
+      Serial.println(rightSpeed);
+    }
+  }
+}
+
+void sendTelemetry() {
+  char buf[64];
+
+  noInterrupts();
+  long l = ticksLeft;
+  long r = ticksRight;
+  interrupts();
+
+  snprintf(buf, sizeof(buf), &quot;ENC,%ld,%ld&quot;, l, r);
+
+  udp.beginPacket(LAPTOP_IP, TELEM_PORT);
+  udp.write((uint8_t*)buf, strlen(buf));
+  udp.endPacket();
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(2000);
+  Serial.println(&quot;Arduino UNO R4 WiFi UDP Robot Controller&quot;);
+
+  pinMode(LEFT_IN1_PIN, OUTPUT);
+  pinMode(LEFT_IN2_PIN, OUTPUT);
+  pinMode(LEFT_EN_PIN, OUTPUT);
+  pinMode(RIGHT_IN1_PIN, OUTPUT);
+  pinMode(RIGHT_IN2_PIN, OUTPUT);
+  pinMode(RIGHT_EN_PIN, OUTPUT);
+  stopMotors();
+
+  pinMode(ENC_LEFT_A, INPUT_PULLUP);
+  pinMode(ENC_LEFT_B, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_A, INPUT_PULLUP);
+  pinMode(ENC_RIGHT_B, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
+
+  connectToWiFi();   // from wifi_helper.h
+  printWiFiInfo();   // from wifi_helper.h
+
+  udp.begin(CMD_PORT);
+  lastCmdTime = millis();
+  Serial.println(&quot;Ready.&quot;);
+}
+
+void loop() {
+  int packetSize = udp.parsePacket();
+
+  if (packetSize &gt; 0) {
+    int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
+
+    if (len &gt; 0) {
+      packetBuffer[len] = '\0';
+
+      Serial.print(&quot;Received UDP packet: &quot;);
+      Serial.println(packetBuffer);
+
+      parseCommand(packetBuffer);
+    }
+  }
+
+  if (millis() - lastCmdTime &gt; CMD_TIMEOUT_MS) {
+    stopMotors();
+  }
+
+  if (millis() - lastTelemTime &gt;= TELEM_INTERVAL_MS) {
+    sendTelemetry();
+    lastTelemTime = millis();
+  }
+}
+</code></pre>
+<h3 id="upload-steps">Upload Steps</h3>
+<p>Add arduino_secrets.h (from PD.1b) and wifi_helper.h as tabs in the sketch — your WiFi name and password come from there. Fill in LAPTOP_IP with your laptop IP address from PD.1. Upload the sketch to the UNO R4 WiFi. Open Serial Monitor at 115200 baud. Wait for Arduino IP address: 192.168.x.x to print. Copy that Arduino IP address. You need it in the Python script in PD.3.</p>
+<h3 id="anatomy-table">Anatomy Table</h3>
+<p>connectToWiFi() — in wifi_helper.h Calls WiFi.begin(SECRET_SSID, SECRET_PASS) and polls WiFi.status() until a valid IP is assigned. Moved into the header so the main sketch stays short. WiFi.localIP() Returns the IP address assigned by the router. Print this value to Serial Monitor and copy it into ARDUINO_IP in Python. udp.begin(CMD_PORT) Opens a UDP socket and tells the Arduino to listen for packets on port 5001 . udp.parsePacket() Checks whether a new packet arrived. It returns the packet size if one is waiting, or 0 if nothing has arrived. This is non-blocking, so the main loop keeps running. strncmp(packet, "MOTOR,", 6) Compares the first six characters of the received string to MOTOR, . This identifies motor packets quickly before parsing the numbers. sscanf(packet, "MOTOR,%d,%d", ...) Parses two integers from the command string. If the packet is MOTOR,150,-100 , the left speed becomes 150 and the right speed becomes -100 . CMD_TIMEOUT_MS Stops the motors if no command arrives for 500 ms. This prevents the robot from driving away if the laptop script crashes or WiFi drops mid-run. constrain(leftSpeed, -255, 255) Clamps received values into the valid PWM range. This protects the robot from malformed packets containing out-of-range numbers.</p>
+<div class="admonition warning">
+<p class="admonition-title">First test with wheels lifted</p>
+<p>Wireless command bugs can make a robot move unexpectedly. Keep the wheels off the floor until PD.3 proves that <code>STOP</code> and the safety timeout both work.</p>
+</div>
+<hr />
+<h2 id="the-python-script-send-commands-read-telemetry">The Python Script: Send Commands, Read Telemetry</h2>
+<hr />
+<p>The Arduino is now listening for UDP packets. This Python script sends a short forward command sequence, reads encoder telemetry, then reverses and stops.
+Create a new file called <code>robot_control.py</code> in your <code>my-detector</code> folder or the same folder where you keep the Project 1 files.
+robot_control.py</p>
+<pre><code class="language-python">import socket
+import time
+
+# CONFIGURATION - fill in your own values.
+ARDUINO_IP = &quot;192.168.x.x&quot;  # IP printed by Arduino on Serial Monitor
+CMD_PORT = 5001            # must match Arduino sketch
+TELEM_PORT = 5002          # must match Arduino sketch
+
+# Create UDP socket for sending commands.
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Create UDP socket for receiving telemetry.
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind((&quot;&quot;, TELEM_PORT))
+telem_sock.settimeout(0.1)
+
+def send_command(left, right):
+    msg = f&quot;MOTOR,{int(left)},{int(right)}&quot;
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+def send_stop():
+    cmd_sock.sendto(b&quot;STOP&quot;, (ARDUINO_IP, CMD_PORT))
+
+def read_telemetry():
+    try:
+        data, _ = telem_sock.recvfrom(128)
+        parts = data.decode().strip().split(&quot;,&quot;)
+        if parts[0] == &quot;ENC&quot; and len(parts) == 3:
+            return int(parts[1]), int(parts[2])
+    except socket.timeout:
+        pass
+    return None, None
+
+print(f&quot;Connecting to Arduino at {ARDUINO_IP}&quot;)
+print(&quot;Sending test sequence: forward 2 seconds, stop, backward 2 seconds.&quot;)
+
+try:
+    print(&quot;Forward...&quot;)
+    start = time.time()
+    while time.time() - start &lt; 2.0:
+        send_command(150, 150)
+        left_ticks, right_ticks = read_telemetry()
+        if left_ticks is not None:
+            print(f&quot;  Ticks - L: {left_ticks:+6d}  R: {right_ticks:+6d}&quot;)
+        time.sleep(0.05)
+
+    send_stop()
+    print(&quot;Stopped.&quot;)
+    time.sleep(0.5)
+
+    print(&quot;Backward...&quot;)
+    start = time.time()
+    while time.time() - start &lt; 2.0:
+        send_command(-150, -150)
+        left_ticks, right_ticks = read_telemetry()
+        if left_ticks is not None:
+            print(f&quot;  Ticks - L: {left_ticks:+6d}  R: {right_ticks:+6d}&quot;)
+        time.sleep(0.05)
+
+    send_stop()
+    print(&quot;Done.&quot;)
+
+except KeyboardInterrupt:
+    send_stop()
+    print(&quot;Interrupted - motors stopped.&quot;)
+
+finally:
+    cmd_sock.close()
+    telem_sock.close()
+</code></pre>
+<h3 id="run-it">Run It</h3>
+<pre><code class="language-bash">python robot_control.py
+</code></pre>
+<h3 id="what-to-expect">What To Expect</h3>
+<p>The robot drives forward for two seconds while encoder tick counts print in the terminal. Then it stops, drives backward for two seconds, and stops again. If you press <code>Ctrl+C</code>, the script sends <code>STOP</code> before exiting.</p>
+<h3 id="anatomy-table_1">Anatomy Table</h3>
+<p>socket.AF_INET, socket.SOCK_DGRAM AF_INET means IPv4 networking. SOCK_DGRAM means UDP. These are the same socket constants used in Project 1's Commander and Telemetry classes. cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT)) Encodes the Python string into bytes and sends it as a UDP packet to the Arduino command port. UDP is connectionless, so there is no prior connection step. telem_sock.bind(("", TELEM_PORT)) Tells the operating system that this socket wants packets arriving on TELEM_PORT . The empty string means accept packets on any local network interface. telem_sock.settimeout(0.1) Makes recvfrom return after 100 ms if no packet arrived. Without a timeout, the script could freeze while waiting for telemetry.</p>
+<div class="admonition tip">
+<p class="admonition-title">Telemetry proves the full round trip</p>
+<p>If the robot moves but tick values never print, laptop-to-Arduino commands work, but Arduino-to-laptop telemetry does not. Check <code>LAPTOP_IP</code>, <code>TELEM_PORT</code>, and firewall settings.</p>
+</div>
+<hr />
+<h2 id="keyboard-control-drive-with-wasd">Keyboard Control: Drive with WASD</h2>
+<hr />
+<p>The PD.3 script runs a fixed sequence. Now replace that sequence with live keyboard control so you can drive the robot interactively from your laptop.
+This script sends a command about 33 times per second. The Arduino safety timeout will stop the robot if these commands stop arriving.</p>
+<h3 id="install-keyboard-input-support">Install Keyboard Input Support</h3>
+<pre><code class="language-bash">pip install pygame
+</code></pre>
+<p>robot_keyboard.py</p>
+<pre><code class="language-python">import socket
+import time
+import pygame
+
+ARDUINO_IP = &quot;192.168.x.x&quot;
+CMD_PORT = 5001
+TELEM_PORT = 5002
+
+# UDP sockets
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind((&quot;&quot;, TELEM_PORT))
+telem_sock.settimeout(0.05)
+
+
+def send_command(left, right):
+    msg = f&quot;MOTOR,{int(left)},{int(right)}&quot;
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+
+def send_stop():
+    cmd_sock.sendto(b&quot;STOP&quot;, (ARDUINO_IP, CMD_PORT))
+
+
+# -------------: PYGAME INIT ----------------
+pygame.init()
+screen = pygame.display.set_mode((300, 200))  # required to capture input
+pygame.display.set_caption(&quot;Robot Control&quot;)
+
+clock = pygame.time.Clock()
+
+print(&quot;Robot keyboard control (pygame)&quot;)
+print(&quot;  W = forward    S = backward&quot;)
+print(&quot;  A = turn left  D = turn right&quot;)
+print(&quot;  ESC = quit&quot;)
+print()
+
+SPEED = 180
+TURN = 150
+
+running = True
+
+try:
+    while running:
+        pygame.event.pump()
+        keys = pygame.key.get_pressed()
+
+        left = 0
+        right = 0
+
+        # movement logic
+        if keys[pygame.K_w]:
+            left, right = SPEED, SPEED
+        elif keys[pygame.K_s]:
+            left, right = -SPEED, -SPEED
+
+        if keys[pygame.K_a]:
+            left -= TURN
+            right += TURN
+
+        if keys[pygame.K_d]:
+            left += TURN
+            right -= TURN
+
+        send_command(left, right)
+
+        # handle quit
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if keys[pygame.K_ESCAPE]:
+            running = False
+
+        # telemetry receive
+        try:
+            data, _ = telem_sock.recvfrom(128)
+            parts = data.decode().strip().split(&quot;,&quot;)
+
+            if parts[0] == &quot;ENC&quot; and len(parts) == 3:
+                l, r = int(parts[1]), int(parts[2])
+                print(
+                    f&quot;Keys: W:{keys[pygame.K_w]} A:{keys[pygame.K_a]} &quot;
+                    f&quot;S:{keys[pygame.K_s]} D:{keys[pygame.K_d]} | &quot;
+                    f&quot;L: {left:+4d} R: {right:+4d} | &quot;
+                    f&quot;Ticks L: {l:+6d} R: {r:+6d}&quot;,
+                    end=&quot;\r&quot;,
+                )
+
+        except socket.timeout:
+            pass
+
+        time.sleep(0.03)
+        clock.tick(60)
+
+finally:
+    send_stop()
+    cmd_sock.close()
+    telem_sock.close()
+    pygame.quit()
+    print(&quot;\nStopped.&quot;)
+</code></pre>
+<h3 id="run-it_1">Run It</h3>
+<pre><code class="language-bash">python robot_keyboard.py
+</code></pre>
+<h3 id="controls">Controls</h3>
+<p>W forward S backward A turn left D turn right Esc quit and stop</p>
+<div class="admonition tip">
+<p class="admonition-title">Multiple keys combine</p>
+<p>You can hold multiple keys at once. Holding <code>W</code> and <code>D</code> drives forward while turning right because the forward speed and steering correction are added together. This is the same idea used later when the full tracker blends forward motion with steering corrections.</p>
+</div>
+<h3 id="how-the-steering-math-works">How The Steering Math Works</h3>
+<p>The code starts each loop with <code>left = 0</code> and <code>right = 0</code>. Forward and backward keys set the base speed. Left and right keys then add a turn correction by increasing one side and decreasing the other.
+Key state Left command Right command Robot behavior W +180 +180 Drive forward. S -180 -180 Drive backward. A -150 +150 Turn left in place. D +150 -150 Turn right in place. W + D +330 +30 Forward arc to the right. The Arduino clamps values to the valid PWM range.</p>
+<hr />
+<h2 id="receiving-encoder-telemetry-in-python">Receiving Encoder Telemetry in Python</h2>
+<hr />
+<p>The telemetry printed by <code>robot_keyboard.py</code> is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will save it to a CSV file so you can plot it after the robot moves. Because only one program can receive the telemetry on port <code>5002</code>, the logging goes directly inside <code>robot_keyboard.py</code> : you do not run a second receiver.
+Run <code>robot_keyboard.py</code> and drive the robot forward in a straight line for about 50 cm. Both left and right tick counts should increase at roughly the same rate. If one grows much faster, your motors have different speeds at the same PWM value. That is normal hardware variation.
+Here is the complete <code>robot_keyboard.py</code> : the PD.4 keyboard driver with CSV logging built in. Run this one script: it drives the robot, prints live ticks, and writes <code>telemetry_log.csv</code> when you press Esc.
+robot_keyboard.py (complete: drive + log)</p>
+<pre><code class="language-python">import socket
+import time
+import csv
+import pygame
+
+ARDUINO_IP = &quot;192.168.x.x&quot;
+CMD_PORT = 5001
+TELEM_PORT = 5002
+
+# UDP sockets
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind((&quot;&quot;, TELEM_PORT))
+telem_sock.settimeout(0.05)
+
+
+def send_command(left, right):
+    msg = f&quot;MOTOR,{int(left)},{int(right)}&quot;
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+
+def send_stop():
+    cmd_sock.sendto(b&quot;STOP&quot;, (ARDUINO_IP, CMD_PORT))
+
+
+# -------------: PYGAME INIT ----------------
+pygame.init()
+screen = pygame.display.set_mode((300, 200))  # required to capture input
+pygame.display.set_caption(&quot;Robot Control&quot;)
+
+clock = pygame.time.Clock()
+
+print(&quot;Robot keyboard control + telemetry logging (pygame)&quot;)
+print(&quot;  W = forward    S = backward&quot;)
+print(&quot;  A = turn left  D = turn right&quot;)
+print(&quot;  ESC = quit and save telemetry_log.csv&quot;)
+print()
+
+SPEED = 180
+TURN = 150
+
+# Telemetry log: every encoder reading is stored, then written to CSV on exit.
+log_rows = []
+start_time = time.time()
+
+running = True
+
+try:
+    while running:
+        pygame.event.pump()
+        keys = pygame.key.get_pressed()
+
+        left = 0
+        right = 0
+
+        # movement logic
+        if keys[pygame.K_w]:
+            left, right = SPEED, SPEED
+        elif keys[pygame.K_s]:
+            left, right = -SPEED, -SPEED
+
+        if keys[pygame.K_a]:
+            left -= TURN
+            right += TURN
+
+        if keys[pygame.K_d]:
+            left += TURN
+            right -= TURN
+
+        send_command(left, right)
+
+        # handle quit
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if keys[pygame.K_ESCAPE]:
+            running = False
+
+        # telemetry receive + log
+        try:
+            data, _ = telem_sock.recvfrom(128)
+            parts = data.decode().strip().split(&quot;,&quot;)
+
+            if parts[0] == &quot;ENC&quot; and len(parts) == 3:
+                l, r = int(parts[1]), int(parts[2])
+                log_rows.append([f&quot;{time.time() - start_time:.3f}&quot;, l, r])
+                print(
+                    f&quot;Keys: W:{keys[pygame.K_w]} A:{keys[pygame.K_a]} &quot;
+                    f&quot;S:{keys[pygame.K_s]} D:{keys[pygame.K_d]} | &quot;
+                    f&quot;L: {left:+4d} R: {right:+4d} | &quot;
+                    f&quot;Ticks L: {l:+6d} R: {r:+6d}&quot;,
+                    end=&quot;\r&quot;,
+                )
+
+        except socket.timeout:
+            pass
+
+        time.sleep(0.03)
+        clock.tick(60)
+
+finally:
+    send_stop()
+    cmd_sock.close()
+    telem_sock.close()
+    pygame.quit()
+
+    with open(&quot;telemetry_log.csv&quot;, &quot;w&quot;, newline=&quot;&quot;) as f:
+        writer = csv.writer(f)
+        writer.writerow([&quot;time_s&quot;, &quot;left_ticks&quot;, &quot;right_ticks&quot;])
+        writer.writerows(log_rows)
+
+    print(f&quot;\nStopped. Saved {len(log_rows)} rows to telemetry_log.csv&quot;)
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Only one telemetry receiver</p>
+<p>The Arduino sends telemetry to a single port (<code>5002</code>), and only one program can bind it. Do not run a separate logger at the same time as <code>robot_keyboard.py</code> : on Windows the second one fails with <code>OSError: [WinError 10048]</code>. That is why the logging lives inside the driving script.</p>
+</div>
+<h3 id="logging-procedure">Logging Procedure</h3>
+<p>Run python robot_keyboard.py in one terminal. Drive the robot around for about 30 seconds. Press Esc to stop — the script saves telemetry_log.csv as it exits. Open telemetry_log.csv in Excel, Google Sheets, or another plotting tool. Plot left_ticks and right_ticks against time_s .</p>
+<h3 id="how-to-read-the-plot">How To Read The Plot</h3>
+<p><strong>Straight driving</strong>
+The left and right tick lines should climb at similar rates. Small differences are normal.
+<strong>Turning</strong>
+The two lines diverge. One side may increase while the other decreases during a turn in place.
+<strong>Stopped robot</strong>
+The tick lines should flatten. If they keep changing, the wheels are still moving or the encoder signal is noisy.</p>
+<div class="admonition info">
+<p class="admonition-title">Why logging matters</p>
+<p>This is exactly what a robotics engineer does when debugging motor control. Logging raw sensor data to CSV and plotting it reveals behavior that is invisible in terminal print output. You will use this technique again in Project 1 when tuning PID gains.</p>
+</div>
+<hr />
+<h2 id="understanding-the-full-communication-loop">Understanding the Full Communication Loop</h2>
+<hr />
+<p>The project now has a complete two-way communication loop. Python sends motor commands to the Arduino. The Arduino drives the motors and sends encoder telemetry back. These two paths are independent.
+Frame 1: Command path Python script creates MOTOR,150,150 encodes to bytes sendto(ARDUINO_IP, 5001) UDP packet over WiFi Arduino UNO R4 udp.parsePacket() detects arrival udp.read() copies bytes parseCommand() extracts speeds setMotors(150, 150) Frame 2: Telemetry path Arduino UNO R4 encoder ISRs count ticks every 50 ms: ENC,847,851 udp.beginPacket(LAPTOP_IP, 5002) udp.endPacket() UDP packet over WiFi Python script recvfrom(128) receives bytes decode() converts to string split(",") extracts values prints or logs the ticks</p>
+<div class="admonition info">
+<p class="admonition-title">The timing is deliberately decoupled</p>
+<p>The command rate is approximately 33 Hz, one command every 30 ms from the Python loop. The telemetry rate is 20 Hz, one packet every 50 ms from the Arduino loop. The command sender does not wait for telemetry, and the telemetry sender does not wait for commands. This decoupled timing is intentional and matches the design used in Project 1.</p>
+</div>
+<h3 id="why-this-architecture-works">Why This Architecture Works</h3>
+<p><strong>Python is the brain</strong>
+The laptop handles keyboard input now and will later handle vision, object detection, PID control, and state logic.
+<strong>Arduino is the body</strong>
+The microcontroller owns the hardware pins, motor driver, encoder interrupts, and safety timeout.
+<strong>UDP is the link</strong>
+Short text packets carry commands one way and telemetry the other way without blocking the control loop.</p>
+<h3 id="packet-formats">Packet Formats</h3>
+<p>Packet Direction Example Parser MOTOR,left,right Laptop to Arduino MOTOR,180,120 Arduino sscanf STOP Laptop to Arduino STOP Arduino strncmp ENC,leftTicks,rightTicks Arduino to laptop ENC,847,851 Python split(",")</p>
+<hr />
+<h2 id="connecting-the-dots-to-project-1">Connecting the Dots to Project 1</h2>
+<hr />
+<p>Project 1's robot code includes two classes in a file called <code>shared.py</code>: <code>Commander</code> (sends motor commands) and <code>Telemetry</code> (receives encoder data). You have not started Project 1 yet, so both classes are printed below. Read through them now : Exercise D was designed so they look familiar instead of mysterious. When you reach Project 1, this file will already make sense.
+Commander and Telemetry (from Project 1's shared.py)</p>
+<pre><code class="language-python">class Commander:
+    &quot;&quot;&quot;Sends UDP motor commands to the ESP.&quot;&quot;&quot;
+
+    def __init__(self, ip, port):
+        self.ip    = ip
+        self.port  = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light=&quot;off&quot;):
+        msg = f&quot;MOTOR,{int(left)},{int(right)},{light.upper()}&quot;
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b&quot;STOP,OFF&quot;, (self.ip, self.port))
+
+class Telemetry:
+    &quot;&quot;&quot;Receives encoder telemetry from the ESP over UDP.&quot;&quot;&quot;
+
+    def __init__(self, port):
+        self.left_ticks  = 0
+        self.right_ticks = 0
+        self.cmd_left    = 0
+        self.cmd_right   = 0
+        self.running     = True
+        self._lock       = threading.Lock()
+        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind((&quot;&quot;, port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(128)
+                parts   = data.decode().strip().split(&quot;,&quot;)
+                if parts[0] == &quot;ENC&quot; and len(parts) == 5:
+                    with self._lock:
+                        self.left_ticks  = int(parts[1])
+                        self.right_ticks = int(parts[2])
+                        self.cmd_left    = int(parts[3])
+                        self.cmd_right   = int(parts[4])
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return {
+                &quot;left_ticks&quot;:  self.left_ticks,
+                &quot;right_ticks&quot;: self.right_ticks,
+                &quot;cmd_left&quot;:    self.cmd_left,
+                &quot;cmd_right&quot;:   self.cmd_right,
+            }
+
+    def stop(self):
+        self.running = False
+        self._sock.close()
+</code></pre>
+<h3 id="the-commander-class">The Commander Class</h3>
+<p>Commander.<strong>init</strong> Uses socket.AF_INET and socket.SOCK_DGRAM , identical to cmd_sock in PD.3. There is no bind() call because Commander only sends commands. Commander.motors Builds a string like MOTOR,left,right,light . This is the same format as your Exercise D motor command, extended with one extra LED field. Commander.stop Sends a stop packet, just like send_stop() in Exercise D. Project 1 extends it with LED state.</p>
+<h3 id="the-telemetry-class">The Telemetry Class</h3>
+<p>Telemetry.<strong>init</strong> Creates a UDP socket, calls bind(("", port)) , and sets a timeout. That is the same receive setup used in robot_control.py and robot_keyboard.py . Background thread Project 1 uses threading.Thread(target=self._run) so telemetry keeps arriving without blocking the main detection loop. This is the same reason Exercise B used a background stream thread. Telemetry._run Uses data.decode().strip().split(",") , the same parsing pattern from PD.3. Project 1 validates more fields because it sends more information.</p>
+<h3 id="what-changes-in-project-1">What Changes In Project 1?</h3>
+<p>Part Exercise D Project 1 Motor command MOTOR,left,right MOTOR,left,right,light Stop command STOP STOP,OFF Telemetry packet ENC,leftTicks,rightTicks ENC,leftTicks,rightTicks,leftCmd,rightCmd Command source Keyboard keys YOLO detection plus PID controllers Architecture Python sends, Arduino drives, Arduino reports The same architecture with vision and state logic added</p>
+<div class="admonition tip">
+<p class="admonition-title">Closing the chapter</p>
+<p>You have built a wirelessly controlled robot with real-time sensor feedback. The laptop is the brain, the Arduino is the body, and UDP carries signals between them in both directions at robotics control-loop speed. Project 1 adds camera input and PID logic on top of the same communication foundation.</p>
+</div>
+<h3 id="final-checklist">Final Checklist</h3>
+<p>Arduino connects to WiFi and prints its IP address in Serial Monitor. robot_control.py runs and the robot drives forward, stops, then drives backward. Encoder ticks print in the terminal and increase or decrease correctly. robot_keyboard.py allows live WASD driving. telemetry_log.csv was generated and opened successfully. You can explain the difference between bind() and sendto() . You can explain what CMD_TIMEOUT_MS does and why it matters. You can recognize the Exercise D patterns in the Commander and Telemetry classes shown above.
+When all boxes are checked, you are ready for Project 1.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../exC/" class="btn btn-neutral float-left" title="Exercise C: Precise Movement with Encoders"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../proj1/" class="btn btn-neutral float-right" title="Project 1: Object Tracker">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../exC/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../proj1/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

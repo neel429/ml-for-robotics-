@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Chapter 3: Supervised Learning - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Chapter 3: Supervised Learning";
+        var mkdocs_page_input_path = "ch3.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Chapter 3: Supervised Learning</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#supervised-learning-robot-arm-failure-prediction">Supervised Learning: Robot Arm Failure Prediction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#classification-regression">Classification &amp; Regression</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#concept-classification-regression">Concept: Classification &amp; Regression</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-we-split-into-training-and-test-sets">Why we split into training and test sets</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-you-measure-if-a-model-is-good">How do you measure if a model is good?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-precision-recall-tradeoff">The precision-recall tradeoff</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-confusion-matrix">The confusion matrix</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#reading-metrics-from-the-matrix">Reading metrics from the matrix</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#key-algorithms">Key Algorithms</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#key-algorithms-explained">Key Algorithms Explained</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-you-choose">How do you choose?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#a-note-on-the-word-best">A note on the word 'best'</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#logistic-regression">Logistic Regression</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision-tree">Decision Tree</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#random-forest">Random Forest</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#support-vector-machine">Support Vector Machine</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-ml-pipeline">The ML Pipeline</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-ml-pipeline_1">The ML Pipeline</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#project-robot-arm-failure-prediction">Project: Robot Arm Failure Prediction</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-will-build">What you will build</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-0-get-the-data-kaggle-setup">Step 0 : Get the data (Kaggle setup)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#open-the-notebook">Open the notebook</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-1-set-up-colab">Phase 1 : Set up Colab</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-2-meet-the-data">Phase 2 : Meet the data</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-3-prepare-the-data-for-training">Phase 3 : Prepare the data for training</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-4-train-two-models-and-compare-them">Phase 4 : Train two models and compare them</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-5-challenge-does-more-trees-mean-better">Phase 5 : Challenge: does more trees mean better?</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Chapter 3: Supervised Learning</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapter-3-supervised-learning">Chapter 3: Supervised Learning</h1>
+<hr />
+<h2 id="supervised-learning-robot-arm-failure-prediction">Supervised Learning: Robot Arm Failure Prediction</h2>
+<hr />
+<p><strong>Supervised Learning</strong> — Machine learning where each training example includes both inputs and the correct answer label.</p>
+<hr />
+<h2 id="classification-regression">Classification &amp; Regression</h2>
+<hr />
+<h3 id="concept-classification-regression">Concept: Classification &amp; Regression</h3>
+<p>Every supervised learning problem falls into one of two types. <strong>Classification</strong> predicts a category - the machine either failed or it did not, the email is spam or it is not, the image shows a cat or a dog. The answer is always one choice from a fixed list. <strong>Regression</strong> predicts a number - how many hours until the machine fails, what the temperature will be tomorrow, how fast the robot should move. The answer can be any value on a continuous scale.
+In this chapter the problem is classification: given five sensor readings from a CNC machine, predict whether the machine is about to fail. The correct answer for each row of training data is already known - an engineer labeled it. The model learns by seeing thousands of <strong>sensor readings → failure/normal</strong> pairs and adjusting its internal numbers until it can predict the label from the sensors alone.
+Input features → Model prediction → Compare to label, adjust, repeat
+<strong>Features</strong>
+The five input columns the model uses to make its prediction: air temperature (K), process temperature (K), rotational speed (rpm), torque (Nm), and tool wear (min). Each row in the dataset is one moment in time - a snapshot of what the machine was doing. These are the inputs. The model sees these numbers and must output a prediction.
+<strong>Labels</strong>
+The column the model is trying to predict: Machine failure (0 = normal, 1 = failed). This is what a human engineer already knows for every row in the training set. The model learns by comparing its prediction to this true label and adjusting until the two agree. At prediction time on new data, this column does not exist - the model must infer it from the features alone.</p>
+<h3 id="why-we-split-into-training-and-test-sets">Why we split into training and test sets</h3>
+<p>You cannot evaluate a model on the same data it learned from. A student who memorizes every past exam paper will score 100% when given those same papers again - but will fail on a new exam because they memorized answers instead of understanding the subject. A model has the same failure mode. If you train and evaluate on the same data, the model looks perfect. On new real-world data it fails completely.
+The solution is to hide some data before training starts. The training set (typically 80% of the data) is what the model learns from. The test set (20%) is sealed away and only used once at the very end to evaluate true performance. The test score is the only honest measure of whether the model actually learned the pattern or just memorized the training examples.</p>
+<div class="admonition info">
+<p class="admonition-title">The 80/20 split is a starting point, not a rule</p>
+<p>With 10,000 rows, like the AI4I dataset, 2,000 test rows gives a reliable estimate. With only 200 rows, you might use 90/10. With millions of rows you might use 99/1 - 10,000 test rows is already plenty for a reliable estimate. Match the split to your dataset size, not to a fixed percentage.</p>
+</div>
+<h3 id="how-do-you-measure-if-a-model-is-good">How do you measure if a model is good?</h3>
+<p>The obvious answer is accuracy - what percentage of predictions were correct? But accuracy is dangerously misleading for imbalanced datasets. The AI4I dataset has about 3.4% failures and 96.6% normal readings. A model that always predicts <code>normal</code> achieves 96.6% accuracy - while catching exactly zero failures. That model is completely useless. You need better metrics.
+The metrics below are built from four counts, where <em>positive</em> means the model predicted <code>failure</code>: <strong>TP</strong> = True Positive (predicted failure, was a failure), <strong>TN</strong> = True Negative (predicted normal, was normal), <strong>FP</strong> = False Positive (predicted failure, was actually normal - a false alarm), and <strong>FN</strong> = False Negative (predicted normal, was actually a failure - a missed failure).
+<strong>Accuracy</strong> — <code>Accuracy = correct predictions / total predictions</code></p>
+<p>Correct predictions means: predicted normal and was normal, or predicted failure and was failure. Misleading when one class is much rarer than the other. A model predicting <code>normal</code> every time on AI4I gets 96.6% accuracy with zero engineering value. Use accuracy only when your classes are roughly balanced.</p>
+<p><strong>Precision</strong> — <code>Precision = TP / (TP + FP)</code></p>
+<p>Of every time the model said <code>failure</code>, how often was it actually a failure? High precision means few false alarms. A factory floor wants high precision: if the model constantly cries wolf, engineers stop trusting it and ignore real alerts. Low precision means the maintenance team gets called out for nothing.</p>
+<p><strong>Recall or Sensitivity</strong> — <code>Recall = TP / (TP + FN)</code></p>
+<p>Of every actual failure that happened, how many did the model catch? High recall means few missed failures. A factory wants high recall: missing a real failure means an unexpected breakdown, downtime, and cost. Low recall means failures slip through undetected. Also called sensitivity or true positive rate.</p>
+<p><strong>F1-score</strong> — <code>F1 = 2 × (precision × recall) / (precision + recall)</code></p>
+<p>The harmonic mean of precision and recall. It is low if either precision or recall is low - you cannot fake a good F1 score by sacrificing one for the other. For imbalanced classification problems like failure prediction, F1 is the headline metric. A model with F1 = 0.85 is genuinely catching most failures without too many false alarms. Use this as your primary target.</p>
+<h3 id="the-precision-recall-tradeoff">The precision-recall tradeoff</h3>
+<p>Precision and recall pull in opposite directions. If you lower the model's decision threshold - predicting <code>failure</code> more aggressively - you catch more real failures, so recall goes up, but also trigger more false alarms, so precision goes down. If you raise the threshold - predicting <code>failure</code> only when very confident - false alarms drop, so precision goes up, but some real failures are missed, so recall goes down.
+Which matters more depends on the cost of each mistake. For a medical diagnosis, missing a real disease is far worse than a false alarm that leads to an unnecessary test. For a spam filter, a false alarm, meaning a real email marked as spam, might be worse than missing some spam. For predictive maintenance, most engineers weight recall more heavily - a missed breakdown costs more than an unnecessary maintenance check.</p>
+<div class="admonition warning">
+<p class="admonition-title">Do not optimize accuracy alone</p>
+<p>Never optimize for accuracy alone on an imbalanced dataset. Always report precision, recall, and F1.</p>
+</div>
+<h3 id="the-confusion-matrix">The confusion matrix</h3>
+<p>The confusion matrix shows all four possible outcomes of a binary classifier in one table. Every prediction the model makes falls into exactly one of the four cells. Reading the matrix tells you not just how accurate the model is but exactly what kind of mistakes it makes - and the two types of mistakes have very different consequences.
+Rows represent what actually happened. Columns represent what the model predicted. The diagonal, top-left and bottom-right, is where the model was right. The off-diagonal, top-right and bottom-left, is where it was wrong.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Predicted Normal</th>
+<th style="text-align: left;">Predicted Failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Actual Normal</strong></td>
+<td style="text-align: left;">True Negative — Correctly ignored healthy machine</td>
+<td style="text-align: left;">False Positive — False alarm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Actual Failure</strong></td>
+<td style="text-align: left;">False Negative — Missed failure</td>
+<td style="text-align: left;">True Positive — Caught failure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reading-metrics-from-the-matrix">Reading metrics from the matrix</h3>
+<p><strong>Let:</strong></p>
+<ul>
+<li><code>TP</code> = True Positives (bottom-right cell)</li>
+<li><code>TN</code> = True Negatives (top-left cell)</li>
+<li><code>FP</code> = False Positives (top-right cell — false alarm)</li>
+<li><code>FN</code> = False Negatives (bottom-left cell — missed failure)</li>
+</ul>
+<p><strong>Then:</strong></p>
+<ul>
+<li><code>Accuracy</code> = (<code>TP</code> + <code>TN</code>) / (<code>TP</code> + <code>TN</code> + <code>FP</code> + <code>FN</code>)</li>
+<li><code>Precision</code> = <code>TP</code> / (<code>TP</code> + <code>FP</code>)</li>
+<li><code>Recall</code> = <code>TP</code> / (<code>TP</code> + <code>FN</code>)</li>
+<li><code>F1</code> = 2 × <code>TP</code> / (2 × <code>TP</code> + <code>FP</code> + <code>FN</code>)</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Concrete numbers</p>
+<p>Say your model evaluates on 2,000 test rows: 1,932 normal readings and 68 failure readings.
+The model predicts: <code>TN = 1920</code> correctly said normal, <code>TP = 45</code> correctly caught failures, <code>FP = 12</code> false alarms, and <code>FN = 23</code> missed failures.
+Then: <code>Accuracy = (1920+45) / 2000 = 98.25%</code>, which looks great but is misleading. <code>Precision = 45 / (45+12) = 78.9%</code>. <code>Recall = 45 / (45+23) = 66.2%</code>, meaning the model catches only about two-thirds of failures. <code>F1 = 2×45 / (90+35) = 72.0%</code>.
+The accuracy of 98.25% sounds excellent. But the recall of 66.2% means one in three real failures is being missed completely. This is why you always look at the full confusion matrix.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Why this matters for robot maintenance</p>
+<p>A robot that breaks down unexpectedly stops production. An engineer who gets 50 false alarms per day stops trusting the system and turns it off. The precision-recall tradeoff is not an abstract mathematical concept - it is a real engineering decision with real costs on both sides. The model you build in the next section will need to balance these two failure modes for the specific cost structure of your use case.</p>
+</div>
+<hr />
+<h2 id="key-algorithms">Key Algorithms</h2>
+<hr />
+<h3 id="key-algorithms-explained">Key Algorithms Explained</h3>
+<p>You have labeled data. You want a model that can predict the label for new examples. But which algorithm do you use? There is no single correct answer - each algorithm makes different assumptions about the shape of the patterns in your data. Understanding what each one assumes helps you choose wisely and interpret the results honestly.
+All four algorithms below are classification algorithms - they predict a category, failure versus normal, rather than a number. They all take the same input, a row of features, and produce the same output, a predicted class. The difference is <strong>how</strong> they make that prediction internally.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Algorithm</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Interpretable</th>
+<th style="text-align: left;">Speed</th>
+<th style="text-align: left;">Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Logistic Regression</td>
+<td style="text-align: left;">Linear classifier</td>
+<td style="text-align: left;">High</td>
+<td style="text-align: left;">Fast</td>
+<td style="text-align: left;">Baselines and explanations</td>
+</tr>
+<tr>
+<td style="text-align: left;">Decision Tree</td>
+<td style="text-align: left;">Tree classifier</td>
+<td style="text-align: left;">High</td>
+<td style="text-align: left;">Fast</td>
+<td style="text-align: left;">Readable rules</td>
+</tr>
+<tr>
+<td style="text-align: left;">Random Forest</td>
+<td style="text-align: left;">Ensemble</td>
+<td style="text-align: left;">Medium</td>
+<td style="text-align: left;">Medium</td>
+<td style="text-align: left;">Strong tabular accuracy</td>
+</tr>
+<tr>
+<td style="text-align: left;">Support Vector Machine</td>
+<td style="text-align: left;">Margin classifier</td>
+<td style="text-align: left;">Medium</td>
+<td style="text-align: left;">Medium</td>
+<td style="text-align: left;">Smaller clean datasets</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-do-you-choose">How do you choose?</h3>
+<p>Start with logistic regression as your baseline. It trains in seconds and tells you immediately whether the problem has a linear pattern. If it gets 90% F1 score, you might not need anything more complex. If it gets 65%, you know the pattern is non-linear and you need a tree-based method.
+Then try Random Forest. It almost always outperforms a single decision tree and requires very little tuning. If you need to explain predictions to non-technical stakeholders, add a single decision tree as an interpretable backup - even if it is not the most accurate model, it shows the rules in plain language.
+SVM is worth trying when your dataset is small and clean. On larger datasets Random Forest typically wins on both speed and accuracy.
+1. <strong>Always train logistic regression first as a baseline.</strong> If accuracy is good enough, stop here.
+2. <strong>Try Random Forest.</strong> Compare it to logistic regression on validation F1 score. It usually wins on complex data.
+3. <strong>Try a single Decision Tree if you need interpretability.</strong> Accept the accuracy trade-off if explanation is required.
+4. <strong>Try SVM if the dataset is small.</strong> Use it when you have under 10,000 rows and Random Forest is not generalizing well.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Interpretable</th>
+<th style="text-align: left;">Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Simple</strong></td>
+<td style="text-align: left;">Logistic Regression</td>
+<td style="text-align: left;">Support Vector Machine</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Complex</strong></td>
+<td style="text-align: left;">Decision Tree</td>
+<td style="text-align: left;">Random Forest</td>
+</tr>
+</tbody>
+</table>
+<h3 id="a-note-on-the-word-best">A note on the word 'best'</h3>
+<p>No algorithm is universally best. This is formalized in the No Free Lunch theorem - any algorithm that outperforms another on some problems must underperform on others. Random Forest tends to win on tabular data in practice, which is why it is the first choice here. But on the AI4I dataset with 10,000 rows and five features, logistic regression often comes surprisingly close to Random Forest. The lesson: always compare multiple algorithms on your specific data rather than assuming one is always superior.</p>
+<div class="admonition tip">
+<p class="admonition-title">Algorithm choice is an engineering decision</p>
+<p>In a real predictive maintenance deployment, the choice of algorithm depends on more than accuracy. If a maintenance engineer needs to explain to management why a machine was flagged for service, a decision tree provides auditable rules. If pure accuracy is what matters and no explanation is needed, Random Forest wins. Choosing an algorithm includes human and organizational factors, not just a math problem.</p>
+</div>
+<hr />
+<h2 id="logistic-regression">Logistic Regression</h2>
+<hr />
+<p>Logistic regression is the simplest of the four classifiers - start here, then compare to the others in the <a href="?lesson=ch3-algorithms">overview</a>.
+<strong>Type:</strong> Linear classifier
+<strong>Output:</strong> Probability (0 to 1)
+<strong>Interpretable:</strong> Yes
+<strong>Speed:</strong> Very fast</p>
+<p>Logistic regression learns a probability surface, then turns that probability into a normal or failure prediction.</p>
+<p>Despite the name, logistic regression is a classifier, not a regressor. The name comes from the logistic, or sigmoid, function it uses internally, not from the type of output it produces.
+How it works: it draws a straight line, or in higher dimensions a flat plane called a hyperplane, that separates the two classes. Every data point on one side is classified as normal, every point on the other side as failure. The line is chosen to maximize the probability of the training labels being correct.
+<img alt="plot2_decision_boundary.png" src="../original/plot2_decision_boundary.png" /></p>
+<p>A straight decision boundary divides the feature space into normal and failure regions.</p>
+<p>The output is a probability between 0 and 1 - values above 0.5 become class 1, below 0.5 become class 0.
+<img alt="plot1_sigmoid.png" src="../original/plot1_sigmoid.png" /></p>
+<p>The sigmoid function turns any score into a probability, with 0.5 as the usual decision threshold.</p>
+<p>Real example: on a factory robot arm, logistic regression might learn that failure probability increases linearly with torque and tool wear. It cannot capture <code>failure only happens when both torque and temperature are high simultaneously</code> - that interaction requires a more complex model.
+<strong>What "linear with torque and tool wear" means</strong></p>
+<p>Suppose the model learns this score equation:</p>
+<pre><code>z = -8 + 2.3T + 1.7W
+P(failure) = σ(z) = 1 / (1 + e-z)
+</code></pre>
+<p>The score equation feeds the sigmoid curve, converting feature values into failure probabilities.
+Here, <code>T</code> is torque and <code>W</code> is tool wear. The first equation is linear because the feature terms are added with weights. There is no term that multiplies two features together.</p>
+<p><strong>What the interaction would require</strong></p>
+<p>Failure may not depend on torque alone or temperature alone. Instead, failure might depend on their combination. To capture that, add an interaction feature such as <code>Torque × Temperature</code>:</p>
+<pre><code>z = b0 + b1(Torque) + b2(Temperature)
+    + b3(Torque × Temperature)
+</code></pre>
+<p>A logistic regression boundary is always straight unless you manually add new interaction features. Models like decision trees can draw stepped or curved-looking boundaries from the data instead. Or use a more complex model, such as a decision tree, random forest, gradient boosting model, or neural network.</p>
+<p>What it gives you: the weight, or coefficient, for each feature. A weight of +2.3 on torque means higher torque strongly increases failure probability. A weight near 0 means that feature barely matters. This makes logistic regression one of the most interpretable models that exists.</p>
+<p><strong>Use when:</strong> you want a fast interpretable baseline, you need to explain which features drive failures, or your data is roughly linearly separable.</p>
+<p><strong>Do not use when:</strong> the relationship between features and the label involves complex interactions or non-linear patterns.</p>
+<hr />
+<h2 id="decision-tree">Decision Tree</h2>
+<hr />
+<p>Decision trees are more powerful than logistic regression on non-linear data, and more readable than any other algorithm in this chapter.
+<strong>Type:</strong> Tree-based classifier
+<strong>Output:</strong> Class + readable rules
+<strong>Interpretable:</strong> Yes
+<strong>Speed:</strong> Fast</p>
+<p>A decision tree tests possible thresholds and chooses the split that makes the child groups as pure as possible.</p>
+<p>A decision tree is a flowchart the algorithm builds automatically from your training data. At each step it asks one yes/no question about a feature, splits the data into two groups, and repeats until it can make a confident prediction.
+How it works: the algorithm searches for the single feature and threshold that best separates failures from normal readings. For example, <code>is tool wear &gt; 180 minutes?</code> splits the data so that most failures are on the yes side. It then repeats this for each sub-group independently, building a tree of questions. At each leaf, the bottom of a branch, it outputs the majority class of the training examples that ended up there.
+Real example: a robot maintenance tree might first ask whether tool wear is high. If yes, it may ask whether torque is also high. If no, it may check temperature difference. The final leaves are the predicted classes.
+<img alt="dt_plot2_tree_diagram.png" src="../original/dt_plot2_tree_diagram.png" /></p>
+<p>The final model is a readable tree of questions, arrows, and class predictions.</p>
+<p>What it gives you: a human-readable set of rules. You can print the tree and show it to a maintenance engineer who has never heard of machine learning. They can follow the branches manually and understand why the model made each decision.
+<img alt="dt_plot3_regions.png" src="../original/dt_plot3_regions.png" /></p>
+<p>Because each split is a threshold on one feature, decision trees carve the feature space into rectangular regions.</p>
+<p>The main control knob is tree depth. A shallow tree may underfit because it asks too few questions. A very deep tree may overfit because it memorizes tiny quirks in the training set instead of learning a stable pattern.
+<img alt="dt_plot4_depth_complexity.png" src="../original/dt_plot4_depth_complexity.png" /></p>
+<p>Depth controls complexity: too shallow misses structure, too deep memorizes noise, and the best model is usually in between.</p>
+<p><strong>Use when:</strong> the rules need to be understood and validated by a domain expert, or you want to discover key threshold values like failures mostly happening above 200 minutes of tool wear.</p>
+<p><strong>Do not use when:</strong> your data has many features with complex interactions. A single tree tends to overfit - it memorizes the training data by growing too many branches. This is why Random Forest exists.</p>
+<hr />
+<h2 id="random-forest">Random Forest</h2>
+<hr />
+<p>Random Forest fixes the main weakness of a single decision tree - this is usually the first algorithm to try on any new tabular dataset.
+<strong>Type:</strong> Ensemble (100+ trees)
+<strong>Output:</strong> Class + confidence %
+<strong>Interpretable:</strong> Medium
+<strong>Speed:</strong> Medium</p>
+<p>Random Forest fixes the main weakness of a single decision tree: one tree can overfit, but many varied trees vote toward a steadier prediction.</p>
+<p>A random forest fixes the main weakness of a single decision tree, overfitting, by training hundreds of trees and having them vote. The final prediction is the majority vote across all trees.
+Each tree is trained on a random sample of the training data and uses a random subset of features at each split. This randomness makes each tree slightly different, which is exactly what makes the group more reliable than one tree alone.
+<img alt="rf_plot2_bootstrap.png" src="../original/rf_plot2_bootstrap.png" /></p>
+<p>Bootstrap sampling means each tree sees a different version of the dataset, so their mistakes are less likely to be identical.</p>
+<p>How it works: imagine 100 decision trees, each trained on a slightly different random sample of your 8,000 training rows. For a new sensor reading, each tree makes its own prediction. If 73 trees say <code>failure</code> and 27 say <code>normal</code>, the forest predicts failure with 73% confidence. The diversity of trees means one tree's quirky overfitting gets outvoted by the crowd.</p>
+<p>The forest prediction is a vote: here, 73 trees vote failure and 27 vote normal, so the model predicts failure with 73% confidence.</p>
+<p>Real example: one tree might overfit to a specific pattern of high temperature and low torque that appeared in its training sample. The other 99 trees were not trained on that exact sample and vote it down. The ensemble is much more robust than any individual tree.
+What it gives you: a confidence score, the vote percentage, and feature importance scores - a ranked list of which features the trees used most often for their splits. In the AI4I dataset, tool wear typically ranks as the most important feature for predicting failure.
+<img alt="rf_plot3_feature_importance.png" src="../original/rf_plot3_feature_importance.png" /></p>
+<p>Feature importance summarizes which inputs the forest relied on most often; for this maintenance example, tool wear is the strongest signal.</p>
+<p><strong>Use when:</strong> you want strong accuracy on tabular data without heavy tuning. Random Forest is the first algorithm to try on many new classification problems because it is robust and rarely makes catastrophically wrong predictions.</p>
+<p><strong>Do not use when:</strong> you need to explain exactly why the model made a specific prediction, because the 100 trees are hard to interpret together, or when you have very high-dimensional sparse data like text.</p>
+<hr />
+<h2 id="support-vector-machine">Support Vector Machine</h2>
+<hr />
+<p>Support Vector Machines take a fundamentally different approach - instead of building rules or trees, they find the widest possible gap between classes.
+<strong>Type:</strong> Margin classifier
+<strong>Output:</strong> Class
+<strong>Interpretable:</strong> Medium
+<strong>Speed:</strong> Medium (slow on large data)</p>
+<p>SVM does not choose just any separating line. It chooses the line with the widest margin between the closest points from each class.</p>
+<p>A Support Vector Machine, or SVM, finds the widest possible empty gap - called the margin - between the two classes, then draws the decision boundary down the center of that gap. The training examples closest to the boundary are called support vectors. They are the only points that determine where the line goes. All other training examples are ignored once the margin is found.
+How it works: imagine the training data as dots on a table. You want to place a ruler between the two colored groups with as much space as possible on either side. The SVM finds the optimal ruler position mathematically. Any new data point is then classified based on which side of the ruler it falls on.
+Real example: with torque and tool wear as the two axes, the SVM finds the boundary where normal readings cluster on one side and failure readings cluster on the other, with maximum gap between the two groups. New readings are classified by which side they land on.
+<img alt="svm_plot2_real_example.png" src="../original/svm_plot2_real_example.png" /></p>
+<p>On torque and tool wear data, the boundary is chosen by the readings closest to the margin, not by every point equally.</p>
+<p>Kernel trick: what if the data is not linearly separable in 2D? SVM can project the data into higher dimensions using a kernel function, where a linear boundary in the higher dimension corresponds to a curve in the original space. The RBF, or radial basis function, kernel is the most common choice and handles most non-linear problems well.
+<img alt="svm_plot3_kernel_trick.png" src="../original/svm_plot3_kernel_trick.png" /></p>
+<p>The kernel trick lets SVM solve curved decision problems without manually inventing new features.</p>
+<p>The <code>C</code> parameter controls how strict the margin is. A small <code>C</code> allows some mistakes so the model can keep a wider, smoother margin. A large <code>C</code> punishes mistakes heavily, which can fit the training data more tightly but may generalize worse.</p>
+<p>Increasing <code>C</code> moves SVM from a softer margin that tolerates errors toward a harder margin that tries to classify every training point correctly.</p>
+<p>What it gives you: a boundary defined by support vectors and a margin width. This is less directly interpretable than a decision tree, but more structured than a black-box model. If the support vectors make sense, the boundary usually makes sense.
+<strong>Use when:</strong> your dataset is small to medium sized, especially under 10,000 rows, the features are clean and scaled, and you want strong generalization with a well-understood mathematical guarantee.</p>
+<p><strong>Do not use when:</strong> your dataset is very large, because SVM training is slow on millions of rows, or you need feature importances.</p>
+<hr />
+<h2 id="the-ml-pipeline">The ML Pipeline</h2>
+<hr />
+<h3 id="the-ml-pipeline_1">The ML Pipeline</h3>
+<p>Every ML project follows the same sequence of steps : from raw data to a working predictor. This sequence is called the ML pipeline. Learning it once means you can apply it to any dataset. The next lesson walks through every step on a real engineering dataset. This lesson gives you the map first.
+<strong>Step 1: Get Data</strong> — Data is the raw material of every ML project. In this course it comes from Kaggle, a platform hosting thousands of free labeled datasets. In industry it comes from sensors, databases, or instruments you build yourself.</p>
+<p><strong>Step 2: Explore (EDA)</strong> — Before training anything, look at your data. Check how many rows and columns exist, what data types each column has, and whether the class distribution is balanced. Functions like <code>df.head()</code>, <code>df.info()</code>, and <code>df.describe()</code> give you this picture in seconds. Skipping this step means discovering problems only after hours of wasted training.</p>
+<p><strong>Step 3: Clean</strong> — Real data has missing values, duplicate rows, and outliers. Most ML algorithms cannot handle missing values: they either crash or produce silent wrong results. Cleaning means finding and fixing these issues before training starts.</p>
+<p><strong>Step 4: Feature Engineering</strong> — Features are the columns you feed into the model. Raw columns are not always in the most useful form: a string category like <code>"L"</code>, <code>"M"</code>, or <code>"H"</code> must be converted to numbers before a model can read it. Feature engineering transforms raw data into the best possible inputs for the algorithm.</p>
+<p><strong>Step 5: Split Into Train and Test Sets</strong> — You cannot evaluate a model on the same data it trained on; that is like marking your own homework. Split the data before training so the test set stays completely unseen until the final evaluation.</p>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+import numpy as np
+
+# Simulated dataset - 1000 examples, 5 features
+X = np.random.rand(1000, 5)
+y = np.random.randint(0, 2, 1000)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,       # 20% reserved for testing
+    random_state=42,     # same split every run
+    stratify=y           # keep class ratio equal in both sets
+)
+print(f&quot;Training rows: {len(X_train)}&quot;)
+print(f&quot;Test rows:     {len(X_test)}&quot;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Setting</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>test_size=0.2</code></td>
+<td style="text-align: left;">800 rows train, 200 rows test.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>random_state=42</code></td>
+<td style="text-align: left;">Same split every time you run the code.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>stratify=y</code></td>
+<td style="text-align: left;">If 10% of <code>y</code> is class 1, both sets will be 10%.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 6: Scale Features</strong> — Features with large numeric ranges, like RPM in the thousands, dominate features with small ranges, like temperature in the hundreds, even when the smaller feature is more predictive. <code>StandardScaler</code> removes this bias by centering every feature around zero with equal spread.</p>
+<pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+X_train = np.array([[1500, 298.5], [1800, 302.1], [1200, 296.0]])
+X_test  = np.array([[1650, 300.0]])
+
+scaler = StandardScaler()
+
+# Fit ONLY on training data, then transform both sets
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled  = scaler.transform(X_test)   # NOT fit_transform
+
+print(&quot;Before:&quot;, X_train[0])
+print(&quot;After: &quot;, X_train_scaled[0].round(3))
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Scaling leak</p>
+<p>Always call <code>fit_transform</code> on training data and <code>transform</code>, never <code>fit_transform</code>, on test data because fitting the scaler on test data leaks information from the exam into the study guide.</p>
+</div>
+<p><strong>Step 7: Train Model</strong> — Training feeds the scaled data to the algorithm and lets it adjust its internal numbers to minimize prediction error. In scikit-learn this is always one line: <code>model.fit(X_train, y_train)</code>.</p>
+<p><strong>Step 8: Evaluate</strong> — After training, run the model on the test set and compare predictions to the true labels. For classification, use precision, recall, and F1-score rather than accuracy alone because accuracy is misleading when one class is much rarer than the other. A model that predicts <code>"no failure"</code> every time achieves 96% accuracy on a dataset where only 4% of readings are failures, while catching zero real failures.</p>
+<p><strong>Step 9: Tune</strong> — Every algorithm has hyperparameters: settings you choose before training. Tuning means trying different values and keeping the combination that produces the best evaluation score.</p>
+<p><strong>Step 10: Deploy / Use</strong> — A model that stays in a notebook helps no one. Deployment means saving the trained model to a file and loading it wherever predictions are needed, whether that is a web server, a laptop on a factory floor, or a robot.
+<strong>Next step:</strong> The next lesson applies every one of these steps to the AI4I Predictive Maintenance dataset : real sensor readings from a CNC machine, real failure labels, and real engineering decisions.</p>
+<hr />
+<h2 id="project-robot-arm-failure-prediction">Project: Robot Arm Failure Prediction</h2>
+<hr />
+<div class="admonition tip">
+<p class="admonition-title">The problem we are solving</p>
+<p>A factory robot arm breaks without warning. Production stops for hours while engineers scramble to fix it : every unplanned shutdown costs thousands of dollars. What if a model could look at sensor readings and say <em>"this arm is going to fail in the next few hours"</em> before it actually does? That is exactly what we will build.</p>
+</div>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>By the end of this project you will have a program that reads sensor data from a robot arm and outputs a failure warning. Here is the full journey:
+Raw sensor CSV → Explore &amp; clean → Train model → Predict failures
+We will build this step by step. Each cell is one small piece of that pipeline : run them from top to bottom in Colab.</p>
+<h3 id="step-0-get-the-data-kaggle-setup">Step 0 : Get the data (Kaggle setup)</h3>
+<p>The dataset lives on Kaggle, a free platform that hosts machine learning datasets. You need a free account and a one-time legacy API key so that Colab can download it for you. This only takes two minutes.
+1. <strong>Go to Kaggle and sign in.</strong> Open <a href="https://www.kaggle.com/">kaggle.com</a> and sign in (or create a free account).
+2. <strong>Open Settings.</strong> Click your profile picture in the top-right corner, then click <strong>Settings</strong>.
+3. <strong>Create a Legacy API Key.</strong> Scroll down to the <strong>API</strong> section. Look for the <strong>Legacy API</strong> sub-section and click <strong>Create New Legacy API Key</strong>. This is important — a regular API key does not download a JSON file, and the JSON is what the Kaggle CLI needs.
+4. <strong>Open the downloaded file.</strong> Your browser automatically downloads a file called <code>kaggle.json</code>. Open it in any text editor — it contains a short line that looks like <code>{"username":"…","key":"…"}</code>. Select and copy that entire line.
+5. <strong>Keep it ready.</strong> You will paste that copied text into the first Colab cell. The notebook will ask for it with a password-style prompt.</p>
+<div class="admonition tip">
+<p class="admonition-title">Keep the token private</p>
+<p>Your token is like a password : it gives access to your Kaggle account. Never share a notebook that still has the token text visible.</p>
+</div>
+<h3 id="open-the-notebook">Open the notebook</h3>
+<p>Click the button below to open the project notebook in Google Colab. Then run the cells one by one : each section below explains what each cell does and what you should see.</p>
+<div class="admonition tip">
+<p class="admonition-title">Dataset</p>
+<p><a href="https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020">AI4I 2020 Predictive Maintenance Dataset</a> : 10,000 rows of real robot sensor readings, each labelled Normal or Failure.</p>
+</div>
+<p><a href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch3-failure-prediction.ipynb">Open in Colab →</a></p>
+<h3 id="phase-1-set-up-colab">Phase 1 : Set up Colab</h3>
+<p>The first two cells connect Colab to Kaggle and download the data. You only need to run them once per session.
+<strong>Cell 1</strong> installs the Kaggle tool and asks for your token. When the cell runs you will see a password-style box : paste your copied token text there and press Enter.
+Cell 1: Install Kaggle API &amp; set up credentials</p>
+<pre><code class="language-python">!pip -q install kaggle
+import json, os
+from getpass import getpass
+
+os.makedirs(&quot;/root/.kaggle&quot;, exist_ok=True)
+token = json.loads(getpass(&quot;Paste your Kaggle API token text: &quot;).strip())
+with open(&quot;/root/.kaggle/kaggle.json&quot;, &quot;w&quot;) as f:
+    json.dump(token, f)
+os.chmod(&quot;/root/.kaggle/kaggle.json&quot;, 0o600)
+</code></pre>
+<p><em>Expected output:</em> A hidden text prompt. After you paste and press Enter, nothing more is printed — that means it worked.
+<strong>Cell 2</strong> downloads the dataset zip file and unpacks it into a folder called <code>data/</code>.
+Cell 2: Download the dataset from Kaggle</p>
+<pre><code class="language-python">!kaggle datasets download -d stephanmatzka/predictive-maintenance-dataset-ai4i-2020
+!unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data
+</code></pre>
+<p><em>Expected output:</em> Lines like <code>Downloading…</code> followed by <code>inflating: data/ai4i2020.csv</code>. One CSV file now lives under <code>data/</code>.
+<strong>Cell 3</strong> loads all the Python libraries we need. Think of this as opening a toolbox : we are not doing any work yet, just laying the tools on the bench.
+Cell 3: Import libraries</p>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score
+</code></pre>
+<p><em>Expected output:</em> No output at all — silence means all libraries loaded successfully.</p>
+<h3 id="phase-2-meet-the-data">Phase 2 : Meet the data</h3>
+<p>Before training any model, always look at the data first. You want to understand what columns exist, what the numbers mean, and whether anything looks unusual. Skipping this step is the most common beginner mistake.
+<strong>Cell 4</strong> loads the CSV and prints three summaries. Read through each one : they tell you the shape of the data before a single line of ML code runs.
+Cell 4: Load and explore the data</p>
+<pre><code class="language-python">df = pd.read_csv(&quot;data/ai4i2020.csv&quot;)
+display(df.head())      # first 5 rows — shows what a row looks like
+df.info()               # column names and data types
+display(df.describe())  # min, max, average for each number column
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">What to look for</p>
+<p>Find the <code>Machine failure</code> column — that is what we want to predict (0 = normal, 1 = failure). The other columns — temperature, speed, torque, tool wear — are what we will use as clues.</p>
+</div>
+<p><em>Expected output:</em> A table of rows followed by column statistics. You should see columns like <code>Air temperature [K]</code>, <code>Torque [Nm]</code>, and <code>Machine failure</code>.
+<strong>Cell 5</strong> draws a bar chart showing how many normal rows vs failure rows the dataset contains. This is one of the most important charts in the whole project.
+Cell 5: Visualize class distribution</p>
+<pre><code class="language-python">counts = df[&quot;Machine failure&quot;].value_counts().sort_index()
+counts.plot(kind=&quot;bar&quot;, color=[&quot;#34d399&quot;, &quot;#fb7185&quot;])
+plt.xticks([0, 1], [&quot;Normal&quot;, &quot;Failure&quot;], rotation=0)
+plt.title(&quot;How many normal vs failure examples?&quot;)
+plt.ylabel(&quot;Number of rows&quot;)
+plt.show()
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Why the imbalance matters</p>
+<p>You will see a very tall green bar (normal) and a tiny red bar (failure). That is realistic — machines fail rarely. But it creates a trap: a model that just guesses "normal" every single time would score ~97% accuracy while being completely useless. Later cells fix this with <code>class_weight="balanced"</code>.</p>
+</div>
+<p><em>Expected output:</em> A bar chart with roughly 9,660 normal rows and 340 failure rows.
+<strong>Cell 6</strong> draws a correlation heatmap : a grid that shows which columns tend to move together. Red squares mean two columns rise and fall together; blue squares mean they move in opposite directions.
+Cell 6: Visualize feature correlations</p>
+<pre><code class="language-python">corr = df.select_dtypes(include=&quot;number&quot;).corr()
+plt.figure(figsize=(9, 7))
+plt.imshow(corr, cmap=&quot;coolwarm&quot;, vmin=-1, vmax=1)
+plt.colorbar(label=&quot;Correlation (-1 to +1)&quot;)
+plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)
+plt.yticks(range(len(corr.columns)), corr.columns)
+plt.title(&quot;Which sensor readings move together?&quot;)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">What to look for</p>
+<p>Find the <code>Machine failure</code> row. Any column with a noticeably red or blue square there is correlated with failure — the model will find those patterns automatically.</p>
+</div>
+<p><em>Expected output:</em> A 12×12 colour grid. Diagonal squares are always deep red (a column perfectly correlates with itself).
+<strong>Cell 7</strong> checks for missing values. Most models crash or give wrong answers when data is missing, so we always check before doing anything else.
+Cell 7: Check for missing values</p>
+<pre><code class="language-python">missing = df.isnull().sum()
+print(missing[missing &gt; 0])
+print(f&quot;\nTotal missing values: {missing.sum()}&quot;)
+</code></pre>
+<p><em>Expected output:</em> <code>Total missing values: 0</code> — this dataset is already clean, so we can move straight to modelling.</p>
+<h3 id="phase-3-prepare-the-data-for-training">Phase 3 : Prepare the data for training</h3>
+<p>Raw data cannot go straight into a model. We need to pick the right columns, split the data into a training set and a test set, and make sure the numbers are on a comparable scale.
+<strong>Cell 8</strong> picks the five sensor columns we will use as inputs, and sets the failure column as the thing we want to predict.
+Cell 8: Choose features and label</p>
+<pre><code class="language-python">feature_cols = [
+    &quot;Air temperature [K]&quot;,
+    &quot;Process temperature [K]&quot;,
+    &quot;Rotational speed [rpm]&quot;,
+    &quot;Torque [Nm]&quot;,
+    &quot;Tool wear [min]&quot;
+]
+X = df[feature_cols]   # inputs  — the clues the model reads
+y = df[&quot;Machine failure&quot;]  # output — what we want to predict
+print(X.shape, y.shape)
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">X and y — the core pattern</p>
+<p>Every supervised learning project follows this same shape. <code>X</code> is the table of clues (inputs). <code>y</code> is the column of answers (labels). The model learns the mapping from <code>X</code> to <code>y</code>.</p>
+</div>
+<p><em>Expected output:</em> <code>(10000, 5) (10000,)</code> — 10,000 rows, 5 input columns, 10,000 labels.
+<strong>Cell 9</strong> splits the data into a training set (80%) and a test set (20%). The model only ever sees the training set while learning. The test set is kept hidden until the final evaluation : like a sealed exam paper.
+10,000 rows full dataset → 8,000 rows training set + 2,000 rows test set
+Cell 9: Train / test split</p>
+<pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+print(f&quot;Training rows: {X_train.shape[0]}&quot;)
+print(f&quot;Test rows:     {X_test.shape[0]}&quot;)
+</code></pre>
+<p><em>Expected output:</em> <code>Training rows: 8000, Test rows: 2000</code>. (<code>stratify=y</code> keeps the same ~3.4% failure rate in both halves.)
+<strong>Cell 10</strong> scales the numbers so they are all on a similar range. Without this, a column measured in Kelvin (≈300) would drown out a column measured in minutes (≈0--240) purely because its numbers are bigger.</p>
+<div class="admonition warning">
+<p class="admonition-title">The golden rule of scaling</p>
+<p>We fit the scaler <em>only on training data</em>, then apply the same scaler to the test data. Why? The test set is the final exam : if the scaler peeks at test data to calculate averages, the model gets an unfair preview and will appear better than it really is.</p>
+</div>
+<p>Cell 10: Scale features</p>
+<pre><code class="language-python">scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)  # learn + apply
+X_test_scaled  = scaler.transform(X_test)        # apply only
+</code></pre>
+<p><em>Expected output:</em> No printed output — the scaled arrays are ready in memory.</p>
+<h3 id="phase-4-train-two-models-and-compare-them">Phase 4 : Train two models and compare them</h3>
+<p>We will train two different models on the same data and see which one is better at predicting failures. Think of it like testing two different doctors on the same set of patient records : you want to know who gives the more accurate diagnosis.
+<strong>Cell 11</strong> trains the first model: Logistic Regression. It is the simplest possible approach : a good baseline to beat.
+Cell 11: Train Logistic Regression</p>
+<pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight=&quot;balanced&quot;)
+log_reg.fit(X_train_scaled, y_train)
+log_pred = log_reg.predict(X_test_scaled)
+print(&quot;Logistic Regression trained.&quot;)
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">What is class_weight=\"balanced\"?</p>
+<p>Remember the imbalanced bar chart? <code>class_weight="balanced"</code> tells the model to treat a missed failure as more costly than a false alarm — otherwise it would just predict "normal" for everything and look accurate.</p>
+</div>
+<p><em>Expected output:</em> <code>Logistic Regression trained.</code>
+<strong>Cell 12</strong> evaluates that model and draws a confusion matrix : a 2×2 grid that shows exactly which types of mistakes it made.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>Predicted Normal</strong></th>
+<th style="text-align: left;"><strong>Predicted Failure</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Was actually Normal</strong></td>
+<td style="text-align: left;">True Negative ✓</td>
+<td style="text-align: left;">False Positive ✗</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Was actually a Failure</strong></td>
+<td style="text-align: left;">False Negative ✗ <em>(the dangerous mistake)</em></td>
+<td style="text-align: left;">True Positive ✓</td>
+</tr>
+</tbody>
+</table>
+<p>Cell 12: Evaluate Logistic Regression</p>
+<pre><code class="language-python">print(classification_report(y_test, log_pred))
+ConfusionMatrixDisplay.from_predictions(
+    y_test, log_pred, display_labels=[&quot;Normal&quot;, &quot;Failure&quot;]
+)
+plt.title(&quot;Logistic Regression — what mistakes did it make?&quot;)
+plt.show()
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Reading the report</p>
+<p>Look at the <strong>Failure</strong> row in the classification report. <em>Recall</em> tells you what fraction of real failures the model caught. A low recall means many failures slipped through undetected — that would be costly in a real factory.</p>
+</div>
+<p><em>Expected output:</em> A text table of precision/recall/F1 scores, then a 2×2 colour grid (the confusion matrix).
+<strong>Cell 13</strong> trains the second model: a Random Forest. Instead of one straight decision line, it builds 100 decision trees and takes a vote : usually more accurate on sensor data like this.
+Cell 13: Train Random Forest</p>
+<pre><code class="language-python">forest = RandomForestClassifier(
+    n_estimators=100,   # 100 trees vote on each prediction
+    random_state=42,
+    class_weight=&quot;balanced&quot;
+)
+forest.fit(X_train, y_train)   # no scaling needed for forests
+forest_pred = forest.predict(X_test)
+print(&quot;Random Forest trained.&quot;)
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Why no scaling here?</p>
+<p>Random forests split data by asking questions like "is torque &gt; 40?" The threshold is always relative, so the scale of the numbers does not matter. Logistic Regression, by contrast, adds numbers together — so scale matters a lot.</p>
+</div>
+<p><em>Expected output:</em> <code>Random Forest trained.</code> (may take 5–10 seconds)
+<strong>Cell 14</strong> puts both models side by side using a single number : the F1 score : so you can directly compare them.</p>
+<div class="admonition tip">
+<p class="admonition-title">Why F1 and not accuracy?</p>
+<p>Accuracy counts all correct predictions equally. F1 specifically rewards catching real failures and penalises missing them. For rare events like equipment failures, F1 is the honest measure.</p>
+</div>
+<p>Cell 14: Compare both models</p>
+<pre><code class="language-python">log_f1    = f1_score(y_test, log_pred)
+forest_f1 = f1_score(y_test, forest_pred)
+
+print(f&quot;Logistic Regression F1: {log_f1:.3f}&quot;)
+print(f&quot;Random Forest F1:       {forest_f1:.3f}&quot;)
+
+winner = &quot;Random Forest&quot; if forest_f1 &gt; log_f1 else &quot;Logistic Regression&quot;
+print(f&quot;\nWinner: {winner}&quot;)
+</code></pre>
+<p><em>Expected output:</em> Two F1 scores and a winner line. Random Forest typically wins on this dataset — but by how much?</p>
+<h3 id="phase-5-challenge-does-more-trees-mean-better">Phase 5 : Challenge: does more trees mean better?</h3>
+<p>The Random Forest used 100 trees. What if we tried 10? Or 200? Cell 15 runs the model five times with different tree counts and plots the result. Your job is to look at the chart and decide: at what point do extra trees stop helping?
+Cell 15: Challenge — tune n_estimators</p>
+<pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+scores = []
+
+for n in tree_counts:
+    model = RandomForestClassifier(
+        n_estimators=n, random_state=42, class_weight=&quot;balanced&quot;
+    )
+    model.fit(X_train, y_train)
+    scores.append(f1_score(y_test, model.predict(X_test)))
+
+plt.plot(tree_counts, scores, marker=&quot;o&quot;, color=&quot;#6366f1&quot;, linewidth=2)
+plt.xlabel(&quot;Number of trees&quot;)
+plt.ylabel(&quot;F1 score (higher = better)&quot;)
+plt.title(&quot;Does adding more trees keep improving the model?&quot;)
+plt.grid(True, alpha=0.3)
+plt.show()
+
+best_n = tree_counts[scores.index(max(scores))]
+print(f&quot;Best result: {max(scores):.3f} F1 with {best_n} trees&quot;)
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">What to look for</p>
+<p>The line usually rises sharply from 10 → 50 trees and then flattens. That flat part is the "diminishing returns" zone — extra computation, no extra accuracy. This pattern appears in almost every real ML project.</p>
+</div>
+<p><em>Expected output:</em> A line plot and a printed best score. Compare it against the 100-tree score from Cell 14.</p>
+<p><img alt="Speed: Very fast" src="../original/plot4_hyperplane_3d.png" /></p>
+<p><img alt="plot3_probability_curve.png" src="../original/plot3_probability_curve.png" /></p>
+<p><img alt="Speed: Fast" src="../original/dt_plot1_split_search.png" /></p>
+<p><img alt="Speed: Medium" src="../original/rf_plot4_overfitting.png" /></p>
+<p><img alt="rf_plot1_voting.png" src="../original/rf_plot1_voting.png" /></p>
+<p><img alt="Speed: Medium (slow on large data)" src="../original/svm_plot1_margin.png" /></p>
+<p><img alt="svm_plot4_c_parameter.png" src="../original/svm_plot4_c_parameter.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ch2/" class="btn btn-neutral float-left" title="Chapter 2: What is Machine Learning?"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ch4/" class="btn btn-neutral float-right" title="Chapter 4: Unsupervised Learning">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ch2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ch4/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

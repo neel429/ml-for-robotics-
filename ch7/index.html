@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Chapter 7: Computer Vision for Robotics - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Chapter 7: Computer Vision for Robotics";
+        var mkdocs_page_input_path = "ch7.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch6/">Chapter 6: Neural Networks</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Chapter 7: Computer Vision for Robotics</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#why-vision-matters-in-robotics">Why Vision Matters in Robotics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#why-vision-matters-in-robotics_1">Why Vision Matters in Robotics</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tools-opencv">Tools: OpenCV</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#tools-opencv_1">Tools: OpenCV</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tools-tensorflowkeras">Tools: TensorFlow/Keras</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#tools-tensorflowkeras_1">Tools: TensorFlow/Keras</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-cnns-see">How CNNs See</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#how-convolutional-neural-networks-see">How Convolutional Neural Networks See</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#project-traffic-sign-classifier">Project: Traffic Sign Classifier</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#project-traffic-sign-classifier-with-tensorflow-opencv">Project: Traffic Sign Classifier with TensorFlow + OpenCV</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Chapter 7: Computer Vision for Robotics</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapter-7-computer-vision-for-robotics">Chapter 7: Computer Vision for Robotics</h1>
+<hr />
+<p><strong>Computer Vision</strong> — Techniques that let computers interpret images and video as useful sensor data.</p>
+<hr />
+<h2 id="why-vision-matters-in-robotics">Why Vision Matters in Robotics</h2>
+<hr />
+<h3 id="why-vision-matters-in-robotics_1">Why Vision Matters in Robotics</h3>
+<p>Cameras are cheap, rich sensors. Robots use vision to read signs, detect obstacles, estimate pose, inspect parts, track lanes, and understand human workspaces.</p>
+<hr />
+<h2 id="tools-opencv">Tools: OpenCV</h2>
+<hr />
+<h3 id="tools-opencv_1">Tools: OpenCV</h3>
+<p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.
+OpenCV quick demo</p>
+<pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+
+img_bgr = cv2.imread(&quot;sample_data/traffic_sign.jpg&quot;)
+print(img_bgr.shape)             # height, width, channels
+
+img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB) # Convert BGR to RGB for correct color display
+small = cv2.resize(img_rgb, (32, 32)) # Resize to 32x32 for faster processing
+edges = cv2.Canny(small, threshold1=50, threshold2=150) # Canny edge detection; less than 50 = black, more than 150 = white, in between = gray
+
+# Display both the original image with rectangle and the edges
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+axes[0].imshow(img_rgb)
+axes[0].set_title('Original Image with Rectangle')
+axes[0].axis('off')
+
+axes[1].imshow(edges, cmap='gray')
+axes[1].set_title('Detected Edges (Resized)')
+axes[1].axis('off')
+
+plt.show()
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">BGR vs RGB</p>
+<p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p>
+</div>
+<hr />
+<h2 id="tools-tensorflowkeras">Tools: TensorFlow/Keras</h2>
+<hr />
+<h3 id="tools-tensorflowkeras_1">Tools: TensorFlow/Keras</h3>
+<p>TensorFlow is Google's library for building and training neural networks. Keras is the friendly wrapper on top, like power steering on a car. You will use tensors, layers, models, epochs, batches, loss functions, and optimizers.
+Input image → Layers stacked in order → Class probabilities</p>
+<hr />
+<h2 id="how-cnns-see">How CNNs See</h2>
+<hr />
+<h3 id="how-convolutional-neural-networks-see">How Convolutional Neural Networks See</h3>
+<p>A normal neural network sees a flat list of pixels. A CNN scans small filters across the image, so it can learn edges, corners, textures, shapes, and eventually objects.
+Input 32x32 image → Conv2D + MaxPool → Dense → 43 signs</p>
+<hr />
+<h2 id="project-traffic-sign-classifier">Project: Traffic Sign Classifier</h2>
+<hr />
+<h3 id="project-traffic-sign-classifier-with-tensorflow-opencv">Project: Traffic Sign Classifier with TensorFlow + OpenCV</h3>
+<p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
+<div class="admonition tip">
+<p class="admonition-title">Download Dataset</p>
+<p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign">gtsrb-german-traffic-sign</a>.</p>
+</div>
+<p><a href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch7-traffic-sign-classifier.ipynb">Open in Colab →</a>
+Cell 1: Kaggle download of GTSRB</p>
+<pre><code class="language-python">!pip -q install kaggle
+import json
+import os
+from getpass import getpass
+
+os.makedirs(&quot;/root/.kaggle&quot;, exist_ok=True)
+token = json.loads(getpass(&quot;Paste your Kaggle API token text: &quot;).strip())
+with open(&quot;/root/.kaggle/kaggle.json&quot;, &quot;w&quot;) as f:
+    json.dump(token, f)
+os.chmod(&quot;/root/.kaggle/kaggle.json&quot;, 0o600)
+!kaggle datasets download -d meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
+!unzip -q -o gtsrb-german-traffic-sign.zip -d gtsrb
+</code></pre>
+<p>💡 What this does Downloads and extracts the traffic sign dataset into Colab. Expected output Folders containing sign images and labels.
+Cell 2: Explore dataset</p>
+<pre><code class="language-python">from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+
+train_csv = Path(&quot;gtsrb/Train.csv&quot;)
+df = pd.read_csv(train_csv)
+display(df.head())
+df[&quot;ClassId&quot;].value_counts().sort_index().plot(kind=&quot;bar&quot;, figsize=(14, 4))
+plt.title(&quot;Images per traffic sign class&quot;)
+plt.show()
+</code></pre>
+<p>💡 What this does Shows metadata and checks whether classes are balanced. Expected output A table and a 43-bar class count chart.
+Cell 3: OpenCV preprocessing pipeline</p>
+<pre><code class="language-python">import cv2
+import numpy as np
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+images, labels = [], []
+for _, row in df.iterrows():
+    path = Path(&quot;gtsrb&quot;) / row[&quot;Path&quot;]
+    img = cv2.imread(str(path))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, (32, 32))
+    img = img.astype(&quot;float32&quot;) / 255.0
+    images.append(img)
+    labels.append(row[&quot;ClassId&quot;])
+
+X = np.array(images)
+y = np.array(labels)
+print(X.shape, y.shape)
+</code></pre>
+<p>Cell 3b: Data augmentation setup</p>
+<pre><code class="language-python">augmenter = ImageDataGenerator(
+    rotation_range=10,
+    zoom_range=0.10,
+    horizontal_flip=True
+)
+
+# Use with care: horizontal flips can change the meaning of some traffic signs.
+</code></pre>
+<p>💡 What this does Loads images, fixes color order, resizes to 32x32, normalizes pixels to 0-1, and defines simple augmentation for more varied training examples. Expected output (num_images, 32, 32, 3) and labels.
+Cell 4: Split into train/validation/test</p>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
+)
+</code></pre>
+<p>💡 What this does Creates separate data for training, tuning during training, and final evaluation. Expected output No output; three splits are ready.
+Cell 5: Build CNN architecture</p>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+model = keras.Sequential([
+    layers.Conv2D(32, (3, 3), activation=&quot;relu&quot;, input_shape=(32, 32, 3)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation=&quot;relu&quot;),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(256, activation=&quot;relu&quot;),
+    layers.Dropout(0.5),
+    layers.Dense(43, activation=&quot;softmax&quot;)
+])
+model.summary()
+</code></pre>
+<p>🤖 What this does Conv layers learn visual features, pooling shrinks the image, dense layers make the final class decision. Expected output A model summary with trainable parameters.
+Cell 6: Compile model</p>
+<pre><code class="language-python">model.compile(
+    optimizer=&quot;adam&quot;,
+    loss=&quot;sparse_categorical_crossentropy&quot;,
+    metrics=[&quot;accuracy&quot;]
+)
+</code></pre>
+<p>💡 What this does adam updates weights, loss measures wrongness, and accuracy reports percent correct. Expected output No output; model is ready to train.
+Cell 7: Train for 15 epochs</p>
+<pre><code class="language-python">history = model.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=15,
+    batch_size=64
+)
+</code></pre>
+<p>💡 What this does Each epoch passes through the training set once and reports train/validation accuracy. Expected output A live progress bar for each epoch.
+Cell 8: Plot accuracy and loss curves</p>
+<pre><code class="language-python">fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+axes[0].plot(history.history[&quot;accuracy&quot;], label=&quot;train&quot;)
+axes[0].plot(history.history[&quot;val_accuracy&quot;], label=&quot;val&quot;)
+axes[0].set_title(&quot;Accuracy&quot;)
+axes[0].legend()
+
+axes[1].plot(history.history[&quot;loss&quot;], label=&quot;train&quot;)
+axes[1].plot(history.history[&quot;val_loss&quot;], label=&quot;val&quot;)
+axes[1].set_title(&quot;Loss&quot;)
+axes[1].legend()
+plt.show()
+</code></pre>
+<p>⚠️ What this does If training accuracy rises but validation accuracy stalls, the model may be overfitting. Expected output Two learning curves.
+Cell 9: Evaluate on test set</p>
+<pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print(f&quot;Test accuracy: {test_acc:.3f}&quot;)
+</code></pre>
+<p>💡 What this does The test set is used once at the end to estimate real-world performance. Expected output A single test accuracy value.
+Cell 10: Confusion matrix and top mistakes</p>
+<pre><code class="language-python">from sklearn.metrics import confusion_matrix
+
+pred = np.argmax(model.predict(X_test), axis=1)
+cm = confusion_matrix(y_test, pred)
+
+plt.figure(figsize=(9, 9))
+plt.imshow(cm, cmap=&quot;Blues&quot;)
+plt.title(&quot;43-class confusion matrix&quot;)
+plt.xlabel(&quot;Predicted class&quot;)
+plt.ylabel(&quot;True class&quot;)
+plt.colorbar()
+plt.show()
+
+mistakes = []
+for true_id in range(43):
+    for pred_id in range(43):
+        if true_id != pred_id and cm[true_id, pred_id] &gt; 0:
+            mistakes.append((cm[true_id, pred_id], true_id, pred_id))
+print(sorted(mistakes, reverse=True)[:10])
+</code></pre>
+<p>💡 What this does The full matrix shows all class-to-class errors, and the sorted list highlights the 10 most common confusions. Expected output A 43x43 plot and top 10 confusion tuples.
+Cell 11: Test one image</p>
+<pre><code class="language-python">idx = 0
+probs = model.predict(X_test[idx:idx+1])[0]
+pred_label = np.argmax(probs)
+confidence = probs[pred_label]
+
+plt.imshow(X_test[idx])
+plt.title(f&quot;Predicted {pred_label}, true {y_test[idx]}, confidence {confidence:.1%}&quot;)
+plt.axis(&quot;off&quot;)
+plt.show()
+</code></pre>
+<p>💡 What this does Shows a concrete example instead of only aggregate metrics. Expected output A sign image with predicted label, true label, and confidence.
+Cell 12: OpenCV raw-image prediction overlay</p>
+<pre><code class="language-python">sample_path = Path(&quot;gtsrb&quot;) / df.iloc[0][&quot;Path&quot;]
+raw_bgr = cv2.imread(str(sample_path))
+raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
+
+model_input = cv2.resize(raw_rgb, (32, 32)).astype(&quot;float32&quot;) / 255.0
+probs = model.predict(model_input[None, ...])[0]
+pred_label = np.argmax(probs)
+confidence = probs[pred_label]
+
+overlay = raw_rgb.copy()
+cv2.putText(
+    overlay,
+    f&quot;Class {pred_label}: {confidence:.1%}&quot;,
+    (5, 25),
+    cv2.FONT_HERSHEY_SIMPLEX,
+    0.7,
+    (255, 255, 255),
+    2
+)
+
+plt.imshow(overlay)
+plt.axis(&quot;off&quot;)
+plt.show()
+</code></pre>
+<p>🤖 What this does This loads a raw sign image with OpenCV, preprocesses it exactly like training images, feeds it to the CNN, and draws the prediction on top. Expected output A traffic sign image with prediction text overlaid.
+Cell 13: Challenge - add a third Conv2D block</p>
+<pre><code class="language-python"># Add before Flatten:
+# layers.Conv2D(128, (3, 3), activation=&quot;relu&quot;),
+# layers.MaxPooling2D((2, 2)),
+#
+# Retrain and compare validation accuracy and training time.
+</code></pre>
+<p>📝 What this does A deeper network may learn richer features, but it can also overfit or train slower. Expected output Your comparison notes.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ch6/" class="btn btn-neutral float-left" title="Chapter 6: Neural Networks"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ch8/" class="btn btn-neutral float-right" title="Chapter 8: What's Next?">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ch6/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ch8/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Chapter 6: Neural Networks - ML for Robotics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/dark-mode.css" rel="stylesheet" />
+        <link href="../css/extra_css.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Chapter 6: Neural Networks";
+        var mkdocs_page_input_path = "ch6.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML for Robotics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch0/">Chapter 0: Welcome & How to Use This Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch1/">Chapter 1: Python Programming Fundamentals</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch2/">Chapter 2: What is Machine Learning?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch3/">Chapter 3: Supervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch4/">Chapter 4: Unsupervised Learning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch5/">Chapter 5: Reinforcement Learning</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Chapter 6: Neural Networks</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#what-is-a-neural-network">What Is a Neural Network?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#meet-tensorflow-playground">Meet TensorFlow Playground</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-are-looking-at">What you are looking at</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#your-first-60-seconds-in-playground">Your first 60 seconds in Playground</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#anatomy-of-a-neuron">Anatomy of a Neuron</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#three-steps-every-neuron-takes">Three steps every neuron takes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#weights-are-not-set-by-you">Weights are not set by you</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#playground-one-neuron-fails">Playground: One Neuron Fails</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#part-1-set-up-the-impossible-problem">Part 1: Set up the impossible problem</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#part-2-add-one-hidden-layer">Part 2: Add one hidden layer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-layers-work">Why layers work</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#layers-the-fix">Layers: The Fix</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-a-layer-actually-does-to-data">What a layer actually does to data</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-deep-should-you-go">How deep should you go?</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-networks-learn">How Networks Learn</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-loss-your-altitude">The loss : your altitude</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-five-steps-of-training">The five steps of training</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#playground-watch-it-learn">Playground: Watch It Learn</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#experiment-1-a-healthy-training-run">Experiment 1 : A healthy training run</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#experiment-2-learning-rate-too-high">Experiment 2 : Learning rate too high</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#experiment-3-learning-rate-too-low">Experiment 3 : Learning rate too low</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#experiment-4-batch-size-effect">Experiment 4 : Batch size effect</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#experiment-teach-a-network-to-learn-sinx">Experiment: Teach a Network to Learn sin(x)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#experiment-teach-a-network-to-learn-sinx_1">Experiment: Teach a Network to Learn sin(x)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-1-setup-and-data-generation">Cell 1: Setup and Data Generation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-2-network-architecture">Cell 2: Network Architecture</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-3-activation-functions">Cell 3: Activation Functions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-4-adam-optimizer-and-training-loop">Cell 4: Adam Optimizer and Training Loop</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-5-generalization-test-from-0-to-4">Cell 5: Generalization Test from 0 to 4π</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-6-learning-rate-comparison">Cell 6: Learning Rate Comparison</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cell-7-your-turn">Cell 7: Your Turn</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#activation-functions">Activation Functions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#activation-functions_1">Activation Functions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#overfitting-and-how-to-fight-it">Overfitting and How to Fight It</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#seeing-the-three-cases">Seeing the three cases</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-read-each-curve">How to read each curve</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-does-overfitting-happen">Why does overfitting happen?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#three-ways-to-fight-overfitting">Three ways to fight overfitting</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#watch-overfitting-happen-in-playground">Watch overfitting happen in Playground</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#from-numpy-to-keras">From NumPy to Keras</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#what-is-keras">What is Keras?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#its-philosophy">Its philosophy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installing-it">Installing it</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-same-network-two-ways">The same network, two ways</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reading-training-curves">Reading Training Curves</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#reading-training-curves_1">Reading Training Curves</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#when-to-use-neural-networks">When to Use Neural Networks</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#when-to-use-neural-networks_1">When to Use Neural Networks</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch7/">Chapter 7: Computer Vision for Robotics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ch8/">Chapter 8: What's Next?</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exA/">Exercise A: Train Your First Detector</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exB/">Exercise B: Your Phone as a Robot Camera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exC/">Exercise C: Precise Movement with Encoders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../exD/">Exercise D: Talk to Your Robot Over WiFi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../proj1/">Project 1: Object Tracker</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML for Robotics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Chapter 6: Neural Networks</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapter-6-neural-networks">Chapter 6: Neural Networks</h1>
+<hr />
+<h2 id="what-is-a-neural-network">What Is a Neural Network?</h2>
+<video controls height="100%"><source src="../original/tf_playground.mp4" type="video/mp4"></video>
+
+<hr />
+<p>In Chapter 3 you trained a Random Forest to predict machine failure. The Random Forest learned a set of if-then rules from the data. Clear, interpretable, fast to train. For many problems it is the right tool and you should use it.
+A neural network learns differently. Instead of rules, it learns numbers : thousands or millions of adjustable numbers called weights. Training is the process of tuning those numbers until the network's output matches the correct answer. The rules are never written down explicitly. The pattern lives entirely in the weights.
+Think of learning to ride a bike. A rulebook says: lean left to turn left, pedal faster to accelerate, squeeze brakes to stop. A neural network is more like your body after hours of practice : it just knows, without being able to explain every adjustment it makes. That inability to explain is both the power and the limitation.
+A chain of matrix multiplications and simple math functions. That is all. The word "neural" is a metaphor. There is no brain, no understanding, no consciousness : just math that happens to learn patterns from examples.
+Use neural networks when the relationship between inputs and outputs is too complex for simple rules : images, audio, text, complex sensor combinations. For clean tabular data like the Chapter 3 failure dataset, Random Forest is simpler and often just as accurate. You will return to this question in lesson 6.12.</p>
+<div class="admonition tip">
+<p class="admonition-title">What comes next</p>
+<p>You will build intuition for neural networks in the next few lessons using a free interactive tool called TensorFlow Playground : no code required yet.</p>
+</div>
+<hr />
+<h2 id="meet-tensorflow-playground">Meet TensorFlow Playground</h2>
+<hr />
+<p>TensorFlow Playground is a neural network that runs live in your browser. You set the architecture, hit play, and watch the network train in real time. The decision boundary : the boundary between classes : updates every few milliseconds as the network learns. This makes concepts that are invisible in code completely visible.
+<a href="https://playground.tensorflow.org">Open in Colab →</a></p>
+<h3 id="what-you-are-looking-at">What you are looking at</h3>
+<p>TensorFlow Playground shows the dataset, input features, network layers, output boundary, and loss graph in one live interface.
+- <strong>Data panel (left):</strong> choose your dataset and how noisy it is.
+- <strong>Features (above network):</strong> which input columns the network sees.
+- <strong>Hidden layers (center):</strong> the heart of the network : add layers and neurons by clicking + and -.
+- <strong>Output panel (right):</strong> the decision boundary : blue = predicted class 1, orange = predicted class -1. Darker color = higher confidence.
+- <strong>Loss graph (top right):</strong> how wrong the network is over time.
+- <strong>Training controls (top):</strong> learning rate, activation, batch size, and the play/pause/reset buttons.</p>
+<h3 id="your-first-60-seconds-in-playground">Your first 60 seconds in Playground</h3>
+<p>Do these steps before reading any further:
+Open Playground at the link above. Select the Circle dataset. Look for four small icons below "DATA" on the left — pick the one showing two concentric circles. Click the play button ▶ at the top left. Watch for 10 seconds. Click the reset button ↺ and watch again from the start.</p>
+<div class="admonition tip">
+<p class="admonition-title">Write your answer before moving on</p>
+<p>What shape is the decision boundary trying to form? Is it a straight line or a curve? Does it succeed? Write down what you see : you will compare this to what a single neuron can do in the next lesson.</p>
+</div>
+<hr />
+<h2 id="anatomy-of-a-neuron">Anatomy of a Neuron</h2>
+<hr />
+<p>Before understanding a network of hundreds of neurons, understand one. A single neuron is just arithmetic : three steps, no mystery.
+<strong>The exam scorer</strong></p>
+<p>Imagine scoring a student's performance using three things: homework (weight 0.5), exam score (weight 0.4), attendance (weight 0.1). You multiply each by its weight, add them up, and get a score. A neuron does exactly this — it is a weighted sum of its inputs. The only extra step is squashing the result through a function so it stays in a useful range.</p>
+<h3 id="three-steps-every-neuron-takes">Three steps every neuron takes</h3>
+<p><strong>Weighted sum</strong> <code>z = w1*x1 + w2*x2 + ... + wn*xn + b</code></p>
+<p>Each input <code>x</code> is multiplied by its weight <code>w</code>. All results are added together. The bias <code>b</code> is added last — it shifts the output regardless of inputs.</p>
+<p><strong>Activation function</strong> <code>a = f(z)</code></p>
+<p>The function <code>f</code> squashes <code>z</code> into a useful range. Without it, stacking neurons is useless — the whole network collapses into one weighted sum, which is just a straight line.</p>
+<p><strong>Pass the result forward</strong></p>
+<p><code>a</code> becomes an input to the next layer's neurons. This is how information flows from left to right through the network.</p>
+<div class="admonition tip">
+<p class="admonition-title">Try this before running</p>
+<p>The code below computes what one neuron outputs given three sensor readings. Before running, predict: if temperature (<code>x[0]</code>) is very high (<code>0.9</code> out of <code>1.0</code>) and its weight is <code>0.8</code>, will the output confidence be above 50% or below 50%?</p>
+</div>
+<p>single_neuron_sensor_confidence.py</p>
+<pre><code class="language-python">import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+# Sensor readings normalized from 0 to 1: temp, vibration, speed
+x = np.array([0.9, 0.7, 0.5])
+
+# Weights and bias. During real training, the network learns these.
+w = np.array([0.8, 0.3, -0.2])
+b = -0.4
+
+z = np.dot(w, x) + b
+a = sigmoid(z)
+
+print(f&quot;Weighted sum z: {z:.4f}&quot;)
+print(f&quot;After sigmoid:  {a:.4f}&quot;)
+print(f&quot;Interpretation: {a*100:.1f}% confidence of abnormality&quot;)
+
+# Try changing w[1]. What happens if vibration matters more than temperature?
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Exercise</p>
+<p>Run the code, then try each change and note what happens:</p>
+<ol>
+<li>Change <code>w[0]</code> from <code>0.8</code> to <code>-0.8</code>. What happens to confidence? Why does making a weight negative reverse its effect?</li>
+<li>Change <code>b</code> from <code>-0.4</code> to <code>0.4</code>. What happens? The bias shifts the baseline — what does a positive bias mean in terms of the neuron's "default assumption"?</li>
+<li>Set all weights to <code>0.0</code>. What is the output and why?</li>
+</ol>
+</div>
+<h3 id="weights-are-not-set-by-you">Weights are not set by you</h3>
+<p>In the code above, the weights are hand-picked numbers. In a real network, training finds these numbers automatically by trying to minimize the loss. The network starts with random weights and adjusts them thousands of times until the output is correct. You will see this process in lesson 6.6.</p>
+<div class="admonition tip">
+<p class="admonition-title">TensorFlow Playground connection</p>
+<p>Every connection between neurons in TensorFlow Playground is one weight : hover over any connection and you can see its current value updating as the network trains.</p>
+</div>
+<hr />
+<h2 id="playground-one-neuron-fails">Playground: One Neuron Fails</h2>
+<hr />
+<p>A single neuron draws one straight line. That is its only tool. Some problems can be solved with a straight line. Others cannot. This experiment shows you both : and the moment you add a second layer, the impossible becomes trivial.
+<a href="https://playground.tensorflow.org">Open in Playground →</a></p>
+<h3 id="part-1-set-up-the-impossible-problem">Part 1: Set up the impossible problem</h3>
+<p>Open Playground: <a href="https://playground.tensorflow.org">playground.tensorflow.org</a></p>
+<ul>
+<li><strong>Dataset:</strong> click the XOR dataset. It is the checkerboard pattern: orange top-right and bottom-left, blue top-left and bottom-right.</li>
+<li><strong>Features:</strong> make sure only <code>X1</code> and <code>X2</code> are checked.</li>
+<li><strong>Hidden layers:</strong> click the minus button until there are zero hidden layers — just inputs going straight to output.</li>
+<li><strong>Learning rate:</strong> set to <code>0.03</code>.</li>
+<li><strong>Activation:</strong> set to <code>ReLU</code>.</li>
+<li><strong>Train:</strong> click ▶ and watch for 30 seconds.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>What accuracy does it reach? Does the boundary ever successfully separate the orange from the blue? Why do you think a straight line cannot solve this problem? Think geometrically: is there any straight line that puts all orange on one side and all blue on the other?</p>
+</div>
+<h3 id="part-2-add-one-hidden-layer">Part 2: Add one hidden layer</h3>
+<ul>
+<li>Click ↺ to reset.</li>
+<li>Add one hidden layer with 2 neurons: click <code>+</code> next to Hidden Layers, then set the layer to 2 neurons.</li>
+<li>Keep everything else the same.</li>
+<li>Click ▶ to train.</li>
+<li>Watch until the test loss drops below <code>0.05</code>.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>How long did it take? What does the decision boundary look like now? The two neurons together created a boundary that one neuron could not. Watch the two neurons on the left : each one is drawing its own line. Their combination creates the curved boundary you see on the right.</p>
+</div>
+<h3 id="why-layers-work">Why layers work</h3>
+<p>Each neuron in the hidden layer learns a different view of the data : one might learn "is this point in the top half?" while another learns "is this point in the right half?" Neither answer alone is enough. But combined, they can describe "top-right AND bottom-left," which is exactly what XOR needs.
+This is why deep networks can learn complex patterns. Each layer transforms the data into a new representation. By the final layer a pattern that was impossible to separate has been transformed into something simple. The network learned to see the data differently at each stage.</p>
+<div class="admonition tip">
+<p class="admonition-title">Challenge</p>
+<p>After solving XOR with 2 neurons in one layer, try to solve the spiral dataset, the hardest one with two interleaved spirals. How many hidden layers and neurons does it take? Can you solve it with just 1 hidden layer?</p>
+</div>
+<hr />
+<h2 id="layers-the-fix">Layers: The Fix</h2>
+<hr />
+<p>Lesson 6.3 showed the problem empirically : one neuron fails on XOR, a hidden layer fixes it. This lesson explains why mathematically without requiring calculus.
+<strong>The committee vote</strong></p>
+<p>One judge scores a gymnastics routine: 7.2. That is a single number capturing a complex performance. Three judges each notice different things — difficulty, execution, artistry. Their combined scores are richer than any single judge's opinion. A hidden layer is a committee of neurons, each noticing a different aspect of the input. Their combined output gives the next layer richer information to work with.</p>
+<h3 id="what-a-layer-actually-does-to-data">What a layer actually does to data</h3>
+<p>Each layer takes the outputs from the previous layer and transforms them. The first hidden layer transforms raw input features into a new representation. The second layer transforms that representation into an even more abstract one. By the final layer the data has been transformed enough that a single neuron can make the final decision.
+In Playground you can see this happening. Click on any neuron in a hidden layer during training. The small square inside it shows what that neuron has learned to detect : a gradient of orange and blue showing which parts of the input space activate it strongly. Each neuron is a feature detector. Together they decompose the problem into parts that the output neuron can combine.</p>
+<div class="admonition tip">
+<p class="admonition-title">Try this before running</p>
+<p>Before running, predict the parameter count for a network with <code>2 inputs -&gt; 3 neurons -&gt; 3 neurons -&gt; 1 output</code>. Then run <code>count_params([2, 3, 3, 1])</code> to check.</p>
+</div>
+<p>count_network_parameters.py</p>
+<pre><code class="language-python">def count_params(layer_sizes):
+    total = 0
+    for i in range(len(layer_sizes) - 1):
+        weights = layer_sizes[i] * layer_sizes[i + 1]
+        biases = layer_sizes[i + 1]
+        params = weights + biases
+        print(f&quot;Layer {i+1}: {layer_sizes[i]} -&gt; {layer_sizes[i+1]}&quot;
+              f&quot; ({weights} weights + {biases} biases = {params})&quot;)
+        total += params
+    print(f&quot;Total parameters: {total:,}&quot;)
+
+count_params([3, 4, 4, 1])
+print()
+count_params([3, 64, 64, 1])
+print()
+count_params([3, 4, 4, 4, 1])
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Counting rule</p>
+<p>Every connection is one weight, and every neuron has one bias. That is why bigger layers quickly create many more trainable numbers.</p>
+</div>
+<h3 id="how-deep-should-you-go">How deep should you go?</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Architecture</th>
+<th style="text-align: left;">Parameters</th>
+<th style="text-align: left;">Good for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>2-&gt;4-&gt;1</code></td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">Very simple patterns</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>2-&gt;16-&gt;16-&gt;1</code></td>
+<td style="text-align: left;">321</td>
+<td style="text-align: left;">Most common starting point</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>2-&gt;64-&gt;64-&gt;64-&gt;1</code></td>
+<td style="text-align: left;">8,513</td>
+<td style="text-align: left;">Complex patterns, needs more data</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>2-&gt;256-&gt;256-&gt;1</code></td>
+<td style="text-align: left;">66,305</td>
+<td style="text-align: left;">Often overkill for small datasets</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Practical default</p>
+<p>Start with two hidden layers of 16 neurons each. Only go bigger if the network clearly cannot learn the pattern after proper tuning.</p>
+</div>
+<hr />
+<h2 id="how-networks-learn">How Networks Learn</h2>
+<hr />
+<p>You have seen what a network is and that adding layers helps. Now: how does a network actually improve? How do 41 random numbers become 41 carefully tuned numbers that solve a problem?
+<strong>The blindfolded hiker</strong></p>
+<p>You are blindfolded on a hilly landscape trying to find the lowest valley. You cannot see anything but you can feel the slope under your feet. Each step you take one step in the downhill direction. After enough steps you reach a valley. This is gradient descent — navigating a landscape you cannot see by following the local slope downward.</p>
+<h3 id="the-loss-your-altitude">The loss : your altitude</h3>
+<p>The height in the hiking analogy is the loss. It measures how wrong the network is right now. When predictions are far from the true labels, loss is high. When predictions are close, loss is low. Training is the process of walking downhill on the loss surface until you reach a valley : a set of weights where the network is as accurate as possible.</p>
+<h3 id="the-five-steps-of-training">The five steps of training</h3>
+<p><strong>Forward pass</strong> — Feed a batch of training examples through the network left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each example in the batch.</p>
+<p><strong>Compute loss</strong> — Compare predictions to true labels. The loss is a single number — the average error across the batch. Large loss means the network is very wrong. Small loss means it is close. In Playground you see this number updating live in the top right.</p>
+<p><strong>Backward pass (backpropagation)</strong> — Calculate how much each weight contributed to the loss. This uses the chain rule from calculus — the network works backward from the output, spreading blame to each weight proportionally. You do not need to understand the calculus. The key insight is: every weight gets a score saying "increase me" or "decrease me."</p>
+<p><strong>Update weights</strong> — Move every weight a small step in the direction that reduces loss: <code>new_weight = old_weight - learning_rate * gradient</code>. The learning rate controls how big the step is. Too large: overshoots the valley. Too small: takes forever.</p>
+<p><strong>Repeat</strong> — Do this for every batch in the training set. One complete pass through all training data = one epoch. Typical networks train for 10 to 500 epochs.</p>
+<div class="admonition tip">
+<p class="admonition-title">Try this before running</p>
+<p>Before running, predict : what shape will the loss curve have over 50 epochs? Flat? Always going down? Bumpy? Sketch your prediction on paper, then run.</p>
+</div>
+<p>healthy_training_curve.py</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+epochs = np.arange(1, 51)
+loss = 1.2 * np.exp(-0.08 * epochs) + 0.1 + np.random.randn(50) * 0.02
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(epochs, loss, color=&quot;#6366f1&quot;, linewidth=2, label=&quot;Training loss&quot;)
+ax.axhline(y=0.1, color=&quot;#30363d&quot;, linestyle=&quot;--&quot;, label=&quot;Irreducible error&quot;)
+ax.set_xlabel(&quot;Epoch&quot;, color=&quot;#8b949e&quot;)
+ax.set_ylabel(&quot;Loss&quot;, color=&quot;#8b949e&quot;)
+ax.set_title(&quot;Healthy Training Curve&quot;, color=&quot;#e6edf3&quot;)
+ax.set_facecolor(&quot;#0d1117&quot;)
+fig.patch.set_facecolor(&quot;#0d1117&quot;)
+ax.tick_params(colors=&quot;#8b949e&quot;)
+for spine in ax.spines.values():
+    spine.set_color(&quot;#30363d&quot;)
+ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>The curve has small random wiggles but a clear downward trend. The wiggles come from randomness in which training examples each batch contains. What do you think would happen to the wiggles if you used all training data in every batch instead of small random batches? Would they get bigger or smaller? Answer: smaller : but each step would be much slower to compute.</p>
+</div>
+<hr />
+<h2 id="playground-watch-it-learn">Playground: Watch It Learn</h2>
+<hr />
+<p>Lesson 6.5 described gradient descent in words. Now watch it happen. Playground shows the loss graph updating in real time and the decision boundary changing as weights shift. You will run three experiments : each breaks one thing and shows exactly why that setting matters.
+<a href="https://playground.tensorflow.org">Open in Colab →</a></p>
+<h3 id="experiment-1-a-healthy-training-run">Experiment 1 : A healthy training run</h3>
+<p>Set up this exact configuration:</p>
+<ul>
+<li><strong>Dataset:</strong> Circle, the two concentric rings.</li>
+<li><strong>Features:</strong> <code>X1</code> and <code>X2</code> only.</li>
+<li><strong>Hidden layers:</strong> 1 layer, 4 neurons.</li>
+<li><strong>Activation:</strong> <code>ReLU</code>.</li>
+<li><strong>Learning rate:</strong> <code>0.03</code>.</li>
+<li><strong>Batch size:</strong> <code>10</code>.</li>
+<li><strong>Regularization:</strong> None.</li>
+<li><strong>Train:</strong> click ▶ and watch until test loss is below <code>0.05</code>.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Watch three things simultaneously</p>
+<p>Each of these is showing you a different view of the same process.</p>
+</div>
+<h3 id="experiment-2-learning-rate-too-high">Experiment 2 : Learning rate too high</h3>
+<ul>
+<li>Click ↺ to reset.</li>
+<li>Change only the learning rate to <code>3</code>. That is 100x larger than the healthy run.</li>
+<li>Click ▶ and watch for 10 seconds.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>What happens to the loss graph? Does it decrease smoothly or oscillate wildly? What does the decision boundary look like? This is the hiking analogy : taking steps so large you leap over the valley and land on the other side.</p>
+</div>
+<h3 id="experiment-3-learning-rate-too-low">Experiment 3 : Learning rate too low</h3>
+<ul>
+<li>Click ↺ to reset.</li>
+<li>Change only the learning rate to <code>0.0001</code>. That is 300x smaller than the healthy run.</li>
+<li>Click ▶ and watch for 30 seconds.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>How far does the loss decrease after 30 seconds compared to Experiment 1? The network is learning : just extremely slowly. This is why <code>0.0001</code> is rarely used as a starting learning rate.</p>
+</div>
+<h3 id="experiment-4-batch-size-effect">Experiment 4 : Batch size effect</h3>
+<ul>
+<li>Click ↺ to reset and restore learning rate to <code>0.3</code>.</li>
+<li>Change batch size to <code>1</code>. The network now trains from one example at a time.</li>
+<li>Click ▶ and watch the loss graph specifically.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>The loss graph is now much noisier. Why? Each step is based on only one example instead of 10. One example gives a noisy estimate of the true gradient. How does this compare to the hiking analogy : is this like taking careful measured steps or like stumbling in a random direction each time?</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">What you just learned</p>
+<p>Learning rate and batch size both affect how gradient descent walks down the loss surface. Learning rate controls step size. Batch size controls how accurately the slope is measured at each step. Neither has a universally correct value : they depend on your specific problem, dataset size, and architecture.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Transition</p>
+<p>The next lesson moves from Playground to a real experiment: training a network from scratch in Python to learn the sin function. You will control all three knobs : learning rate, epochs, and architecture : and watch the effect directly in the training curves and the learned function shape.</p>
+</div>
+<hr />
+<h2 id="experiment-teach-a-network-to-learn-sinx">Experiment: Teach a Network to Learn sin(x)</h2>
+<hr />
+<h3 id="experiment-teach-a-network-to-learn-sinx_1">Experiment: Teach a Network to Learn sin(x)</h3>
+<p>You know what sin(x) looks like: a smooth wave that rises and falls between -1 and +1. A neural network knows nothing. It starts with random weights and has no concept of waves, curves, or math.
+In this experiment you will watch it figure out sin(x) from scratch, purely by being shown <code>(x, sin(x))</code> pairs thousands of times and correcting itself each time.
+The twist: we train on x from 0 to 2π, then test on 0 to 4π, a range the network has never seen. This directly shows whether the network truly learned the sin function or just memorized the training data.</p>
+<div class="admonition warning">
+<p class="admonition-title">Run this experiment in Google Colab</p>
+<p>The training loop is intentionally written from scratch in NumPy. It is too slow for the browser runtime, so use the notebook.</p>
+</div>
+<p><a href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch6-sin-experiment.ipynb">Open in Colab →</a>
+<strong>Challenge 1: Minimum viable network</strong> Find the smallest <code>HIDDEN_DIM1</code> and <code>HIDDEN_DIM2</code> that still accurately approximates sin(x) on the training range. How few neurons can learn a sine wave?</p>
+<p><strong>Challenge 2: Generalization limits</strong> Set <code>TRAIN_RANGE=2</code>, <code>TEST_RANGE=8</code>. Does the network generalize to 4x the training range? What about 6x?</p>
+<p><strong>Challenge 3: Too many epochs</strong> Set <code>EPOCHS=50000</code>. Does accuracy keep improving? What happens to the generalization plot? This is overfitting in action.</p>
+<p><strong>Challenge 4: Learning rate extremes</strong> Try <code>LEARNING_RATE=0.5</code> and <code>LEARNING_RATE=0.000001</code>. What does the loss curve look like in each case?</p>
+<h4 id="cell-1-setup-and-data-generation">Cell 1: Setup and Data Generation</h4>
+<p>Cell 1: Setup and data generation</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# -----------------------------------------
+# 1. Generate Dataset: Approximating sin(x)
+# -----------------------------------------
+np.random.seed(42)
+# Create 100 data points between 0 and 2 * pi
+x = np.linspace(0, 2 * np.pi, 1000).reshape(-1, 1)
+y = np.sin(x)  # True function values
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Line</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>np.linspace(0, 2*np.pi, 1000)</code></td>
+<td style="text-align: left;">Creates 1000 evenly spaced x values from 0 to 2π. This is the training range: the network only sees this interval.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.reshape(-1, 1)</code></td>
+<td style="text-align: left;">Neural networks expect a 2D array where each row is one example. <code>-1</code> means Python figures out that dimension automatically, giving shape <code>(1000, 1)</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>y = np.sin(x)</code></td>
+<td style="text-align: left;">The true labels. For each x value, the correct output is sin(x). The network learns this mapping from scratch.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cell-2-network-architecture">Cell 2: Network Architecture</h4>
+<p>The architecture is: <code>1 input -&gt; 20 neurons -&gt; 10 neurons -&gt; 1 output</code>.
+Why these sizes? This is a 1D regression problem: one number in, one number out. The hidden layers need enough neurons to represent a curved wave. Too few neurons and the network cannot capture the shape of sin(x).
+Weight initialization matters enormously. We multiply by <code>0.1</code> to start with small weights rather than large random ones. Large initial weights can make gradients unstable in the first few training steps.
+Cell 2: Network architecture</p>
+<pre><code class="language-python"># -----------------------------------------
+# 2. Define the Neural Network Architecture
+# -----------------------------------------
+# Network dimensions: 1 input, hidden neurons in first layer, hidden neurons in second layer, 1 output
+input_dim = 1
+hidden_dim1 = 20 # First hidden layer size
+hidden_dim2 = 10 # Second hidden layer size
+output_dim = 1
+
+# Initialize weights and biases (small random values and zeros)
+W1 = np.random.randn(input_dim, hidden_dim1) * 0.1
+b1 = np.zeros((1, hidden_dim1))
+W2 = np.random.randn(hidden_dim1, hidden_dim2) * 0.1 # Weights for second hidden layer
+b2 = np.zeros((1, hidden_dim2)) # Biases for second hidden layer
+W3 = np.random.randn(hidden_dim2, output_dim) * 0.1 # Weights for output layer
+b3 = np.zeros((1, output_dim)) # Biases for output layer
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Shape</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>W1</code></td>
+<td style="text-align: left;"><code>(1, 20)</code></td>
+<td style="text-align: left;">1 input connects to 20 hidden neurons</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>W2</code></td>
+<td style="text-align: left;"><code>(20, 10)</code></td>
+<td style="text-align: left;">20 first-layer neurons connect to 10 second-layer neurons</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>W3</code></td>
+<td style="text-align: left;"><code>(10, 1)</code></td>
+<td style="text-align: left;">10 second-layer neurons connect to 1 output</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>b1</code></td>
+<td style="text-align: left;"><code>(1, 20)</code></td>
+<td style="text-align: left;">one bias per neuron in layer 1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: left;"><code>271</code></td>
+<td style="text-align: left;"><code>1x20 + 20 + 20x10 + 10 + 10x1 + 1</code> parameters</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cell-3-activation-functions">Cell 3: Activation Functions</h4>
+<p>Why ReLU for hidden layers but linear for the output?
+ReLU gives the network the ability to learn non-linear shapes. Without it, the 20-neuron hidden layer collapses to the same as one neuron: just a weighted sum, which is a straight line. No straight line fits sin(x).
+Linear output is used because sin(x) can be any value between -1 and +1. Sigmoid would clamp outputs to 0-1. ReLU could not go negative. Linear output lets the network predict any real number.
+Cell 3: Activation functions</p>
+<pre><code class="language-python"># -----------------------------------------
+# 3. Define Activation Functions and Their Derivatives
+# -----------------------------------------
+def relu(x):
+    return np.maximum(0, x)
+
+def relu_derivative(x):
+    return (x &gt; 0).astype(float)
+
+def linear(x):
+    # Identity function for regression output
+    return x
+
+def linear_derivative(x):
+    # Derivative of a linear function is 1
+    return 1
+</code></pre>
+<h4 id="cell-4-adam-optimizer-and-training-loop">Cell 4: Adam Optimizer and Training Loop</h4>
+<p>This is the most important cell. It performs the forward pass, computes loss, sends the gradient backward through every layer, and updates every weight with Adam.
+| Adam parameter | Meaning |
+|:--|:--|
+| <code>beta1 = 0.9</code> | Momentum: keep 90% of the previous gradient direction and mix in 10% of the new gradient. |
+| <code>beta2 = 0.999</code> | Tracks a moving average of squared gradients, which Adam uses to scale each parameter update. |
+| <code>epsilon = 1e-8</code> | A tiny number that prevents division by zero. |</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Forward-pass line</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>z1 = np.dot(x, W1) + b1</code></td>
+<td style="text-align: left;">Weighted sum for layer 1.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>a1 = relu(z1)</code></td>
+<td style="text-align: left;">Apply non-linearity.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>z2 = np.dot(a1, W2) + b2</code></td>
+<td style="text-align: left;">Weighted sum for layer 2.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>a2 = relu(z2)</code></td>
+<td style="text-align: left;">Second hidden activation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>z3 = np.dot(a2, W3) + b3</code></td>
+<td style="text-align: left;">Final weighted sum.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>a3 = linear(z3)</code></td>
+<td style="text-align: left;">Regression output with no activation.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Backprop line</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>d_loss_a3 = 2*(a3-y)/len(x)</code></td>
+<td style="text-align: left;">Gradient of MSE with respect to the prediction. It points uphill, so updates move the opposite way.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta3 = d_loss_a3 * linear_derivative(a3)</code></td>
+<td style="text-align: left;">Chain rule at the output layer. Since the derivative of a linear function is 1, this is included for clarity.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>dW3 = np.dot(a2.T, delta3)</code></td>
+<td style="text-align: left;">Gradient for the third-layer weights.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)</code></td>
+<td style="text-align: left;">Error signal propagated backward through layer 3, then through layer 2 ReLU.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Adam update line</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>m_W1 = beta1*m_W1 + (1-beta1)*dW1</code></td>
+<td style="text-align: left;">Update the moving average of the gradient. This is Adam momentum.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>v_W1 = beta2*v_W1 + (1-beta2)*(dW1**2)</code></td>
+<td style="text-align: left;">Update the moving average of squared gradients. Large recent gradients slow future updates.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>m_W1_hat = m_W1 / (1-beta1**epoch)</code> <code>v_W1_hat = v_W1 / (1-beta2**epoch)</code></td>
+<td style="text-align: left;">Bias correction. Early moment estimates start near zero, so Adam corrects them.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>W1 -= learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)</code></td>
+<td style="text-align: left;">The actual adaptive update: learning rate scaled by momentum and squared-gradient history.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cell 4: Adam optimizer and training loop</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python"># -------------------------------
+# 4. Define the Loss Function (MSE)
+# -------------------------------
+def mse_loss(y_true, y_pred):
+    return np.mean((y_true - y_pred)**2)
+
+# -------------------------------
+# 5. Training the Neural Network with Adam Optimizer
+# -------------------------------
+# Adam optimizer parameters
+adam_learning_rate = 0.001 # Base learning rate for Adam
+beta1 = 0.9
+beta2 = 0.999
+epsilon = 1e-8
+
+# Initialize Adam's first and second moment vectors for each parameter
+m_W1, v_W1 = np.zeros_like(W1), np.zeros_like(W1)
+m_b1, v_b1 = np.zeros_like(b1), np.zeros_like(b1)
+m_W2, v_W2 = np.zeros_like(W2), np.zeros_like(W2) # Moments for W2
+m_b2, v_b2 = np.zeros_like(b2), np.zeros_like(b2) # Moments for b2
+m_W3, v_W3 = np.zeros_like(W3), np.zeros_like(W3) # Moments for W3
+m_b3, v_b3 = np.zeros_like(b3), np.zeros_like(b3) # Moments for b3
+
+epochs = 5000       # Number of training epochs
+loss_history = []
+
+for epoch in range(1, epochs + 1): # Start epoch from 1 for Adam bias correction
+    # -: Forward Pass ----
+    z1 = np.dot(x, W1) + b1        # Linear combination for first hidden layer
+    a1 = relu(z1)                 # Activation using relu
+    z2 = np.dot(a1, W2) + b2        # Linear combination for second hidden layer
+    a2 = relu(z2)                 # Activation using relu for second hidden layer
+    z3 = np.dot(a2, W3) + b3        # Linear combination for output layer
+    a3 = linear(z3)               # Output (prediction)
+
+    # -: Compute Loss ----
+    loss = mse_loss(y, a3) # Use a3 for loss computation
+    loss_history.append(loss)
+
+    # -: Backward Pass ----
+    # Compute gradient of loss with respect to output predictions
+    d_loss_a3 = 2 * (a3 - y) / len(x)
+
+    # For the output layer:
+    delta3 = d_loss_a3 * linear_derivative(a3)
+    dW3 = np.dot(a2.T, delta3)
+    db3 = np.sum(delta3, axis=0, keepdims=True)
+
+    # Backpropagate to second hidden layer
+    delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+    dW2 = np.dot(a1.T, delta2)
+    db2 = np.sum(delta2, axis=0, keepdims=True)
+
+    # Backpropagate to first hidden layer
+    delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+    dW1 = np.dot(x.T, delta1)
+    db1 = np.sum(delta1, axis=0, keepdims=True)
+
+    # -: Update parameters using Adam ----
+    # Update W1
+    m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
+    v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)
+    m_W1_hat = m_W1 / (1 - beta1 ** epoch)
+    v_W1_hat = v_W1 / (1 - beta2 ** epoch)
+    W1 -= adam_learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)
+
+    # Update b1
+    m_b1 = beta1 * m_b1 + (1 - beta1) * db1
+    v_b1 = beta2 * v_b1 + (1 - beta2) * (db1 ** 2)
+    m_b1_hat = m_b1 / (1 - beta1 ** epoch)
+    v_b1_hat = v_b1 / (1 - beta2 ** epoch)
+    b1 -= adam_learning_rate * m_b1_hat / (np.sqrt(v_b1_hat) + epsilon)
+
+    # Update W2
+    m_W2 = beta1 * m_W2 + (1 - beta1) * dW2
+    v_W2 = beta2 * v_W2 + (1 - beta2) * (dW2 ** 2)
+    m_W2_hat = m_W2 / (1 - beta1 ** epoch)
+    v_W2_hat = v_W2 / (1 - beta2 ** epoch)
+    W2 -= adam_learning_rate * m_W2_hat / (np.sqrt(v_W2_hat) + epsilon)
+
+    # Update b2
+    m_b2 = beta1 * m_b2 + (1 - beta1) * db2
+    v_b2 = beta2 * v_b2 + (1 - beta2) * (db2 ** 2)
+    m_b2_hat = m_b2 / (1 - beta1 ** epoch)
+    v_b2_hat = v_b2 / (1 - beta2 ** epoch)
+    b2 -= adam_learning_rate * m_b2_hat / (np.sqrt(v_b2_hat) + epsilon)
+
+    # Update W3
+    m_W3 = beta1 * m_W3 + (1 - beta1) * dW3
+    v_W3 = beta2 * v_W3 + (1 - beta2) * (dW3 ** 2)
+    m_W3_hat = m_W3 / (1 - beta1 ** epoch)
+    v_W3_hat = v_W3 / (1 - beta2 ** epoch)
+    W3 -= adam_learning_rate * m_W3_hat / (np.sqrt(v_W3_hat) + epsilon)
+
+    # Update b3
+    m_b3 = beta1 * m_b3 + (1 - beta1) * db3
+    v_b3 = beta2 * v_b3 + (1 - beta2) * (db3 ** 2)
+    m_b3_hat = m_b3 / (1 - beta1 ** epoch)
+    v_b3_hat = v_b3 / (1 - beta2 ** epoch)
+    b3 -= adam_learning_rate * m_b3_hat / (np.sqrt(v_b3_hat) + epsilon)
+
+    # Optionally print the loss every 500 epochs
+    if epoch % 500 == 0:
+        print(f&quot;Epoch {epoch}/{epochs}, Loss: {loss:.5f}&quot;)
+
+# -------------------------------
+# 6. Visualizing Training Loss and Predictions
+# -------------------------------
+# Plot the loss curve
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(loss_history)
+plt.title(&quot;Training Loss (MSE) with Adam (2 Hidden Layers, ReLU)&quot;)
+plt.xlabel(&quot;Epoch&quot;)
+plt.ylabel(&quot;Loss&quot;)
+
+# Plot the actual sine function vs. the network's predictions
+plt.subplot(1, 2, 2)
+plt.scatter(x, y, label=&quot;Actual sin(x)&quot;, color='blue')
+plt.scatter(x, a3, label=&quot;Predicted&quot;, color='red', marker='x') # Use a3 for predictions
+plt.title(&quot;Neural Network Regression with Adam (2 Hidden Layers, ReLU)&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.tight_layout()
+plt.show()
+</code></pre>
+<h4 id="cell-5-generalization-test-from-0-to-4">Cell 5: Generalization Test from 0 to 4π</h4>
+<p>The network was trained on x from 0 to 2π. Now we ask it to predict sin(x) for x from 0 to 4π: values it has never seen.
+This is the most important test in the chapter. Good generalization means the prediction follows sin(x) for the full 4π range. Bad generalization means it matches well from 0 to 2π then diverges beyond 2π.
+Cell 5a: Wider range evaluation</p>
+<pre><code class="language-python"># -----------------------------------------------------
+# 7. Evaluate and Visualize Predictions on a Wider Range
+# -----------------------------------------------------
+
+# Create a new, wider range for evaluation
+x_plot = np.linspace(0, 4 * np.pi, 1000).reshape(-1, 1)
+
+# True sine values for the wider range
+y_true_plot = np.sin(x_plot)
+
+# Perform forward pass with the trained weights on the new range
+z1_plot = np.dot(x_plot, W1) + b1
+a1_plot = relu(z1_plot)
+z2_plot = np.dot(a1_plot, W2) + b2
+a2_plot = relu(z2_plot)
+z3_plot = np.dot(a2_plot, W3) + b3
+y_pred_plot = linear(z3_plot)
+
+print(&quot;Generated predictions for the wider range [0, 4 * pi].&quot;)
+</code></pre>
+<p>Cell 5b: Wider range plot</p>
+<pre><code class="language-python"># Plot the actual sine function vs. the network's predictions for the wider range
+plt.figure(figsize=(10, 6))
+plt.scatter(x_plot, y_true_plot, label=&quot;Actual sin(x) (Wider Range)&quot;, color='blue', alpha=0.7, s=5)
+plt.scatter(x_plot, y_pred_plot, label=&quot;Predicted (Wider Range)&quot;, color='red', marker='.', alpha=0.7, s=5)
+plt.title(&quot;Neural Network Regression on Wider Range [0, 4π]&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Challenge</p>
+<p>Can you make it generalize even further? Try training on 0 to 2π and testing on 0 to 6π. What is the smallest network that still generalizes correctly? Does adding more epochs help or hurt beyond the training range?</p>
+</div>
+<h4 id="cell-6-learning-rate-comparison">Cell 6: Learning Rate Comparison</h4>
+<p>The three learning rates, <code>0.0001</code>, <code>0.001</code>, and <code>0.01</code>, are all reasonable values. But they produce very different behavior.
+Before running, predict what will happen: Is <code>0.0001</code> fast or slow? Is <code>0.01</code> stable or unstable? Which reaches the lowest loss after 5000 epochs?
+Cell 6a: Learning-rate training helper</p>
+<pre><code class="language-python">def train_with_learning_rate(learning_rate, epochs, x, y, input_dim, hidden_dim1, hidden_dim2, output_dim):
+    # Re-initialize weights and biases for each run
+    W1 = np.random.randn(input_dim, hidden_dim1) * 0.1
+    b1 = np.zeros((1, hidden_dim1))
+    W2 = np.random.randn(hidden_dim1, hidden_dim2) * 0.1
+    b2 = np.zeros((1, hidden_dim2))
+    W3 = np.random.randn(hidden_dim2, output_dim) * 0.1
+    b3 = np.zeros((1, output_dim))
+
+    # Adam optimizer parameters (re-initialize moments)
+    beta1 = 0.9
+    beta2 = 0.999
+    epsilon = 1e-8
+
+    m_W1, v_W1 = np.zeros_like(W1), np.zeros_like(W1)
+    m_b1, v_b1 = np.zeros_like(b1), np.zeros_like(b1)
+    m_W2, v_W2 = np.zeros_like(W2), np.zeros_like(W2)
+    m_b2, v_b2 = np.zeros_like(b2), np.zeros_like(b2)
+    m_W3, v_W3 = np.zeros_like(W3), np.zeros_like(W3)
+    m_b3, v_b3 = np.zeros_like(b3), np.zeros_like(b3)
+
+    loss_history_lr = []
+
+    for epoch in range(1, epochs + 1):
+        # Forward Pass
+        z1 = np.dot(x, W1) + b1
+        a1 = relu(z1)
+        z2 = np.dot(a1, W2) + b2
+        a2 = relu(z2)
+        z3 = np.dot(a2, W3) + b3
+        a3 = linear(z3)
+
+        # Compute Loss
+        loss = mse_loss(y, a3)
+        loss_history_lr.append(loss)
+
+        # Backward Pass
+        d_loss_a3 = 2 * (a3 - y) / len(x)
+        delta3 = d_loss_a3 * linear_derivative(a3)
+        dW3 = np.dot(a2.T, delta3)
+        db3 = np.sum(delta3, axis=0, keepdims=True)
+
+        delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+        dW2 = np.dot(a1.T, delta2)
+        db2 = np.sum(delta2, axis=0, keepdims=True)
+
+        delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+        dW1 = np.dot(x.T, delta1)
+        db1 = np.sum(delta1, axis=0, keepdims=True)
+
+        # Update parameters using Adam
+        # Update W1
+        m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
+        v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)
+        m_W1_hat = m_W1 / (1 - beta1 ** epoch)
+        v_W1_hat = v_W1 / (1 - beta2 ** epoch)
+        W1 -= learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)
+
+        # Update b1
+        m_b1 = beta1 * m_b1 + (1 - beta1) * db1
+        v_b1 = beta2 * v_b1 + (1 - beta2) * (db1 ** 2)
+        m_b1_hat = m_b1 / (1 - beta1 ** epoch)
+        v_b1_hat = v_b1 / (1 - beta2 ** epoch)
+        b1 -= learning_rate * m_b1_hat / (np.sqrt(v_b1_hat) + epsilon)
+
+        # Update W2
+        m_W2 = beta1 * m_W2 + (1 - beta1) * dW2
+        v_W2 = beta2 * v_W2 + (1 - beta2) * (dW2 ** 2)
+        m_W2_hat = m_W2 / (1 - beta1 ** epoch)
+        v_W2_hat = v_W2 / (1 - beta2 ** epoch)
+        W2 -= learning_rate * m_W2_hat / (np.sqrt(v_W2_hat) + epsilon)
+
+        # Update b2
+        m_b2 = beta1 * m_b2 + (1 - beta1) * db2
+        v_b2 = beta2 * v_b2 + (1 - beta2) * (db2 ** 2)
+        m_b2_hat = m_b2 / (1 - beta1 ** epoch)
+        v_b2_hat = v_b2 / (1 - beta2 ** epoch)
+        b2 -= learning_rate * m_b2_hat / (np.sqrt(v_b2_hat) + epsilon)
+
+        # Update W3
+        m_W3 = beta1 * m_W3 + (1 - beta1) * dW3
+        v_W3 = beta2 * v_W3 + (1 - beta2) * (dW3 ** 2)
+        m_W3_hat = m_W3 / (1 - beta1 ** epoch)
+        v_W3_hat = v_W3 / (1 - beta2 ** epoch)
+        W3 -= learning_rate * m_W3_hat / (np.sqrt(v_W3_hat) + epsilon)
+
+        # Update b3
+        m_b3 = beta1 * m_b3 + (1 - beta1) * db3
+        v_b3 = beta2 * v_b3 + (1 - beta2) * (db3 ** 2)
+        m_b3_hat = m_b3 / (1 - beta1 ** epoch)
+        v_b3_hat = v_b3 / (1 - beta2 ** epoch)
+        b3 -= learning_rate * m_b3_hat / (np.sqrt(v_b3_hat) + epsilon)
+
+    return loss_history_lr, W1, b1, W2, b2, W3, b3
+</code></pre>
+<p>Cell 6b: Compare learning rates</p>
+<pre><code class="language-python"># Define the learning rates to test
+learning_rates_to_test = [0.0001, 0.001, 0.01]
+epochs_for_test = 5000 # Increased epochs for longer training
+
+plt.figure(figsize=(10, 6))
+
+for lr in learning_rates_to_test:
+    print(f&quot;Training with learning rate: {lr}&quot;)
+    loss_history_current_lr, W1_final, b1_final, W2_final, b2_final, W3_final, b3_final = train_with_learning_rate(lr, epochs_for_test, x, y, input_dim, hidden_dim1, hidden_dim2, output_dim)
+    plt.plot(loss_history_current_lr, label=f'LR = {lr}')
+
+plt.title(&quot;Training Loss Curves for Different Learning Rates (Adam Optimizer)&quot;)
+plt.xlabel(&quot;Epoch&quot;)
+plt.ylabel(&quot;Loss&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+# Plot the predicted sine function for each learning rate
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, label=&quot;Actual sin(x)&quot;, color='blue', alpha=0.7, s=5)
+
+for lr in learning_rates_to_test:
+    # Retrain to get the final weights for this LR (or store them from the previous loop)
+    _, W1_final, b1_final, W2_final, b2_final, W3_final, b3_final = train_with_learning_rate(lr, epochs_for_test, x, y, input_dim, hidden_dim1, hidden_dim2, output_dim)
+
+    # Perform forward pass with the trained weights
+    z1_pred = np.dot(x, W1_final) + b1_final
+    a1_pred = relu(z1_pred)
+    z2_pred = np.dot(a1_pred, W2_final) + b2_final
+    a2_pred = relu(z2_pred)
+    z3_pred = np.dot(a2_pred, W3_final) + b3_final
+    y_pred_lr = linear(z3_pred)
+
+    plt.plot(x, y_pred_lr, label=f'Predicted (LR = {lr})', linestyle='--')
+
+plt.title(&quot;Predicted Sine Function for Different Learning Rates&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">What you should observe</p>
+<p><code>0.0001</code> converges very slowly. <code>0.001</code>, Adam's default, converges cleanly and usually follows sin(x) closely. <code>0.01</code> often improves quickly at first but can be noisier or overshoot the minimum.</p>
+</div>
+<h4 id="cell-7-your-turn">Cell 7: Your Turn</h4>
+<p>This final cell lets you modify architecture, learning rate, epochs, training range, and test range in one place. It trains a fresh network and shows both the loss curve and the generalization plot.
+Cell 7: Student experiment cell</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# -- YOUR TURN - CHANGE THESE AND RE-RUN ----------------------------
+HIDDEN_DIM1   = 20      # try: 2, 5, 20, 100
+HIDDEN_DIM2   = 10      # try: 2, 5, 10, 50
+LEARNING_RATE = 0.001   # try: 0.0001, 0.001, 0.01, 0.1
+EPOCHS        = 3000    # try: 100, 500, 3000, 10000
+TRAIN_RANGE   = 2       # multiples of pi - try: 1, 2, 4
+TEST_RANGE    = 4       # multiples of pi - try: 4, 6, 8
+# -------------------------------------------------------------------
+
+np.random.seed(42)
+x = np.linspace(0, TRAIN_RANGE * np.pi, 1000).reshape(-1, 1)
+y = np.sin(x)
+
+input_dim = 1
+output_dim = 1
+
+W1 = np.random.randn(input_dim, HIDDEN_DIM1) * 0.1
+b1 = np.zeros((1, HIDDEN_DIM1))
+W2 = np.random.randn(HIDDEN_DIM1, HIDDEN_DIM2) * 0.1
+b2 = np.zeros((1, HIDDEN_DIM2))
+W3 = np.random.randn(HIDDEN_DIM2, output_dim) * 0.1
+b3 = np.zeros((1, output_dim))
+
+def relu(x):
+    return np.maximum(0, x)
+
+def relu_derivative(x):
+    return (x &gt; 0).astype(float)
+
+def linear(x):
+    return x
+
+def linear_derivative(x):
+    return 1
+
+def mse_loss(y_true, y_pred):
+    return np.mean((y_true - y_pred)**2)
+
+beta1 = 0.9
+beta2 = 0.999
+epsilon = 1e-8
+
+m_W1, v_W1 = np.zeros_like(W1), np.zeros_like(W1)
+m_b1, v_b1 = np.zeros_like(b1), np.zeros_like(b1)
+m_W2, v_W2 = np.zeros_like(W2), np.zeros_like(W2)
+m_b2, v_b2 = np.zeros_like(b2), np.zeros_like(b2)
+m_W3, v_W3 = np.zeros_like(W3), np.zeros_like(W3)
+m_b3, v_b3 = np.zeros_like(b3), np.zeros_like(b3)
+
+loss_history = []
+
+for epoch in range(1, EPOCHS + 1):
+    z1 = np.dot(x, W1) + b1
+    a1 = relu(z1)
+    z2 = np.dot(a1, W2) + b2
+    a2 = relu(z2)
+    z3 = np.dot(a2, W3) + b3
+    a3 = linear(z3)
+
+    loss = mse_loss(y, a3)
+    loss_history.append(loss)
+
+    d_loss_a3 = 2 * (a3 - y) / len(x)
+    delta3 = d_loss_a3 * linear_derivative(a3)
+    dW3 = np.dot(a2.T, delta3)
+    db3 = np.sum(delta3, axis=0, keepdims=True)
+
+    delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)
+    dW2 = np.dot(a1.T, delta2)
+    db2 = np.sum(delta2, axis=0, keepdims=True)
+
+    delta1 = np.dot(delta2, W2.T) * relu_derivative(z1)
+    dW1 = np.dot(x.T, delta1)
+    db1 = np.sum(delta1, axis=0, keepdims=True)
+
+    m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
+    v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)
+    W1 -= LEARNING_RATE * (m_W1 / (1 - beta1 ** epoch)) / (np.sqrt(v_W1 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_b1 = beta1 * m_b1 + (1 - beta1) * db1
+    v_b1 = beta2 * v_b1 + (1 - beta2) * (db1 ** 2)
+    b1 -= LEARNING_RATE * (m_b1 / (1 - beta1 ** epoch)) / (np.sqrt(v_b1 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_W2 = beta1 * m_W2 + (1 - beta1) * dW2
+    v_W2 = beta2 * v_W2 + (1 - beta2) * (dW2 ** 2)
+    W2 -= LEARNING_RATE * (m_W2 / (1 - beta1 ** epoch)) / (np.sqrt(v_W2 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_b2 = beta1 * m_b2 + (1 - beta1) * db2
+    v_b2 = beta2 * v_b2 + (1 - beta2) * (db2 ** 2)
+    b2 -= LEARNING_RATE * (m_b2 / (1 - beta1 ** epoch)) / (np.sqrt(v_b2 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_W3 = beta1 * m_W3 + (1 - beta1) * dW3
+    v_W3 = beta2 * v_W3 + (1 - beta2) * (dW3 ** 2)
+    W3 -= LEARNING_RATE * (m_W3 / (1 - beta1 ** epoch)) / (np.sqrt(v_W3 / (1 - beta2 ** epoch)) + epsilon)
+
+    m_b3 = beta1 * m_b3 + (1 - beta1) * db3
+    v_b3 = beta2 * v_b3 + (1 - beta2) * (db3 ** 2)
+    b3 -= LEARNING_RATE * (m_b3 / (1 - beta1 ** epoch)) / (np.sqrt(v_b3 / (1 - beta2 ** epoch)) + epsilon)
+
+x_test = np.linspace(0, TEST_RANGE * np.pi, 1000).reshape(-1, 1)
+y_test = np.sin(x_test)
+
+z1_test = np.dot(x_test, W1) + b1
+a1_test = relu(z1_test)
+z2_test = np.dot(a1_test, W2) + b2
+a2_test = relu(z2_test)
+z3_test = np.dot(a2_test, W3) + b3
+y_pred_test = linear(z3_test)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 4))
+ax1.plot(loss_history)
+ax1.set_title(&quot;Training Loss&quot;)
+ax1.set_xlabel(&quot;Epoch&quot;)
+ax1.set_ylabel(&quot;MSE&quot;)
+
+ax2.plot(x_test, y_test, label=&quot;Actual sin(x)&quot;)
+ax2.plot(x_test, y_pred_test, label=&quot;Network prediction&quot;, linestyle=&quot;--&quot;)
+ax2.axvline(TRAIN_RANGE * np.pi, color=&quot;gray&quot;, linestyle=&quot;:&quot;, label=&quot;End of training range&quot;)
+ax2.set_title(f&quot;Train: 0 to {TRAIN_RANGE}pi | Test: 0 to {TEST_RANGE}pi&quot;)
+ax2.set_xlabel(&quot;x&quot;)
+ax2.set_ylabel(&quot;sin(x)&quot;)
+ax2.legend()
+plt.tight_layout()
+plt.show()
+
+print(f&quot;Final training loss: {loss_history[-1]:.6f}&quot;)
+print(f&quot;Total parameters: {input_dim*HIDDEN_DIM1 + HIDDEN_DIM1 + HIDDEN_DIM1*HIDDEN_DIM2 + HIDDEN_DIM2 + HIDDEN_DIM2*output_dim + output_dim}&quot;)
+</code></pre>
+<hr />
+<h2 id="activation-functions">Activation Functions</h2>
+<hr />
+<h3 id="activation-functions_1">Activation Functions</h3>
+<p>Activation functions create non-linearity. Without them, stacking layers still behaves like one linear model.
+<strong>Sigmoid</strong>
+Outputs 0 to 1. Good for binary classifier output layers. Can suffer vanishing gradients.
+<strong>ReLU</strong>
+Outputs 0 to infinity. Default choice for hidden layers because it trains fast.
+<strong>Tanh</strong>
+Outputs -1 to 1. Similar to sigmoid but zero-centered.
+activation_function_comparison.py</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+z = np.linspace(-5, 5, 300)
+sigmoid = 1 / (1 + np.exp(-z))
+relu = np.maximum(0, z)
+tanh = np.tanh(z)
+
+fig, axes = plt.subplots(1, 3, figsize=(13, 4))
+fig.patch.set_facecolor(&quot;#0d1117&quot;)
+
+for ax, fn, name, color, note in zip(
+    axes,
+    [sigmoid, relu, tanh],
+    [&quot;Sigmoid&quot;, &quot;ReLU&quot;, &quot;Tanh&quot;],
+    [&quot;#6366f1&quot;, &quot;#f97316&quot;, &quot;#10b981&quot;],
+    [&quot;Output: 0 to 1\nGood for output layer&quot;,
+     &quot;Output: 0 to infinity\nDefault for hidden layers&quot;,
+     &quot;Output: -1 to 1\nZero-centered sigmoid&quot;],
+):
+    ax.plot(z, fn, color=color, linewidth=2.5)
+    ax.axhline(0, color=&quot;#30363d&quot;, linewidth=0.8)
+    ax.axvline(0, color=&quot;#30363d&quot;, linewidth=0.8)
+    ax.set_title(name, color=&quot;#e6edf3&quot;, fontsize=13)
+    ax.set_xlabel(&quot;z&quot;, color=&quot;#8b949e&quot;)
+    ax.text(0.05, 0.08, note, transform=ax.transAxes, color=&quot;#8b949e&quot;, fontsize=8.5)
+    ax.set_facecolor(&quot;#0d1117&quot;)
+    ax.tick_params(colors=&quot;#8b949e&quot;)
+    for spine in ax.spines.values():
+        spine.set_color(&quot;#30363d&quot;)
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Practical rule</p>
+<p>Hidden layers: ReLU. Binary output: sigmoid. Multi-class output: softmax. Regression output: linear.</p>
+</div>
+<hr />
+<h2 id="overfitting-and-how-to-fight-it">Overfitting and How to Fight It</h2>
+<hr />
+<p>Imagine you are studying for an exam. You have 10 past papers. You memorize every single answer to every single question on all 10 papers. On exam day the teacher uses a new paper with slightly different questions. You fail - not because you are bad at the subject, but because you memorized instead of understanding.
+Overfitting is exactly this. The network memorizes the training data - every detail, every quirk, every piece of noise - instead of learning the underlying pattern. It performs brilliantly on training examples and terribly on new ones. The training loss drops to near zero. The validation loss gets worse. The network has learned nothing useful.
+Underfitting is the opposite problem. The network is too simple to capture the pattern at all. Both training and validation loss stay high. The network is not even good at the training data. In between these two failure modes is the good fit - where the network has learned the real pattern and generalizes to new data.</p>
+<h3 id="seeing-the-three-cases">Seeing the three cases</h3>
+<p>Run the code below. It generates simulated training curves for all three cases side by side. You are looking at loss over epochs: purple is training loss, orange is validation loss.</p>
+<div class="admonition tip">
+<p class="admonition-title">Try this before running</p>
+<p>Before running, predict what the overfitting curve looks like. If the network is memorizing the training data, what happens to training loss over time? What about validation loss? Write your prediction, then run.</p>
+</div>
+<p>underfit_goodfit_overfit_curves.py</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+epochs = np.arange(1, 101)
+train_under = 0.9 - 0.2 * np.log(epochs / 10 + 1) + np.random.randn(100) * 0.01
+val_under = train_under + 0.05 + np.random.randn(100) * 0.01
+train_good = 0.8 * np.exp(-0.05 * epochs) + 0.12 + np.random.randn(100) * 0.01
+val_good = 0.8 * np.exp(-0.04 * epochs) + 0.15 + np.random.randn(100) * 0.015
+train_over = 0.8 * np.exp(-0.08 * epochs) + 0.02 + np.random.randn(100) * 0.005
+val_over = 0.8 * np.exp(-0.05 * epochs) + 0.15 + 0.004 * epochs + np.random.randn(100) * 0.015
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4), sharey=True)
+fig.patch.set_facecolor(&quot;#0d1117&quot;)
+
+for ax, (tl, vl), title in zip(
+    axes,
+    [(train_under, val_under), (train_good, val_good), (train_over, val_over)],
+    [&quot;Underfitting&quot;, &quot;Good Fit&quot;, &quot;Overfitting&quot;],
+):
+    ax.plot(epochs, tl, color=&quot;#6366f1&quot;, linewidth=2, label=&quot;Train&quot;)
+    ax.plot(epochs, vl, color=&quot;#f97316&quot;, linewidth=2, linestyle=&quot;--&quot;, label=&quot;Val&quot;)
+    ax.set_title(title, color=&quot;#e6edf3&quot;, fontsize=12)
+    ax.set_xlabel(&quot;Epoch&quot;, color=&quot;#8b949e&quot;)
+    ax.set_ylabel(&quot;Loss&quot;, color=&quot;#8b949e&quot;)
+    ax.set_ylim(0, 1)
+    ax.set_facecolor(&quot;#0d1117&quot;)
+    ax.tick_params(colors=&quot;#8b949e&quot;)
+    for spine in ax.spines.values():
+        spine.set_color(&quot;#30363d&quot;)
+    ax.legend(facecolor=&quot;#161b22&quot;, labelcolor=&quot;white&quot;, fontsize=9)
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+<h3 id="how-to-read-each-curve">How to read each curve</h3>
+<p><strong>Underfitting panel:</strong> Both training and validation loss are high and barely decreasing. The network is too simple - it does not have enough parameters to represent the pattern in the data. The cure is a larger network, more epochs, or a higher learning rate. This looks like a student who did not study enough.
+<strong>Good Fit panel:</strong> Training loss decreases and levels off. Validation loss follows closely and also levels off at a slightly higher value. The gap between train and validation loss is small and stable. This is what you want. The network learned the real pattern, not the noise.
+<strong>Overfitting panel:</strong> Training loss keeps decreasing toward zero - the network is getting better and better on the training data. But validation loss starts decreasing, then turns around and starts going up. This is the signature of overfitting. The moment the validation curve turns upward is when the network stopped learning patterns and started memorizing training examples.</p>
+<div class="admonition warning">
+<p class="admonition-title">Watch the validation loss</p>
+<p>The validation loss turning upward is the most important signal in all of machine learning. When you see this in your own training runs, stop training immediately and use the weights from before the upturn.</p>
+</div>
+<h3 id="why-does-overfitting-happen">Why does overfitting happen?</h3>
+<p>A network with many parameters has enormous capacity. Given enough training time, it can memorize every individual training example perfectly - including the random noise in the data. A network with 10,000 parameters trained on 100 examples is almost guaranteed to overfit. The network has 100 examples to explain with 10,000 numbers. It has no difficulty at all finding weights that fit the training data exactly.
+Overfitting gets worse as your network gets bigger relative to your dataset size. A good rule of thumb: you need at least 10 to 100 training examples per parameter. A 41-parameter network needs at least a few hundred training examples. A network with 100,000 parameters needs tens of thousands.</p>
+<div class="admonition info">
+<p class="admonition-title">The train/val split exists for this reason</p>
+<p>Remember splitting data 80/20 in Chapter 3? The 20% validation set exists specifically to catch overfitting. If you only looked at training loss, you would never know the network was memorizing instead of learning. Validation loss on data the network has never seen is the only honest measure of whether training is working.</p>
+</div>
+<h3 id="three-ways-to-fight-overfitting">Three ways to fight overfitting</h3>
+<p><strong>Dropout</strong>
+During training, dropout randomly switches off a percentage of neurons on each forward pass. The network cannot rely on any single neuron because it might be off in the next pass. This forces the network to learn redundant, robust representations instead of fragile memorized paths.
+Think of it like training a sports team where random players sit out each practice. The team cannot rely on one star player - everyone has to be capable.
+The strength is one number - the fraction of neurons to drop. Around 30% is common for hidden layers, and you never apply it to the output layer.
+<strong>Early Stopping</strong>
+Train until validation loss starts getting worse, then stop and keep the weights from the best validation epoch. This is the simplest and often most effective technique.
+You give it a patience - how many epochs to wait without improvement before giving up. Wait too little and you stop on a temporary bump; wait too long and you waste time memorizing. When it stops, you go back to the best-ever weights, not the final ones.
+It is just an automatic version of the rule from the warning above: watch the validation loss, and when it turns upward, go back to where it was lowest.
+<strong>More Data</strong>
+The most reliable cure. More diverse training examples means the network has to learn the real pattern - it cannot memorize 300 unique examples the way it could memorize 50.
+When you cannot collect more real data, data augmentation creates variations of existing examples: flip, rotate, add noise, scale. This is why YOLO training uses augmentation - it multiplies the effective dataset size without collecting new images.
+Sometimes more data is not possible. Then dropout and early stopping are your best tools.</p>
+<div class="admonition info">
+<p class="admonition-title">The code comes next</p>
+<p>Dropout and early stopping are each a single line once you are using a real framework. You will write them for the first time in the next lesson, <strong>6.10 From NumPy to Keras</strong>. For now, focus on what each one does and why - the how is one lesson away.</p>
+</div>
+<h3 id="watch-overfitting-happen-in-playground">Watch overfitting happen in Playground</h3>
+<p>Open TensorFlow Playground: https://playground.tensorflow.org</p>
+<ul>
+<li><strong>Dataset:</strong> Circle.</li>
+<li><strong>Hidden layers:</strong> 3 layers, 8 neurons each. This is overkill for the circle problem — intentionally too large.</li>
+<li><strong>Noise:</strong> set to <code>50</code> to add noise to the data.</li>
+<li><strong>Training to test ratio:</strong> set to <code>10</code>. This means only 10% training data, a very small dataset for such a large network.</li>
+<li><strong>Train:</strong> click ▶ and train for several hundred epochs.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Observe</p>
+<p>Watch the test loss, the orange line on the graph. Does it decrease steadily, or does it decrease then start rising? The boundary in the right panel probably fits the training data very tightly - too tightly. It is wrapping itself around individual training points, including the noisy ones.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Question</p>
+<p>Now reduce the network to 1 hidden layer with 4 neurons and reset. Does the test loss behave differently? The smaller network cannot memorize - it only has enough capacity to learn the rough circular pattern.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">The central tension in all of machine learning</p>
+<p>Every neural network sits somewhere on the spectrum from underfitting to overfitting. Too simple and it cannot learn. Too complex and it memorizes. Finding the right point is the core challenge of building ML models. The tools in this lesson - validation loss, dropout, early stopping - are how you navigate that tension in practice.</p>
+</div>
+<hr />
+<h2 id="from-numpy-to-keras">From NumPy to Keras</h2>
+<hr />
+<p>So far you have built networks by hand in NumPy - every dot product, every activation, every line of the Adam update written out yourself. That was the point: you now know exactly what a neural network does. But nobody trains real networks that way. In practice you use a framework, and the most common one for beginners is <strong>Keras</strong>.</p>
+<h3 id="what-is-keras">What is Keras?</h3>
+<p>Keras is a high-level deep learning library. "High-level" means it lets you describe a network in terms of <em>what</em> you want - "a layer of 20 neurons with ReLU" - instead of <em>how</em> to compute it. It then handles the forward pass, the backpropagation, and the weight updates for you. The math you wrote by hand in the last few lessons is still happening; Keras just writes it for you.
+Keras runs on top of <strong>TensorFlow</strong>, Google's machine learning engine. TensorFlow does the heavy numerical work (and can run it on a GPU); Keras is the friendly layer you actually type against. When you install one modern package you get both.</p>
+<h3 id="its-philosophy">Its philosophy</h3>
+<p>Keras was designed around one idea: <strong>make the common things easy</strong>. A network is described as a stack of layers, training is one function call, and sensible defaults are chosen for you. The goal is that the code you write looks like the picture of the network in your head - layers stacked top to bottom - with as little boilerplate as possible.
+- <strong>Stack layers</strong> to define the architecture.
+- <strong>Compile</strong> the model with a loss function and an optimizer.
+- <strong>Fit</strong> it to your data - this runs the whole training loop you wrote by hand.
+Those three steps - define, compile, fit - are the entire workflow, and you will see them in every Keras program for the rest of this course.</p>
+<h3 id="installing-it">Installing it</h3>
+<p>If you are using <strong>Google Colab</strong>, TensorFlow and Keras are already installed - you do not have to do anything. To run it on your own machine instead, install it once with pip:
+Install TensorFlow (includes Keras)</p>
+<pre><code class="language-bash">pip install tensorflow
+</code></pre>
+<p>That single package gives you both TensorFlow and Keras. You then import Keras in Python like this:
+Importing Keras</p>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Don't relearn the network - relearn the syntax</p>
+<p>You already understand what every piece does. This lesson is not new theory; it is the same sine network you trained in NumPy, written the way professionals write it. Read each Keras line and ask: "which part of my hand-written code does this replace?"</p>
+</div>
+<h3 id="the-same-network-two-ways">The same network, two ways</h3>
+<p>The math is identical to the sin(x) experiment. Only the syntax changes.
+sin.ipynb NumPy version</p>
+<pre><code class="language-python"># Forward pass
+z1 = np.dot(x, W1) + b1
+a1 = relu(z1)
+z2 = np.dot(a1, W2) + b2
+a2 = relu(z2)
+z3 = np.dot(a2, W3) + b3
+a3 = linear(z3)
+
+# Manual weight update (Adam)
+m_W1 = beta1*m_W1 + (1-beta1)*dW1
+...
+</code></pre>
+<p>Keras equivalent</p>
+<pre><code class="language-python"># Define the network
+model = keras.Sequential([
+    keras.layers.Dense(20, activation='relu', input_shape=(1,)),
+    keras.layers.Dense(10, activation='relu'),
+    keras.layers.Dense(1)    # linear = no activation
+])
+
+# Compile (Adam is built in)
+model.compile(optimizer=keras.optimizers.Adam(0.001),
+              loss='mse')
+
+# Train (forward + backward + update all automatic)
+model.fit(x, y, epochs=3000, verbose=0)
+</code></pre>
+<div class="admonition info">
+<p class="admonition-title">What Keras hides</p>
+<p>Keras does everything in <code>sin.ipynb</code>'s training loop automatically. The architecture is the same. The Adam optimizer is the same. The MSE loss is the same. Keras hides the implementation so you can focus on the design rather than the math.
+Now that you have implemented Adam by hand and watched the gradient flow backward through the layers, you know what Keras is doing under the hood. That understanding separates someone who uses Keras from someone who understands it.</p>
+</div>
+<p><a href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb">Open in Colab →</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keras piece</th>
+<th style="text-align: left;">Manual NumPy equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>Dense(20, activation="relu")</code></td>
+<td style="text-align: left;"><code>W1</code>, <code>b1</code>, <code>np.dot</code>, and <code>relu</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>loss="mse"</code></td>
+<td style="text-align: left;"><code>mse_loss(y, a3)</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>Adam(0.001)</code></td>
+<td style="text-align: left;">The full Adam moment, bias-correction, and update block from lesson 6.7</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>model.fit(...)</code></td>
+<td style="text-align: left;">Forward pass, loss, backpropagation, update, repeat</td>
+</tr>
+</tbody>
+</table>
+<p>Cell 1: Generate sin(x) data</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+np.random.seed(42)
+x = np.linspace(0, 2 * np.pi, 1000).reshape(-1, 1)
+y = np.sin(x)
+
+X_train, X_val, y_train, y_val = train_test_split(
+    x, y, test_size=0.2, random_state=42
+)
+
+print(f&quot;Train: {X_train.shape}  Val: {X_val.shape}&quot;)
+</code></pre>
+<p>Cell 2: Build the Keras sine network</p>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras
+
+LEARNING_RATE = 0.001
+EPOCHS = 3000
+HIDDEN_DIM1 = 20
+HIDDEN_DIM2 = 10
+
+model = keras.Sequential([
+    keras.layers.Input(shape=(1,)),
+    keras.layers.Dense(HIDDEN_DIM1, activation=&quot;relu&quot;),
+    keras.layers.Dense(HIDDEN_DIM2, activation=&quot;relu&quot;),
+    keras.layers.Dense(1),
+])
+
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
+    loss=&quot;mse&quot;,
+    metrics=[&quot;mae&quot;],
+)
+
+model.summary()
+</code></pre>
+<p>Cell 3: Train and plot generalization</p>
+<pre><code class="language-python">history = model.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=EPOCHS,
+    batch_size=32,
+    verbose=0,
+)
+
+x_plot = np.linspace(0, 4 * np.pi, 1000).reshape(-1, 1)
+y_true_plot = np.sin(x_plot)
+y_pred_plot = model.predict(x_plot, verbose=0)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 4))
+
+ax1.plot(history.history[&quot;loss&quot;], label=&quot;Train loss&quot;)
+ax1.plot(history.history[&quot;val_loss&quot;], label=&quot;Val loss&quot;, linestyle=&quot;--&quot;)
+ax1.set_title(&quot;MSE Loss&quot;)
+ax1.set_xlabel(&quot;Epoch&quot;)
+ax1.legend()
+
+ax2.plot(x_plot, y_true_plot, label=&quot;Actual sin(x)&quot;)
+ax2.plot(x_plot, y_pred_plot, label=&quot;Keras prediction&quot;, linestyle=&quot;--&quot;)
+ax2.axvline(2 * np.pi, color=&quot;gray&quot;, linestyle=&quot;:&quot;, label=&quot;End of training range&quot;)
+ax2.set_title(&quot;Generalization: 0 to 4pi&quot;)
+ax2.set_xlabel(&quot;x&quot;)
+ax2.set_ylabel(&quot;sin(x)&quot;)
+ax2.legend()
+
+plt.tight_layout()
+plt.show()
+
+print(f&quot;Final val loss: {history.history['val_loss'][-1]:.6f}&quot;)
+print(f&quot;Final val MAE:  {history.history['val_mae'][-1]:.6f}&quot;)
+</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Cell 4: Fix it progressively</p>
+<p>Change the configuration in Cell 2 and rerun Cells 2 and 3. Try fewer neurons, more neurons, shorter training, longer training, and different learning rates. Compare the Keras behavior to the pure NumPy version.</p>
+</div>
+<p>Cell 5: Add dropout and early stopping</p>
+<pre><code class="language-python">LEARNING_RATE = 0.001
+EPOCHS = 5000
+HIDDEN_DIM1 = 64
+HIDDEN_DIM2 = 32
+DROPOUT_RATE = 0.1
+
+model2 = keras.Sequential([
+    keras.layers.Input(shape=(1,)),
+    keras.layers.Dense(HIDDEN_DIM1, activation=&quot;relu&quot;),
+    keras.layers.Dropout(DROPOUT_RATE),
+    keras.layers.Dense(HIDDEN_DIM2, activation=&quot;relu&quot;),
+    keras.layers.Dropout(DROPOUT_RATE),
+    keras.layers.Dense(1),
+])
+
+model2.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
+    loss=&quot;mse&quot;,
+    metrics=[&quot;mae&quot;],
+)
+
+early_stop = keras.callbacks.EarlyStopping(
+    monitor=&quot;val_loss&quot;,
+    patience=150,
+    restore_best_weights=True,
+)
+
+history2 = model2.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=EPOCHS,
+    batch_size=32,
+    callbacks=[early_stop],
+    verbose=0,
+)
+
+stopped_at = len(history2.history[&quot;loss&quot;])
+print(f&quot;Stopped at epoch {stopped_at} / {EPOCHS}&quot;)
+print(f&quot;Final val loss: {history2.history['val_loss'][-1]:.6f}&quot;)
+print(f&quot;Final val MAE:  {history2.history['val_mae'][-1]:.6f}&quot;)
+
+x_plot = np.linspace(0, 4 * np.pi, 1000).reshape(-1, 1)
+y_true_plot = np.sin(x_plot)
+y_pred_plot = model2.predict(x_plot, verbose=0)
+
+plt.figure(figsize=(10, 5))
+plt.plot(x_plot, y_true_plot, label=&quot;Actual sin(x)&quot;)
+plt.plot(x_plot, y_pred_plot, label=&quot;Dropout + early stopping prediction&quot;, linestyle=&quot;--&quot;)
+plt.axvline(2 * np.pi, color=&quot;gray&quot;, linestyle=&quot;:&quot;, label=&quot;End of training range&quot;)
+plt.title(&quot;Regularized Keras Model&quot;)
+plt.xlabel(&quot;x&quot;)
+plt.ylabel(&quot;sin(x)&quot;)
+plt.legend()
+plt.show()
+</code></pre>
+<hr />
+<h2 id="reading-training-curves">Reading Training Curves</h2>
+<hr />
+<h3 id="reading-training-curves_1">Reading Training Curves</h3>
+<p>Use this as a diagnostic card during later projects.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Symptom</th>
+<th style="text-align: left;">Diagnosis</th>
+<th style="text-align: left;">Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Loss stays flat from epoch 1</td>
+<td style="text-align: left;">LR too small or bad initialization</td>
+<td style="text-align: left;">Increase LR or use Adam</td>
+</tr>
+<tr>
+<td style="text-align: left;">Loss spikes or goes to NaN</td>
+<td style="text-align: left;">LR too large</td>
+<td style="text-align: left;">Reduce LR by 10x</td>
+</tr>
+<tr>
+<td style="text-align: left;">Train loss falls, val loss rises</td>
+<td style="text-align: left;">Overfitting</td>
+<td style="text-align: left;">Add dropout, early stopping, or reduce network size</td>
+</tr>
+<tr>
+<td style="text-align: left;">Train and val loss plateau high</td>
+<td style="text-align: left;">Underfitting</td>
+<td style="text-align: left;">More epochs, larger network, or better architecture</td>
+</tr>
+<tr>
+<td style="text-align: left;">Val loss lower than train loss</td>
+<td style="text-align: left;">Normal with dropout</td>
+<td style="text-align: left;">Expected because dropout is active only during training</td>
+</tr>
+<tr>
+<td style="text-align: left;">Train accuracy 100%, val accuracy low</td>
+<td style="text-align: left;">Severe memorization</td>
+<td style="text-align: left;">Much more data or a much smaller network</td>
+</tr>
+<tr>
+<td style="text-align: left;">Both losses are noisy</td>
+<td style="text-align: left;">Batch size too small or LR too large</td>
+<td style="text-align: left;">Increase batch size to 32 or 64, or lower LR</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="when-to-use-neural-networks">When to Use Neural Networks</h2>
+<hr />
+<h3 id="when-to-use-neural-networks_1">When to Use Neural Networks</h3>
+<p><strong>Do you have more than 10,000 training examples?</strong> No: try Random Forest first. If you must use a neural network, keep it small.</p>
+<p><strong>Images, audio, or raw text?</strong> Yes: neural network. CNN for images; RNN or Transformer for sequence data.</p>
+<p><strong>Tabular rows and columns?</strong> Try Random Forest or XGBoost first. Move to NN only if they underperform.</p>
+<p><strong>Need to explain predictions?</strong> Consider Decision Tree or Logistic Regression. Neural networks are powerful but harder to interpret.</p>
+<div class="admonition tip">
+<p class="admonition-title">Robotics perspective</p>
+<p>YOLO26n is a CNN you train. MediaPipe is a neural network Google trained. The lane follower deliberately uses no neural network. Knowing when not to use one is part of the skill.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ch5/" class="btn btn-neutral float-left" title="Chapter 5: Reinforcement Learning"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ch7/" class="btn btn-neutral float-right" title="Chapter 7: Computer Vision for Robotics">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ch5/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ch7/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/dark-mode.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../js/width-toggle.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

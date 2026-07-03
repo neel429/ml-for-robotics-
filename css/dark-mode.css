@@ -1,0 +1,312 @@
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 4rem;
+  right: 1rem;
+  z-index: 999;
+  background: #374151;
+  color: #e5e7eb;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  line-height: 44px;
+  text-align: center;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.wy-table-responsive {
+  overflow-x: visible;
+}
+
+html.dark-mode {
+  --bg: #1e1e1e;
+  --bg-alt: #252526;
+  --bg-card: #2d2d30;
+  --fg: #d4d4d4;
+  --fg-heading: #e6e6e6;
+  --fg-muted: #9d9d9d;
+  --border: #3c3c3c;
+  --accent: #569cd6;
+  --accent-hover: #75b8f0;
+  --code-bg: #1e1e1e;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html.dark-mode body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+html.dark-mode .wy-nav-side {
+  background: var(--bg-alt);
+}
+
+html.dark-mode .wy-side-nav-search {
+  background: var(--bg-card);
+}
+
+html.dark-mode .wy-side-nav-search input[type="text"] {
+  border-color: var(--border);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+html.dark-mode .wy-menu-vertical {
+  background: var(--bg-alt);
+}
+
+html.dark-mode .wy-menu-vertical li a {
+  color: var(--fg);
+}
+
+html.dark-mode .wy-menu-vertical li a:hover {
+  background: var(--bg-card);
+}
+
+html.dark-mode .wy-menu-vertical li.current {
+  background: var(--bg-card);
+}
+
+html.dark-mode .wy-menu-vertical li.current > a,
+html.dark-mode .wy-menu-vertical li.on a {
+  background: var(--bg-card);
+  border-color: var(--accent);
+  color: var(--fg-heading);
+}
+
+html.dark-mode .wy-menu-vertical li.current > a:hover,
+html.dark-mode .wy-menu-vertical li.on a:hover {
+  background: var(--border);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l2 a,
+html.dark-mode .wy-menu-vertical li.toctree-l3 a,
+html.dark-mode .wy-menu-vertical li.toctree-l4 a {
+  color: var(--fg-muted);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l2.current > a,
+html.dark-mode .wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l3.current > a,
+html.dark-mode .wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a {
+  background: var(--bg-alt);
+  color: var(--fg);
+}
+
+html.dark-mode .wy-menu-vertical li button.toctree-expand,
+html.dark-mode .wy-menu-vertical li.current > a button.toctree-expand {
+  color: var(--fg-muted);
+}
+
+html.dark-mode .wy-nav-content-wrap {
+  background: var(--bg);
+}
+
+html.dark-mode .wy-nav-content {
+  background: var(--bg);
+}
+
+html.dark-mode h1,
+html.dark-mode h2,
+html.dark-mode h3,
+html.dark-mode h4,
+html.dark-mode h5,
+html.dark-mode h6 {
+  color: var(--fg-heading);
+}
+
+html.dark-mode a {
+  color: var(--accent);
+}
+
+html.dark-mode a:hover {
+  color: var(--accent-hover);
+}
+
+html.dark-mode code {
+  background: var(--bg-card);
+  color: #ce9178;
+  border-color: var(--border);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+html.dark-mode pre {
+  background: var(--code-bg) !important;
+  border-color: var(--border) !important;
+  border-radius: 4px;
+}
+
+html.dark-mode pre code {
+  background: transparent;
+  color: var(--fg);
+  border: none;
+  padding: 1em;
+}
+
+html.dark-mode .wy-table,
+html.dark-mode table {
+  background: var(--bg-alt);
+  border-color: var(--border);
+}
+
+html.dark-mode .wy-table thead th,
+html.dark-mode table thead th {
+  background: var(--bg-card);
+  color: var(--fg-heading);
+  border-color: var(--border);
+}
+
+html.dark-mode .wy-table,
+html.dark-mode table.rst-content table {
+  background: transparent;
+}
+
+html.dark-mode .wy-table td,
+html.dark-mode .wy-table th,
+html.dark-mode table td,
+html.dark-mode table th,
+html.dark-mode .rst-content table td,
+html.dark-mode .rst-content table th {
+  background-color: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--fg);
+}
+
+html.dark-mode .wy-table thead th,
+html.dark-mode table thead th,
+html.dark-mode .rst-content table thead th {
+  background-color: var(--bg-card) !important;
+  color: var(--fg-heading);
+  border-color: var(--border) !important;
+}
+
+html.dark-mode .wy-table-striped tbody tr:nth-child(2n) td {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+html.dark-mode .rst-content .admonition {
+  background: var(--bg-alt);
+  border-color: var(--border);
+}
+
+html.dark-mode .rst-content .admonition-title {
+  background: var(--bg-card);
+  color: var(--fg-heading);
+}
+
+html.dark-mode .rst-content .tip .admonition-title {
+  background: #264f78;
+}
+
+html.dark-mode .rst-content .warning .admonition-title {
+  background: #6b3a2a;
+}
+
+html.dark-mode .rst-content .info .admonition-title {
+  background: #264f78;
+}
+
+html.dark-mode .rst-content .note .admonition-title {
+  background: #264f78;
+}
+
+html.dark-mode .wy-breadcrumbs {
+  color: var(--fg-muted);
+}
+
+html.dark-mode .wy-breadcrumbs a {
+  color: var(--accent);
+}
+
+html.dark-mode blockquote {
+  color: var(--fg-muted);
+  border-color: var(--border);
+}
+
+html.dark-mode hr {
+  border-color: var(--border);
+}
+
+html.dark-mode .rst-content .section ul li,
+html.dark-mode .rst-content .section ol li {
+  color: var(--fg);
+}
+
+html.dark-mode .wy-side-scroll::-webkit-scrollbar {
+  background: var(--bg-alt);
+}
+
+html.dark-mode .wy-side-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+html.dark-mode .wy-nav-top {
+  background: var(--bg-card);
+}
+
+html.dark-mode .wy-nav-top a {
+  color: var(--fg-heading);
+}
+
+html.dark-mode .btn-neutral {
+  background: var(--bg-card) !important;
+  color: var(--fg) !important;
+  border-color: var(--border) !important;
+}
+
+html.dark-mode .btn-neutral:hover {
+  background: var(--border) !important;
+}
+
+html.dark-mode footer {
+  color: var(--fg-muted);
+}
+
+html.dark-mode footer a {
+  color: var(--accent);
+}
+
+html.dark-mode .rst-other-versions {
+  color: var(--fg-muted);
+}
+
+html.dark-mode .rst-other-versions a {
+  color: var(--accent);
+}
+
+html.dark-mode input[type="text"] {
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--border);
+}
+
+html.dark-mode .wy-side-nav-search > a img.logo,
+html.dark-mode .wy-side-nav-search > a.icon img.logo {
+  filter: brightness(0.8) invert(0.9);
+}
+
+html.dark-mode .wy-side-nav-search > div.version {
+  color: var(--fg-muted);
+}

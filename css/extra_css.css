@@ -1,0 +1,45 @@
+/* Default: full width. Narrow class restores the theme's default. */
+.wy-nav-content {
+  max-width: none;
+}
+
+html.narrow .wy-nav-content {
+  max-width: 800px;
+}
+
+.width-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 999;
+  background: #374151;
+  color: #e5e7eb;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  line-height: 44px;
+  text-align: center;
+}
+
+.width-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Allow wrapping at spaces but never break mid-word or hyphenate */
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+    white-space: normal;
+}
+
+/* Hide auto-numbering on h1 (chapter titles already contain the number) */
+h1 .enumerate-headings-plugin {
+  display: none;
+}
