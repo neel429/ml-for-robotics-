@@ -1,44 +1,39 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
-      <link rel="shortcut icon" href="img/favicon.ico" />
-    <title>ML for Robotics</title>
-    <link rel="stylesheet" href="css/theme.css" />
-    <link rel="stylesheet" href="css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="css/dark-mode.css" rel="stylesheet" />
-        <link href="css/extra_css.css" rel="stylesheet" />
-    
-      <script>
-        // Current page data
-        var mkdocs_page_name = "Home";
-        var mkdocs_page_input_path = "index.md";
-        var mkdocs_page_url = null;
-      </script>
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML for Robotics | Interactive Course</title>
+  <meta name="description" content="A free machine learning for robotics curriculum for mechanical engineering freshmen." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+  <script>try{const theme=localStorage.getItem("mlr-theme");if(theme==="light"){document.documentElement.classList.add("light-mode");document.documentElement.dataset.theme="light";}}catch(error){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 </head>
-
-<body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="." class="icon icon-home"> ML for Robotics
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
+<body class="lesson-app" id="top">
+  <header class="topbar lesson-topbar" aria-label="Course header">
+    <button class="hamburger" id="drawerToggle" type="button" aria-label="Open lesson navigation" aria-expanded="false">&#9776;</button>
+    <a class="top-title" href="index.html?lesson=home" data-lesson-link="home">ML x Robotics</a>
+    <div class="current-chapter" id="currentChapter">Course Dashboard</div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode">Light</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+  <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+  <aside class="sidebar lesson-sidebar" id="sidebar" aria-label="Lesson navigation">
+<div class="sidebar-title">Course Lessons</div>
+<a class="lesson-link dashboard-link" href="?lesson=home" data-lesson-link="home"><span>Course Dashboard</span><span class="completion-dot" aria-hidden="true"></span></a>
+<nav class="lesson-tree"><div class="lesson-group" data-chapter="ch0" style="--chapter-accent:var(--ch0)">
+<button class="lesson-group-header" type="button" aria-expanded="true"><span>Ch 0: Welcome & How to Use This Guide</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body">
+<a class="lesson-link" href="?lesson=ch0-welcome" data-lesson-link="ch0-welcome"><span>Welcome</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch0-build" data-lesson-link="ch0-build"><span>What You Will Build</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch0-tools" data-lesson-link="ch0-tools"><span>Tools You Need</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=ch0-reading-tips" data-lesson-link="ch0-reading-tips"><span>Reading Tips</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
-<<<<<<< HEAD
 </div>
 <div class="lesson-group" data-chapter="ch1" style="--chapter-accent:var(--ch1)">
 <button class="lesson-group-header" type="button" aria-expanded="true"><span>Ch 1: Python Programming Fundamentals</span><span class="group-chevron">v</span></button>
@@ -2281,254 +2276,422 @@ print(f"Test rows:     {X_test.shape[0]}")</code></pre></figure>
       <div class="flow-row">
         <div class="flow-node">Train data<br/><small>scaler learns from here</small></div><div class="arrow">→</div>
         <div class="flow-node">scaler.fit_transform()</div>
-=======
->>>>>>> 4aac3e5bc632c39d3c90eed5c646d3cac1a42bae
       </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#what-you-will-build">What You Will Build</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#course-chapters">Course Chapters</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#projects">Projects</a>
-    </li>
-    </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch0/">Chapter 0: Welcome & How to Use This Guide</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch1/">Chapter 1: Python Programming Fundamentals</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch2/">Chapter 2: What is Machine Learning?</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch3/">Chapter 3: Supervised Learning</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch4/">Chapter 4: Unsupervised Learning</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch5/">Chapter 5: Reinforcement Learning</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch6/">Chapter 6: Neural Networks</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch7/">Chapter 7: Computer Vision for Robotics</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ch8/">Chapter 8: What's Next?</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="exA/">Exercise A: Train Your First Detector</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="exB/">Exercise B: Your Phone as a Robot Camera</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="exC/">Exercise C: Precise Movement with Encoders</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="exD/">Exercise D: Talk to Your Robot Over WiFi</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="proj1/">Project 1: Object Tracker</a>
-                </li>
-              </ul>
+      <div class="flow-row" style="margin-top:0.5rem">
+        <div class="flow-node">Test data<br/><small>scaler never learns from here</small></div><div class="arrow">→</div>
+        <div class="flow-node">scaler.transform() only</div>
       </div>
     </div>
+    </div>
+  </div>
+  <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 10: Scale features"><figcaption>Cell 10: Scale features</figcaption><pre><code class="language-python">scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)  # learn + apply
+X_test_scaled  = scaler.transform(X_test)        # apply only</code></pre></figure>
+  <div class="why-output">
+    <div class="expected"><strong>Expected output</strong> No printed output — the scaled arrays are ready in memory.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       PHASE 4 — TRAIN & EVALUATE
+  ══════════════════════════════════════════════════════════════════ -->
+  <h3 class="phase-header">Phase 4 — Train two models and compare them</h3>
+  <p>We will train two different models on the same data and see which one is better at predicting failures. Think of it like testing two different doctors on the same set of patient records — you want to know who gives the more accurate diagnosis.</p>
+
+  <p><strong>Cell 11</strong> trains the first model: Logistic Regression. It is the simplest possible approach — a good baseline to beat.</p>
+  <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 11: Train Logistic Regression"><figcaption>Cell 11: Train Logistic Regression</figcaption><pre><code class="language-python">log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
+log_reg.fit(X_train_scaled, y_train)
+log_pred = log_reg.predict(X_test_scaled)
+print("Logistic Regression trained.")</code></pre></figure>
+  <div class="why-output">
+    <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">What is class_weight="balanced"?</div><p>Remember the imbalanced bar chart? <code>class_weight="balanced"</code> tells the model to treat a missed failure as more costly than a false alarm — otherwise it would just predict "normal" for everything and look accurate.</p></div></div>
+    <div class="expected"><strong>Expected output</strong> <em>Logistic Regression trained.</em></div>
+  </div>
+
+  <p><strong>Cell 12</strong> evaluates that model and draws a confusion matrix — a 2×2 grid that shows exactly which types of mistakes it made.</p>
+  <div class="diagram" aria-label="Confusion matrix explanation">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;max-width:380px;margin:0 auto;text-align:center;font-size:0.85rem">
+      <div style="padding:0.6rem;background:#245cd3;border-radius:6px;color:#fff"><strong>True Negative</strong><br/>Predicted Normal ✓<br/>Was actually Normal</div>
+      <div style="padding:0.6rem;background:#851515;border-radius:6px;color:#fff"><strong>False Positive</strong><br/>Predicted Failure ✗<br/>Was actually Normal</div>
+      <div style="padding:0.6rem;background:#851515;border-radius:6px;color:#fff"><strong>False Negative</strong><br/>Predicted Normal ✗<br/>Was actually a Failure<br/><small>(the dangerous mistake)</small></div>
+      <div style="padding:0.6rem;background:#245cd3;border-radius:6px;color:#fff"><strong>True Positive</strong><br/>Predicted Failure ✓<br/>Was actually a Failure</div>
+    </div>
+  </div>
+  <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 12: Evaluate Logistic Regression"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
+ConfusionMatrixDisplay.from_predictions(
+    y_test, log_pred, display_labels=["Normal", "Failure"]
+)
+plt.title("Logistic Regression — what mistakes did it make?")
+plt.show()</code></pre></figure>
+  <div class="why-output">
+    <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Reading the report</div><p>Look at the <strong>Failure</strong> row in the classification report. <em>Recall</em> tells you what fraction of real failures the model caught. A low recall means many failures slipped through undetected — that would be costly in a real factory.</p></div></div>
+    <div class="expected"><strong>Expected output</strong> A text table of precision/recall/F1 scores, then a 2×2 colour grid (the confusion matrix).</div>
+  </div>
+
+  <p><strong>Cell 13</strong> trains the second model: a Random Forest. Instead of one straight decision line, it builds 100 decision trees and takes a vote — usually more accurate on sensor data like this.</p>
+  <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 13: Train Random Forest"><figcaption>Cell 13: Train Random Forest</figcaption><pre><code class="language-python">forest = RandomForestClassifier(
+    n_estimators=100,   # 100 trees vote on each prediction
+    random_state=42,
+    class_weight="balanced"
+)
+forest.fit(X_train, y_train)   # no scaling needed for forests
+forest_pred = forest.predict(X_test)
+print("Random Forest trained.")</code></pre></figure>
+  <div class="why-output">
+    <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Why no scaling here?</div><p>Random forests split data by asking questions like "is torque &gt; 40?" The threshold is always relative, so the scale of the numbers does not matter. Logistic Regression, by contrast, adds numbers together — so scale matters a lot.</p></div></div>
+    <div class="expected"><strong>Expected output</strong> <em>Random Forest trained.</em> (may take 5–10 seconds)</div>
+  </div>
+
+  <p><strong>Cell 14</strong> puts both models side by side using a single number — the F1 score — so you can directly compare them.</p>
+  <div class="callout tip" role="note">
+    <div class="callout-icon">💡</div>
+    <div><div class="callout-title">Why F1 and not accuracy?</div>
+    <p>Accuracy counts all correct predictions equally. F1 specifically rewards catching real failures and penalises missing them. For rare events like equipment failures, F1 is the honest measure.</p>
+    <div class="diagram" aria-label="F1 score scale" style="margin-top:0.6rem">
+      <div class="flow-row">
+        <div class="flow-node" style="background:#fecaca;color:#000000">F1 = 0.0<br/><small>useless</small></div><div class="arrow">→</div>
+        <div class="flow-node" style="background:#fef3c7;color:#000000">F1 = 0.5<br/><small>mediocre</small></div><div class="arrow">→</div>
+        <div class="flow-node" style="background:#d1fae5;color:#000000">F1 = 1.0<br/><small>perfect</small></div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 14: Compare both models"><figcaption>Cell 14: Compare both models</figcaption><pre><code class="language-python">log_f1    = f1_score(y_test, log_pred)
+forest_f1 = f1_score(y_test, forest_pred)
+
+print(f"Logistic Regression F1: {log_f1:.3f}")
+print(f"Random Forest F1:       {forest_f1:.3f}")
+
+winner = "Random Forest" if forest_f1 > log_f1 else "Logistic Regression"
+print(f"\nWinner: {winner}")</code></pre></figure>
+  <div class="why-output">
+    <div class="expected"><strong>Expected output</strong> Two F1 scores and a winner line. Random Forest typically wins on this dataset — but by how much?</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       PHASE 5 — CHALLENGE
+  ══════════════════════════════════════════════════════════════════ -->
+  <h3 class="phase-header">Phase 5 — Challenge: does more trees mean better?</h3>
+  <p>The Random Forest used 100 trees. What if we tried 10? Or 200? Cell 15 runs the model five times with different tree counts and plots the result. Your job is to look at the chart and decide: at what point do extra trees stop helping?</p>
+  <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 15: Challenge — tune n_estimators"><figcaption>Cell 15: Challenge — tune n_estimators</figcaption><pre><code class="language-python">tree_counts = [10, 25, 50, 100, 200]
+scores = []
+
+for n in tree_counts:
+    model = RandomForestClassifier(
+        n_estimators=n, random_state=42, class_weight="balanced"
+    )
+    model.fit(X_train, y_train)
+    scores.append(f1_score(y_test, model.predict(X_test)))
+
+plt.plot(tree_counts, scores, marker="o", color="#6366f1", linewidth=2)
+plt.xlabel("Number of trees")
+plt.ylabel("F1 score (higher = better)")
+plt.title("Does adding more trees keep improving the model?")
+plt.grid(True, alpha=0.3)
+plt.show()
+
+best_n = tree_counts[scores.index(max(scores))]
+print(f"Best result: {max(scores):.3f} F1 with {best_n} trees")</code></pre></figure>
+  <div class="why-output">
+    <div class="callout exercise-note" role="note"><div class="callout-icon">📝</div><div><div class="callout-title">What to look for</div><p>The line usually rises sharply from 10 → 50 trees and then flattens. That flat part is the "diminishing returns" zone — extra computation, no extra accuracy. This pattern appears in almost every real ML project.</p></div></div>
+    <div class="expected"><strong>Expected output</strong> A line plot and a printed best score. Compare it against the 100-tree score from Cell 14.</div>
+  </div>
+
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch3-project">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-pipeline" data-lesson-link="ch3-pipeline"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 3.3 ML Pipeline</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-overview" data-lesson-link="ch4-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Unsupervised Learning &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch4-overview" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> Unsupervised Learning: Industrial Vibration Clustering</div>
+<h1>Unsupervised Learning: Industrial Vibration Clustering</h1>
+<div class="lesson-meta"><span>Beginner</span><span>8 min</span></div>
+<hr class="lesson-divider" />
+<div class="definition-card"><span class="def-term">Unsupervised Learning</span><p>Machine learning that searches for structure in data without answer labels.</p></div>
+<div class="lesson-body">
+<header class="chapter-header">
+                <span class="chapter-badge">Chapter 4 / 7</span>
+                <a class="breadcrumb" href="?lesson=ch3-overview" data-lesson-link="ch3-overview">? Previous Chapter: Supervised Learning</a>
+                <div class="chapter-kicker">Kaggle project</div>
+                <h2>Unsupervised Learning: <span>Industrial Vibration Clustering</span></h2>
+                <p class="lead">Unsupervised learning finds structure when nobody has labeled the rows. That makes it valuable for sensor streams, vibration logs, and exploratory robotics data.</p>
+              </header>
+<h3>What Is Unsupervised Learning?</h3>
+                <p>In supervised learning every row has a label — someone already answered the question for each example. A human looked at 10,000 sensor readings and wrote "failure" or "normal" next to each one. That labeling is expensive, slow, and sometimes impossible.</p>
+                <p>Unsupervised learning works without labels. You give the algorithm raw data and ask it to find structure on its own: groups of similar rows, patterns that repeat, dimensions that capture the most variation. Nobody told the algorithm what to look for. It discovers it.</p>
+                <div class="grid-2">
+                  <div class="card"><h4>Supervised Learning</h4><p><strong>Data:</strong> rows WITH labels.</p><p><strong>Question:</strong> predict this label from these features.</p><p><strong>Example:</strong> sensor readings → failure or no failure.</p><p>The algorithm is told what the answer looks like.</p></div>
+                  <div class="card"><h4>Unsupervised Learning</h4><p><strong>Data:</strong> rows WITHOUT labels.</p><p><strong>Question:</strong> what structure exists in this data?</p><p><strong>Example:</strong> sensor readings → how many natural groups?</p><p>The algorithm is told nothing — it finds structure itself.</p></div>
+                </div>
+                <div class="callout robotics" role="note"><div class="callout-icon">BOT</div><div><div class="callout-title">Robotics connection</div><p>A robot mapping an unknown building has no labeled floor plan. It must group sensor readings into wall, open space, and obstacle without anyone teaching it those categories. That is unsupervised learning in the real world.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch4-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch3-project" data-lesson-link="ch3-project"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; 3.4 Failure Project</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-clustering" data-lesson-link="ch4-clustering"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">4.1 Clustering & PCA &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch4-clustering" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> 4.1 Clustering & Dimensionality Reduction</div>
+<h1>4.1 Clustering & Dimensionality Reduction</h1>
+<div class="lesson-meta"><span>Beginner</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<h3>4.1 Concept: Clustering & Dimensionality Reduction</h3>
+                <h4>Clustering</h4>
+                <p>Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent — that interpretation is your job as the engineer.</p>
+                <figure class="lesson-figure">
+                  <img
+                    src="clustering_image.png"
+                    alt="Scatter plot showing three distinct clusters of data points colored differently, with cluster boundaries visible between the groups"
+                    loading="lazy"
+                    class="lesson-image"
+                  />
+                  <figcaption>
+                    Three clusters found automatically — the algorithm groups similar points together without being told what the groups mean. Labeling each cluster (normal, imbalanced, loose) is the engineer's job, not the algorithm's.
+                  </figcaption>
+                </figure>
+                <p>A vibrating motor shaft might produce three distinct patterns of sensor readings: one when balanced correctly, one with a slight imbalance, and one with a loose bearing. Clustering discovers these three modes automatically even if no one ever labeled which readings belonged to which state.</p>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="three_vibration_modes.py"><figcaption>Run to see three vibration modes that K-Means will learn to separate</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 2, 1000)
+normal     = np.sin(2 * np.pi * 10 * t) * 0.5
+imbalanced = np.sin(2 * np.pi * 18 * t) * 1.2
+loose      = np.sin(2 * np.pi * 10 * t) + 0.4 * np.sin(2 * np.pi * 45 * t)
+
+fig, axes = plt.subplots(3, 1, figsize=(10, 6), sharex=True)
+fig.patch.set_facecolor('#0d1117')
+
+for ax, signal, label, color in zip(
+    axes,
+    [normal, imbalanced, loose],
+    ['Normal operation', 'Imbalanced shaft', 'Loose bearing'],
+    ['#10b981', '#f97316', '#ef4444']
+):
+    ax.plot(t, signal, color=color, linewidth=1.2)
+    ax.set_ylabel(label, color='#8b949e', fontsize=9)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+
+axes[-1].set_xlabel("Time (s)", color='#8b949e')
+fig.suptitle("Three vibration modes — same shaft, different faults",
+             color='#e6edf3', fontsize=11)
+plt.tight_layout()
+plt.show()</code></pre></figure>
+                <h4>PCA</h4>
+                <p>Principal Component Analysis (PCA) is not a clustering algorithm. It is a dimensionality reduction technique: it compresses many features into fewer dimensions while preserving as much variation as possible.</p>
+                <figure class="lesson-figure">
+                  <img
+                    src="pca_plot3_3d_to_2d.png"
+                    alt="Diagram showing 3D data points being projected down onto a 2D plane, with the projection directions indicated by arrows along the axes of greatest variance"
+                    loading="lazy"
+                    class="lesson-image"
+                  />
+                  <figcaption>
+                    PCA projects high-dimensional data onto fewer dimensions. Three features compressed to two — the two directions that capture the most variation in the original data are kept, the rest is discarded.
+                  </figcaption>
+                </figure>
+                <p>Imagine your feature table has 10 columns. You cannot plot 10 dimensions. PCA finds the two directions in that 10-dimensional space that capture the most variation and projects everything onto those two axes. The result is a 2D scatter plot you can actually look at.</p>
+                <p>PCA does not label the axes for you. The first principal component is the direction of greatest variance in your data. It might correspond roughly to overall vibration intensity or frequency content, but you interpret that from the data, not from PCA.</p>
+                <figure class="lesson-figure">
+                  <img
+                    src="pca_plot1_variance_directions.png"
+                    alt="2D scatter plot with two arrows overlaid showing the first and second principal components — PC1 pointing in the direction of greatest spread, PC2 pointing perpendicular to it"
+                    loading="lazy"
+                    class="lesson-image"
+                  />
+                  <figcaption>
+                    PC1 points in the direction of greatest variance in the data. PC2 points perpendicular to PC1, capturing the next largest spread. Neither axis is labeled automatically — you read the data to decide what each principal component represents.
+                  </figcaption>
+                </figure>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="pca_4_features_to_2d.py"><figcaption>Run to see PCA projecting 4 features into 2D</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_blobs
+
+np.random.seed(42)
+X, labels = make_blobs(n_samples=300, centers=3,
+                       n_features=4, cluster_std=0.9,
+                       random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+
+pca = PCA(n_components=2)
+X_2d = pca.fit_transform(X_scaled)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+fig.patch.set_facecolor('#0d1117')
+
+colors = ['#10b981', '#f97316', '#6366f1']
+for i, color in enumerate(colors):
+    mask = labels == i
+    ax1.scatter(X_scaled[mask, 0], X_scaled[mask, 1],
+                color=color, s=20, alpha=0.7, label=f'Group {i}')
+    ax2.scatter(X_2d[mask, 0], X_2d[mask, 1],
+                color=color, s=20, alpha=0.7, label=f'Group {i}')
+
+for ax, title in zip([ax1, ax2],
+    ['Original: 2 of 4 features shown', 'After PCA: all 4 features compressed to 2D']):
+    ax.set_title(title, color='#e6edf3', fontsize=10)
+    ax.set_facecolor('#0d1117')
+    ax.tick_params(colors='#8b949e')
+    ax.spines[:].set_color('#30363d')
+    ax.legend(facecolor='#161b22', labelcolor='white', fontsize=8)
+
+var = pca.explained_variance_ratio_
+ax2.set_xlabel(f'PC1 ({var[0]*100:.0f}% variance)', color='#8b949e')
+ax2.set_ylabel(f'PC2 ({var[1]*100:.0f}% variance)', color='#8b949e')
+plt.tight_layout()
+plt.show()
+
+print(f"Variance explained: PC1={var[0]*100:.1f}%  PC2={var[1]*100:.1f}%")
+print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pre></figure>
+                <div class="callout info" role="note"><div class="callout-icon">PCA</div><div><div class="callout-title">PCA does not find clusters</div><p>PCA and K-Means are two different tools that work well together. K-Means finds the clusters. PCA lets you visualize them. Always run K-Means on the original scaled features, not on the PCA-reduced version, unless the dataset is very large and speed is a concern.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch4-clustering">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=ch4-overview" data-lesson-link="ch4-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; Unsupervised Learning</span></a>
+<a class="lesson-nav-btn next" href="?lesson=ch4-kmeans" data-lesson-link="ch4-kmeans"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">4.2 K-Means &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="ch4-kmeans" data-chapter="ch4" data-chapter-title="Chapter 4: Unsupervised Learning" style="--chapter-accent:var(--ch4)">
+<div class="lesson-kicker">Chapter 4: Unsupervised Learning <span>&rsaquo;</span> 4.2 K-Means Deep Dive</div>
+<h1>4.2 K-Means Deep Dive</h1>
+<div class="lesson-meta"><span>Beginner</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+
+  <!-- ── What is K-Means ──────────────────────────────────────────── -->
+  <h3>What is K-Means?</h3>
+  <p>K-Means is an algorithm that automatically groups data points into <strong>K clusters</strong> — where each cluster contains points that are similar to each other and different from the other groups. You do not tell it what the groups mean; it finds the groupings on its own just from the numbers.</p>
+
+  <figure class="lesson-figure">
+    <img
+      src="kmeans_plot0_concept.png"
+      alt="Before and after comparison: left panel shows unlabelled grey dots scattered randomly, right panel shows the same dots coloured into three distinct groups after K-Means"
+      loading="lazy"
+      class="lesson-image"
+    />
+    <figcaption>
+      K-Means takes unlabelled data (left) and assigns every point
+      to one of K groups (right). The algorithm decides the groupings
+      purely from the distances between points &mdash; no labels required.
+    </figcaption>
+  </figure>
+
+  <div class="callout tip" role="note">
+    <div class="callout-icon">💡</div>
+    <div><div class="callout-title">Real-world analogy</div>
+    <p>Imagine you tip a bag of mixed marbles onto a table — red, blue, and green ones all mixed together. You do not know how many colours are in the bag, so you pick 3 spots on the table as starting piles and then slide each marble to whichever pile it is closest to. After one pass you recalculate the centre of each pile and repeat. After a few passes the marbles have naturally sorted themselves by colour. That is K-Means.</p>
+    </div>
+  </div>
+
+  <p>In robotics this is useful whenever you have sensor readings but no labels — for example, grouping vibration patterns to discover which ones tend to precede a failure, without anyone having hand-labelled the data first.</p>
+
+  <div class="diagram diagram-wide" aria-label="K-Means concept overview">
+    <div class="flow-row">
+      <div class="flow-node">Unlabelled<br/>sensor data</div><div class="arrow">→</div>
+      <div class="flow-node">K-Means<br/>(you choose K)</div><div class="arrow">→</div>
+      <div class="flow-node">K groups of<br/>similar readings</div><div class="arrow">→</div>
+      <div class="flow-node">Inspect &amp;<br/>interpret</div>
+    </div>
+  </div>
+
+  <!-- ── How it works ─────────────────────────────────────────────── -->
+  <h3>How K-Means works — step by step</h3>
+  <p>The algorithm repeats two simple operations until nothing changes. You choose <strong>K</strong> (the number of clusters) before it starts — the rest is automatic.</p>
+  <p>K-Means repeats four operations until nothing changes. Here is what happens at each step.</p>
+
+  <div class="kmeans-steps">
+    <nav class="kmeans-step-nav" aria-label="K-Means steps">
+      <a class="kmeans-step-pill is-active" href="#kmeans-step-init" aria-current="step">1. Random Init</a>
+      <span aria-hidden="true">&rarr;</span>
+      <a class="kmeans-step-pill" href="#kmeans-step-assign">2. Assign</a>
+      <span aria-hidden="true">&rarr;</span>
+      <a class="kmeans-step-pill" href="#kmeans-step-recompute">3. Recompute</a>
+      <span aria-hidden="true">&rarr;</span>
+      <a class="kmeans-step-pill" href="#kmeans-step-converge">4. Converge</a>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href=".">ML for Robotics</a>
-        
-      </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Home</li>
-    <li class="wy-breadcrumbs-aside">
-    </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
-              
-                <h1 id="machine-learning-for-robotics-engineers">Machine Learning for Robotics Engineers</h1>
-<p>A browser-based course dashboard for learning Python, machine learning, reinforcement learning, and computer vision through robotics-flavored examples.</p>
-<hr />
-<h2 id="what-you-will-build">What You Will Build</h2>
-<ul>
-<li><strong>Python Confidence</strong> — Write and read basic Python, use notebooks, import libraries, and understand the code you run.</li>
-<li><strong>Data Thinking</strong> — Look at tables, sensor readings, labels, plots, and train/test splits the way an engineer would.</li>
-<li><strong>ML Intuition</strong> — Know when a problem is supervised, unsupervised, reinforcement learning, or computer vision.</li>
-<li><strong>Robotics Context</strong> — Connect models to mechanical systems, sensors, failures, vibration patterns, navigation, and images.</li>
-</ul>
-<hr />
-<h2 id="course-chapters">Course Chapters</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Chapter</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Chapter 0</strong> — Welcome &amp; How to Use This Guide</td>
-<td style="text-align: left;">Set up the course tools and understand what you will build.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 1</strong> — Python Programming Fundamentals</td>
-<td style="text-align: left;">Variables, data structures, control flow, loops, functions, and imports.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 2</strong> — What is Machine Learning?</td>
-<td style="text-align: left;">Understand ML, the three learning families, and when to use each.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 3</strong> — Supervised Learning</td>
-<td style="text-align: left;">Train models from labeled data using a robot arm failure prediction project.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 4</strong> — Unsupervised Learning</td>
-<td style="text-align: left;">Cluster vibration sensor readings and interpret hidden structure.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 5</strong> — Reinforcement Learning</td>
-<td style="text-align: left;">Use Q-learning to teach an agent to navigate a FrozenLake maze.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 6</strong> — Neural Networks</td>
-<td style="text-align: left;">Break simple networks, read the curves, and fix learning rates, epochs, and architecture.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 7</strong> — Computer Vision for Robotics</td>
-<td style="text-align: left;">Learn OpenCV, CNNs, and train a traffic sign classifier.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Chapter 8</strong> — What's Next?</td>
-<td style="text-align: left;">Pick the right technique and choose your next learning path.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="exercises">Exercises</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Exercise</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Exercise A</strong> — Train Your First Detector</td>
-<td style="text-align: left;">Collect Roboflow data, label boxes, train YOLO26n in Colab, and run your own detector locally.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Exercise B</strong> — Your Phone as a Robot Camera</td>
-<td style="text-align: left;">Stream phone video over WiFi and run your trained YOLO26n detector on every frame.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Exercise C</strong> — Precise Movement with Encoders</td>
-<td style="text-align: left;">Encoder ticks, exact distance driving, 90-degree turns, and programmed paths.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Exercise D</strong> — Talk to Your Robot Over WiFi</td>
-<td style="text-align: left;">Send UDP motor commands from Python, receive live encoder telemetry, and drive from the keyboard.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="projects">Projects</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Project</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Project 1</strong> — Object Tracker</td>
-<td style="text-align: left;">Build a local YOLO + PID vision loop that sends UDP motor commands.</td>
-</tr>
-</tbody>
-</table>
-<!-- | **Project 2** — Lane Follower | Replace YOLO with classical OpenCV thresholding, row scanning, and two-point steering. | -->
-<!-- | **Project 3** — Gesture Controlled Robot | Use MediaPipe hand landmarks to map two-hand gestures to UDP motor commands. | -->
-<!-- | **Project 4** — Pan-Tilt Ball Tracker | Use YOLO and two velocity-mode PID loops to center a ball by rotating a camera with servos. | -->
-              
-            </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="ch0/" class="btn btn-neutral float-right" title="Chapter 0: Welcome & How to Use This Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    <div class="kmeans-step" id="kmeans-step-init">
+      <div class="kmeans-step-header">
+        <div class="kmeans-step-number">1</div>
+        <h4 class="kmeans-step-title">Random Initialization</h4>
+      </div>
+      <p>Place K centroids at random positions in feature space.
+      These starting positions are guesses &mdash; the algorithm corrects
+      them over the next steps. The quality of the final result can
+      depend on where centroids start, which is why most implementations
+      run K-Means multiple times with different random starts and keep
+      the best result. scikit-learn's <code>n_init="auto"</code> handles this
+      automatically.</p>
+      <figure class="kmeans-step-figure">
+        <img src="kmeans_plot1_init.png"
+             alt="Three star-shaped centroids placed at random positions in the feature space before any points are assigned"
+             loading="lazy" class="lesson-image" />
+      </figure>
     </div>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
-          
-        </div>
+    <div class="kmeans-step" id="kmeans-step-assign">
+      <div class="kmeans-step-header">
+        <div class="kmeans-step-number">2</div>
+        <h4 class="kmeans-step-title">Assign</h4>
       </div>
+      <p>Calculate the distance from every data point to every centroid.
+      Assign each point to its closest centroid. All points assigned to
+      the same centroid form one cluster. After this step every point
+      belongs to exactly one cluster.</p>
+      <figure class="kmeans-step-figure">
+        <img src="kmeans_plot2_assign.png"
+             alt="Each data point coloured by its nearest centroid with thin lines connecting points to their assigned centroid"
+             loading="lazy" class="lesson-image" />
+      </figure>
+    </div>
 
-    </section>
+    <div class="kmeans-step" id="kmeans-step-recompute">
+      <div class="kmeans-step-header">
+        <div class="kmeans-step-number">3</div>
+        <h4 class="kmeans-step-title">Recompute</h4>
+      </div>
+      <p>Move each centroid to the mean position of all points currently
+      assigned to it. If cluster 1 contains 50 points, its new centroid
+      is the average position of those 50 points. This is where the word
+      Means in K-Means comes from.</p>
+      <figure class="kmeans-step-figure">
+        <img src="kmeans_plot3_recompute.png"
+             alt="Arrows showing each centroid shifting toward the mean position of its assigned group of points"
+             loading="lazy" class="lesson-image" />
+      </figure>
+    </div>
 
+    <div class="kmeans-step" id="kmeans-step-converge">
+      <div class="kmeans-step-header">
+        <div class="kmeans-step-number">4</div>
+        <h4 class="kmeans-step-title">Converge</h4>
+      </div>
+      <p>Repeat assign and recompute until no point changes its cluster
+      between iterations. At this point centroids have settled and the
+      algorithm has converged. This is guaranteed to happen but is not
+      guaranteed to find the globally best solution &mdash; only a local one.</p>
+      <figure class="kmeans-step-figure">
+        <img src="kmeans_plot4_converge.png"
+             alt="Final stable clusters with dashed boundary rings and a CONVERGED checkmark stamp showing the algorithm has finished"
+             loading="lazy" class="lesson-image" />
+      </figure>
+    </div>
   </div>
+                <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="kmeans_converge_step_by_step.py"><figcaption>Run to see K-Means converge step by step</figcaption><pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
 
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-    
-    
-      <span><a href="ch0/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
-</div>
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = ".";</script>
-    <script src="js/theme_extra.js"></script>
-    <script src="js/theme.js"></script>
-      <script src="js/dark-mode.js"></script>
-      <script src="js/copy-code.js"></script>
-      <script src="js/width-toggle.js"></script>
-      <script src="search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
+np.random.seed(42)
+X, _ = make_blobs(n_samples=150, centers=3,
+                  cluster_std=0.7, random_state=42)
+K = 3
 
-<<<<<<< HEAD
 # Manual K-Means for visualization
 centroids = X[np.random.choice(len(X), K, replace=False)]
 steps = []
@@ -14534,12 +14697,5 @@ finally:
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
-=======
->>>>>>> 4aac3e5bc632c39d3c90eed5c646d3cac1a42bae
 </body>
 </html>
-
-<!--
-MkDocs version : 1.6.1
-Build Date UTC : 2026-06-30 19:09:49.852784+00:00
--->
