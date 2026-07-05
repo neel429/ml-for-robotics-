@@ -282,7 +282,9 @@ def draw_debug(frame, debug, left_speed, right_speed, telem):
 def main():
     global BINARY_THRESHOLD
 
-    stream_url = f"http://{MOBILE_IP}:8080/video"
+    stream_url = f"http://{MOBILE_IP}:8080/video"        # Android (IP Webcam)
+    # stream_url = f"http://{MOBILE_IP}:8080/live"        # iPhone (Simple IP Camera)
+    # stream_url = f"https://{MOBILE_IP}:8080/camera/stream"  # phonesense (note: https)
     print(f"Stream: {stream_url}")
 
     video     = MobileVideoStream(stream_url)

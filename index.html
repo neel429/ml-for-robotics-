@@ -5809,6 +5809,7 @@ from ultralytics import YOLO
 # Paste your phone stream URL here
 # Android (IP Webcam):      &quot;http://192.168.x.x:8080/video&quot;
 # iOS (Simple IP Camera): &quot;http://192.168.x.x:8080/live&quot;
+# phonesense:             &quot;https://192.168.x.x:8080/camera/stream&quot;
 STREAM_URL = &quot;http://YOUR_PHONE_IP:8080/video&quot;
 
 # Path to your trained model from Exercise A
@@ -5903,8 +5904,9 @@ if __name__ == &quot;__main__&quot;:
     main()</code></pre></figure>
 <h3>Step 1 — Edit The STREAM_URL Line</h3>
 <p>Change <code>YOUR_PHONE_IP</code> to the IP address shown in your phone app.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>STREAM_URL examples</span></figcaption><pre><code class="language-bash">Android: STREAM_URL = &quot;http://192.168.1.47:8080/video&quot;
-iOS:  STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>STREAM_URL examples</span></figcaption><pre><code class="language-bash">Android:    STREAM_URL = &quot;http://192.168.1.47:8080/video&quot;
+iOS:        STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;
+phonesense: STREAM_URL = &quot;https://192.168.1.10:8080/camera/stream&quot;</code></pre></figure>
 <h3>Step 2 — Make Sure best.pt Is In The Same Folder</h3>
 <p>Your trained model file from Exercise A must be in the <code>my-detector</code> folder alongside <code>detect_stream.py</code>. If you named it something else like <code>ball_detector.pt</code>, update the <code>MODEL_PATH</code> line accordingly.</p>
 <h3>Step 3 — Run The Script</h3>
@@ -8869,7 +8871,7 @@ class Telemetry:
 <h3>The Four Components</h3>
 <div class="grid-2">
 <div class="card"><h4>1. Object Detection</h4><p><strong>What it does:</strong> finds the ball in every camera frame and returns the largest bounding box.</p><p><strong>Where you learned it:</strong> Exercise A, especially PA.8 and PA.9.</p><p><strong>New here:</strong> none. Same YOLO call you used in <code>detect_stream.py</code>.</p></div>
-<div class="card"><h4>2. Camera Stream</h4><p><strong>What it does:</strong> pulls MJPEG frames from your phone camera.</p><p><strong>Where you learned it:</strong> Exercise B, PB.6 and PB.7.</p><p><strong>New here:</strong> none. Same <code>read_frame()</code> pattern from Exercise B.</p></div>
+<div class="card"><h4>2. Camera Stream</h4><p><strong>What it does:</strong> pulls MJPEG frames from your phone camera.</p><p><strong>Where you learned it:</strong> Exercise B, PB.6 and PB.7.</p><p><strong>New here:</strong> the same JPEG parsing from Exercise B, wrapped in a <code>read_frames()</code> generator you loop over with <code>for frame in read_frames(stream)</code>.</p></div>
 <div class="card"><h4>3. PID Controller</h4><p><strong>What it does:</strong> converts horizontal error into a turn correction continuously.</p><p><strong>Where you learned the idea:</strong> Exercise C's distance control in PC.8.</p><p><strong>New here:</strong> continuous adjustment instead of a threshold stop.</p></div>
 <div class="card"><h4>4. UDP Communication</h4><p><strong>What it does:</strong> sends <code>MOTOR</code> commands to the robot.</p><p><strong>Where you learned it:</strong> Exercise D, PD.2 and PD.3.</p><p><strong>New here:</strong> none. Same socket and message format from Exercise D.</p></div>
 </div>
@@ -8903,18 +8905,22 @@ import socket
 import numpy as np
 import requests
 import time
+import urllib3
 from ultralytics import YOLO
+
+# phonesense serves over HTTPS with a self-signed cert; silence the warning.
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # -- CONFIGURATION ----------------------------------------------------
 # Paste your phone stream URL here
-# Android (IP Webcam):       "http://192.168.x.x:8080/video"
-# iPhone (Simple IP Camera): "http://192.168.x.x:8080/live"
-STREAM_URL = "http://192.168.1.137:8080/video"
+# Android (IP Webcam):       "http://127.0.0.1:8080/video"
+# iPhone (Simple IP Camera): "http://127.0.0.1:8080/live"
+# phonesense:                "https://127.0.0.1:8080/camera/stream"
+STREAM_URL = "https://127.0.0.1:8080/camera/stream"
 ARDUINO_IP = "192.168.1.19"
 CMD_PORT = 5001
 # Path to your trained model from Exercise A
 MODEL_PATH = "best.pt"
-# MODEL_PATH = "yolo26x-obb.pt"
 
 # Only show detections above this confidence level (0.0 to 1.0)
 CONFIDENCE = 0.1
@@ -8974,42 +8980,51 @@ def send_stop():
 
 def open_stream(url):
     print(f"Connecting to stream: {url}")
-    response = requests.get(url, stream=True, timeout=10)
+    response = requests.get(url, stream=True, timeout=10, verify=False)
     if response.status_code != 200:
         raise ConnectionError(f"Could not connect. Status: {response.status_code}")
     print("Stream connected.")
     return response
 
 
-def read_frame(stream_response):
+def read_frames(stream_response):
+    """Yield decoded JPEG frames from an MJPEG stream.
+
+    Iterates the response exactly once and keeps a persistent buffer so JPEG
+    boundaries that span chunks (or frames) are never dropped. Re-calling
+    ``iter_content`` per frame would raise ``StreamConsumedError``.
+    """
     buf = b""
     for chunk in stream_response.iter_content(4096):
         if not chunk:
             continue
 
         buf += chunk
-        start = buf.find(b"\xff\xd8")
-        if start == -1:
-            # Keep one byte in case the JPEG marker is split across chunks.
-            buf = buf[-1:]
-            continue
 
-        end = buf.find(b"\xff\xd9", start + 2)
-        if end == -1:
-            # Keep the partial JPEG and wait for more bytes.
-            buf = buf[start:]
-            continue
+        # A single chunk can hold several complete JPEGs; drain them all.
+        while True:
+            start = buf.find(b"\xff\xd8")
+            if start == -1:
+                # No frame start yet. Keep one byte in case the marker is
+                # split across chunks.
+                buf = buf[-1:]
+                break
 
-        jpg = buf[start : end + 2]
-        buf = buf[end + 2 :]
+            end = buf.find(b"\xff\xd9", start + 2)
+            if end == -1:
+                # Partial JPEG -- keep it and wait for more bytes.
+                buf = buf[start:]
+                break
 
-        if len(jpg) &lt;= 2:
-            continue
+            jpg = buf[start : end + 2]
+            buf = buf[end + 2 :]
 
-        frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
-        if frame is not None:
-            return frame
-    return None
+            if len(jpg) &lt;= 2:
+                continue
+
+            frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            if frame is not None:
+                yield frame
 
 
 def findbest(results):
@@ -9042,11 +9057,7 @@ def main():
 
     pid = PID(0.7, 0.1, 0.05, output_limit=1)
 
-    while True:
-        frame = read_frame(stream)
-        if frame is None:
-            continue
-
+    for frame in read_frames(stream):
         results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
 
         best = findbest(results)
@@ -9127,17 +9138,43 @@ if __name__ == "__main__":
 <tr><td><code>ultralytics</code></td><td>Exercise A</td><td>Loads <code>best.pt</code> and runs YOLO detection.</td></tr>
 <tr><td><code>opencv-python</code></td><td>Exercises A and B</td><td>Decodes frames, draws detection boxes, and shows the video window.</td></tr>
 <tr><td><code>requests</code></td><td>Exercise B</td><td>Connects to the phone MJPEG stream.</td></tr>
+<tr><td><code>urllib3</code></td><td>Exercise B</td><td>Ships with <code>requests</code> &mdash; used to silence the self-signed-certificate warning when connecting to a phonesense <code>https://</code> stream.</td></tr>
 </tbody></table></div>
-<h3>The Only New Package</h3>
-<p><code>numpy</code> may already be installed because <code>ultralytics</code> depends on it. Verify first:</p>
-<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="Terminal"><figcaption><span>Check NumPy</span></figcaption><pre><code class="language-bash">python -c "import numpy; print(numpy.__version__)"</code></pre></figure>
-<p>If that prints a version number, you are done. If it throws an import error, install NumPy:</p>
-<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="Terminal"><figcaption><span>Install NumPy only if needed</span></figcaption><pre><code class="language-bash">pip install numpy</code></pre></figure>
+<h3>Install Everything From <code>requirements.txt</code></h3>
+<p>The project ships a <code>requirements.txt</code> with every package pinned to an exact, tested version, so everyone installs the same thing. It lives in the same folder as <code>obj_track_advpid.py</code> &mdash; you do not need to create it. <code>torch</code> is not listed because it comes in automatically as an <code>ultralytics</code> dependency.</p>
+<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="requirements.txt"><figcaption><span>requirements.txt (already in the project)</span></figcaption><pre><code class="language-text">ultralytics==8.4.89
+opencv-python==5.0.0.93
+numpy==2.5.1
+mediapipe==0.10.35
+teachable-machine==1.2.1
+tensorflow==2.21.0
+requests==2.34.2
+urllib3==2.7.0</code></pre></figure>
+<p>Pick whichever installer you use. Both create an isolated environment first, then install into it &mdash; run these from the project folder.</p>
+
+<h4>Option A &mdash; pip (comes with Python)</h4>
+<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="Terminal (pip)"><figcaption><span>pip</span></figcaption><pre><code class="language-bash"># create and activate a virtual environment
+python -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+
+# install the pinned dependencies
+pip install -r requirements.txt</code></pre></figure>
+
+<h4>Option B &mdash; uv (fastest)</h4>
+<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="Terminal (uv)"><figcaption><span>uv</span></figcaption><pre><code class="language-bash"># create and activate a virtual environment (Python 3.12)
+uv venv --python 3.12
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+
+# install the pinned dependencies
+uv pip install -r requirements.txt</code></pre></figure>
+
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">GPU is optional</div><p>This installs the CPU build of PyTorch, which is all Project 1 needs. If you have an NVIDIA GPU and want faster detection, install a CUDA build first &mdash; e.g. <code>pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126</code> (or the <code>uv pip</code> equivalent) &mdash; then run the install above. <code>urllib3</code> is listed because the code uses it directly to silence the self-signed-certificate warning from the phonesense stream; <code>socket</code> is part of Python&apos;s standard library and needs nothing.</p></div></div>
 <h3>Full Dependency Check</h3>
 <p>Create <code>check_deps.py</code> in the same folder as <code>obj_track_advpid.py</code> and run it.</p>
 <figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="check_deps.py"><figcaption><span>check_deps.py</span></figcaption><pre><code class="language-python">import cv2
 import numpy as np
 import requests
+import urllib3
 import socket
 from ultralytics import YOLO
 
@@ -9155,12 +9192,12 @@ print("All dependencies present.")</code></pre></figure><figure class="code-card
 <div class="lesson-body">
 <p class="lead">Project 1 becomes your robot when you fill in the configuration block at the top of <code>obj_track_advpid.py</code>. Every value comes from a previous project or from one calibration step you perform now.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Constant</th><th>Source</th><th>What to enter</th></tr></thead><tbody>
-<tr><td><code>STREAM_URL</code></td><td>Exercise B, PB.4</td><td>The full stream URL shown in IP Webcam or Simple IP Camera when the stream is active. Android: <code>http://&lt;phone-ip&gt;:8080/video</code>. iPhone: <code>http://&lt;phone-ip&gt;:8080/live</code>.</td></tr>
+<tr><td><code>STREAM_URL</code></td><td>Exercise B, PB.4</td><td>The full stream URL shown in IP Webcam, Simple IP Camera, or phonesense when the stream is active. Android: <code>http://&lt;phone-ip&gt;:8080/video</code>. iPhone: <code>http://&lt;phone-ip&gt;:8080/live</code>. phonesense: <code>https://&lt;phone-ip&gt;:8080/camera/stream</code>.</td></tr>
 <tr><td><code>ARDUINO_IP</code></td><td>Exercise D, PD.2</td><td>The IP printed by the Arduino Serial Monitor when <code>robot_udp</code> boots. If you lost it, re-upload Exercise D&apos;s sketch and read Serial Monitor again.</td></tr>
 <tr><td><code>CMD_PORT = 5001</code></td><td>Exercise D, PD.0</td><td>Leave as <code>5001</code>. It must match <code>CMD_PORT</code> in the Arduino sketch.</td></tr>
 <tr><td><code>MODEL_PATH</code></td><td>Exercise A</td><td>The path to your trained model file. Leave as <code>"best.pt"</code> if it is in the same folder.</td></tr>
 <tr><td><code>CONFIDENCE</code></td><td>Exercise A, PA.8</td><td>Detection threshold. Start at <code>0.1</code> for testing; raise to <code>0.5</code> or higher once tracking works to reduce false detections.</td></tr>
-<tr><td><code>SPEED</code></td><td>First-run safety</td><td>Forward base speed added to both motors. Start at <code>80</code> for a slow first test.</td></tr>
+<tr><td><code>SPEED</code></td><td>First-run safety</td><td>Forward base speed added to both motors. Start at <code>0</code> so the robot stays in place and only turns to track the ball &mdash; it cannot drive off the table. Once turning is confirmed, raise it (around <code>80</code>) so the robot drives forward to follow.</td></tr>
 <tr><td><code>TURN</code></td><td>PID tuning</td><td>Maximum turn output. Leave at <code>255</code> and control aggressiveness through PID gains instead.</td></tr>
 </tbody></table></div>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Configuration errors look like code bugs</div><p>A wrong <code>STREAM_URL</code>, stale <code>ARDUINO_IP</code>, or inverted motor sign can make correct code behave incorrectly. Fill in these values before changing any PID gains.</p></div></div>
@@ -9278,7 +9315,7 @@ send_command(-power - SPEED, power - SPEED)</code></pre></figure>
 <div class="lesson-meta"><span>Camera</span><span>MJPEG</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">The stream functions in <code>obj_track_advpid.py</code> are the same pattern from Exercise B, reorganized into two functions: <code>open_stream()</code> opens the HTTP connection once, and <code>read_frame()</code> reads one JPEG frame from the running response.</p>
+<p class="lead">The stream functions in <code>obj_track_advpid.py</code> are the same pattern from Exercise B, reorganized into two functions: <code>open_stream()</code> opens the HTTP connection once, and <code>read_frames()</code> is a <em>generator</em> that yields JPEG frames from that one running response.</p>
 <h3>Exercise B Code You Already Wrote</h3>
 <figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="detect_stream.py"><figcaption><span>Exercise B core loop (reference)</span></figcaption><pre><code class="language-python">response = requests.get(url, stream=True, timeout=10)
 
@@ -9294,52 +9331,60 @@ for chunk in response.iter_content(1024):
         if frame is not None:
             ...</code></pre></figure>
 <h3>Project 1 Code: Two Functions</h3>
-<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="obj_track_advpid.py"><figcaption><span>open_stream() and read_frame()</span></figcaption><pre><code class="language-python">def open_stream(url):
+<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="obj_track_advpid.py"><figcaption><span>open_stream() and read_frames()</span></figcaption><pre><code class="language-python">def open_stream(url):
     print(f"Connecting to stream: {url}")
-    response = requests.get(url, stream=True, timeout=10)
+    response = requests.get(url, stream=True, timeout=10, verify=False)
     if response.status_code != 200:
         raise ConnectionError(f"Could not connect. Status: {response.status_code}")
     print("Stream connected.")
     return response
 
 
-def read_frame(stream_response):
+def read_frames(stream_response):
+    """Yield decoded JPEG frames from an MJPEG stream.
+
+    Iterates the response exactly once and keeps a persistent buffer so JPEG
+    boundaries that span chunks (or frames) are never dropped. Re-calling
+    ``iter_content`` per frame would raise ``StreamConsumedError``.
+    """
     buf = b""
     for chunk in stream_response.iter_content(4096):
         if not chunk:
             continue
 
         buf += chunk
-        start = buf.find(b"\xff\xd8")
-        if start == -1:
-            buf = buf[-1:]
-            continue
 
-        end = buf.find(b"\xff\xd9", start + 2)
-        if end == -1:
-            buf = buf[start:]
-            continue
+        # A single chunk can hold several complete JPEGs; drain them all.
+        while True:
+            start = buf.find(b"\xff\xd8")
+            if start == -1:
+                buf = buf[-1:]
+                break
 
-        jpg = buf[start : end + 2]
-        buf = buf[end + 2 :]
+            end = buf.find(b"\xff\xd9", start + 2)
+            if end == -1:
+                buf = buf[start:]
+                break
 
-        if len(jpg) &lt;= 2:
-            continue
+            jpg = buf[start : end + 2]
+            buf = buf[end + 2 :]
 
-        frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
-        if frame is not None:
-            return frame
-    return None</code></pre></figure>
+            if len(jpg) &lt;= 2:
+                continue
+
+            frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            if frame is not None:
+                yield frame</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Concept</th><th>Exercise B</th><th>Project 1</th></tr></thead><tbody>
-<tr><td>Open HTTP connection</td><td><code>requests.get(url, stream=True)</code></td><td>Same call, now returns the response object.</td></tr>
-<tr><td>Read bytes</td><td><code>iter_content(1024)</code></td><td>Same pattern, chunk size raised to 4096.</td></tr>
+<tr><td>Open HTTP connection</td><td><code>requests.get(url, stream=True)</code></td><td>Same call plus <code>verify=False</code> so a phonesense self-signed HTTPS cert is accepted.</td></tr>
+<tr><td>Read bytes</td><td><code>iter_content(1024)</code></td><td>Iterated <strong>once</strong> inside a generator, chunk size raised to 4096.</td></tr>
+<tr><td>Hand back a frame</td><td>returns one frame</td><td><code>yield</code>s frames continuously &mdash; the caller loops with <code>for frame in read_frames(...)</code>.</td></tr>
 <tr><td>Find JPEG end</td><td><code>buf.find(b"\xff\xd9")</code></td><td>Now searches after <code>start + 2</code> to avoid false matches inside the header.</td></tr>
-<tr><td>Guard for empty chunk</td><td>not present</td><td><code>if not chunk: continue</code> skips empty keep-alive chunks.</td></tr>
 <tr><td>Partial JPEG handling</td><td>not explicit</td><td><code>buf = buf[-1:]</code> and <code>buf = buf[start:]</code> handle split markers correctly.</td></tr>
 </tbody></table></div>
 <h3>What Changed and Why</h3>
-<p>The chunk size increased from 1024 to 4096 &mdash; larger chunks mean fewer Python loop iterations per frame, which matters when YOLO detection also runs in the same loop. The JPEG end search now starts at <code>start + 2</code> instead of 0 to avoid misidentifying the two-byte SOI marker itself as the EOI marker. The <code>if len(jpg) &lt;= 2</code> guard discards accidentally empty captures.</p>
-<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Exercise B is the reference</div><p>If <code>read_frame()</code> feels unfamiliar, go back to PB.7 and compare the JPEG parsing lines. The logic is the same; Project 1 only makes the byte handling slightly more robust.</p></div></div>
+<p><code>read_frames()</code> is a <strong>generator</strong>: it opens the byte stream once and <code>yield</code>s each frame as it is decoded. This matters because a <code>requests</code> response can only be iterated a single time &mdash; the earlier design that called <code>iter_content()</code> fresh for every frame raised <code>StreamConsumedError</code> on the second call. Iterating once and keeping a persistent <code>buf</code> across chunks also means a JPEG split across two chunks (or two JPEGs packed into one chunk) is never lost. The inner <code>while</code> loop drains every complete JPEG already sitting in the buffer before pulling the next chunk. The chunk size is 4096 (up from 1024) for fewer loop iterations, the end search starts at <code>start + 2</code> to skip the two-byte SOI marker, and <code>if len(jpg) &lt;= 2</code> discards empty captures.</p>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Exercise B is the reference</div><p>If <code>read_frames()</code> feels unfamiliar, go back to PB.7 and compare the JPEG parsing lines. The logic is the same; Project 1 makes the byte handling more robust and turns it into a generator you can loop over.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-camera">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj1-pid" data-lesson-link="proj1-pid"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P1.4 PID Controller</span></a><a class="lesson-nav-btn next" href="?lesson=proj1-udp-send" data-lesson-link="proj1-udp-send"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.6 Sending Commands &rarr;</span></a></nav>
@@ -9431,11 +9476,7 @@ send_command(-power - SPEED, power - SPEED)</code></pre></figure>
 
     pid = PID(0.7, 0.1, 0.05, output_limit=1)
 
-    while True:
-        frame = read_frame(stream)
-        if frame is None:
-            continue
-
+    for frame in read_frames(stream):
         results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
 
         best = findbest(results)
@@ -9469,17 +9510,17 @@ send_command(-power - SPEED, power - SPEED)</code></pre></figure>
 <tr><td><code>model = YOLO(MODEL_PATH)</code></td><td>Exercise A &mdash; YOLO model loading.</td></tr>
 <tr><td><code>stream = open_stream(STREAM_URL)</code></td><td>Exercise B &mdash; HTTP stream connection.</td></tr>
 <tr><td><code>pid = PID(...)</code></td><td>Project 1 &mdash; PID class.</td></tr>
-<tr><td><code>frame = read_frame(stream)</code></td><td>Exercise B &mdash; frame parsing.</td></tr>
+<tr><td><code>for frame in read_frames(stream)</code></td><td>Exercise B &mdash; frame parsing, now a generator loop.</td></tr>
 <tr><td><code>results = model(frame, ...)</code></td><td>Exercise A &mdash; detection call.</td></tr>
 <tr><td><code>best = findbest(results)</code></td><td>Project 1 &mdash; largest-box selection.</td></tr>
 <tr><td><code>send_command(-power - SPEED, power - SPEED)</code></td><td>Exercise D &mdash; UDP send.</td></tr>
 <tr><td><code>annotated = results[0].plot()</code></td><td>Exercise A &mdash; annotated display.</td></tr>
 </tbody></table></div>
 <h3>Non-obvious Lines</h3>
-<p><code>model = YOLO(MODEL_PATH)</code> and <code>open_stream(STREAM_URL)</code> run <em>once</em> before the loop &mdash; loading the model inside the loop would make the robot unusable. <code>if best is not None</code>: when no detection meets the threshold, the loop does nothing to the motors and the robot holds its last state. If you want it to stop when no target is visible, add <code>send_stop()</code> in an <code>else</code> branch. <code>results[0].plot()</code> draws YOLO&apos;s own boxes and labels; FPS is recomputed each second and drawn with <code>cv2.putText()</code>. <code>stream.close()</code> on exit tears down the HTTP connection cleanly.</p>
+<p><code>model = YOLO(MODEL_PATH)</code> and <code>open_stream(STREAM_URL)</code> run <em>once</em> before the loop &mdash; loading the model inside the loop would make the robot unusable. <code>for frame in read_frames(stream)</code> drives the loop directly off the frame generator, so there is no <code>if frame is None</code> check to write &mdash; the loop body only runs when a real frame is yielded, and ends cleanly if the stream stops. <code>if best is not None</code>: when no detection meets the threshold, the loop does nothing to the motors and the robot holds its last state. If you want it to stop when no target is visible, add <code>send_stop()</code> in an <code>else</code> branch. <code>results[0].plot()</code> draws YOLO&apos;s own boxes and labels; FPS is recomputed each second and drawn with <code>cv2.putText()</code>. <code>stream.close()</code> on exit tears down the HTTP connection cleanly.</p>
 <h3>Frame-by-frame Walkthrough</h3>
 <div class="steps">
-<div class="step"><div><strong>Read a frame.</strong> <code>read_frame(stream)</code> blocks until a complete JPEG arrives from the phone.</div></div>
+<div class="step"><div><strong>Read a frame.</strong> The <code>for frame in read_frames(stream)</code> loop yields the next complete JPEG as it arrives from the phone.</div></div>
 <div class="step"><div><strong>Run detection.</strong> <code>model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)</code> runs YOLO and returns results.</div></div>
 <div class="step"><div><strong>Find the best box.</strong> <code>findbest(results)</code> returns the largest bounding box or <code>None</code>.</div></div>
 <div class="step"><div><strong>Compute and send the motor command.</strong> If a box was found, the horizontal center is normalized to -1&hellip;+1, the PID produces a turn correction, and <code>send_command()</code> sends the motor values over UDP.</div></div>
@@ -12123,7 +12164,7 @@ from shared import PID, MobileVideoStream, RobotState
 
 # Network
 ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
-MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam, Simple IP Camera, or phonesense
 UDP_CMD_PORT = 5001
 UDP_TELEM_PORT = 5002
 
@@ -12826,7 +12867,7 @@ udp.endPacket();</script></figure>
 <p class="lead">Most setup problems come from configuration values. Start by editing only the configuration block at the top of <code>pan_and_tilt.py</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="proj4" data-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Configuration block</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source"># Network
 ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
-MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam, Simple IP Camera, or phonesense
 UDP_CMD_PORT = 5001
 UDP_TELEM_PORT = 5002
 
@@ -12947,7 +12988,7 @@ from shared import PID, MobileVideoStream, RobotState
 
 # Network
 ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
-MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam, Simple IP Camera, or phonesense
 UDP_CMD_PORT = 5001
 UDP_TELEM_PORT = 5002
 
@@ -13718,7 +13759,9 @@ import requests
 # ===================== CONFIGURATION =====================
 ARDUINO_IP = "192.168.6.92"      # Arduino IP from the Serial Monitor
 CMD_PORT   = 5001               # must match robot_udp.ino
-PHONE_URL  = "http://192.168.5.148:8080/video"   # phone MJPEG stream
+PHONE_URL  = "http://192.168.5.148:8080/video"   # phone MJPEG stream (Android / IP Webcam)
+# PHONE_URL  = "http://192.168.5.148:8080/live"   # iPhone / Simple IP Camera
+# PHONE_URL  = "https://192.168.5.148:8080/camera/stream"   # phonesense (note: https)
 
 # Motion speeds (PWM 0-255)
 SCAN_SPEED      = 120   # rotation speed while searching (nothing in view)

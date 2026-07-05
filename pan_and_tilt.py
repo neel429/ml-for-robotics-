@@ -31,7 +31,7 @@ from shared import PID, MobileVideoStream, RobotState
 
 # Network
 ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
-MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam, Simple IP Camera, or phonesense
 UDP_CMD_PORT = 5001
 UDP_TELEM_PORT = 5002
 
@@ -384,7 +384,9 @@ def draw_overlay(frame, debug, pan, tilt, telem, scale_x=1.0, scale_y=1.0):
 # -----------------------------------------------------------------------------
 
 def main():
-    stream_url = f"http://{MOBILE_IP}:8080/video"
+    stream_url = f"http://{MOBILE_IP}:8080/video"        # Android (IP Webcam)
+    # stream_url = f"http://{MOBILE_IP}:8080/live"        # iPhone (Simple IP Camera)
+    # stream_url = f"https://{MOBILE_IP}:8080/camera/stream"  # phonesense (note: https)
     print(f"Video stream : {stream_url}")
     print(f"ESP target   : {ESP_IP}:{UDP_CMD_PORT}")
 

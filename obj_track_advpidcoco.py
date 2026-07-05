@@ -17,8 +17,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 STREAM_URL = "https://127.0.0.1:8080/camera/stream"
 ARDUINO_IP = "192.168.1.19"
 CMD_PORT = 5001
-# Path to your trained model from Exercise A
-MODEL_PATH = "best.pt"
 
 # Only show detections above this confidence level (0.0 to 1.0)
 CONFIDENCE = 0.1
@@ -142,10 +140,13 @@ def findbest(results):
 
 
 def main():
+    # Load the trained model
     print("Loading model...")
-    model = YOLO(MODEL_PATH)
+    model = YOLO("yolo11x.pt")  # or yolo11s.pt, yolo11m.pt, yolo11l.pt, yolo11x.pt
     print("Model loaded.")
+    print(model.names)
 
+    # Connect to the phone stream
     stream = open_stream(STREAM_URL)
 
     print("Press Q to quit.")
@@ -156,18 +157,32 @@ def main():
     pid = PID(0.7, 0.1, 0.05, output_limit=1)
 
     for frame in read_frames(stream):
-        results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
+        # Run detection on the frame (classes=0 -> COCO "person" only)
+        now = time.time()
+        results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False, classes=0)
+        fin = time.time()
+        # print(fin - now)
 
         best = findbest(results)
         if best is not None:
             wid = len(frame[0])
             x = (best[0] + best[2]) / 2
+            # print(best,x)
             x = (x - wid / 2) / (wid / 2)
             power = pid.update(x) * TURN
+            # if power != 0:
+            # power = (x / abs(x)) * min(abs(x * TURN), 255)
+            # print(f"{round(x,2)}\t{round(power,2)}")
             send_command(-power - SPEED, power - SPEED)
-
+        else:
+            pass
+            # send_command(0, 0)
+            # pid.reset()
+        # send_command(255,255)
+        # Draw boxes on the frame
         annotated = results[0].plot()
 
+        # Calculate and display FPS
         frame_count += 1
         elapsed = time.time() - fps_timer
         if elapsed >= 1.0:
@@ -184,7 +199,7 @@ def main():
             2,
         )
 
-        cv2.imshow("Phone Stream - YOLO Detection", annotated)
+        cv2.imshow("Phone Stream - YOLO11 Detection", annotated)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break

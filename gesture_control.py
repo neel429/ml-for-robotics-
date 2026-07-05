@@ -13,8 +13,10 @@ ESP_IP = "192.168.137.35"
 UDP_CMD_PORT = 5001
 
 # Mobile phone camera stream
-MOBILE_IP = "10.18.88.38"  # Change to your phone's IP
-STREAM_URL = f"http://{MOBILE_IP}:8080/video"
+MOBILE_IP = "10.18.88.38"  # Change to your phone's IP (IP Webcam, Simple IP Camera, or phonesense)
+STREAM_URL = f"http://{MOBILE_IP}:8080/video"        # Android (IP Webcam)
+# STREAM_URL = f"http://{MOBILE_IP}:8080/live"        # iPhone (Simple IP Camera)
+# STREAM_URL = f"https://{MOBILE_IP}:8080/camera/stream"  # phonesense (note: https)
 
 # Speed settings. Tune these to your robot.
 BASE_SPEED = 13
