@@ -7127,6 +7127,25 @@ void turnDegrees(float degrees, int speed) {
 <p class="lead">The Arduino UNO R4 WiFi has a separate WiFi module, the ESP-S3 chip, that handles wireless communication. Your sketch talks to that module through the <code>WiFiS3</code> and <code>WiFiUDP</code> libraries.</p>
 <p>The Arduino does not automatically know where your laptop is. It needs a WiFi network name, a WiFi password, and your laptop's IP address so it knows where to send telemetry.</p>
 
+<h3>Install the UNO R4 Board Package</h3>
+<p>Before any WiFi sketch will compile, the Arduino IDE needs the UNO R4 board package. If you already installed it in Exercise C you can skip this &mdash; but it is worth confirming.</p>
+<div class="steps">
+<div class="step"><div><strong>Open the Boards Manager.</strong> Click the board-shaped icon in the toolbar on the left of the Arduino IDE.</div></div>
+<div class="step"><div><strong>Search for <code>UNO R4 WiFi</code></strong> in the Boards Manager search box.</div></div>
+<div class="step"><div><strong>Install the latest version</strong> of the <strong>Arduino UNO R4 Boards</strong> package.</div></div>
+<div class="step"><div><strong>Select the board.</strong> Choose <strong>Arduino UNO R4 WiFi</strong> in the board dropdown at the top of the IDE.</div></div>
+</div>
+
+<h3>Update the WiFi Firmware</h3>
+<p>The onboard ESP32-S3 WiFi module runs its own firmware, separate from your sketch. Out-of-date firmware is a common cause of a board that associates with WiFi but never gets a valid IP (it stays at <code>0.0.0.0</code>). Update it once from the IDE:</p>
+<div class="steps">
+<div class="step"><div><strong>Connect the UNO R4 WiFi</strong> over USB and select its port under <strong>Tools &rarr; Port</strong>.</div></div>
+<div class="step"><div><strong>Open <code>Tools &rarr; Firmware Updater</code></strong>.</div></div>
+<div class="step"><div><strong>Update.</strong> Select your board&apos;s port, pick the latest firmware, and click <strong>Update</strong>. Do not unplug the board while it is updating.</div></div>
+</div>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Why the firmware matters</div><p>WiFi association and radio behavior live in the module&apos;s firmware, not your sketch. Updating it once clears a whole class of &quot;connects but no IP&quot; and &quot;Communication with WiFi module failed&quot; errors before they cost you debugging time.</p></div></div>
+
+
 <div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">WiFiS3 is already installed</div><p>The <code>WiFiS3</code> and <code>WiFiUDP</code> libraries are bundled inside the Arduino UNO R4 board package you installed in Exercise C. They are not listed in the Library Manager because they are not separate libraries; they come with the board itself.</p><p>You do not need to install anything. The lines <code>#include &lt;WiFiS3.h&gt;</code> and <code>#include &lt;WiFiUDP.h&gt;</code> will work immediately in any sketch. If Arduino IDE underlines them as errors, it means the wrong board is selected. Check that <strong>Arduino UNO R4 WiFi</strong> is selected in the board dropdown at the top of the IDE.</p></div></div>
 
 <h3>Finding the Arduino IP Address</h3>
