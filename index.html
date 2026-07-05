@@ -516,7 +516,7 @@
 <div class="step"><div><strong>Windows: tick <em>Add python.exe to PATH</em></strong> on the very first installer screen, before you click Install. This is the single most common step people forget.</div></div>
 <div class="step"><div><strong>Verify.</strong> Open a terminal (in VS Code: <strong>Terminal &rarr; New Terminal</strong>) and run <code>python --version</code>. It should print <code>Python 3.14.6</code>. On macOS/Linux you may need <code>python3 --version</code>.</div></div>
 </div>
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">A couple of exercises need an older Python</div><p>The Keras / Teachable Machine image-classification exercises (<a href="?lesson=ch7-cnn" data-lesson-link="ch7-cnn">7.4</a> and <a href="?lesson=projD-image" data-lesson-link="projD-image">PD.1d</a>) depend on <code>tensorflow</code> and <code>numpy==1.23.5</code>, which do not yet publish builds for the newest Python. If you plan to do those, also install <strong>Python 3.11</strong> from the same page and give them their own environment (see step 4). Everything else runs fine on 3.14.6.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">A couple of exercises need an older Python</div><p>The Keras / Teachable Machine image-classification exercises (<a href="?lesson=ch7-cnn" data-lesson-link="ch7-cnn">7.4</a> and <a href="?lesson=projD-image" data-lesson-link="projD-image">PD.1d</a>) depend on <code>tensorflow</code> and <code>numpy==1.23.5</code>, which do not yet publish builds for the newest Python. If you plan to do those, also install <strong>Python 3.11</strong> from the same page and give them their own environment (see step 5). Everything else runs fine on 3.14.6.</p></div></div>
 
 <h4>3. Add the Python Extension to VS Code</h4>
 <div class="steps">
@@ -524,7 +524,67 @@
 <div class="step"><div><strong>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noreferrer">Python extension by Microsoft</a>.</strong> Search <code>Python</code>, pick the one published by <strong>Microsoft</strong>, and click <strong>Install</strong>. It also pulls in <strong>Pylance</strong> for autocompletion and error checking.</div></div>
 </div>
 
-<h4>4. Create a Project Folder and Virtual Environment</h4>
+<h4>4. Verify Your Setup</h4>
+<p>Before creating an environment, confirm all three installs are correct. In VS Code, open a <strong>new</strong> terminal (<strong>Terminal &rarr; New Terminal</strong>) and run these:</p>
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="Terminal"><figcaption><span>Terminal &mdash; quick check</span></figcaption><pre><code class="language-bash">code --version          # VS Code is installed and on PATH
+code --list-extensions  # should list ms-python.python
+python --version        # should print Python 3.14.6
+py --list               # Windows: shows every Python version installed</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Command</th><th>What a correct result looks like</th></tr></thead><tbody>
+<tr><td><code>code --version</code></td><td>Prints a version number. If it says &quot;not recognized,&quot; VS Code was not added to PATH &mdash; open a fresh terminal, or re-run the VS Code installer.</td></tr>
+<tr><td><code>code --list-extensions</code></td><td>The list includes <code>ms-python.python</code> (and usually <code>ms-python.vscode-pylance</code>).</td></tr>
+<tr><td><code>python --version</code></td><td>Prints <code>Python 3.14.6</code>. If it says &quot;not recognized,&quot; Python was not added to PATH &mdash; re-run the installer and tick <em>Add python.exe to PATH</em>.</td></tr>
+<tr><td><code>py --list</code></td><td>Windows only. Shows each installed version &mdash; check that <code>3.14</code> is there (and <code>3.11</code> too if you plan to do the Teachable Machine lessons).</td></tr>
+</tbody></table></div>
+<p>For a single all-in-one check, save <code>check_setup.py</code> below and click the &#9654; <strong>Run</strong> button at the top-right of the editor. That button only appears when the Python extension is active and an interpreter is selected &mdash; so if the script runs and prints <code>Python 3.14.x</code>, all three installs are correct at once.</p>
+<p><a class="download-card-btn" href="check_setup.py" download>Download check_setup.py</a></p>
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="check_setup.py"><figcaption><span>check_setup.py</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python"># check_setup.py  --  click the Run (play) button in VS Code to run me.
+#
+# This one file confirms all three things you were asked to install:
+#   1. VS Code works        (it opened this file and ran it)
+#   2. Python is installed   (the version prints below)
+#   3. The Python extension  (the Run button that started this only
+#                             appears when the extension is active)
+#
+# If it prints "Setup looks good", you are ready to create a virtual
+# environment and install the course packages.
+
+import sys
+import platform
+
+print("=" * 44)
+print("Python version :", platform.python_version())
+print("Executable     :", sys.executable)
+print("Platform       :", platform.platform())
+print("=" * 44)
+
+ok = True
+
+major, minor = sys.version_info[:2]
+if (major, minor) == (3, 14):
+    print("[ok] Python 3.14.x is running.")
+else:
+    ok = False
+    print(f"[!!] Expected Python 3.14.x but found {major}.{minor}.")
+    print("     Reinstall Python 3.14.6 from python.org and tick")
+    print("     'Add python.exe to PATH' on the first installer screen.")
+
+try:
+    import pip  # noqa: F401
+    print("[ok] pip is available.")
+except ImportError:
+    ok = False
+    print("[!!] pip is missing -- reinstall Python with pip included.")
+
+print("=" * 44)
+if ok:
+    print("Setup looks good. You can create your virtual environment next.")
+else:
+    print("Fix the [!!] items above, then run this file again.")
+print("=" * 44)</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Teacher tip: check the whole room fast</div><p>Have every student run the four commands above and read out the <code>python --version</code> line. Anyone not on <code>3.14.6</code>, or whose <code>code --list-extensions</code> is missing <code>ms-python.python</code>, gets fixed before the class moves on to environments and packages.</p></div></div>
+
+<h4>5. Create a Project Folder and Virtual Environment</h4>
 <p>A <strong>virtual environment</strong> is a private copy of Python and its libraries for one project, so this course&apos;s installs never clash with other Python work on your machine. VS Code can create one for you.</p>
 <div class="steps">
 <div class="step"><div><strong>Open a project folder.</strong> <strong>File &rarr; Open Folder</strong>, then choose or create an empty folder such as <code>ml-for-robotics</code>.</div></div>
@@ -541,7 +601,7 @@ python -m venv .venv
 source .venv/bin/activate</code></pre></figure>
 <div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Confirm the environment is active</div><p>When active, your terminal prompt starts with <code>(.venv)</code>, and the VS Code status bar (bottom-right) shows the <code>.venv</code> interpreter. Anything you <code>pip install</code> now lands in that folder only. Open a <strong>new</strong> terminal after creating the environment so it picks it up.</p></div></div>
 
-<h4>5. Install the Python Libraries</h4>
+<h4>6. Install the Python Libraries</h4>
 <p>With the environment active, install everything the course uses in one shot. Create a file called <code>requirements.txt</code> in your project folder:</p>
 <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="requirements.txt"><figcaption><span>requirements.txt</span></figcaption><pre><code class="language-text">ultralytics==8.4.89
 opencv-python==5.0.0.93
