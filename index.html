@@ -14197,8 +14197,7 @@ sock.close()</script></figure>
 <div class="diagram" aria-label="State machine">
 <div class="flow-row">
 <div class="flow-node">SEARCH<br /><small>spin, scan the room</small></div><div class="arrow">&rarr;</div>
-<div class="flow-node">CENTER<br /><small>turn to face it</small></div><div class="arrow">&rarr;</div>
-<div class="flow-node">APPROACH<br /><small>drive forward</small></div><div class="arrow">&rarr;</div>
+<div class="flow-node">PURSUE<br /><small>drive + steer toward it</small></div><div class="arrow">&rarr;</div>
 <div class="flow-node">ARRIVED<br /><small>stop at a safe distance</small></div>
 </div>
 </div>
@@ -14310,45 +14309,40 @@ def find_object(frame, lower, upper):
 <div class="lesson-meta"><span>Control</span><span>State machine</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">With <code>cx</code> and <code>area</code> in hand, the robot&apos;s behavior is a tiny four-state machine. Each frame, one function turns the detection into two wheel speeds.</p>
+<p class="lead">With <code>cx</code> and <code>area</code> in hand, the robot&apos;s behavior is a tiny state machine. The key state is <strong>PURSUE</strong>: the moment the object is visible, the robot drives toward it and corrects its heading every frame &mdash; it never stops to turn in place, so it can even chase a moving object.</p>
 <figure class="code-card" data-runnable="false" data-chapter="proj5" data-filename="color_seeker.py" data-lang="python"><figcaption><span>The decide() function</span><span class="local-run-badge">Run locally</span></figcaption><script type="text/plain" class="code-source">def reached(area, box, frame_w, frame_h):
-    """True when the object is close enough to stop: big blob, OR it now
-    fills the whole frame (which is what happens just before it overflows
-    the view and detection drops out)."""
+    """Close enough to stop: big blob, OR the object now fills the frame."""
     if area >= STOP_AREA:
         return True
     if box is not None:
         x, y, bw, bh = box
         m = 5
-        spans_height = (y <= m and y + bh >= frame_h - m)
-        spans_width  = (x <= m and x + bw >= frame_w - m)
-        if spans_height or spans_width:
+        if (y <= m and y + bh >= frame_h - m) or (x <= m and x + bw >= frame_w - m):
             return True
     return False
 
 def decide(cx, area, box, frame_w, frame_h):
     """Turn a detection into wheel speeds (left, right) and a named state."""
     if cx is None:
-        return -SCAN_SPEED, SCAN_SPEED, "SEARCH"      # nothing seen: scan the room
+        return -SCAN_SPEED, SCAN_SPEED, "SEARCH"      # nothing in view: spin to scan
 
     if reached(area, box, frame_w, frame_h):
         return 0, 0, "ARRIVED"                        # close enough: stop
 
-    error = (cx - frame_w / 2) / (frame_w / 2)        # -1 .. 1
-    if abs(error) > TURN_TOL:
-        turn = CENTER_SPEED if error > 0 else -CENTER_SPEED
-        return turn, -turn, "CENTER"                  # far off-center: rotate in place
-
-    trim = int(STEER_STRENGTH * error)
-    return FORWARD_SPEED + trim, FORWARD_SPEED - trim, "APPROACH"   # drive + steer</script></figure>
+    # Continuous pursuit: the instant the object is visible, drive toward it and
+    # steer proportionally on every frame -- no separate "turn in place" step.
+    # This also lets it chase a moving object, correcting a little each frame.
+    error = (cx - frame_w / 2) / (frame_w / 2)        # -1 (left) .. +1 (right)
+    forward = FORWARD_SPEED * (1 - FORWARD_FALLOFF * min(abs(error), 1.0))
+    turn = TURN_GAIN * error
+    return int(forward + turn), int(forward - turn), "PURSUE"</script></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>State</th><th>Condition</th><th>Wheels</th></tr></thead><tbody>
 <tr><td><strong>SEARCH</strong></td><td>No object visible</td><td>Spin in place (left/right opposite) to scan the room.</td></tr>
-<tr><td><strong>CENTER</strong></td><td>Object far off to one side (beyond <code>TURN_TOL</code>)</td><td>Rotate in place toward it until it is roughly ahead.</td></tr>
-<tr><td><strong>APPROACH</strong></td><td>Object roughly ahead, still small (far)</td><td>Keep driving forward, steering a little &mdash; it does not stop to perfectly center.</td></tr>
+<tr><td><strong>PURSUE</strong></td><td>Object visible and not yet close</td><td>Drive toward it immediately, steering proportionally every frame. It arcs harder when the object is far to the side and straightens as it centers &mdash; no stopping to turn.</td></tr>
 <tr><td><strong>ARRIVED</strong></td><td>Blob area &ge; <code>STOP_AREA</code>, or the object fills the frame</td><td>Stop and <strong>hold</strong> &mdash; it stays put even if the object briefly vanishes at very close range.</td></tr>
 </tbody></table></div>
 <div class="callout robotics" role="note"><div class="callout-icon">&#129302;</div><div><div class="callout-title">Stopping by apparent size</div><p>The robot has no distance sensor, so it judges distance by how big the object looks. As it drives closer, the blob area grows; when the area crosses <code>STOP_AREA</code>, the object is close, so the robot stops. Tune <code>STOP_AREA</code> for the distance you want. If the object gets so close that it fills the frame and detection momentarily drops out, the robot treats that as arrival and <strong>holds position</strong> rather than hunting for it again.</p></div></div>
-<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Differential steering, again</div><p>This is the same idea as PD.1c: equal speeds drive straight, opposite speeds turn in place, and a small left/right difference curves the path. <code>error = cx - frame_w/2</code> is the steering signal &mdash; the same "image error drives the wheels" pattern Project 1 uses with PID.</p></div></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Differential steering, again</div><p>This is continuous proportional control: <code>error = cx - frame_w/2</code> (how far off-center the object is) is scaled into a left/right speed difference every frame. A big error curves the robot hard toward the object; a small error barely nudges it. Because it corrects each frame, the robot keeps re-aiming at a moving target &mdash; the same "image error drives the actuator" idea Project 1 uses with PID.</p></div></div></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj5-state">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=proj5-hsv" data-lesson-link="proj5-hsv"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; P5.1 HSV Color Detection</span></a><a class="lesson-nav-btn next" href="?lesson=proj5-main" data-lesson-link="proj5-main"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P5.3 Config and Main Loop &rarr;</span></a></nav>
 </article>
@@ -14373,18 +14367,16 @@ CMD_PORT   = 5001               # must match robot_udp.ino
 PHONE_URL  = "http://192.168.5.148:8080/video"   # phone MJPEG stream
 
 # Motion speeds (PWM 0-255)
-SCAN_SPEED     = 120    # rotation speed while searching the room
-CENTER_SPEED   = 120    # rotation speed while turning to face the object
-FORWARD_SPEED  = 190    # forward speed while approaching (raise if still too slow)
+SCAN_SPEED      = 120   # rotation speed while searching (nothing in view)
+FORWARD_SPEED   = 170   # base forward speed while pursuing the object
+TURN_GAIN       = 160   # steering strength (higher = sharper correction toward it)
+FORWARD_FALLOFF = 0.5   # cut forward this fraction when the object is at the frame
+                        #   edge, so it aims fast then accelerates in as it centers
 
 # Behavior thresholds
-MIN_AREA       = 800    # ignore blobs smaller than this (noise), in pixels
-STOP_AREA      = 45000  # object is "close enough" when its blob area exceeds this
-                        #   (read area= on the HUD at your safe distance, then set it)
-TURN_TOL       = 0.35   # rotate in place only if the object is beyond this
-                        #   fraction of the half-width from center; otherwise drive
-STEER_STRENGTH = 70     # how hard to steer while driving forward
-LOST_GRACE     = 8      # frames the object may be missing before we go back to SEARCH
+MIN_AREA        = 800    # ignore blobs smaller than this (noise), in pixels
+STOP_AREA       = 45000  # object is "close enough" when its blob area exceeds this
+LOST_GRACE      = 8      # frames the object may be missing before going back to SEARCH
 
 
 # ===================== PHONE CAMERA (Exercise B) =====================
@@ -14499,13 +14491,12 @@ def decide(cx, area, box, frame_w, frame_h):
     if reached(area, box, frame_w, frame_h):
         return 0, 0, "ARRIVED"
 
-    error = (cx - frame_w / 2) / (frame_w / 2)
-    if abs(error) > TURN_TOL:
-        turn = CENTER_SPEED if error > 0 else -CENTER_SPEED
-        return turn, -turn, "CENTER"
-
-    trim = int(STEER_STRENGTH * error)
-    return FORWARD_SPEED + trim, FORWARD_SPEED - trim, "APPROACH"
+    # Continuous pursuit: drive toward the object and steer proportionally every
+    # frame (no stopping to turn), so it also tracks a moving object.
+    error = (cx - frame_w / 2) / (frame_w / 2)        # -1 .. +1
+    forward = FORWARD_SPEED * (1 - FORWARD_FALLOFF * min(abs(error), 1.0))
+    turn = TURN_GAIN * error
+    return int(forward + turn), int(forward - turn), "PURSUE"
 
 
 # ===================== MAIN LOOP =====================
@@ -14537,7 +14528,7 @@ try:
             locked = True
         elif not lock_on and locked:
             locked = False
-            arrived, lost, last_area = False, 0, 0       # reset when we unlock
+            arrived, lost, last_area = False, 0, 0
 
         lower, upper = (locked_lower, locked_upper) if locked else hsv_bounds()
         cx, area, box, mask = find_object(frame, lower, upper)
@@ -14635,8 +14626,8 @@ finally:
 <tr><td>Chases the wrong thing</td><td>Another object shares the color</td><td>Tighten saturation/value bounds; remove distractors.</td></tr>
 <tr><td>Turns the wrong way</td><td>Left/right motors reversed</td><td>Swap the wheel speeds in <code>send_motors</code>, or flip motor wiring.</td></tr>
 <tr><td>Stops too far / too close</td><td><code>STOP_AREA</code> not tuned</td><td>Re-read <code>area=</code> at your target distance and set it.</td></tr>
-<tr><td>Overshoots while centering</td><td>Turn speed too high</td><td>Lower <code>CENTER_SPEED</code> and <code>SCAN_SPEED</code>.</td></tr>
-<tr><td>Approaches too slowly</td><td>Forward speed low, or it keeps stopping to center</td><td>Raise <code>FORWARD_SPEED</code>; raise <code>TURN_TOL</code> so it steers while driving instead of rotating in place.</td></tr>
+<tr><td>Weaves / overshoots side to side</td><td><code>TURN_GAIN</code> too high</td><td>Lower <code>TURN_GAIN</code> so it corrects more gently.</td></tr>
+<tr><td>Approaches too slowly</td><td>Base forward speed low</td><td>Raise <code>FORWARD_SPEED</code>, or lower <code>FORWARD_FALLOFF</code> so it keeps more speed when the object is off-center.</td></tr>
 <tr><td><code>Corrupt JPEG data...</code> warnings</td><td>Normal MJPEG glitches over WiFi</td><td>Harmless &mdash; bad frames are skipped. If frequent, lower the phone camera resolution or reduce WiFi congestion.</td></tr>
 <tr><td>Loses the object up close, then re-hunts</td><td><code>STOP_AREA</code> too high, so it overshoots before stopping</td><td>Lower <code>STOP_AREA</code> (read <code>area=</code> on the HUD at your safe distance). The robot also now stops and holds when the object fills the frame.</td></tr>
 </tbody></table></div></div>
