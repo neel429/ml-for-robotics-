@@ -4586,6 +4586,19 @@ cv.destroyAllWindows()</code></pre></figure>
                     <div class="flow-node">Dense → 43 signs</div>
                   </div>
                 </div>
+<h3>Train a CNN in Your Browser: Teachable Machine</h3>
+<p>You do not need to write CNN code to see one work. <a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noreferrer">Google&apos;s Teachable Machine</a> trains an image classifier entirely in your browser, with no code and no setup. Under the hood it reuses a pretrained CNN (MobileNet) and fine-tunes it on your own examples &mdash; a fast, hands-on way to watch a convolutional network learn to tell objects apart.</p>
+<div class="steps">
+<div class="step"><div><strong>Open the tool.</strong> Go to <a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noreferrer">teachablemachine.withgoogle.com</a> and click <strong>Get Started</strong>.</div></div>
+<div class="step"><div><strong>Choose Image Project.</strong> Pick <strong>Image Project</strong> &rarr; <strong>Standard image model</strong>.</div></div>
+<div class="step"><div><strong>Create your classes.</strong> Name at least two, for example <code>mug</code> and <code>ball</code>. A <code>background</code> class (the empty scene) is a good third class to reduce false detections.</div></div>
+<div class="step"><div><strong>Add samples for each class.</strong> Click <strong>Webcam</strong> and hold the object in view while it records, or <strong>Upload</strong> image files. Aim for 50+ varied samples per class &mdash; different angles, distances, lighting, and backgrounds.</div></div>
+<div class="step"><div><strong>Train.</strong> Click <strong>Train Model</strong> and wait a few seconds. Do not switch browser tabs while it trains.</div></div>
+<div class="step"><div><strong>Test it live.</strong> In the <strong>Preview</strong> panel, point your webcam at each object and watch the confidence bars respond in real time.</div></div>
+<div class="step"><div><strong>Export.</strong> Click <strong>Export Model</strong> and choose a format: <strong>TensorFlow.js</strong> (runs in a web page), <strong>TensorFlow / Keras</strong> (a <code>.h5</code> file for Python), or <strong>TensorFlow Lite</strong> (for phones and edge devices). You can also copy a shareable link.</div></div>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">This is transfer learning</div><p>Teachable Machine does not train a CNN from scratch. It keeps MobileNet&apos;s already-learned edge, texture, and shape filters and only trains a small classifier on top of them. That is why a handful of examples and a few seconds are enough &mdash; the hard visual features were learned once, on millions of images, and reused here.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Good data beats more data</div><p>Vary your samples the way the real scene will vary: move the object around the frame, change the lighting, and use the actual background. This is the same lesson as Exercise A&apos;s dataset &mdash; a model is only as good as the examples it sees.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-cnn">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
