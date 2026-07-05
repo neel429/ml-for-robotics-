@@ -7884,17 +7884,23 @@ root.mainloop()</code></pre></figure>
 <div class="step"><div><strong>Put both files next to the script.</strong> The code below loads <code>keras_model.h5</code> and <code>labels.txt</code> &mdash; either rename your <code>keras_model.h5</code> to match, or change <code>model_path</code> in the script to your filename.</div></div>
 </div>
 
-<h3>Step 2: Install the Python Packages</h3>
-<p>Install the classifier helper, OpenCV, and TensorFlow:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="install"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash">pip install teachable-machine opencv-python tensorflow</code></pre></figure>
+<h3>Step 2: Create a Python 3.11 Environment and Install the Packages</h3>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">This example needs its own environment</div><p>The Keras (<code>.h5</code>) model this script loads was built with an older TensorFlow that requires <strong>Python 3.11</strong> and <strong>NumPy 1.23.5</strong>. Those versions conflict with the newer NumPy the rest of the course uses, so do <em>not</em> install this into your main <code>.venv</code> &mdash; give it a separate virtual environment.</p></div></div>
+<div class="steps">
+<div class="step"><div><strong>Install Python 3.11</strong> if you do not already have it, from <a href="https://www.python.org/downloads/" target="_blank" rel="noreferrer">python.org/downloads</a>. On Windows, tick <em>Add python.exe to PATH</em> during install. (You can keep your newer Python too &mdash; both can be installed side by side.)</div></div>
+<div class="step"><div><strong>Create and activate a fresh 3.11 environment</strong> just for this example, in your project folder.</div></div>
+</div>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal"><figcaption><span>Terminal &mdash; create the 3.11 environment</span></figcaption><pre><code class="language-bash"># Windows (PowerShell) -- the py launcher picks version 3.11
+py -3.11 -m venv tm-env
+tm-env\Scripts\Activate.ps1
 
-<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">This needs NumPy 1.23.5</div><p>Teachable Machine&apos;s Keras (<code>.h5</code>) export was built against an older TensorFlow and <strong>will not load on newer NumPy</strong> (2.x, or anything much past 1.23). If loading the model throws errors that mention <code>numpy</code>, <code>np.object</code>, or a binary incompatibility, downgrade NumPy to the version the model expects.</p></div></div>
-<p>Check the version you have, and pin it if it is not 1.23.5:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="fix numpy"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash"># see what you currently have
-python -c "import numpy; print(numpy.__version__)"
-
-# if it is not 1.23.5, pin it to the version the Keras model needs
+# macOS / Linux
+python3.11 -m venv tm-env
+source tm-env/bin/activate</code></pre></figure>
+<p>With <code>(tm-env)</code> showing in your prompt, confirm the version by running <code>python --version</code> &mdash; it should print <code>Python 3.11.x</code>. Now install the classifier helper, OpenCV, and TensorFlow into that environment, and pin NumPy to the version the Keras model needs:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal"><figcaption><span>Terminal &mdash; install into (tm-env)</span></figcaption><pre><code class="language-bash">pip install teachable-machine opencv-python tensorflow
 pip install numpy==1.23.5</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Verify the pin held</div><p>Some packages tug NumPy back to a newer version as they install, so pin it <em>last</em> (as above) and then check with <code>python -c "import numpy; print(numpy.__version__)"</code>. It must print <code>1.23.5</code>. Run <code>ImageControl.py</code> from this same <code>(tm-env)</code> environment &mdash; in VS Code, pick the <code>tm-env</code> interpreter in the bottom-right status bar.</p></div></div>
 
 <h3>Step 3: The Image-Driven Controller</h3>
 <p>The loop grabs a webcam frame, saves it to disk, asks the model to classify it, and &mdash; only when the top class changes and clears the confidence threshold &mdash; sends the motor commands for that action. The motor helpers are identical to PD.1c; the buttons are simply gone.</p>
