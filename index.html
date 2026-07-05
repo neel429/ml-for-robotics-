@@ -543,16 +543,19 @@ source .venv/bin/activate</code></pre></figure>
 
 <h4>5. Install the Python Libraries</h4>
 <p>With the environment active, install everything the course uses in one shot. Create a file called <code>requirements.txt</code> in your project folder:</p>
-<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="requirements.txt"><figcaption><span>requirements.txt</span></figcaption><pre><code class="language-text">ultralytics
-opencv-python
-numpy
-requests
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="requirements.txt"><figcaption><span>requirements.txt</span></figcaption><pre><code class="language-text">ultralytics==8.4.89
+opencv-python==5.0.0.93
+numpy==2.5.1
+mediapipe==0.10.35
+teachable-machine==1.2.1
+tensorflow==2.21.0
+requests==2.34.2
+urllib3==2.7.0
 matplotlib
 pandas
 scikit-learn
 gymnasium
 pygame-ce
-mediapipe
 roboflow
 kaggle
 phonesense</code></pre></figure>
