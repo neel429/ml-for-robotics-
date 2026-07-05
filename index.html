@@ -183,6 +183,7 @@
 <a class="lesson-link" href="?lesson=projD-wifi" data-lesson-link="projD-wifi"><span>PD.1 UNO R4 WiFi</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projD-led" data-lesson-link="projD-led"><span>PD.1b First UDP LED</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projD-drive" data-lesson-link="projD-drive"><span>PD.1c Servo and Motors</span><span class="completion-dot" aria-hidden="true"></span></a>
+<a class="lesson-link" href="?lesson=projD-image" data-lesson-link="projD-image"><span>PD.1d Image Control</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projD-arduino" data-lesson-link="projD-arduino"><span>PD.2 Arduino Sketch</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projD-python" data-lesson-link="projD-python"><span>PD.3 Python UDP Script</span><span class="completion-dot" aria-hidden="true"></span></a>
 <a class="lesson-link" href="?lesson=projD-keyboard" data-lesson-link="projD-keyboard"><span>PD.4 WASD Keyboard Control</span><span class="completion-dot" aria-hidden="true"></span></a>
@@ -7782,6 +7783,222 @@ root.mainloop()</code></pre></figure>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-drive">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projD-led" data-lesson-link="projD-led"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.1b First UDP LED</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projD-image" data-lesson-link="projD-image"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.1d Image Control &rarr;</span></a>
+</nav>
+</article>
+<article class="lesson-content" data-lesson="projD-image" data-chapter="projD" data-chapter-title="* Exercise D: Talk to Your Robot Over WiFi" style="--chapter-accent:#0ea5e9;--chapter-color:#0ea5e9">
+<div class="lesson-kicker">* Exercise D: Talk to Your Robot Over WiFi <span>&rsaquo;</span> PD.1d Driving with Image Classification</div>
+<h1>PD.1d Driving with Image Classification</h1>
+<div class="lesson-meta"><span>Hands-on</span><span>Teachable Machine + UDP</span><span>25 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">In PD.1c you drove the robot by clicking buttons. Now the <em>camera</em> decides. A Teachable Machine image classifier watches your webcam, picks the class it sees &mdash; <code>forward</code>, <code>backward</code>, <code>left</code>, <code>right</code>, or <code>stop</code> &mdash; and the script sends the matching <code>M</code> commands. Same packets, same Arduino sketch; the only new part is that a neural network presses the buttons for you.</p>
+
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">The Arduino sketch is still unchanged</div><p>Keep the exact <code>udp_command_receiver.ino</code> from PD.1b uploaded. It already understands the <code>M in1 in2 pwm speed</code> motor command on UDP port 5005. Only the Python side changes &mdash; instead of a button calling <code>forward()</code>, a model prediction calls it.</p></div></div>
+
+<h3>Step 1: Train and Export the Model</h3>
+<p>This lesson reuses the <a href="?lesson=ch7-cnn" data-lesson-link="ch7-cnn">Teachable Machine</a> workflow from Chapter 7. Train an <strong>Image Project</strong> with one class per action, then export it for Python.</p>
+<div class="steps">
+<div class="step"><div><strong>Create one class per action.</strong> Name them to match the <code>ACTIONS</code> map in the script: <code>forward</code>, <code>backward</code>, <code>left</code>, <code>right</code>, and <code>stop</code>. A class can be anything the camera can tell apart &mdash; a hand gesture, a colored card, or an object.</div></div>
+<div class="step"><div><strong>Add 50+ varied samples per class</strong> (different angles, distances, and lighting), then click <strong>Train Model</strong> and test it live in the Preview panel.</div></div>
+<div class="step"><div><strong>Export as Keras.</strong> Click <strong>Export Model &rarr; TensorFlow &rarr; Keras</strong>, then <strong>Download my model</strong>. You get <code>keras_model.h5</code> (the trained network) and <code>labels.txt</code> (the class names).</div></div>
+<div class="step"><div><strong>Put both files next to the script.</strong> The code below loads <code>keras_modelv2.h5</code> and <code>labels.txt</code> &mdash; either rename your <code>keras_model.h5</code> to match, or change <code>model_path</code> in the script to your filename.</div></div>
+</div>
+
+<h3>Step 2: Install the Python Packages</h3>
+<p>Install the classifier helper, OpenCV, and TensorFlow:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="install"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash">pip install teachable-machine opencv-python tensorflow</code></pre></figure>
+
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">This needs NumPy 1.23.5</div><p>Teachable Machine&apos;s Keras (<code>.h5</code>) export was built against an older TensorFlow and <strong>will not load on newer NumPy</strong> (2.x, or anything much past 1.23). If loading the model throws errors that mention <code>numpy</code>, <code>np.object</code>, or a binary incompatibility, downgrade NumPy to the version the model expects.</p></div></div>
+<p>Check the version you have, and pin it if it is not 1.23.5:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="fix numpy"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash"># see what you currently have
+python -c "import numpy; print(numpy.__version__)"
+
+# if it is not 1.23.5, pin it to the version the Keras model needs
+pip install numpy==1.23.5</code></pre></figure>
+
+<h3>Step 3: The Image-Driven Controller</h3>
+<p>The loop grabs a webcam frame, saves it to disk, asks the model to classify it, and &mdash; only when the top class changes and clears the confidence threshold &mdash; sends the motor commands for that action. The motor helpers are identical to PD.1c; the buttons are simply gone.</p>
+<p><a class="download-card-btn" href="ImageControl.py" download>Download ImageControl.py</a></p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="ImageControl.py"><figcaption><span>ImageControl.py</span><span class="local-run-badge">VS Code</span></figcaption><pre><code class="language-python">import socket
+import cv2 as cv
+from teachable_machine import TeachableMachine
+
+
+# -----------------------------
+# Network / robot settings
+# -----------------------------
+
+ARDUINO_IP = "192.168.7.7"
+ARDUINO_PORT = 5005
+
+# Left motor pins
+LEFT_IN1 = 4
+LEFT_IN2 = 5
+LEFT_PWM = 6
+
+# Right motor pins
+RIGHT_IN1 = 12
+RIGHT_IN2 = 13
+RIGHT_PWM = 11
+
+MOTOR_SPEED = 180
+
+# Only act on a prediction if the model is at least this confident (0.0 - 1.0)
+CONFIDENCE_THRESHOLD = 0.8
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
+def send(command):
+    print("Sending:", command)
+    sock.sendto(command.encode(), (ARDUINO_IP, ARDUINO_PORT))
+
+
+# -----------------------------
+# Motor control (same protocol as DCMotorControl.py)
+# -----------------------------
+
+def left_motor(speed):
+    send(f"M {LEFT_IN1} {LEFT_IN2} {LEFT_PWM} {speed}")
+
+
+def right_motor(speed):
+    send(f"M {RIGHT_IN1} {RIGHT_IN2} {RIGHT_PWM} {speed}")
+
+
+def forward():
+    left_motor(MOTOR_SPEED)
+    right_motor(MOTOR_SPEED)
+
+
+def backward():
+    left_motor(-MOTOR_SPEED)
+    right_motor(-MOTOR_SPEED)
+
+
+def turn_left():
+    left_motor(MOTOR_SPEED)
+    right_motor(-MOTOR_SPEED)
+
+
+def turn_right():
+    left_motor(-MOTOR_SPEED)
+    right_motor(+MOTOR_SPEED)
+
+
+def stop_motors():
+    left_motor(0)
+    right_motor(0)
+
+
+# Map each trained class name to the action it should trigger
+ACTIONS = {
+    "forward": forward,
+    "backward": backward,
+    "left": turn_left,
+    "right": turn_right,
+    "stop": stop_motors,
+}
+
+
+# -----------------------------
+# Load Teachable Machine model
+# -----------------------------
+
+model = TeachableMachine(model_path="keras_modelv2.h5",
+                         labels_file_path="labels.txt")
+
+image_path = "screenshot.jpg"
+
+
+def clean_name(raw):
+    # labels can come back like "0 Forward" or "Forward" -&gt; "forward"
+    parts = str(raw).strip().split(" ", 1)
+    name = parts[1] if len(parts) &gt; 1 and parts[0].isdigit() else raw
+    return name.strip().lower()
+
+
+def to_fraction(confidence):
+    # The library may report confidence as 0.0-1.0 or 0-100; normalize to 0.0-1.0
+    value = float(confidence)
+    return value / 100 if value &gt; 1 else value
+
+
+# -----------------------------
+# Main loop
+# -----------------------------
+
+cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+last_action = None
+
+print("Press ESC in the camera window to quit.")
+
+while True:
+    ok, img = cap.read()
+    if not ok:
+        continue
+
+    # Webcams mirror the image; flip it back so left/right look correct.
+    img = cv.flip(img, 1)
+
+    # The library classifies a saved image file, so write the frame out first
+    cv.imwrite(image_path, img)
+    result = model.classify_image(image_path)
+
+    name = clean_name(result["class_name"])
+    confidence = to_fraction(result["class_confidence"])
+
+    print("class_name:", name, "confidence:", round(confidence, 2))
+
+    # Draw the prediction onto the frame ourselves (the library's built-in
+    # drawing needs a font file that isn't present on Windows).
+    label = f"{name} {confidence * 100:.0f}%"
+    cv.putText(img, label, (10, 30),
+               cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv.imshow("Robot Vision", img)
+
+    # Only send a new command when the class changes and we're confident.
+    # This avoids flooding the robot with the same command every frame.
+    if confidence &gt;= CONFIDENCE_THRESHOLD and name != last_action:
+        if name in ACTIONS:
+            ACTIONS[name]()
+            last_action = name
+
+    if cv.waitKey(1) == 27:  # ESC to quit
+        break
+
+# Clean up: stop the robot and close the window
+stop_motors()
+cap.release()
+cv.destroyAllWindows()</code></pre></figure>
+<table class="code-anatomy">
+  <thead><tr><th>Piece</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>TeachableMachine(model_path=..., labels_file_path=...)</code></td><td>Loads your exported <code>.h5</code> network and the <code>labels.txt</code> class names.</td></tr>
+    <tr><td><code>CONFIDENCE_THRESHOLD = 0.8</code></td><td>Ignore any prediction the model is less than 80% sure about, so a blurry or in-between frame does not jerk the robot.</td></tr>
+    <tr><td><code>ACTIONS = {...}</code></td><td>Maps each class name to a drive function. The keys must match your Teachable Machine class names (lower-cased).</td></tr>
+    <tr><td><code>clean_name(raw)</code></td><td>Turns a label like <code>"0 Forward"</code> into <code>"forward"</code> so it lines up with the <code>ACTIONS</code> keys.</td></tr>
+    <tr><td><code>to_fraction(confidence)</code></td><td>Normalizes confidence to 0.0&ndash;1.0 whether the library reports a fraction or a percentage.</td></tr>
+    <tr><td><code>cv.imwrite(image_path, img)</code></td><td>The library classifies an image <em>file</em>, so each frame is written to disk before it is classified.</td></tr>
+    <tr><td><code>name != last_action</code></td><td>Sends a command only when the action changes &mdash; the same fire-once idea from PD.1b, so the robot is not flooded with identical packets every frame.</td></tr>
+  </tbody>
+</table>
+
+<h3>Run It</h3>
+<div class="steps">
+<div class="step"><div><strong>Keep the PD.1b sketch running</strong> and note the Arduino&apos;s IP from the Serial Monitor.</div></div>
+<div class="step"><div><strong>Edit the settings.</strong> Set <code>ARDUINO_IP</code> to your robot&apos;s IP and confirm the motor pins match your wiring (the same pins as PD.1c).</div></div>
+<div class="step"><div><strong>Confirm the filenames.</strong> <code>keras_modelv2.h5</code> and <code>labels.txt</code> must sit in the same folder as the script (or update <code>model_path</code>).</div></div>
+<div class="step"><div><strong>Run it.</strong> Run <code>python ImageControl.py</code>. A <strong>Robot Vision</strong> window opens showing the predicted class and confidence. Show each trained cue to the camera and watch the robot respond. Press <code>ESC</code> to quit &mdash; the script stops the motors on the way out.</div></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Lift the wheels for the first test</div><p>Put the robot on a stand so the wheels spin freely. Confirm each class drives the correct direction &mdash; and that <code>stop</code> actually stops &mdash; before you let it run on the floor.</p></div></div>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Class names are the contract</div><p>The strings in <code>ACTIONS</code> must match your Teachable Machine class names exactly (after lower-casing). If you named a class <code>Go</code> instead of <code>forward</code>, either rename the class in Teachable Machine or add a <code>"go": forward</code> entry to the map. A prediction with no matching key is simply ignored.</p></div></div>
+<div class="callout robotics" role="note"><div class="callout-icon">&#129302;</div><div><div class="callout-title">Where this leads</div><p>You just closed a full perception-to-action loop: camera &rarr; neural network &rarr; decision &rarr; UDP motor command. That is the same shape as Project 1, where a YOLO model &mdash; not a hand cue &mdash; decides how the robot should steer.</p></div></div>
+</div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-image">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons">
+<a class="lesson-nav-btn" href="?lesson=projD-drive" data-lesson-link="projD-drive"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.1c Servo and Motors</span></a>
 <a class="lesson-nav-btn next" href="?lesson=projD-arduino" data-lesson-link="projD-arduino"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.2 Arduino Sketch &rarr;</span></a>
 </nav>
 </article>
@@ -7985,7 +8202,7 @@ void loop() {
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-arduino">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projD-drive" data-lesson-link="projD-drive"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.1c Servo and Motors</span></a>
+<a class="lesson-nav-btn" href="?lesson=projD-image" data-lesson-link="projD-image"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.1d Image Control</span></a>
 <a class="lesson-nav-btn next" href="?lesson=projD-python" data-lesson-link="projD-python"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PD.3 Python Script &rarr;</span></a>
 </nav>
 </article>
@@ -13715,7 +13932,7 @@ finally:
     const projectALessons = [{"id":"projA-overview","label":"PA.0 Object Detection","title":"PA.0 What is Object Detection?","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":true},{"id":"projA-yolo26","label":"PA.1 Introducing YOLO26","title":"PA.1 Introducing YOLO26","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-vscode","label":"PA.2 VS Code & Dependencies","title":"PA.2 Setting Up VS Code & Dependencies","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-roboflow-data","label":"PA.3 Roboflow Project","title":"PA.3 Creating Your Roboflow Project and Uploading Images","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-labeling","label":"PA.4 Labeling in Roboflow","title":"PA.4 Labeling Your Images in Roboflow","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-exporting","label":"PA.5 Generate & Export","title":"PA.5 Generating and Exporting Your Dataset","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-training","label":"PA.6 Training in Colab","title":"PA.6 Training in Google Colab","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-results","label":"PA.7 Training Results","title":"PA.7 Reading the Training Results","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-local-inference","label":"PA.8 Local Inference","title":"PA.8 Running Inference Locally","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-model-output","label":"PA.9 Model Output","title":"PA.9 Understanding the Model Output","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false},{"id":"projA-ready","label":"PA.10 Preparing for Project 1","title":"PA.10 Preparing for Project 1","chapter":"projA","chapterTitle":"\u2605 Exercise A: Train Your First Detector","exercise":false}];
     const projectBLessons = [{"id":"projB-overview","label":"PB.0 Why a Phone Camera","title":"PB.0 Why a Phone and Not a Webcam","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":true},{"id":"projB-phonesense","label":"PB.1 phonesense","title":"PB.1 phonesense (No App Required)","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-android","label":"PB.2 Android Setup","title":"PB.2 Android Setup: IP Webcam","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-iphone","label":"PB.3 iPhone Setup","title":"PB.3 iPhone Setup: Simple IP Camera","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-phone-ip","label":"PB.4 Phone IP Address","title":"PB.4 Finding Your Phone's IP Address","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-browser-test","label":"PB.5 Browser Test","title":"PB.5 Testing the Stream in a Browser","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-detect-stream","label":"PB.6 Stream Detection","title":"PB.6 Running Detection on the Stream","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-code","label":"PB.7 Stream Code","title":"PB.7 Understanding the Stream Code","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false},{"id":"projB-project1","label":"PB.8 Connect to Project 1","title":"PB.8 Connecting the Dots to Project 1","chapter":"projB","chapterTitle":"* Exercise B: Your Phone as a Robot Camera","exercise":false}];
     const projectCLessons = [{"id":"projC-overview","label":"PC.0 What You Are Building","title":"PC.0 What You Are Building","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":true},{"id":"projC-hardware","label":"PC.1 Hardware","title":"PC.1 Understanding the Hardware","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-encoders","label":"PC.2 Encoder Motors","title":"PC.2 How Encoder Motors Work","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-wiring","label":"PC.3 Wiring","title":"PC.3 Wiring the System","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-arduino-basics","label":"PC.4 Arduino Basics","title":"PC.4 Arduino Programming Basics","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-first-sketch","label":"PC.5 Blink and Serial","title":"PC.5 Your First Arduino Sketch: Blink and Serial","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-reading-pulses","label":"PC.6 Encoder Pulses","title":"PC.6 Reading Encoder Pulses","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-distance","label":"PC.7 Ticks to Distance","title":"PC.7 Converting Ticks to Distance","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-drive-distance","label":"PC.8 Drive Distance","title":"PC.8 Driving Forward a Precise Distance","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-turning","label":"PC.9 Turn 90 Degrees","title":"PC.9 Turning Exactly 90 Degrees","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-path","label":"PC.10 Running a Path","title":"PC.10 Putting It Together: Running a Path","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false},{"id":"projC-troubleshooting","label":"PC.11 Troubleshooting","title":"PC.11 Troubleshooting and Tuning","chapter":"projC","chapterTitle":"* Exercise C: Precise Movement with Encoders","exercise":false}];
-    const projectDLessons = [{"id":"projD-udp","label":"PD.0 What Is UDP","title":"PD.0 What Is UDP and Why Does a Robot Use It","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":true},{"id":"projD-wifi","label":"PD.1 UNO R4 WiFi","title":"PD.1 How WiFi Works on the UNO R4","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-led","label":"PD.1b First UDP LED","title":"PD.1b Your First UDP Message: Blink an LED","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-drive","label":"PD.1c Servo and Motors","title":"PD.1c Driving Motors and a Servo over UDP","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-arduino","label":"PD.2 Arduino Sketch","title":"PD.2 The Arduino Sketch: Connect, Listen, Drive","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-python","label":"PD.3 Python UDP Script","title":"PD.3 The Python Script: Send Commands, Read Telemetry","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-keyboard","label":"PD.4 Keyboard Control","title":"PD.4 Keyboard Control: Drive with WASD","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-telemetry","label":"PD.5 Encoder Telemetry","title":"PD.5 Receiving Encoder Telemetry in Python","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-loop","label":"PD.6 Full Communication Loop","title":"PD.6 Understanding the Full Communication Loop","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-project1","label":"PD.7 Connect to Project 1","title":"PD.7 Connecting the Dots to Project 1","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false}];
+    const projectDLessons = [{"id":"projD-udp","label":"PD.0 What Is UDP","title":"PD.0 What Is UDP and Why Does a Robot Use It","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":true},{"id":"projD-wifi","label":"PD.1 UNO R4 WiFi","title":"PD.1 How WiFi Works on the UNO R4","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-led","label":"PD.1b First UDP LED","title":"PD.1b Your First UDP Message: Blink an LED","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-drive","label":"PD.1c Servo and Motors","title":"PD.1c Driving Motors and a Servo over UDP","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-image","label":"PD.1d Image Control","title":"PD.1d Driving with Image Classification","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-arduino","label":"PD.2 Arduino Sketch","title":"PD.2 The Arduino Sketch: Connect, Listen, Drive","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-python","label":"PD.3 Python UDP Script","title":"PD.3 The Python Script: Send Commands, Read Telemetry","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-keyboard","label":"PD.4 Keyboard Control","title":"PD.4 Keyboard Control: Drive with WASD","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-telemetry","label":"PD.5 Encoder Telemetry","title":"PD.5 Receiving Encoder Telemetry in Python","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-loop","label":"PD.6 Full Communication Loop","title":"PD.6 Understanding the Full Communication Loop","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false},{"id":"projD-project1","label":"PD.7 Connect to Project 1","title":"PD.7 Connecting the Dots to Project 1","chapter":"projD","chapterTitle":"* Exercise D: Talk to Your Robot Over WiFi","exercise":false}];
     const project1Lessons = [{"id": "proj1-overview", "label": "P1.0 What We Are Building", "title": "P1.0 What We Are Building", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": true}, {"id": "proj1-get-code", "label": "P1.0b Get the Code", "title": "P1.0b Get the Code", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-vscode", "label": "P1.1 Setting Up", "title": "P1.1 Setting Up", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-dependencies", "label": "P1.2 Installing Dependencies", "title": "P1.2 Installing Dependencies", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-config", "label": "P1.3 Configuration", "title": "P1.3 Configuration: Tuning Your Robot", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-pid", "label": "P1.4 PID Controller", "title": "P1.4 The PID Controller", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-camera", "label": "P1.5 Camera Stream", "title": "P1.5 Reading the Camera Stream", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-udp-send", "label": "P1.6 Sending Commands", "title": "P1.6 Sending Commands (UDP)", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-findbest", "label": "P1.7 Finding the Target", "title": "P1.7 Finding the Target: findbest()", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-main-loop", "label": "P1.8 Main Loop", "title": "P1.8 The Main Loop", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}, {"id": "proj1-running", "label": "P1.9 Running and Testing", "title": "P1.9 Running and Testing", "chapter": "proj1", "chapterTitle": "\u2605 Project 1: Object Tracker", "exercise": false}];
     const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-get-code","label":"P2.0b Get the Code","title":"P2.0b Get the Code","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-config","label":"P2.3 Configuration","title":"P2.3 Configuration: Fill In Your Values","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-detect-lane","label":"P2.4 The detect_lane Function","title":"P2.4 The detect_lane Function","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.5 LaneFollower Class","title":"P2.5 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-main-loop","label":"P2.6 Main Loop","title":"P2.6 The Main Loop","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.7 Visualisation","title":"P2.7 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.8 Running and Tuning","title":"P2.8 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.9 Connecting the Dots","title":"P2.9 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
     const project3Lessons = [{"id":"proj3-mediapipe","label":"P3.0 What Is MediaPipe?","title":"P3.0 What Is MediaPipe?","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":true},{"id":"proj3-landmark-detection","label":"P3.1 Hand Landmarks","title":"P3.1 How Hand Landmark Detection Works","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-mediapipe-colab","label":"P3.2 MediaPipe Colab","title":"P3.2 The MediaPipe Colab Notebook","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-understanding-landmarks","label":"P3.3 Understanding Landmarks","title":"P3.3 Understanding Landmarks","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-open-closed","label":"P3.4 Open vs Closed","title":"P3.4 Open vs Closed: Reading Finger State","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-two-hand-logic","label":"P3.5 Two-Hand Logic","title":"P3.5 Two-Hand Gesture Logic","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-get-code","label":"P3.6 Get the Robot Code","title":"P3.6 Get the Robot Code","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-what-changes","label":"P3.7 What Changes","title":"P3.7 What Changes from Projects 1 and 2","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-detector-class","label":"P3.8 HandGestureDetector","title":"P3.8 The HandGestureDetector Class","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-main-loop","label":"P3.9 Main Loop","title":"P3.9 The Main Loop","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-running","label":"P3.10 Running and Testing","title":"P3.10 Running and Testing","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-dots","label":"P3.11 Connecting the Dots","title":"P3.11 Connecting the Dots","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false}];
@@ -13729,7 +13946,7 @@ finally:
       {"key":"projA","title":"★ Exercise A: Train Your First Detector","lessonIds":["projA-overview","projA-yolo26","projA-vscode","projA-roboflow-data","projA-labeling","projA-exporting","projA-training","projA-results","projA-local-inference","projA-model-output","projA-ready"],"firstLesson":"projA-overview"},
       {"key":"projB","title":"* Exercise B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-phonesense","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
       {"key":"projC","title":"* Exercise C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-arduino-basics","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
-      {"key":"projD","title":"* Exercise D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-led","projD-drive","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
+      {"key":"projD","title":"* Exercise D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-led","projD-drive","projD-image","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-pid","proj1-camera","proj1-udp-send","proj1-findbest","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
       {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"},
       {"key":"proj3","title":"* Project 3: Gesture Controlled Robot","lessonIds":["proj3-mediapipe","proj3-landmark-detection","proj3-mediapipe-colab","proj3-understanding-landmarks","proj3-open-closed","proj3-two-hand-logic","proj3-get-code","proj3-what-changes","proj3-detector-class","proj3-main-loop","proj3-running","proj3-dots"],"firstLesson":"proj3-mediapipe"},
