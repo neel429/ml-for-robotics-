@@ -4390,6 +4390,156 @@ plt.show()
 
                   plt.show()</code></pre></figure>
                 <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">BGR vs RGB</div><p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p></div></div>
+
+<h3>An Interactive OpenCV Tour</h3>
+<p>The demo below runs on your <strong>laptop webcam</strong> and lets you flip through the most common OpenCV operations live. Save it as <code>OpenCVDemo.py</code>, run it, then press number keys <code>1</code>&ndash;<code>9</code> to switch effects and <code>ESC</code> to quit.</p>
+<p><a class="download-card-btn" href="OpenCVDemo.py" download>Download OpenCVDemo.py</a></p>
+<figure class="code-card" data-runnable="false" data-chapter="7" data-filename="OpenCVDemo.py"><figcaption>OpenCVDemo.py</figcaption><pre><code class="language-python">import cv2 as cv
+
+# A simple tour of common OpenCV functions.
+# Run it, then press a number key to switch effects. Press ESC to quit.
+#
+#   1 = Normal (no effect)
+#   2 = Grayscale
+#   3 = Blur
+#   4 = Edge detection (Canny)
+#   5 = Black &amp; white (threshold)
+#   6 = HSV color space
+#   7 = Flip (mirror)
+#   8 = Draw shapes + text
+#   9 = Color tracking (use the sliders in the "Controls" window)
+
+cap = cv.VideoCapture(0, cv.CAP_DSHOW)   # open the default webcam
+mode = 1                   # which effect is currently selected
+
+
+# --- Sliders for color tracking (mode 9) -------------------------------
+# Trackbars let you change values while the program runs. They live in
+# their own window. We create six: a low and high bound for H, S, and V.
+def nothing(x):
+    pass
+
+cv.namedWindow("Controls")
+cv.createTrackbar("H low", "Controls", 100, 179, nothing)
+cv.createTrackbar("H high", "Controls", 130, 179, nothing)
+cv.createTrackbar("S low", "Controls", 150, 255, nothing)
+cv.createTrackbar("S high", "Controls", 255, 255, nothing)
+cv.createTrackbar("V low", "Controls", 50, 255, nothing)
+cv.createTrackbar("V high", "Controls", 255, 255, nothing)
+# The defaults above are a starting point for tracking a BLUE object.
+
+print("Press keys 1-9 to change the effect. Press ESC to quit.")
+
+while True:
+    ok, frame = cap.read()         # grab one frame from the camera
+    if not ok:
+        continue
+
+    # --- Apply the selected effect -------------------------------------
+    if mode == 1:
+        # Show the original frame, unchanged.
+        output = frame
+
+    elif mode == 2:
+        # cvtColor converts between color spaces. Here: color -&gt; gray.
+        output = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+    elif mode == 3:
+        # GaussianBlur smooths the image. Bigger numbers = more blur.
+        # The (15, 15) is the kernel size and must be odd numbers.
+        output = cv.GaussianBlur(frame, (15, 15), 0)
+
+    elif mode == 4:
+        # Canny finds edges. The two numbers are the detection thresholds.
+        output = cv.Canny(frame, 100, 200)
+
+    elif mode == 5:
+        # threshold makes a pure black &amp; white image.
+        # First convert to gray, then anything brighter than 127 -&gt; white.
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        _, output = cv.threshold(gray, 127, 255, cv.THRESH_BINARY)
+
+    elif mode == 6:
+        # HSV is another color space (Hue, Saturation, Value).
+        # It's often easier than BGR for detecting specific colors.
+        output = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+    elif mode == 7:
+        # flip mirrors the image. 1 = horizontal, 0 = vertical.
+        output = cv.flip(frame, 1)
+
+    elif mode == 8:
+        # Draw on top of the frame: a rectangle, a circle, and some text.
+        output = frame.copy()
+        cv.rectangle(output, (50, 50), (250, 200), (0, 255, 0), 3)
+        cv.circle(output, (400, 150), 60, (255, 0, 0), -1)   # -1 = filled
+        cv.putText(output, "Hello OpenCV", (50, 300),
+                   cv.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3)
+
+    elif mode == 9:
+        # Color tracking: find an object by its color and box it.
+        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+        # Read the current slider positions to build the color range.
+        low = (cv.getTrackbarPos("H low", "Controls"),
+               cv.getTrackbarPos("S low", "Controls"),
+               cv.getTrackbarPos("V low", "Controls"))
+        high = (cv.getTrackbarPos("H high", "Controls"),
+                cv.getTrackbarPos("S high", "Controls"),
+                cv.getTrackbarPos("V high", "Controls"))
+
+        # inRange makes a mask: white where the color matches, black elsewhere.
+        mask = cv.inRange(hsv, low, high)
+
+        # findContours finds the outlines of the white blobs in the mask.
+        contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL,
+                                      cv.CHAIN_APPROX_SIMPLE)
+
+        output = frame.copy()
+        if contours:
+            # Pick the biggest blob -- that's most likely our object.
+            biggest = max(contours, key=cv.contourArea)
+            if cv.contourArea(biggest) &gt; 500:   # ignore tiny specks of noise
+                x, y, w, h = cv.boundingRect(biggest)
+                cv.rectangle(output, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+        # Show the mask in its own window so you can see what's matching.
+        cv.imshow("Mask", mask)
+
+    # --- Show the result -----------------------------------------------
+    # Put a small label in the corner so you know which effect is active.
+    label = f"Mode {mode}  (press 1-8, ESC to quit)"
+    if len(output.shape) == 2:
+        # Grayscale/edge images have no color channel, so we can't draw
+        # colored text on them -- convert back to color first.
+        output = cv.cvtColor(output, cv.COLOR_GRAY2BGR)
+    cv.putText(output, label, (10, 30),
+               cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+
+    cv.imshow("OpenCV Demo", output)
+
+    # --- Handle key presses --------------------------------------------
+    key = cv.waitKey(1) &amp; 0xFF
+    if key == 27:              # ESC
+        break
+    elif ord("1") &lt;= key &lt;= ord("9"):
+        mode = key - ord("0")  # convert the key '1'-'9' into the number
+
+cap.release()
+cv.destroyAllWindows()</code></pre></figure>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Key</th><th>Effect</th><th>OpenCV call</th></tr></thead><tbody>
+<tr><td>1</td><td>Normal (unchanged)</td><td>&mdash;</td></tr>
+<tr><td>2</td><td>Grayscale</td><td><code>cvtColor(&hellip;, COLOR_BGR2GRAY)</code></td></tr>
+<tr><td>3</td><td>Blur</td><td><code>GaussianBlur</code></td></tr>
+<tr><td>4</td><td>Edge detection</td><td><code>Canny</code></td></tr>
+<tr><td>5</td><td>Black &amp; white</td><td><code>threshold</code></td></tr>
+<tr><td>6</td><td>HSV color space</td><td><code>cvtColor(&hellip;, COLOR_BGR2HSV)</code></td></tr>
+<tr><td>7</td><td>Flip / mirror</td><td><code>flip</code></td></tr>
+<tr><td>8</td><td>Draw shapes + text</td><td><code>rectangle</code>, <code>circle</code>, <code>putText</code></td></tr>
+<tr><td>9</td><td>Color tracking (sliders)</td><td><code>inRange</code> + <code>findContours</code> + <code>boundingRect</code></td></tr>
+</tbody></table></div>
+<p><strong>Mode 9 is the one to linger on.</strong> It converts the frame to HSV, reads six trackbars in the <strong>Controls</strong> window to build a color range, masks with <code>inRange</code>, finds the largest blob with <code>findContours</code>, and boxes it with <code>boundingRect</code> &mdash; exactly the color-tracking pipeline used later in the robot projects. Drag the sliders until only your object shows white in the <strong>Mask</strong> window.</p>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Grayscale images have no color channel</div><p>Modes 2 and 4 produce single-channel images. The demo converts them back with <code>cvtColor(&hellip;, COLOR_GRAY2BGR)</code> before drawing the colored label &mdash; otherwise coloured text on a 2D array would fail.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-opencv">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
