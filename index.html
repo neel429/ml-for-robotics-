@@ -7879,9 +7879,9 @@ root.mainloop()</code></pre></figure>
 <p>This lesson reuses the <a href="?lesson=ch7-cnn" data-lesson-link="ch7-cnn">Teachable Machine</a> workflow from Chapter 7. Train an <strong>Image Project</strong> with one class per action, then export it for Python.</p>
 <div class="steps">
 <div class="step"><div><strong>Create one class per action.</strong> Name them to match the <code>ACTIONS</code> map in the script: <code>forward</code>, <code>backward</code>, <code>left</code>, <code>right</code>, and <code>stop</code>. A class can be anything the camera can tell apart &mdash; a hand gesture, a colored card, or an object.</div></div>
-<div class="step"><div><strong>Add 50+ varied samples per class</strong> (different angles, distances, and lighting), then click <strong>Train Model</strong> and test it live in the Preview panel.</div></div>
+<div class="step"><div><strong>Add 200+ varied samples per class</strong> (different angles, distances, and lighting), then click <strong>Train Model</strong> and test it live in the Preview panel.</div></div>
 <div class="step"><div><strong>Export as Keras.</strong> Click <strong>Export Model &rarr; TensorFlow &rarr; Keras</strong>, then <strong>Download my model</strong>. You get <code>keras_model.h5</code> (the trained network) and <code>labels.txt</code> (the class names).</div></div>
-<div class="step"><div><strong>Put both files next to the script.</strong> The code below loads <code>keras_modelv2.h5</code> and <code>labels.txt</code> &mdash; either rename your <code>keras_model.h5</code> to match, or change <code>model_path</code> in the script to your filename.</div></div>
+<div class="step"><div><strong>Put both files next to the script.</strong> The code below loads <code>keras_model.h5</code> and <code>labels.txt</code> &mdash; either rename your <code>keras_model.h5</code> to match, or change <code>model_path</code> in the script to your filename.</div></div>
 </div>
 
 <h3>Step 2: Install the Python Packages</h3>
