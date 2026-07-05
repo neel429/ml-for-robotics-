@@ -7283,7 +7283,8 @@ void printWiFiInfo() {
   Serial.println("=====================");
 }</code></pre></figure>
 <p>The main sketch then includes <code>wifi_helper.h</code> and just calls <code>connectToWiFi()</code> and <code>printWiFiInfo()</code> in <code>setup()</code>:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="udp_command_receiver.ino"><figcaption><span>udp_command_receiver.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiUdp.h&gt;
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="udp_command_receiver.ino"><figcaption><span>udp_command_receiver.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiS3.h&gt;
+#include &lt;WiFiUdp.h&gt;
 #include &lt;Servo.h&gt;
 #include "wifi_helper.h"   // WiFi connect/info + arduino_secrets.h credentials
 
@@ -7797,7 +7798,8 @@ root.mainloop()</code></pre></figure>
 <p>This sketch uses the same <code>arduino_secrets.h</code> file you created in <a href="?lesson=projD-led" data-lesson-link="projD-led">PD.1b</a> for your WiFi name and password &mdash; keep it in this sketch&apos;s folder, no need to create it again.</p> 
 
 <p>This sketch uses the same <code>wifi_helper.h</code> header you created in <a href="?lesson=projD-led" data-lesson-link="projD-led">PD.1b</a> &mdash; it includes the header and calls <code>connectToWiFi()</code> / <code>printWiFiInfo()</code> in <code>setup()</code>. No need to recreate it.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiUDP.h&gt;
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiS3.h&gt;
+#include &lt;WiFiUDP.h&gt;
 #include "wifi_helper.h"   // WiFi connect/info + arduino_secrets.h credentials
 
 // Your laptop's IP on the same WiFi (telemetry destination). Check with ipconfig.
