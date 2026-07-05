@@ -493,12 +493,91 @@
 
                 <h3>Later Projects: Python &amp; VS Code</h3>
                 <p>The hardware projects — where you deploy code to a real robot — require Python installed on your machine and a code editor. We use <strong>Visual Studio Code</strong> for these stages.</p>
-                <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Don't install anything yet</div><p>You do not need Python or VS Code right now. Each project chapter that requires them opens with a step-by-step installation tutorial. Follow that guide when you reach it.</p></div></div>
+                <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Don't install anything yet</div><p>You do not need Python or VS Code for the browser and Colab chapters. When you are ready for the hardware projects, follow <strong>Full Local Setup for the Hardware Projects</strong> at the bottom of this page &mdash; a one-time install of everything the course uses. Each project chapter also includes a short recap.</p></div></div>
                 <div class="steps">
                   <div class="step"><div><strong>Python 3.</strong><br />A local Python installation lets you run scripts directly on your computer and communicate with hardware over USB or serial. The project chapters walk you through installing it when the time comes.</div></div>
                   <div class="step"><div><strong>Visual Studio Code.</strong><br />VS Code is a free code editor with excellent Python support. The project chapters include a full installation and setup tutorial — no prior experience needed.</div></div>
                 </div>
                 <p>Later in the course you will also create a free Kaggle account to access datasets — that setup is explained at the start of the relevant chapter.</p>
+
+<h3>Full Local Setup for the Hardware Projects</h3>
+<p>When you reach the robot work (Exercises A&ndash;D and Projects 1&ndash;5) you run Python on your own computer instead of in the browser. This section is the one-stop setup: install VS Code, install Python, add the Python extension, create a virtual environment, and install every library the curriculum uses. Each project chapter has a short recap, but you can do all of it once, here.</p>
+
+<h4>1. Install Visual Studio Code</h4>
+<div class="steps">
+<div class="step"><div><strong>Download VS Code.</strong> Go to <a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer">code.visualstudio.com</a> and download the installer for your operating system (Windows, macOS, or Linux).</div></div>
+<div class="step"><div><strong>Run the installer.</strong> On Windows, tick <strong>Add to PATH</strong> and <strong>Register Code as an editor</strong> when offered. Accept the defaults otherwise.</div></div>
+<div class="step"><div><strong>Launch it once</strong> to confirm it opens.</div></div>
+</div>
+
+<h4>2. Install Python 3.14.6</h4>
+<div class="steps">
+<div class="step"><div><strong>Download Python.</strong> Go to <a href="https://www.python.org/downloads/" target="_blank" rel="noreferrer">python.org/downloads</a> and get <strong>Python 3.14.6</strong> for your OS.</div></div>
+<div class="step"><div><strong>Windows: tick <em>Add python.exe to PATH</em></strong> on the very first installer screen, before you click Install. This is the single most common step people forget.</div></div>
+<div class="step"><div><strong>Verify.</strong> Open a terminal (in VS Code: <strong>Terminal &rarr; New Terminal</strong>) and run <code>python --version</code>. It should print <code>Python 3.14.6</code>. On macOS/Linux you may need <code>python3 --version</code>.</div></div>
+</div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">A couple of exercises need an older Python</div><p>The Keras / Teachable Machine image-classification exercises (<a href="?lesson=ch7-cnn" data-lesson-link="ch7-cnn">7.4</a> and <a href="?lesson=projD-image" data-lesson-link="projD-image">PD.1d</a>) depend on <code>tensorflow</code> and <code>numpy==1.23.5</code>, which do not yet publish builds for the newest Python. If you plan to do those, also install <strong>Python 3.11</strong> from the same page and give them their own environment (see step 4). Everything else runs fine on 3.14.6.</p></div></div>
+
+<h4>3. Add the Python Extension to VS Code</h4>
+<div class="steps">
+<div class="step"><div><strong>Open the Extensions panel.</strong> Click the Extensions icon in the left toolbar (four squares) or press <code>Ctrl+Shift+X</code> (<code>Cmd+Shift+X</code> on macOS).</div></div>
+<div class="step"><div><strong>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noreferrer">Python extension by Microsoft</a>.</strong> Search <code>Python</code>, pick the one published by <strong>Microsoft</strong>, and click <strong>Install</strong>. It also pulls in <strong>Pylance</strong> for autocompletion and error checking.</div></div>
+</div>
+
+<h4>4. Create a Project Folder and Virtual Environment</h4>
+<p>A <strong>virtual environment</strong> is a private copy of Python and its libraries for one project, so this course&apos;s installs never clash with other Python work on your machine. VS Code can create one for you.</p>
+<div class="steps">
+<div class="step"><div><strong>Open a project folder.</strong> <strong>File &rarr; Open Folder</strong>, then choose or create an empty folder such as <code>ml-for-robotics</code>.</div></div>
+<div class="step"><div><strong>Create the environment.</strong> Open the Command Palette with <code>Ctrl+Shift+P</code> (<code>Cmd+Shift+P</code>), run <strong>Python: Create Environment</strong>, choose <strong>Venv</strong>, then pick your <strong>Python 3.14.6</strong> interpreter. VS Code makes a <code>.venv</code> folder and activates it.</div></div>
+<div class="step"><div><strong>Or create it in the terminal</strong> &mdash; the same thing by hand:</div></div>
+</div>
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="Terminal"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash"># create the environment
+python -m venv .venv
+
+# activate it -- Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+
+# activate it -- macOS / Linux
+source .venv/bin/activate</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Confirm the environment is active</div><p>When active, your terminal prompt starts with <code>(.venv)</code>, and the VS Code status bar (bottom-right) shows the <code>.venv</code> interpreter. Anything you <code>pip install</code> now lands in that folder only. Open a <strong>new</strong> terminal after creating the environment so it picks it up.</p></div></div>
+
+<h4>5. Install the Python Libraries</h4>
+<p>With the environment active, install everything the course uses in one shot. Create a file called <code>requirements.txt</code> in your project folder:</p>
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="requirements.txt"><figcaption><span>requirements.txt</span></figcaption><pre><code class="language-text">ultralytics
+opencv-python
+numpy
+requests
+matplotlib
+pandas
+scikit-learn
+gymnasium
+pygame
+mediapipe
+roboflow
+kaggle
+phonesense</code></pre></figure>
+<p>Then install them all with one command:</p>
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="Terminal"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash">pip install -r requirements.txt</code></pre></figure>
+<p>What each library is for and where it appears:</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Library</th><th>Install name</th><th>Used for</th></tr></thead><tbody>
+<tr><td>Ultralytics YOLO</td><td><a href="https://pypi.org/project/ultralytics/" target="_blank" rel="noreferrer"><code>ultralytics</code></a></td><td>Object-detection model &mdash; Exercise A and Project 1.</td></tr>
+<tr><td>OpenCV</td><td><a href="https://pypi.org/project/opencv-python/" target="_blank" rel="noreferrer"><code>opencv-python</code></a></td><td>Reading the camera, drawing, image processing &mdash; Chapter 7 and every vision project.</td></tr>
+<tr><td>NumPy</td><td><a href="https://pypi.org/project/numpy/" target="_blank" rel="noreferrer"><code>numpy</code></a></td><td>Arrays and math &mdash; used almost everywhere.</td></tr>
+<tr><td>Requests</td><td><a href="https://pypi.org/project/requests/" target="_blank" rel="noreferrer"><code>requests</code></a></td><td>Pulling the MJPEG video stream from your phone &mdash; Project 1 and the WiFi projects.</td></tr>
+<tr><td>Matplotlib</td><td><a href="https://pypi.org/project/matplotlib/" target="_blank" rel="noreferrer"><code>matplotlib</code></a></td><td>Plotting data and training curves &mdash; Chapters 3&ndash;4.</td></tr>
+<tr><td>pandas</td><td><a href="https://pypi.org/project/pandas/" target="_blank" rel="noreferrer"><code>pandas</code></a></td><td>Loading and exploring datasets &mdash; Chapters 3&ndash;4.</td></tr>
+<tr><td>scikit-learn</td><td><a href="https://pypi.org/project/scikit-learn/" target="_blank" rel="noreferrer"><code>scikit-learn</code></a></td><td>Classic ML algorithms and metrics &mdash; Chapter 3.</td></tr>
+<tr><td>Gymnasium</td><td><a href="https://pypi.org/project/gymnasium/" target="_blank" rel="noreferrer"><code>gymnasium</code></a></td><td>Reinforcement-learning environments (FrozenLake) &mdash; the RL chapter.</td></tr>
+<tr><td>pygame</td><td><a href="https://pypi.org/project/pygame/" target="_blank" rel="noreferrer"><code>pygame</code></a></td><td>Keyboard input and simple visualization for control demos.</td></tr>
+<tr><td>MediaPipe</td><td><a href="https://pypi.org/project/mediapipe/" target="_blank" rel="noreferrer"><code>mediapipe</code></a></td><td>Hand and pose tracking &mdash; gesture-control demos.</td></tr>
+<tr><td>Roboflow</td><td><a href="https://pypi.org/project/roboflow/" target="_blank" rel="noreferrer"><code>roboflow</code></a></td><td>Downloading and managing the training dataset &mdash; Exercise A.</td></tr>
+<tr><td>Kaggle</td><td><a href="https://pypi.org/project/kaggle/" target="_blank" rel="noreferrer"><code>kaggle</code></a></td><td>Downloading datasets &mdash; Chapters 4 and 7.</td></tr>
+<tr><td>PhoneSense</td><td><a href="https://pypi.org/project/phonesense/" target="_blank" rel="noreferrer"><code>phonesense</code></a></td><td>Reading phone sensors over the network.</td></tr>
+</tbody></table></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Some things ship with Python already</div><p><code>tkinter</code> (the desktop UI in PD.1c), <code>socket</code> (UDP networking), <code>threading</code>, and <code>time</code> are part of Python&apos;s standard library &mdash; nothing to install. On Linux, <code>tkinter</code> may need the system package <code>python3-tk</code>.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">TensorFlow / Teachable Machine installs separately</div><p>The Keras image-classification exercises need <code>tensorflow</code>, <code>teachable-machine</code>, and specifically <code>numpy==1.23.5</code>, which conflicts with the newer NumPy the other libraries use. Keep it in its own <strong>Python 3.11</strong> environment and install it only when you reach those lessons:</p></div></div>
+<figure class="code-card" data-runnable="false" data-chapter="0" data-filename="Terminal (separate 3.11 env)"><figcaption><span>Terminal (separate 3.11 env)</span></figcaption><pre><code class="language-bash">pip install tensorflow teachable-machine opencv-python
+pip install numpy==1.23.5</code></pre></figure>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch0-tools">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
