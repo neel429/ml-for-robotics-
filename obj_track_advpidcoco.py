@@ -154,7 +154,7 @@ def main():
     frame_count = 0
     fps = 0
 
-    pid = PID(0.7, 0.1, 0.05, output_limit=1)
+    pid = PID(0.5, 0.07, 0.04, output_limit=1)
 
     for frame in read_frames(stream):
         # Run detection on the frame (classes=0 -> COCO "person" only)
