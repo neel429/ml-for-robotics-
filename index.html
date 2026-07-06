@@ -5678,15 +5678,22 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="lesson-body">
 
 <p class="lead">In Exercise A you ran detection on a webcam plugged into your laptop. That works for a desktop demo but it is useless for a robot. A robot moves. It cannot drag a USB cable behind it unless you mount the whole computer on the robot, which sometimes may be impractical. The camera must be wireless.</p>
-<p>A phone is the perfect solution for learning. It already has a high quality camera, a battery, WiFi, and a screen. Both apps we use turn the phone into a network camera that streams live video over your local WiFi. Your laptop connects to that stream over the network exactly the way a browser loads a video: no cable, no Bluetooth, no special hardware.</p>
+<p>A phone is the perfect solution for learning. It already has a high quality camera, a battery, WiFi, and a screen. Each of the streaming methods in this exercise turns the phone into a network camera that streams live video over your local WiFi. Your laptop connects to that stream over the network exactly the way a browser loads a video: no cable, no Bluetooth, no special hardware.</p>
 <p>This is also exactly how Project 1's robot works. The <code>MobileVideoStream</code> class in <code>shared.py</code> connects to a phone stream using the same URL format you will set up in this exercise. By the end of Exercise B you will understand every line of that class.</p>
 <div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Same architecture, smaller scale</div><p>Professional mobile robots use the same concept at a higher level. A drone streams its camera feed over WiFi or 4G to a ground station running detection algorithms. An autonomous vehicle streams from multiple cameras to an onboard computer. The architecture is identical to what you are building here: the difference is bandwidth and latency.</p></div></div>
+<h3>Three Ways to Stream</h3>
+<p>There are <strong>three</strong> ways to turn your phone into a wireless camera. You only need <strong>one</strong> &mdash; pick whichever fits your phone and preference. The next three lessons each cover one option:</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Option</th><th>What it is</th><th>Best when</th></tr></thead><tbody>
+<tr><td><a href="?lesson=projB-phonesense" data-lesson-link="projB-phonesense"><strong>PB.1 &mdash; phonesense</strong></a></td><td>No app. You run a small server on your laptop and open its URL in the phone&apos;s browser. Works on any phone.</td><td>You would rather not install an app, or want the fastest start.</td></tr>
+<tr><td><a href="?lesson=projB-android" data-lesson-link="projB-android"><strong>PB.2 &mdash; IP Webcam</strong></a></td><td>A free app installed on an Android phone.</td><td>You have an Android phone.</td></tr>
+<tr><td><a href="?lesson=projB-iphone" data-lesson-link="projB-iphone"><strong>PB.3 &mdash; Simple IP Camera</strong></a></td><td>A free app installed on an iPhone.</td><td>You have an iPhone.</td></tr>
+</tbody></table></div>
+<p>Whichever you choose, the result is the same: a <strong>stream URL</strong> your laptop connects to. From PB.6 onward the steps are identical no matter which method you picked. The app options (PB.2, PB.3) also need PB.4 and PB.5 to find and test the phone&apos;s address; phonesense prints its URL directly, so it skips those two steps.</p>
 <h3>What You Need</h3>
 <div class="steps">
 <div class="step"><div>The <code>best.pt</code> file from Exercise A.</div></div>
 <div class="step"><div>Your phone and laptop on the same WiFi network.</div></div>
-<div class="step"><div>Android phone: IP Webcam app, free from the Play Store.</div></div>
-<div class="step"><div>iOS: Simple IP Camera app, free from the App Store.</div></div>
+<div class="step"><div>One streaming method from <em>Three Ways to Stream</em> above: phonesense (no app, any phone), IP Webcam (Android), or Simple IP Camera (iOS).</div></div>
 <div class="step"><div>The <code>my-detector</code> VS Code folder from Exercise A with the virtual environment active.</div></div>
 </div>
 
@@ -5703,8 +5710,8 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="lesson-meta"><span>No app</span><span>Laptop server</span><span>8 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead"><a href="https://github.com/snappyxo/phonesense" target="_blank" rel="noreferrer">phonesense</a> is a third option that requires nothing on your phone at all. Instead of installing an app, you run a small server on your laptop and open its URL in your phone&apos;s browser. The laptop serves the streaming page; the phone&apos;s browser sends the camera feed back over your local WiFi.</p>
-<p>This is the fastest way to get started if you do not have IP Webcam or Simple IP Camera installed, or if you want to skip the manual URL-finding step entirely.</p>
+<p class="lead"><a href="https://github.com/snappyxo/phonesense" target="_blank" rel="noreferrer">phonesense</a> is the first of the three streaming options from PB.0, and the only one that requires nothing on your phone at all. Instead of installing an app, you run a small server on your laptop and open its URL in your phone&apos;s browser. The laptop serves the streaming page; the phone&apos;s browser sends the camera feed back over your local WiFi.</p>
+<p>This is the fastest way to get started, and a good choice if you would rather not install one of the phone apps covered next in PB.2 and PB.3. It also skips the manual URL-finding step entirely.</p>
 <h3>Install phonesense</h3>
 <p>Install it into your virtual environment the same way you installed other packages in Exercise A:</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>Install phonesense</span></figcaption><pre><code class="language-bash">pip install phonesense</code></pre></figure>
