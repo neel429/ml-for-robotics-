@@ -604,11 +604,8 @@ source .venv/bin/activate</code></pre></figure>
 <h4>6. Install the Python Libraries</h4>
 <p>With the environment active, install everything the course uses in one shot. Create a file called <code>requirements.txt</code> in your project folder:</p>
 <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="requirements.txt"><figcaption><span>requirements.txt</span></figcaption><pre><code class="language-text">ultralytics==8.4.89
-opencv-python==5.0.0.93
-numpy==2.5.1
-mediapipe==0.10.35
-teachable-machine==1.2.1
-tensorflow==2.21.0
+opencv-python
+numpy
 requests==2.34.2
 urllib3==2.7.0
 matplotlib
@@ -618,6 +615,10 @@ gymnasium
 pygame-ce
 roboflow
 kaggle
+ultralytics
+#mediapipe==0.10.35
+#teachable-machine==1.2.1
+#tensorflow==2.21.0
 phonesense</code></pre></figure>
 <p>Then install them all with one command:</p>
 <figure class="code-card" data-runnable="false" data-chapter="0" data-filename="Terminal"><figcaption><span>Terminal</span></figcaption><pre><code class="language-bash">pip install -r requirements.txt</code></pre></figure>
@@ -9212,12 +9213,13 @@ if __name__ == "__main__":
 </tbody></table></div>
 <h3>Install Everything From <code>requirements.txt</code></h3>
 <p>The project ships a <code>requirements.txt</code> with every package pinned to an exact, tested version, so everyone installs the same thing. It lives in the same folder as <code>obj_track_advpid.py</code> &mdash; you do not need to create it. <code>torch</code> is not listed because it comes in automatically as an <code>ultralytics</code> dependency.</p>
-<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="requirements.txt"><figcaption><span>requirements.txt (already in the project)</span></figcaption><pre><code class="language-text">ultralytics==8.4.89
-opencv-python==5.0.0.93
-numpy==2.5.1
-mediapipe==0.10.35
-teachable-machine==1.2.1
-tensorflow==2.21.0
+<figure class="code-card" data-runnable="false" data-chapter="proj1" data-filename="requirements.txt"><figcaption><span>requirements.txt (already in the project)</span></figcaption><pre><code class="language-text">
+ultralytics
+opencv-python
+numpy
+#mediapipe==0.10.35
+#teachable-machine==1.2.1
+#tensorflow==2.21.0
 requests==2.34.2
 urllib3==2.7.0</code></pre></figure>
 <p>Pick whichever installer you use. Both create an isolated environment first, then install into it &mdash; run these from the project folder.</p>
