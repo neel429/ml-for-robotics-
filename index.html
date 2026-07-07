@@ -7980,10 +7980,12 @@ tm-env\Scripts\Activate.ps1
 # macOS / Linux
 python3.11 -m venv tm-env
 source tm-env/bin/activate</code></pre></figure>
-<p>With <code>(tm-env)</code> showing in your prompt, confirm the version by running <code>python --version</code> &mdash; it should print <code>Python 3.11.x</code>. Now install the classifier helper, OpenCV, and TensorFlow into that environment, and pin NumPy to the version the Keras model needs:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal"><figcaption><span>Terminal &mdash; install into (tm-env)</span></figcaption><pre><code class="language-bash">pip install teachable-machine opencv-python tensorflow
-pip install numpy==1.23.5</code></pre></figure>
-<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Verify the pin held</div><p>Some packages tug NumPy back to a newer version as they install, so pin it <em>last</em> (as above) and then check with <code>python -c "import numpy; print(numpy.__version__)"</code>. It must print <code>1.23.5</code>. Run <code>ImageControl.py</code> from this same <code>(tm-env)</code> environment &mdash; in VS Code, pick the <code>tm-env</code> interpreter in the bottom-right status bar.</p></div></div>
+<p>With <code>(tm-env)</code> showing in your prompt, you are inside the new environment. Now install the exact pinned versions this example needs &mdash; all in a single command:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal (inside tm-env)"><figcaption><span>Terminal &mdash; run inside (tm-env)</span></figcaption><pre><code class="language-bash">pip install "tensorflow==2.12.0" "numpy==1.23.5" "teachable-machine==1.2.1" "opencv-python==4.11.0.86" "pillow==12.2.0"</code></pre></figure>
+<p>Finally, confirm you are on Python 3.11 and that every package installed at the pinned version:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal (verify)"><figcaption><span>Terminal &mdash; verify the versions</span></figcaption><pre><code class="language-bash">python --version
+python -c "from importlib.metadata import version; [print(p, version(p)) for p in ['tensorflow','numpy','teachable-machine','opencv-python','pillow']]"</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Expected output</div><p>You should see <code>Python 3.11.x</code>, then <code>tensorflow 2.12.0</code>, <code>numpy 1.23.5</code>, <code>teachable-machine 1.2.1</code>, <code>opencv-python 4.11.0.86</code>, and <code>pillow 12.2.0</code>. If any version differs, re-run the install command above. Run <code>ImageControl.py</code> from this same <code>(tm-env)</code> environment &mdash; in VS Code, pick the <code>tm-env</code> interpreter in the bottom-right status bar.</p></div></div>
 
 <h3>Step 3: The Image-Driven Controller</h3>
 <p>The loop grabs a webcam frame, saves it to disk, asks the model to classify it, and &mdash; only when the top class changes and clears the confidence threshold &mdash; sends the motor commands for that action. The motor helpers are identical to PD.1c; the buttons are simply gone.</p>
