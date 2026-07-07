@@ -4759,7 +4759,17 @@ cv.destroyAllWindows()</code></pre></figure>
 <h3>7.5 ★ Project: Traffic Sign Classifier with TensorFlow + OpenCV</h3>
                 <p><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">German Traffic Sign Recognition Benchmark (GTSRB)</a>. It has 43 classes and about 50,000 real-world sign images.</p>
                 <div class="callout download" role="note"><div class="callout-icon">⬇</div><div><div class="callout-title">Download Dataset</div><p>Direct Kaggle URL: <a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign" target="_blank" rel="noreferrer">gtsrb-german-traffic-sign</a>.</p></div></div>
-                <a class="colab-btn" href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch7-traffic-sign-classifier.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
+                <h3>Step 0 &mdash; Get your Kaggle API key</h3>
+<p>Cell 1 below downloads the dataset from Kaggle, which needs a free account and a one-time legacy API key. These are the same steps as <a href="?lesson=ch3-project" data-lesson-link="ch3-project">3.4</a> &mdash; if you already created a <code>kaggle.json</code> there, reuse that same token and skip straight to the notebook.</p>
+<div class="steps">
+<div class="step"><div><strong>Go to Kaggle and sign in.</strong><br />Open <a href="https://www.kaggle.com/" target="_blank" rel="noreferrer">kaggle.com</a> and sign in (or create a free account).</div></div>
+<div class="step"><div><strong>Open Settings.</strong><br />Click your profile picture in the top-right corner, then click <strong>Settings</strong>.</div></div>
+<div class="step"><div><strong>Create a Legacy API Key.</strong><br />Scroll down to the <strong>API</strong> section, find the <strong>Legacy API</strong> sub-section, and click <strong>Create New Legacy API Key</strong>. This is important &mdash; a regular API key does not download a JSON file, and the JSON is what the Kaggle CLI needs.</div></div>
+<div class="step"><div><strong>Open the downloaded file.</strong><br />Your browser downloads a file called <code>kaggle.json</code>. Open it in any text editor &mdash; it contains a short line that looks like <code>{"username":"&hellip;","key":"&hellip;"}</code>. Select and copy that entire line.</div></div>
+<div class="step"><div><strong>Keep it ready.</strong><br />Cell 1 will ask for it with a password-style prompt &mdash; paste the copied text there and press Enter.</div></div>
+</div>
+<div class="callout tip" role="note"><div class="callout-icon">&#128161;</div><div><div class="callout-title">Keep the token private</div><p>Your token is like a password &mdash; it gives access to your Kaggle account. Never share a notebook that still has the token text visible.</p></div></div>
+<a class="colab-btn" href="https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch7-traffic-sign-classifier.ipynb" target="_blank" rel="noreferrer">Open in Colab</a>
                 <figure class="code-card" data-runnable="false" data-chapter="7" data-filename="Cell 1: Kaggle download of GTSRB"><figcaption>Cell 1: Kaggle download of GTSRB</figcaption><pre><code class="language-python">!pip -q install kaggle
 import json
 import os
