@@ -15,12 +15,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # iPhone (Simple IP Camera): "http://127.0.0.1:8080/live"
 # phonesense:                "https://127.0.0.1:8080/camera/stream"
 STREAM_URL = "https://127.0.0.1:8080/camera/stream"
-ARDUINO_IP = "192.168.1.19"
+ARDUINO_IP = "192.168.1.98"
 CMD_PORT = 5001
 
 # Only show detections above this confidence level (0.0 to 1.0)
 CONFIDENCE = 0.1
-SPEED = 100
+SPEED = 0
 TURN = 255
 # --------------------------------------------------------------------
 
@@ -154,25 +154,26 @@ def main():
     frame_count = 0
     fps = 0
 
-    pid = PID(0.7, 0.1, 0.05, output_limit=1)
+    pid = PID(0.5, 0.07, 0.04, output_limit=1)
 
     for frame in read_frames(stream):
         # Run detection on the frame (classes=0 -> COCO "person" only)
+
+        rotated = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
         now = time.time()
-        results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False, classes=0)
+        results = model(rotated, imgsz=416, conf=CONFIDENCE, verbose=False, classes=0)
         fin = time.time()
         # print(fin - now)
 
         best = findbest(results)
         if best is not None:
-            wid = len(frame[0])
+            wid = len(rotated[0])
             x = (best[0] + best[2]) / 2
-            # print(best,x)
             x = (x - wid / 2) / (wid / 2)
             power = pid.update(x) * TURN
             # if power != 0:
             # power = (x / abs(x)) * min(abs(x * TURN), 255)
-            # print(f"{round(x,2)}\t{round(power,2)}")
+            print(f"{round(x,2)}\t{round(power,2)}")
             send_command(-power - SPEED, power - SPEED)
         else:
             pass
