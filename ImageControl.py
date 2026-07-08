@@ -107,7 +107,7 @@ def to_fraction(confidence):
 # Main loop
 # -----------------------------
 
-cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+cap = cv.VideoCapture(0)
 last_action = None
 
 print("Press ESC in the camera window to quit.")

@@ -13,7 +13,7 @@ import cv2 as cv
 #   8 = Draw shapes + text
 #   9 = Color tracking (use the sliders in the "Controls" window)
 
-cap = cv.VideoCapture(0, cv.CAP_DSHOW)   # open the default webcam
+cap = cv.VideoCapture(0)   # open the default webcam
 mode = 1                   # which effect is currently selected
 
 

@@ -4551,7 +4551,7 @@ plt.show()
 #   8 = Draw shapes + text
 #   9 = Color tracking (use the sliders in the "Controls" window)
 
-cap = cv.VideoCapture(0, cv.CAP_DSHOW)   # open the default webcam
+cap = cv.VideoCapture(0)   # open the default webcam
 mode = 1                   # which effect is currently selected
 
 
@@ -7971,12 +7971,10 @@ root.mainloop()</code></pre></figure>
 <div class="step"><div><strong>Install Python 3.11</strong> if you do not already have it, from <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noreferrer">python.org/downloads</a>. On Windows, tick <em>Add python.exe to PATH</em> during install. (You can keep your newer Python too &mdash; both can be installed side by side.)</div></div>
 <div class="step"><div><strong>Create and activate a fresh 3.11 environment</strong> just for this example, in your project folder.</div></div>
 </div>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal"><figcaption><span>Terminal &mdash; create the 3.11 environment</span></figcaption><pre><code class="language-bash"># Windows (PowerShell) -- the py launcher picks version 3.11
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal (Windows)"><figcaption><span>Windows (PowerShell) &mdash; create the 3.11 environment</span></figcaption><pre><code class="language-bash"># the py launcher picks version 3.11
 py -3.11 -m venv tm-env
-tm-env\Scripts\Activate.ps1
-
-# macOS / Linux
-python3.11 -m venv tm-env
+tm-env\Scripts\Activate.ps1</code></pre></figure>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal (macOS)"><figcaption><span>macOS &mdash; create the 3.11 environment</span></figcaption><pre><code class="language-bash">python3.11 -m venv tm-env
 source tm-env/bin/activate</code></pre></figure>
 <p>With <code>(tm-env)</code> showing in your prompt, you are inside the new environment. Now install the exact pinned versions this example needs &mdash; all in a single command:</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="Terminal (inside tm-env)"><figcaption><span>Terminal &mdash; run inside (tm-env)</span></figcaption><pre><code class="language-bash">pip install "tensorflow==2.12.0" "numpy==1.23.5" "teachable-machine==1.2.1" "opencv-python==4.11.0.86" "pillow==12.2.0"</code></pre></figure>
@@ -8097,7 +8095,7 @@ def to_fraction(confidence):
 # Main loop
 # -----------------------------
 
-cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+cap = cv.VideoCapture(0)
 last_action = None
 
 print("Press ESC in the camera window to quit.")
